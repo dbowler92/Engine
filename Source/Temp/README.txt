@@ -1,0 +1,1 @@
+Crap output from VS when compiling will go here. 
