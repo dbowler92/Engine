@@ -13,4 +13,9 @@
       <Filter>Src\Main</Filter>
     </ClCompile>
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\Main\EngineStd.h">
+      <Filter>Src\Main</Filter>
+    </ClInclude>
+  </ItemGroup>
 </Project>

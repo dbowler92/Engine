@@ -13,6 +13,9 @@
   <ItemGroup>
     <ClCompile Include="..\Main\EngineMain.cpp" />
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\Main\EngineStd.h" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{69EDAF33-5992-412E-B25A-4115692A9A8D}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>

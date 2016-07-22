@@ -6,20 +6,14 @@
 
 #pragma once
 
-#include <stdio.h>
-#include <io.h>
-#include <fcntl.h>
-#include <windows.h>
+#include <iostream>
+#include "../../Engine/Main/EngineStd.h"
 
 int APIENTRY WinMain(HINSTANCE hInstance, 
 	HINSTANCE hPrevInstance, 
 	LPSTR     lpCmdLine,
 	int       nCmdShow)
 {
-	//Enter in to engine
-	//EngineMain(hInstance, hPrevInstance, lpCmdLine, nCmdShow);
-	printf("WinMain::Main()");
-
-	//Done   
-	return 0;
+	//Enter in to engine main
+	return EngineMain(hInstance, hPrevInstance, lpCmdLine, nCmdShow);
 }
