@@ -1,6 +1,9 @@
 #include "Application.h"
 
-Application::Application()
+//Init global reference to the app. 
+EngineAPI::Application *g_App = NULL;
+
+EngineAPI::Application::Application()
 {
-	//Init to defaults
+	OutputDebugStringW(L"Application::Application()\n");
 }

@@ -9,10 +9,10 @@
 
 #include "../../Engine/Application/Application.h" //Base class
 
-class SandboxApplication : public Application
+class SandboxApplication : public EngineAPI::Application
 { 
-public:
+	HIDE_COPY_ASSIGNMENT(SandboxApplication)
+public:  
 	SandboxApplication();
-
-
-};
+	  
+}; 

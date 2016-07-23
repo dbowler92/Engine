@@ -8,11 +8,22 @@
 
 #pragma once
 
-class Application
-{
-public:
-	Application();
+#include <Windows.h>
+#include "../Main/EngineStd.h"
 
-public:
-	
+namespace EngineAPI
+{
+	class Application
+	{
+		HIDE_COPY_ASSIGNMENT(Application)
+	public:
+		Application();
+		
+	public:
+
+	};
 };
+
+//Define a global pointer to the singleton app instance. Override Application
+//and provide a project specific version
+extern EngineAPI::Application* g_App;

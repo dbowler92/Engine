@@ -10,6 +10,7 @@
 #include <io.h>
 #include <fcntl.h>
 #include "EngineStd.h"
+#include "../Application/Application.h"
 
 void ShowConsole()
 {
@@ -31,7 +32,8 @@ void ShowConsole()
 int APIENTRY EngineMain(HINSTANCE hInstance, 
 	HINSTANCE hPrevInstance,
 	LPSTR     lpCmdLine,
-	int       nCmdShow)
+	int       nCmdShow, 
+	EngineAPI::Application* gameAppInstance)
 { 
 	//Set up checks for memory leaks.  
 #if defined(DEBUG) | defined(_DEBUG)
@@ -41,7 +43,15 @@ int APIENTRY EngineMain(HINSTANCE hInstance,
 	//Enable console for debugging purposes
 	ShowConsole();
 
-	//Init engine
+	//Ensure an app exists.
+	if (gameAppInstance == NULL)
+		OutputDebugStringW(L"EngineMain Error: gameAppInstance == NULL. Make sure to create a project specific Application instance.\n");
+	 
+	//Init app
+	//
+	//Set app global pointer 
+	g_App = (EngineAPI::Application*)gameAppInstance;
+	//g_App->
 
 	//Done 
 	return 0;
