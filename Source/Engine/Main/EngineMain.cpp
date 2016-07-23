@@ -33,14 +33,15 @@ int APIENTRY EngineMain(HINSTANCE hInstance,
 	LPSTR     lpCmdLine,
 	int       nCmdShow)
 { 
-	//Enable console for debugging
+	//Set up checks for memory leaks.  
+#if defined(DEBUG) | defined(_DEBUG)
+	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
+#endif
+
+	//Enable console for debugging purposes
 	ShowConsole();
 
-	//Entry point for engine. 
-	printf("Engine::Main()\n");
-
-	//TEMP:
-	while (1){}
+	//Init engine
 
 	//Done 
 	return 0;
