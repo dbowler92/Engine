@@ -31,27 +31,30 @@ void ShowConsole()
 
 int APIENTRY EngineMain(HINSTANCE hInstance, 
 	HINSTANCE hPrevInstance,
-	LPSTR     lpCmdLine,
+	LPWSTR     lpCmdLine,
 	int       nCmdShow, 
-	EngineAPI::Application* gameAppInstance)
+	EngineAPI::Base::Application* gameAppInstance)
 { 
 	//Set up checks for memory leaks.  
 #if defined(DEBUG) | defined(_DEBUG)
 	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 #endif
 
+#if defined(DEBUG) | defined(_DEBUG)
 	//Enable console for debugging purposes
 	ShowConsole();
+#endif
 
 	//Ensure an app exists.
 	if (gameAppInstance == NULL)
 		OutputDebugStringW(L"EngineMain Error: gameAppInstance == NULL. Make sure to create a project specific Application instance.\n");
 	 
-	//Init app
-	//
-	//Set app global pointer 
-	g_App = (EngineAPI::Application*)gameAppInstance;
-	//g_App->
+	//Set app global pointer & init the application. 
+	g_App = (EngineAPI::Base::Application*)gameAppInstance;
+	if (!g_App->Init(hInstance, lpCmdLine, NULL, 960, 540))
+		return -1;
+
+	//Loop
 
 	//Done 
 	return 0;

@@ -9,10 +9,16 @@
 
 #include "../../Engine/Application/Application.h" //Base class
 
-class SandboxApplication : public EngineAPI::Application
+class SandboxApplication : public EngineAPI::Base::Application
 { 
 	HIDE_COPY_ASSIGNMENT(SandboxApplication)
 public:  
 	SandboxApplication();
-	  
+	 
+	//
+	//Virtual functions. Game specific implementations
+	//
+	TCHAR *VGetGameTitle() { return _T("Sandbox"); };
+	TCHAR *VGetGameAppDirectory() { return _T("My Game Engine\\Sandbox\\1.0"); };
+	HICON VGetIcon();
 }; 

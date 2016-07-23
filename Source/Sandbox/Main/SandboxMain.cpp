@@ -15,9 +15,9 @@
 //libray. 
 SandboxApplication g_GameApp; //Implement virtual functions to add game logic layer and view(s)
 
-int APIENTRY WinMain(HINSTANCE hInstance, 
+INT APIENTRY wWinMain(HINSTANCE hInstance, 
 	HINSTANCE hPrevInstance, 
-	LPSTR     lpCmdLine, 
+	LPWSTR     lpCmdLine, 
 	int       nCmdShow)
 {
 	//Enter in to engine main passing the gane specific applcation

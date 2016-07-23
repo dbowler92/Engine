@@ -1,9 +1,18 @@
 #include "Application.h"
 
 //Init global reference to the app. 
-EngineAPI::Application *g_App = NULL;
+EngineAPI::Base::Application *g_App = NULL;
 
-EngineAPI::Application::Application()
+using namespace EngineAPI::Base;
+
+Application::Application()
 {
 	OutputDebugStringW(L"Application::Application()\n");
+}
+
+bool Application::Init(HINSTANCE hInstance, LPWSTR lpCmdLine, HWND hWnd,
+	int screenWidth, int screenHeight)
+{
+	OutputDebugStringW(L"Application::Init()\n");
+	return true;
 }
