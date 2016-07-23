@@ -7,10 +7,21 @@
     <Filter Include="Src\Main">
       <UniqueIdentifier>{67ed9e7c-c739-4a5e-bfe9-2e5538fd97b2}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Src\SandboxApplication">
+      <UniqueIdentifier>{25f087a4-24d2-4901-a8c3-82d7f07edb76}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Main\SandboxMain.cpp">
       <Filter>Src\Main</Filter>
     </ClCompile>
+    <ClCompile Include="..\Application\SandboxApplication.cpp">
+      <Filter>Src\SandboxApplication</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\Application\SandboxApplication.h">
+      <Filter>Src\SandboxApplication</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

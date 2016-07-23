@@ -7,15 +7,24 @@
     <Filter Include="Src\Main">
       <UniqueIdentifier>{202e27de-3ffe-4d54-8ff8-000124fcc3fd}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Src\Application">
+      <UniqueIdentifier>{9e01e7fd-e18d-46e8-8ddb-738942fd056f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Main\EngineMain.cpp">
       <Filter>Src\Main</Filter>
     </ClCompile>
+    <ClCompile Include="..\Application\Application.cpp">
+      <Filter>Src\Application</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Main\EngineStd.h">
       <Filter>Src\Main</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Application\Application.h">
+      <Filter>Src\Application</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

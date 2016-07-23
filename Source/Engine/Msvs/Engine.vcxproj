@@ -11,9 +11,11 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\Application\Application.cpp" />
     <ClCompile Include="..\Main\EngineMain.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\Application\Application.h" />
     <ClInclude Include="..\Main\EngineStd.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
