@@ -41,8 +41,6 @@ int APIENTRY EngineMain(HINSTANCE hInstance,
 	int       nCmdShow, 
 	EngineAPI::Base::Application* gameAppInstance)
 {    
-	using namespace EngineAPI::Base;   
-
 	//Set up checks for memory leaks.  
 #if defined(DEBUG) | defined(_DEBUG)
 	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);

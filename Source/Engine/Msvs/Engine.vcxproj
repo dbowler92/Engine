@@ -13,10 +13,12 @@
   <ItemGroup>
     <ClCompile Include="..\Application\Application.cpp" />
     <ClCompile Include="..\Main\EngineMain.cpp" />
+    <ClCompile Include="..\Utils\GameTimer\GameTimer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Application\Application.h" />
     <ClInclude Include="..\Main\EngineStd.h" />
+    <ClInclude Include="..\Utils\GameTimer\GameTimer.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{69EDAF33-5992-412E-B25A-4115692A9A8D}</ProjectGuid>

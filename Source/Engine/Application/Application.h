@@ -10,6 +10,7 @@
 
 #include <Windows.h>
 #include "../Main/EngineStd.h"
+#include "../Utils/GameTimer/GameTimer.h"
 
 namespace EngineAPI 
 {
@@ -28,24 +29,34 @@ namespace EngineAPI
 			virtual TCHAR *VGetGameAppDirectory() = 0;
 			virtual HICON VGetIcon() = 0;
 
-		public:
-			//
-			//Win32
-			//
 			//Init app. Will bring up a W32 window - Optionally, can provide additional init code. 
 			virtual bool Init(HINSTANCE hInstance, LPWSTR lpCmdLine, HWND hWnd = NULL,
 				int screenWidth = 960, int screenHeight = 540);
 
-		public:
-			//Once all is loaded, enter the main game loop
+			//Game loop and shutdown
 			void EnterGameLoop();
-
-			//Shutdown the application
 			void Shutdown();
+		
+			//The global messaging function will forward messages to this function
+			LRESULT WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
+		private:
+			//Internal W32 & D3D init
+			void InitWin32App();
+			void InitD3D11();
+
+			//Called when the window is resized
+			void OnResize();
+
+			//Outputs FPS
+			void CalculateFrameRateStats();
+			
 		protected:
 			HINSTANCE hInst;			  //App instance handle
-			unsigned appWidth, appHeight; //Dimentions of application window
+			HWND mainWnd;				  //Window handle
+			unsigned appWidth, appHeight; //Dimentions of application window				
+			bool appPaused ,minimized, maximized, resizing; //State of app
+			Utils::GameTimer mainGameLoopTimer; //Calculates frame delta
 		};
 	};
 };

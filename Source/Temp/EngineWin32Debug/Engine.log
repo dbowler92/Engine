@@ -1,4 +1,5 @@
-﻿  EngineMain.cpp
+﻿  GameTimer.cpp
+  EngineMain.cpp
   Application.cpp
   Generating Code...
   Engine.vcxproj -> C:\Users\Dan\Documents\Programming\3DGameEngine\Game_Engine\3DGCCEngine\Source\Engine\Msvs\..\..\Lib\Win32Debug\Engine.lib

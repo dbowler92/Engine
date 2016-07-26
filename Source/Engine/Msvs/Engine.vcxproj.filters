@@ -10,6 +10,15 @@
     <Filter Include="Src\Application">
       <UniqueIdentifier>{9e01e7fd-e18d-46e8-8ddb-738942fd056f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Src\Utils">
+      <UniqueIdentifier>{1cf84165-d8e1-4b58-96b9-aaf59b949e0c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Utils\GameTimer">
+      <UniqueIdentifier>{c115b14e-d84a-4cfa-a491-82eed54ad57a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Graphics">
+      <UniqueIdentifier>{e50f110a-07b2-4089-a4f6-8babcaf9a3c4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Main\EngineMain.cpp">
@@ -18,6 +27,9 @@
     <ClCompile Include="..\Application\Application.cpp">
       <Filter>Src\Application</Filter>
     </ClCompile>
+    <ClCompile Include="..\Utils\GameTimer\GameTimer.cpp">
+      <Filter>Src\Utils\GameTimer</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Main\EngineStd.h">
@@ -25,6 +37,9 @@
     </ClInclude>
     <ClInclude Include="..\Application\Application.h">
       <Filter>Src\Application</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Utils\GameTimer\GameTimer.h">
+      <Filter>Src\Utils\GameTimer</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

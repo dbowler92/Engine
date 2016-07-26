@@ -1,15 +1,155 @@
 #include "Application.h"
+#include <sstream>
 
 //Init global reference to the app. 
 EngineAPI::Base::Application *g_App = NULL;
 
-using namespace EngineAPI::Base;
+using namespace EngineAPI::Base; 
+
+LRESULT WINAPI GlobalWndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
+{
+	// Forward hwnd on because we can get messages (e.g., WM_CREATE)
+	// before CreateWindow returns, and thus before mhMainWnd is valid
+	// This pointer will have been set before the WNDCLASS struct has been given
+	// its message processing function pointer. 
+	if (g_App)
+		return g_App->WndProc(hwnd, msg, wParam, lParam);
+	else
+	{
+		MessageBox(0, L"Unable to process Windows Message.", 0, 0);
+		return DefWindowProc(hwnd, msg, wParam, lParam);
+	}
+}
 
 Application::Application()
+	: appPaused(false), minimized(false), maximized(false), resizing(false)
 {}
 
-bool Application::Init(HINSTANCE hInstance, LPWSTR lpCmdLine, HWND hWnd,
-	int screenWidth, int screenHeight)
+LRESULT Application::WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
+{
+	switch (msg)
+	{
+		// WM_ACTIVATE is sent when the window is activated or deactivated.  
+		// We pause the game when the window is deactivated and unpause it 
+		// when it becomes active.  
+	case WM_ACTIVATE:
+		if (LOWORD(wParam) == WA_INACTIVE)
+		{
+			appPaused = true;
+			mainGameLoopTimer.Stop();
+		}
+		else
+		{
+			appPaused = false;
+			mainGameLoopTimer.Start();
+		}
+		return 0;
+
+		// WM_SIZE is sent when the user resizes the window.  
+	case WM_SIZE:
+		// Save the new client area dimensions.
+		appWidth = LOWORD(lParam);
+		appHeight = HIWORD(lParam);
+		if (wParam == SIZE_MINIMIZED)
+		{
+			appPaused = true;
+			minimized = true;
+			maximized = false;
+		}
+		else if (wParam == SIZE_MAXIMIZED)
+		{
+			appPaused = false;
+			minimized = false;
+			maximized = true;
+			OnResize();
+		}
+		else if (wParam == SIZE_RESTORED)
+		{
+
+			// Restoring from minimized state?
+			if (minimized)
+			{
+				appPaused = false;
+				minimized = false;
+				OnResize();
+			}
+
+			// Restoring from maximized state?
+			else if (maximized)
+			{
+				appPaused = false;
+				maximized = false;
+				OnResize();
+			}
+			else if (resizing)
+			{
+				// If user is dragging the resize bars, we do not resize 
+				// the buffers here because as the user continuously 
+				// drags the resize bars, a stream of WM_SIZE messages are
+				// sent to the window, and it would be pointless (and slow)
+				// to resize for each WM_SIZE message received from dragging
+				// the resize bars.  So instead, we reset after the user is 
+				// done resizing the window and releases the resize bars, which 
+				// sends a WM_EXITSIZEMOVE message.
+			}
+			else // API call such as SetWindowPos or mSwapChain->SetFullscreenState.
+			{
+				OnResize();
+			}
+		}
+		return 0;
+
+		// WM_EXITSIZEMOVE is sent when the user grabs the resize bars.
+	case WM_ENTERSIZEMOVE:
+		appPaused = true;
+		resizing = true;
+		mainGameLoopTimer.Stop();
+		return 0;
+
+		// WM_EXITSIZEMOVE is sent when the user releases the resize bars.
+		// Here we reset everything based on the new window dimensions.
+	case WM_EXITSIZEMOVE:
+		appPaused = false;
+		resizing = false;
+		mainGameLoopTimer.Start();
+		OnResize();
+		return 0;
+
+		// WM_DESTROY is sent when the window is being destroyed.
+	case WM_DESTROY:
+		PostQuitMessage(0);
+		return 0;
+
+		// The WM_MENUCHAR message is sent when a menu is active and the user presses 
+		// a key that does not correspond to any mnemonic or accelerator key. 
+	case WM_MENUCHAR:
+		// Don't beep when we alt-enter.
+		return MAKELRESULT(0, MNC_CLOSE);
+
+		// Catch this message so to prevent the window from becoming too small.
+	case WM_GETMINMAXINFO:
+		((MINMAXINFO*)lParam)->ptMinTrackSize.x = 200;
+		((MINMAXINFO*)lParam)->ptMinTrackSize.y = 200;
+		return 0;
+
+	case WM_CHAR:
+		//Quit the application using the Escape Key - Will be taken
+		//out in release build. 
+		if (wParam == VK_ESCAPE)
+		{
+			//TODO: D3D doesnt like to exit in FS mode. Thus, we need to
+			//exit FS mode before quiting. 
+
+			//Post the quit message. 
+			PostQuitMessage(0);
+			return 0;
+		}
+	}//End switch(msg) {...}
+
+	return DefWindowProc(hwnd, msg, wParam, lParam);
+}
+
+bool Application::Init(HINSTANCE hInstance, LPWSTR lpCmdLine, HWND hWnd, int screenWidth, int screenHeight)
 {   
 	//   
 	//TODO: Plenty more init work that needs to be completed once I get to the relivent
@@ -21,19 +161,123 @@ bool Application::Init(HINSTANCE hInstance, LPWSTR lpCmdLine, HWND hWnd,
 	appWidth = screenWidth;       
 	appHeight = screenHeight;        
 	      
-	//TODO: Setup W32 application  
+	//Setup W32 application  
+	InitWin32App();
 
-	//SetWindowText(GetHWND(), VGetGameTitle());
-
-	//TODO: Setup D3D11
+	//Setup D3D11
+	InitD3D11();
 
 	return true;
 }
 
-void Application::EnterGameLoop()
+void Application::InitWin32App()
+{
+	WNDCLASS wc;
+	wc.style = CS_HREDRAW | CS_VREDRAW;
+	wc.lpfnWndProc = GlobalWndProc;
+	wc.cbClsExtra = 0;
+	wc.cbWndExtra = 0;
+	wc.hInstance = hInst;
+	wc.hIcon = LoadIcon(0, IDI_APPLICATION);
+	wc.hCursor = LoadCursor(0, IDC_ARROW);
+	wc.hbrBackground = (HBRUSH)GetStockObject(NULL_BRUSH);
+	wc.lpszMenuName = 0;
+	wc.lpszClassName = L"D3DWndClassName";
+
+	if (!RegisterClass(&wc))
+	{
+		MessageBox(0, L"RegisterClass Failed.", 0, 0);
+		exit(1);
+	}
+
+	// Compute window rectangle dimensions based on requested client area dimensions.
+	// Will be the same values as the initial values specified in the two int consts
+	// in the header file. 
+	RECT R = { 0, 0, appWidth, appHeight };
+	AdjustWindowRect(&R, WS_OVERLAPPEDWINDOW, false);
+	int width = R.right - R.left;
+	int height = R.bottom - R.top;
+
+	//Create the window.
+	mainWnd = CreateWindow(L"D3DWndClassName", VGetGameTitle(),
+		WS_OVERLAPPEDWINDOW, CW_USEDEFAULT, CW_USEDEFAULT,
+		width, height, 0, 0, hInst, 0);
+
+	if (!mainWnd)
+	{
+		MessageBox(0, L"CreateWindow Failed.", 0, 0);
+		exit(2);
+	}
+
+	//Display window.
+	ShowWindow(mainWnd, SW_SHOW);
+	UpdateWindow(mainWnd);
+}
+
+void Application::InitD3D11()
 {
 
+}
+     
+void Application::OnResize()
+{   
+	//TODO: Resize render targets, etc
+}
+
+void Application::EnterGameLoop()
+{
+	MSG msg = { 0 };
+	mainGameLoopTimer.Reset();
+	while (msg.message != WM_QUIT)
+	{
+		//If there windows messages, then process them
+		if (PeekMessage(&msg, NULL, NULL, NULL, PM_REMOVE))
+		{
+			TranslateMessage(&msg);
+			DispatchMessage(&msg);
+		}
+		//Otherwise, proceed with the game loop - which is a very simple
+		//example of a loop. 
+		else
+		{
+			mainGameLoopTimer.Tick();  
+			if (!appPaused)
+				CalculateFrameRateStats();
+			else
+				Sleep(100);
+		}
+	}// while (msg.message != WM_QUIT)
 }
 
 void Application::Shutdown()
 {}
+
+void Application::CalculateFrameRateStats()
+{
+	// Code computes the average frames per second, and also the 
+	// average time it takes to render one frame.  These stats 
+	// are appended to the window caption bar.
+
+	static int frameCnt = 0;
+	static float timeElapsed = 0.0f;
+
+	frameCnt++;
+	  
+	// Compute averages over one second period.
+	if ((mainGameLoopTimer.TotalTime() - timeElapsed) >= 1.0f)
+	{
+		float fps = (float)frameCnt; // fps = frameCnt / 1
+		float mspf = 1000.0f / fps;
+
+		std::wostringstream outs;  
+		outs.precision(8);
+		outs << (VGetGameTitle()) << L"    "
+			<< L"FPS: " << fps << L"    "
+			<< L"Frame Time: " << mspf << L" (ms)";
+		SetWindowText(mainWnd, outs.str().c_str());
+
+		// Reset for next average.
+		frameCnt = 0;
+		timeElapsed += 1.0f;
+	}
+}
