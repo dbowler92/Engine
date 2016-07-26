@@ -12,10 +12,11 @@
 #include "EngineStd.h"
 #include "../Application/Application.h"
 
-//Libs
-#pragma comment (lib, "DXUT.lib")
-#pragma comment (lib, "DXUTOpt.lib")
-#pragma comment (lib, "comctl32.lib")
+//Libs : D3D11
+#pragma comment (lib, "d3d11.lib")
+#pragma comment (lib, "D3DCompiler.lib")
+#pragma comment (lib, "dxgi.lib")
+//#pragma comment (lib, "dxerr.lib")
 
 void ShowConsole()
 {
@@ -54,26 +55,15 @@ int APIENTRY EngineMain(HINSTANCE hInstance,
 	if (gameAppInstance == NULL)
 		printf("EngineMain Error: gameAppInstance == NULL. Make sure to create a project specific Application instance.\n");
 	 
-	//Set DXUT callbacks
-	DXUTSetCallbackMsgProc(Application::MsgProc); 
-	DXUTSetCallbackDeviceChanging(Application::ModifyDeviceSettings);
-	DXUTSetCallbackD3D11DeviceAcceptable(Application::IsD3D11DeviceAcceptable);  
-	DXUTSetCallbackD3D11DeviceCreated(Application::OnD3D11CreateDevice); 
-	DXUTSetCallbackD3D11SwapChainResized(Application::OnD3D11ResizedSwapChain);
-	DXUTSetCallbackD3D11SwapChainReleasing(Application::OnD3D11ReleasingSwapChain);
-	DXUTSetCallbackD3D11DeviceDestroyed(Application::OnD3D11DestroyDevice);
-	DXUTSetCallbackFrameMove(Application::OnUpdateGame);
-	DXUTSetCallbackD3D11FrameRender(Application::OnD3D11FrameRender);
-
 	//Set app global pointer & init the application. 
 	g_App = (EngineAPI::Base::Application*)gameAppInstance;
 	if (!g_App->Init(hInstance, lpCmdLine, NULL, 960, 540))
 		return -1;
 
-	//Enter game loop
-	DXUTMainLoop();
+	//Enter loop
+	g_App->EnterGameLoop();
 
-	//Once finished, shutdown the game
-	DXUTShutdown();
+	//Once game loop exits, shutdown the game
+	g_App->Shutdown();
 	return 0;
 }

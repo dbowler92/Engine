@@ -5,5 +5,6 @@ SandboxApplication::SandboxApplication()
 
 HICON SandboxApplication::VGetIcon()
 {
-	return LoadIcon(hInst, MAKEINTRESOURCE(101));
+	//TODO: return LoadIcon(hInst, MAKEINTRESOURCE(101));
+	return NULL;
 }

@@ -1,3 +1,4 @@
 ﻿  SandboxMain.cpp
-cl : Command line warning D9028: minimal rebuild failure, reverting to normal build
+  SandboxApplication.cpp
+  Generating Code...
   Sandbox.vcxproj -> C:\Users\Dan\Documents\Programming\3DGameEngine\Game_Engine\3DGCCEngine\Source\Engine\Msvs\..\..\Lib\Win32Debug\SandboxWin32Debug.exe

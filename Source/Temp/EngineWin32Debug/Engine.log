@@ -1,5 +1,4 @@
-﻿  Application.cpp
+﻿  EngineMain.cpp
+  Application.cpp
   Generating Code...
-  Skipping... (no relevant changes detected)
-  EngineMain.cpp
   Engine.vcxproj -> C:\Users\Dan\Documents\Programming\3DGameEngine\Game_Engine\3DGCCEngine\Source\Engine\Msvs\..\..\Lib\Win32Debug\Engine.lib

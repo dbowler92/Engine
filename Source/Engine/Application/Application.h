@@ -10,7 +10,6 @@
 
 #include <Windows.h>
 #include "../Main/EngineStd.h"
-#include "../3rdParty/DXUT/Core/DXUT.h"
 
 namespace EngineAPI 
 {
@@ -38,22 +37,11 @@ namespace EngineAPI
 				int screenWidth = 960, int screenHeight = 540);
 
 		public:
-			//
-			//DXUT callbacks
-			// 
-			static bool CALLBACK IsD3D11DeviceAcceptable(const CD3D11EnumAdapterInfo *AdapterInfo, UINT Output, const CD3D11EnumDeviceInfo *DeviceInfo, DXGI_FORMAT BackBufferFormat, bool bWindowed, void* pUserContext);
-			static HRESULT CALLBACK OnD3D11CreateDevice(ID3D11Device* pd3dDevice, const DXGI_SURFACE_DESC* pBackBufferSurfaceDesc, void* pUserContext);
-			static HRESULT CALLBACK OnD3D11ResizedSwapChain(ID3D11Device* pd3dDevice, IDXGISwapChain* pSwapChain, const DXGI_SURFACE_DESC* pBackBufferSurfaceDesc, void* pUserContext);
-			static void CALLBACK OnD3D11ReleasingSwapChain(void* pUserContext); 
-			static void CALLBACK OnD3D11DestroyDevice(void* pUserContext);
-			static bool CALLBACK ModifyDeviceSettings(DXUTDeviceSettings* pDeviceSettings, void* pUserContext);
+			//Once all is loaded, enter the main game loop
+			void EnterGameLoop();
 
-			//DXUT handles our W32 message pump
-			static LRESULT CALLBACK MsgProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam, bool* pbNoFurtherProcessing, void *pUserContext);
-
-			//DXUT Handles our main loop
-			static void CALLBACK OnD3D11FrameRender(ID3D11Device* pd3dDevice, ID3D11DeviceContext* pd3dImmediateContext, double fTime, float fElapsedTime, void* pUserContext);
-			static void CALLBACK OnUpdateGame(double fTime, float fElapsedTime, void *pUserContext);
+			//Shutdown the application
+			void Shutdown();
 
 		protected:
 			HINSTANCE hInst;			  //App instance handle
