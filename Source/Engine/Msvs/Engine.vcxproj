@@ -53,6 +53,8 @@
     <IntDir>$(SolutionDir)..\..\Temp\$(ProjectName)$(PlatformName)$(Configuration)\</IntDir>
     <OutDir>$(SolutionDir)..\..\Lib\$(PlatformName)$(Configuration)\</OutDir>
     <TargetExt>.lib</TargetExt>
+    <IncludePath>C:\Users\Dan\Documents\Programming\3DGameEngine\Game_Engine\3DGCCEngine\Source\Engine\3rdParty\DXUT\Optional;C:\Users\Dan\Documents\Programming\3DGameEngine\Game_Engine\3DGCCEngine\Source\Engine\3rdParty\DXUT\Core;$(IncludePath)</IncludePath>
+    <LibraryPath>$(DXSDK_DIR)Lib\x86;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
@@ -60,6 +62,8 @@
     <IntDir>$(SolutionDir)..\..\Temp\$(ProjectName)$(PlatformName)$(Configuration)\</IntDir>
     <OutDir>$(SolutionDir)..\..\Lib\$(PlatformName)$(Configuration)\</OutDir>
     <TargetExt>.lib</TargetExt>
+    <IncludePath>C:\Users\Dan\Documents\Programming\3DGameEngine\Game_Engine\3DGCCEngine\Source\Engine\3rdParty\DXUT\Optional;C:\Users\Dan\Documents\Programming\3DGameEngine\Game_Engine\3DGCCEngine\Source\Engine\3rdParty\DXUT\Core;$(IncludePath)</IncludePath>
+    <LibraryPath>$(DXSDK_DIR)Lib\x86;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>

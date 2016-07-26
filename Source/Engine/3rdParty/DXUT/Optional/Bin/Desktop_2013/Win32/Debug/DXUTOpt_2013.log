@@ -1,0 +1,29 @@
+﻿Build started 26/07/2016 01:40:26.
+     1>Project "C:\Users\Dan\Documents\Programming\3DGameEngine\Game_Engine\3DGCCEngine\Source\Engine\3rdParty\DXUT\Optional\DXUTOpt_2013.vcxproj" on node 2 (Build target(s)).
+     1>ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /I..\Core\ /ZI /nologo /W4 /WX- /Od /Oi /Oy- /D WIN32 /D _DEBUG /D DEBUG /D PROFILE /D _WINDOWS /D _LIB /D USE_DIRECT3D11_2 /D _WIN32_WINNT=0x0600 /D _UNICODE /D UNICODE /Gm- /EHsc /RTC1 /MDd /GS /arch:SSE2 /fp:fast /Zc:wchar_t /Zc:forScope /openmp- /Yc"DXUT.h" /Fp"Bin\Desktop_2013\Win32\Debug\DXUTOpt.pch" /Fo"Bin\Desktop_2013\Win32\Debug\\" /Fd"Bin\Desktop_2013\Win32\Debug\DXUTOpt.pdb" /Gd /TP /analyze- /errorReport:prompt  DXUTres.cpp
+         DXUTres.cpp
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /I..\Core\ /ZI /nologo /W4 /WX- /Od /Oi /Oy- /D WIN32 /D _DEBUG /D DEBUG /D PROFILE /D _WINDOWS /D _LIB /D USE_DIRECT3D11_2 /D _WIN32_WINNT=0x0600 /D _UNICODE /D UNICODE /Gm- /EHsc /RTC1 /MDd /GS /arch:SSE2 /fp:fast /Zc:wchar_t /Zc:forScope /openmp- /Yu"DXUT.h" /Fp"Bin\Desktop_2013\Win32\Debug\DXUTOpt.pch" /Fo"Bin\Desktop_2013\Win32\Debug\\" /Fd"Bin\Desktop_2013\Win32\Debug\DXUTOpt.pdb" /Gd /TP /analyze- /errorReport:prompt  DXUTcamera.cpp DXUTgui.cpp DXUTguiIME.cpp DXUTsettingsdlg.cpp ImeUi.cpp SDKmesh.cpp SDKmisc.cpp
+         DXUTcamera.cpp
+         DXUTgui.cpp
+         DXUTguiIME.cpp
+         DXUTsettingsdlg.cpp
+         ImeUi.cpp
+         SDKmesh.cpp
+         SDKmisc.cpp
+         Generating Code...
+       Lib:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\Lib.exe /OUT:"Bin\Desktop_2013\Win32\Debug\DXUTOpt.lib" /NOLOGO Bin\Desktop_2013\Win32\Debug\DXUTcamera.obj
+         Bin\Desktop_2013\Win32\Debug\DXUTgui.obj
+         Bin\Desktop_2013\Win32\Debug\DXUTguiIME.obj
+         Bin\Desktop_2013\Win32\Debug\DXUTres.obj
+         Bin\Desktop_2013\Win32\Debug\DXUTsettingsdlg.obj
+         Bin\Desktop_2013\Win32\Debug\ImeUi.obj
+         Bin\Desktop_2013\Win32\Debug\SDKmesh.obj
+         Bin\Desktop_2013\Win32\Debug\SDKmisc.obj
+         DXUTOpt_2013.vcxproj -> C:\Users\Dan\Documents\Programming\3DGameEngine\Game_Engine\3DGCCEngine\Source\Engine\3rdParty\DXUT\Optional\Bin\Desktop_2013\Win32\Debug\DXUTOpt.lib
+     1>Done Building Project "C:\Users\Dan\Documents\Programming\3DGameEngine\Game_Engine\3DGCCEngine\Source\Engine\3rdParty\DXUT\Optional\DXUTOpt_2013.vcxproj" (Build target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:02.38

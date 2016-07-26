@@ -1,4 +1,4 @@
-﻿Build started 23/07/2016 17:21:56.
+﻿Build started 26/07/2016 01:58:06.
      1>Project "C:\Users\Dan\Documents\Programming\3DGameEngine\Game_Engine\3DGCCEngine\Source\Sandbox\Msvs\Sandbox.vcxproj" on node 2 (Build target(s)).
      1>Link:
          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\Dan\Documents\Programming\3DGameEngine\Game_Engine\3DGCCEngine\Source\Engine\Msvs\..\..\Lib\Win32Debug\SandboxWin32Debug.exe" /INCREMENTAL /NOLOGO Engine.lib kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\Dan\Documents\Programming\3DGameEngine\Game_Engine\3DGCCEngine\Source\Engine\Msvs\..\..\Lib\Win32Debug\SandboxWin32Debug.pdb" /SUBSYSTEM:WINDOWS /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\Dan\Documents\Programming\3DGameEngine\Game_Engine\3DGCCEngine\Source\Engine\Msvs\..\..\Lib\Win32Debug\SandboxWin32Debug.lib" /MACHINE:X86 C:\Users\Dan\Documents\Programming\3DGameEngine\Game_Engine\3DGCCEngine\Source\Engine\Msvs\..\..\Temp\SandboxWin32Debug\SandboxApplication.obj
@@ -8,4 +8,4 @@
 
 Build succeeded.
 
-Time Elapsed 00:00:00.17
+Time Elapsed 00:00:00.37

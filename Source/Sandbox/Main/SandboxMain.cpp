@@ -18,9 +18,9 @@ SandboxApplication g_GameApp; //Implement virtual functions to add game logic la
 INT APIENTRY wWinMain(HINSTANCE hInstance, 
 	HINSTANCE hPrevInstance, 
 	LPWSTR     lpCmdLine, 
-	int       nCmdShow)
+	int       nCmdShow)    
 {
 	//Enter in to engine main passing the gane specific applcation
 	return EngineMain(hInstance, hPrevInstance, lpCmdLine, nCmdShow, 
-		&g_GameApp);
-}  
+		&g_GameApp); 
+}                
