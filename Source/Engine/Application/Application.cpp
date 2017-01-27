@@ -25,6 +25,9 @@ Application::Application()
 	: appPaused(false), minimized(false), maximized(false), resizing(false)
 {}
 
+Application::~Application()
+{}
+
 LRESULT Application::WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
 	switch (msg)
@@ -94,6 +97,7 @@ LRESULT Application::WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 			}
 			else // API call such as SetWindowPos or mSwapChain->SetFullscreenState.
 			{
+				//TODO: Get new dimentions
 				OnResize();
 			}
 		}
@@ -135,7 +139,7 @@ LRESULT Application::WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 	case WM_CHAR:
 		//Quit the application using the Escape Key - Will be taken
 		//out in release build. 
-		if (wParam == VK_ESCAPE)
+		if (wParam == VK_ESCAPE) 
 		{
 			//TODO: D3D doesnt like to exit in FS mode. Thus, we need to
 			//exit FS mode before quiting. 
@@ -149,7 +153,7 @@ LRESULT Application::WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 	return DefWindowProc(hwnd, msg, wParam, lParam);
 }
 
-bool Application::Init(HINSTANCE hInstance, LPWSTR lpCmdLine, HWND hWnd, int screenWidth, int screenHeight)
+bool Application::InitEngine(HINSTANCE hInstance, LPWSTR lpCmdLine, HWND hWnd, int screenWidth, int screenHeight)
 {   
 	//   
 	//TODO: Plenty more init work that needs to be completed once I get to the relivent
@@ -160,17 +164,18 @@ bool Application::Init(HINSTANCE hInstance, LPWSTR lpCmdLine, HWND hWnd, int scr
 	hInst = hInstance;   
 	appWidth = screenWidth;       
 	appHeight = screenHeight;        
-	      
-	//Setup W32 application  
-	InitWin32App();
+	     
+	//Init (Win32) window
+	InitWindow();
 
-	//Setup D3D11
-	InitD3D11();
+	//Init game engine subsystems (such as graphics, 
+	//scene control / management, physics, etc)
+	InitSubsystems();
 
 	return true;
 }
 
-void Application::InitWin32App()
+void Application::InitWindow()
 {
 	WNDCLASS wc;
 	wc.style = CS_HREDRAW | CS_VREDRAW;
@@ -199,7 +204,7 @@ void Application::InitWin32App()
 	int height = R.bottom - R.top;
 
 	//Create the window.
-	mainWnd = CreateWindow(L"D3DWndClassName", VGetGameTitle(),
+	mainWnd = CreateWindow(L"D3DWndClassName", GetApplicationTitle(),
 		WS_OVERLAPPEDWINDOW, CW_USEDEFAULT, CW_USEDEFAULT,
 		width, height, 0, 0, hInst, 0);
 
@@ -214,9 +219,13 @@ void Application::InitWin32App()
 	UpdateWindow(mainWnd);
 }
 
-void Application::InitD3D11()
+void Application::InitSubsystems()
 {
+	//Init graphics
 
+	//Init scene control
+
+	//Etc
 }
      
 void Application::OnResize()
@@ -242,15 +251,27 @@ void Application::EnterGameLoop()
 		{
 			mainGameLoopTimer.Tick();  
 			if (!appPaused)
+			{
 				CalculateFrameRateStats();
+
+				//Update scene
+
+				//Render scene
+			}
 			else
 				Sleep(100);
 		}
 	}// while (msg.message != WM_QUIT)
 }
 
-void Application::Shutdown()
-{}
+void Application::ShutdownEngine()
+{
+	//TODO: Cleanup engine subsystems
+
+	//TODO: Cleanup D3D11 / graphics
+
+	//TODO: Cleanup Win32 if required
+}
 
 void Application::CalculateFrameRateStats()
 {
@@ -271,7 +292,7 @@ void Application::CalculateFrameRateStats()
 
 		std::wostringstream outs;  
 		outs.precision(8);
-		outs << (VGetGameTitle()) << L"    "
+		outs << (GetApplicationTitle()) << L"    "
 			<< L"FPS: " << fps << L"    "
 			<< L"Frame Time: " << mspf << L" (ms)";
 		SetWindowText(mainWnd, outs.str().c_str());
@@ -280,4 +301,13 @@ void Application::CalculateFrameRateStats()
 		frameCnt = 0;
 		timeElapsed += 1.0f;
 	}
+}
+
+void Application::PrintApplicationTitleToConsole()
+{
+#if defined(UNICODE) || defined(_UNICODE)
+	std::wcout << GetApplicationTitle();
+#else
+	std::cout << GetApplicationTitle();
+#endif
 }

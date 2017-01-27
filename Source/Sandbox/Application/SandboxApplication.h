@@ -18,7 +18,13 @@ public:
 	//
 	//Virtual functions. Game specific implementations
 	//
-	TCHAR *VGetGameTitle() { return _T("Sandbox"); };
-	TCHAR *VGetGameAppDirectory() { return _T("My Game Engine\\Sandbox\\1.0"); };
-	HICON VGetIcon();
+	TCHAR* GetApplicationTitle() { return _T("Sandbox"); };
+	TCHAR* GetApplicationDirectory() { return _T("My Game Engine\\Sandbox\\1.0"); };
+	HICON  GetIcon();
+
+	//Specific application init function - called by the engine automatically
+	//once the engine has been inited for us. Here, we can set the first scene
+	//etc
+	bool InitApplication();
+
 }; 
