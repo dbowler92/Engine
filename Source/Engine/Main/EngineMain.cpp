@@ -41,42 +41,27 @@ int APIENTRY EngineMain(HINSTANCE hInstance,
 	int       nCmdShow, 
 	EngineAPI::Base::Application* gameAppInstance)
 {    
-	//Set up checks for memory leaks.   
+	//Set up checks for memory leaks.  
 #if defined(DEBUG) | defined(_DEBUG)
 	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 #endif
 
 	//Enable console for debugging purposes
-	ShowConsole();
+	ShowConsole();   
 
 	//Ensure an app exists.  
 	if (gameAppInstance == NULL)
-	{
 		printf("EngineMain Error: gameAppInstance == NULL. Make sure to create a project specific Application instance.\n");
-		return -1;
-	}
-		 
-	//Set app global pointer & init the base engine
+	 
+	//Set app global pointer & init the application. 
 	g_App = (EngineAPI::Base::Application*)gameAppInstance;
-	if (!g_App->InitEngine(hInstance, lpCmdLine, NULL, 960, 540))  
-	{
-		printf("EngineMain Error: Engine did not init correctly.\n");
+	if (!g_App->Init(hInstance, lpCmdLine, NULL, 960, 540))
 		return -1;
-	}
 
-	//Once we have inited the engine, we want to init the app that is using the
-	//engine. This is done by overriding the InitApplication() function of the
-	//Application class
-	if (!g_App->InitApplication())
-	{
-		printf("EngineMain Error: Application did not init correctly.\n");
-		return -1;
-	}
-	
-	//Enter main game loop
+	//Enter loop
 	g_App->EnterGameLoop();
 
-	//Once game loop exits, shutdown and cleanup the (TODO: Game &) underlying engine
-	g_App->ShutdownEngine(); 
+	//Once game loop exits, shutdown the game
+	g_App->Shutdown();
 	return 0;
 }

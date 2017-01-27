@@ -6,6 +6,7 @@
 
 #pragma once
 
+#include <iostream>
 #include "../../Engine/Main/EngineStd.h" //Allows us to easily call entey function for Engine lib
 #include "../../Sandbox/Application/SandboxApplication.h"
 
