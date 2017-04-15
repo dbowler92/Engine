@@ -1,0 +1,54 @@
+//EngineConfig.h
+//Created 15/04/17
+//Created By Daniel Bowler
+//
+//Used to set the state of the game engine
+
+#pragma once
+
+//Platform - not really used for now?
+#define PLATFORM_IDX_WIN32 0
+#define PLATFORM_IDX_ORBIS 1  //PS4
+
+//Graphics APIs
+#define GRAPHICS_API_IDX_VULKAN 0
+#define GRAPHICS_API_IDX_D3D11 1
+#define GRAPHICS_API_IDX_D3D12 2
+#define GRAPHICS_API_IDX_OPENGL 3
+#define GRAPHICS_API_IDX_GNM 4 //PS4
+
+//Current platform to build & grpahics API to use
+#define ENGINE_BUILD_SETTINGS_PLATFORM PLATFORM_IDX_WIN32 
+#define ENGINE_BUILD_SETTINGS_GRAPHICS_API GRAPHICS_API_IDX_VULKAN
+
+//
+//
+//
+//So we can use #ifdef and #ifndef
+#if ENGINE_BUILD_SETTINGS_PLATFORM == PLATFORM_IDX_WIN32
+#define ENGINE_CONFIG_PLATFORM_WIN32
+#endif
+#if ENGINE_BUILD_SETTINGS_PLATFORM == PLATFORM_IDX_ORBIS
+#define ENGINE_CONFIG_PLATFORM_ORBIS
+#endif
+
+//So we can use #ifdef and #ifndef
+#if ENGINE_BUILD_SETTINGS_GRAPHICS_API == GRAPHICS_API_IDX_VULKAN
+#define ENGINE_CONFIG_GRAPHICS_API_VULKAN
+#endif
+#if ENGINE_BUILD_SETTINGS_GRAPHICS_API == GRAPHICS_API_IDX_D3D11
+#define ENGINE_CONFIG_GRAPHICS_API_D3D11
+#endif
+#if ENGINE_BUILD_SETTINGS_GRAPHICS_API == GRAPHICS_API_IDX_D3D12
+#define ENGINE_CONFIG_GRAPHICS_API_D3D12
+#endif
+#if ENGINE_BUILD_SETTINGS_GRAPHICS_API == GRAPHICS_API_IDX_OPENGL
+#define ENGINE_CONFIG_GRAPHICS_API_OPENGL
+#endif
+#if ENGINE_BUILD_SETTINGS_GRAPHICS_API == GRAPHICS_API_IDX_GNM
+#define ENGINE_CONFIG_GRAPHICS_API_GNM
+#endif
+
+//
+//Precompiler error checking? If PS4 build, must be GNM. If PC build, must not be GNM
+//

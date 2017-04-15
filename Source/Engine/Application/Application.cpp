@@ -2,9 +2,9 @@
 #include <sstream>
 
 //Init global reference to the app. 
-EngineAPI::Base::Application *g_App = NULL;
+EngineAPI::Core::Application *g_App = NULL;
 
-using namespace EngineAPI::Base; 
+using namespace EngineAPI::Core;
 
 LRESULT WINAPI GlobalWndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
@@ -149,28 +149,36 @@ LRESULT Application::WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 	return DefWindowProc(hwnd, msg, wParam, lParam);
 }
 
-bool Application::Init(HINSTANCE hInstance, LPWSTR lpCmdLine, HWND hWnd, int screenWidth, int screenHeight)
+bool Application::InitEngine(HINSTANCE hInstance, LPWSTR lpCmdLine, HWND hWnd, int screenWidth, int screenHeight)
 {   
 	//   
 	//TODO: Plenty more init work that needs to be completed once I get to the relivent
 	//chapters in the book. Eg: Registering all engine events
 	// 
-	        
+	printf("Application::InitEngine()\n");
+
 	//Store data             
 	hInst = hInstance;   
 	appWidth = screenWidth;       
 	appHeight = screenHeight;        
 	      
-	//Setup W32 application  
-	InitWin32App();
+	//Setup window
+	bool success = InitWin32App();
 
-	//Setup D3D11
-	InitD3D11();
+	//Init engine subsystems - eg: Graphics
+	if (success)
+		return InitEngineSubsystems();
+	else
+		return success; //False
+}
 
+bool Application::ShutdownEngine()
+{
+	printf("Application::ShutdownEngine()\n");
 	return true;
 }
 
-void Application::InitWin32App()
+bool Application::InitWin32App()
 {
 	WNDCLASS wc;
 	wc.style = CS_HREDRAW | CS_VREDRAW;
@@ -187,7 +195,7 @@ void Application::InitWin32App()
 	if (!RegisterClass(&wc))
 	{
 		MessageBox(0, L"RegisterClass Failed.", 0, 0);
-		exit(1);
+		return false;
 	}
 
 	// Compute window rectangle dimensions based on requested client area dimensions.
@@ -199,24 +207,30 @@ void Application::InitWin32App()
 	int height = R.bottom - R.top;
 
 	//Create the window.
-	mainWnd = CreateWindow(L"D3DWndClassName", VGetGameTitle(),
+	mainWnd = CreateWindow(L"D3DWndClassName", GetGameTitle(),
 		WS_OVERLAPPEDWINDOW, CW_USEDEFAULT, CW_USEDEFAULT,
 		width, height, 0, 0, hInst, 0);
 
 	if (!mainWnd)
 	{
 		MessageBox(0, L"CreateWindow Failed.", 0, 0);
-		exit(2);
+		return false;
 	}
 
 	//Display window.
 	ShowWindow(mainWnd, SW_SHOW);
 	UpdateWindow(mainWnd);
+
+	//Done
+	return true;
 }
 
-void Application::InitD3D11()
+bool Application::InitEngineSubsystems()
 {
-
+	//Init graphics
+	
+	//Done
+	return true;
 }
      
 void Application::OnResize()
@@ -249,9 +263,6 @@ void Application::EnterGameLoop()
 	}// while (msg.message != WM_QUIT)
 }
 
-void Application::Shutdown()
-{}
-
 void Application::CalculateFrameRateStats()
 {
 	// Code computes the average frames per second, and also the 
@@ -271,7 +282,7 @@ void Application::CalculateFrameRateStats()
 
 		std::wostringstream outs;  
 		outs.precision(8);
-		outs << (VGetGameTitle()) << L"    "
+		outs << (GetGameTitle()) << L"    "
 			<< L"FPS: " << fps << L"    "
 			<< L"Frame Time: " << mspf << L" (ms)";
 		SetWindowText(mainWnd, outs.str().c_str());

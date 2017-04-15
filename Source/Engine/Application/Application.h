@@ -8,13 +8,14 @@
 
 #pragma once
 
+#include "../Config/EngineConfig.h" //Engine settings
 #include <Windows.h>
 #include "../Main/EngineStd.h"
 #include "../Utils/GameTimer/GameTimer.h"
 
 namespace EngineAPI 
 {
-	namespace Base
+	namespace Core
 	{
 		class Application
 		{
@@ -25,29 +26,44 @@ namespace EngineAPI
 			//
 			//Virtual functions. Game specific instance of this class should implement these
 			//
-			virtual TCHAR *VGetGameTitle() = 0;
-			virtual TCHAR *VGetGameAppDirectory() = 0;
-			virtual HICON VGetIcon() = 0;
+			virtual TCHAR *GetGameTitle() = 0;
+			
+			//Inits your game - called after engine and subsystems have been 
+			//inited. Here, you would create your game specific subsystems and
+			//assets etc. 
+			virtual bool InitApplication() = 0;
 
-			//Init app. Will bring up a W32 window - Optionally, can provide additional init code. 
-			virtual bool Init(HINSTANCE hInstance, LPWSTR lpCmdLine, HWND hWnd = NULL,
-				int screenWidth = 960, int screenHeight = 540);
+			//Called when the engine is shutdown before closing the actual engine. 
+			virtual bool ShutdownApplication() = 0;
 
-			//Game loop and shutdown
-			void EnterGameLoop();
-			void Shutdown();
-		
+		public:
+			//Engine
+			//
 			//The global messaging function will forward messages to this function
 			LRESULT WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
+			//Init engine & engine subsystems. Will bring up a W32 window. Called before initing the 
+			//game 
+			bool InitEngine(HINSTANCE hInstance, LPWSTR lpCmdLine, HWND hWnd = NULL,
+				int screenWidth = 960, int screenHeight = 540);
+
+			//Shutsdown the engine - called after shutting down the 
+			bool ShutdownEngine();
+
+			//Game loop
+			void EnterGameLoop();
+
 		private:
-			//Internal W32 & D3D init
-			void InitWin32App();
-			void InitD3D11();
+			//Inits Win32 application
+			bool InitWin32App();
+
+			//Inits the engine subsystems - eg: Graphics, physics, etc
+			bool InitEngineSubsystems();
 
 			//Called when the window is resized
 			void OnResize();
 
+		private:
 			//Outputs FPS
 			void CalculateFrameRateStats();
 			
@@ -63,4 +79,4 @@ namespace EngineAPI
 
 //Define a global pointer to the singleton app instance. Override Application
 //and provide a project specific version
-extern EngineAPI::Base::Application* g_App;
+extern EngineAPI::Core::Application* g_App;

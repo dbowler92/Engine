@@ -19,6 +19,30 @@
     <Filter Include="Src\Graphics">
       <UniqueIdentifier>{e50f110a-07b2-4089-a4f6-8babcaf9a3c4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Src\Graphics\Manager">
+      <UniqueIdentifier>{3e240ec2-235b-48a7-9083-dc046111c077}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Graphics\Texture2D">
+      <UniqueIdentifier>{f388de51-4e07-43be-baef-ab931599c5ae}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Graphics\Mesh">
+      <UniqueIdentifier>{c65af4e6-3987-46d4-856e-648fbaac77db}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Graphics\Shader">
+      <UniqueIdentifier>{7cb17b67-6878-4c9b-ad59-3eae43fc7276}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine Config">
+      <UniqueIdentifier>{aa0a4e36-46de-4e53-a751-0736d5414f9c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Application\Orbis">
+      <UniqueIdentifier>{f7fef0e1-2ad4-4ed3-abcf-3e32b4909408}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Application\Win32">
+      <UniqueIdentifier>{d1f6bf8c-0647-42d6-a357-02623365cd93}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Application\Common">
+      <UniqueIdentifier>{f48f99c7-8357-4ff5-8bd5-9ecf987d70dd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Main\EngineMain.cpp">
@@ -30,6 +54,15 @@
     <ClCompile Include="..\Utils\GameTimer\GameTimer.cpp">
       <Filter>Src\Utils\GameTimer</Filter>
     </ClCompile>
+    <ClCompile Include="..\Application\Win32\Win32Application.cpp">
+      <Filter>Src\Application\Win32</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Application\Orbis\OrbisApplication.cpp">
+      <Filter>Src\Application\Orbis</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Application\Common\CommonApplication.cpp">
+      <Filter>Src\Application\Common</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Main\EngineStd.h">
@@ -40,6 +73,18 @@
     </ClInclude>
     <ClInclude Include="..\Utils\GameTimer\GameTimer.h">
       <Filter>Src\Utils\GameTimer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Config\EngineConfig.h">
+      <Filter>Engine Config</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Application\Win32\Win32Application.h">
+      <Filter>Src\Application\Win32</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Application\Orbis\OrbisApplication.h">
+      <Filter>Src\Application\Orbis</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Application\Common\CommonApplication.h">
+      <Filter>Src\Application\Common</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

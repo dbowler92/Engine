@@ -6,19 +6,22 @@
 
 #pragma once
 
+#include "../Config/EngineConfig.h" //Build settings
+
+#ifdef ENGINE_CONFIG_PLATFORM_WIN32
+//Show console W32 builds
 #include <stdio.h>
 #include <io.h>
 #include <fcntl.h>
+#endif 
+
 #include "EngineStd.h"
 #include "../Application/Application.h"
 
-//Libs : D3D11
-#pragma comment (lib, "d3d11.lib")
-#pragma comment (lib, "D3DCompiler.lib")
-#pragma comment (lib, "dxgi.lib")
-//#pragma comment (lib, "dxerr.lib")
+//Link libs
 
-void ShowConsole()
+#ifdef ENGINE_CONFIG_PLATFORM_WIN32
+void ShowConsoleW32()
 {
 	AllocConsole();
 
@@ -34,12 +37,14 @@ void ShowConsole()
 	setvbuf(hf_in, NULL, _IONBF, 128);
 	*stdin = *hf_in;
 }
+#endif
   
-int APIENTRY EngineMain(HINSTANCE hInstance, 
+#ifdef ENGINE_CONFIG_PLATFORM_WIN32
+int EngineMain(HINSTANCE hInstance, 
 	HINSTANCE hPrevInstance,
 	LPWSTR     lpCmdLine,
 	int       nCmdShow, 
-	EngineAPI::Base::Application* gameAppInstance)
+	EngineAPI::Core::Application* gameAppInstance)
 {    
 	//Set up checks for memory leaks.  
 #if defined(DEBUG) | defined(_DEBUG)
@@ -47,21 +52,41 @@ int APIENTRY EngineMain(HINSTANCE hInstance,
 #endif
 
 	//Enable console for debugging purposes
-	ShowConsole();   
+	ShowConsoleW32();
 
 	//Ensure an app exists.  
 	if (gameAppInstance == NULL)
 		printf("EngineMain Error: gameAppInstance == NULL. Make sure to create a project specific Application instance.\n");
-	 
-	//Set app global pointer & init the application. 
-	g_App = (EngineAPI::Base::Application*)gameAppInstance;
-	if (!g_App->Init(hInstance, lpCmdLine, NULL, 960, 540))
+	
+	//Set app global pointer & init the engine. 
+	g_App = (EngineAPI::Core::Application*)gameAppInstance;
+	if (!g_App->InitEngine(hInstance, lpCmdLine, NULL, 960, 540))
 		return -1;
 
-	//Enter loop
+	//Init the game / application
+	if (!g_App->InitApplication())
+		return -2;
+
+	//Enter loop. Loops until the engine decides it needs to quit (be it an error or 
+	//whatever)
 	g_App->EnterGameLoop();
 
-	//Once game loop exits, shutdown the game
-	g_App->Shutdown();
+	//Once game loop exits, shutdown the game followed by the engine & its subsystems
+	if (!g_App->ShutdownApplication())
+		return -3;
+	if (!g_App->ShutdownEngine())
+		return -4;
+
+	//Done. No errors it seems
 	return 0;
 }
+#endif
+
+#ifdef ENGINE_CONFIG_PLATFORM_ORBIS
+int EngineMain(int argc, char* argv[], 
+	EngineAPI::Core::Application* gameAppInstance)
+{
+	//TODO
+	return 0;
+}
+#endif

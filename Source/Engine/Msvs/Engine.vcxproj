@@ -12,11 +12,18 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Application\Application.cpp" />
+    <ClCompile Include="..\Application\Common\CommonApplication.cpp" />
+    <ClCompile Include="..\Application\Orbis\OrbisApplication.cpp" />
+    <ClCompile Include="..\Application\Win32\Win32Application.cpp" />
     <ClCompile Include="..\Main\EngineMain.cpp" />
     <ClCompile Include="..\Utils\GameTimer\GameTimer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Application\Application.h" />
+    <ClInclude Include="..\Application\Common\CommonApplication.h" />
+    <ClInclude Include="..\Application\Orbis\OrbisApplication.h" />
+    <ClInclude Include="..\Application\Win32\Win32Application.h" />
+    <ClInclude Include="..\Config\EngineConfig.h" />
     <ClInclude Include="..\Main\EngineStd.h" />
     <ClInclude Include="..\Utils\GameTimer\GameTimer.h" />
   </ItemGroup>

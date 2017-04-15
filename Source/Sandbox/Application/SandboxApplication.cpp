@@ -1,10 +1,18 @@
 #include "SandboxApplication.h"
 
+#include <iostream> //printf()
+
 SandboxApplication::SandboxApplication()
 {}
 
-HICON SandboxApplication::VGetIcon()
+bool SandboxApplication::InitApplication()
 {
-	//TODO: return LoadIcon(hInst, MAKEINTRESOURCE(101));
-	return NULL;
+	printf("SandboxApplication::InitApplication()\n");
+	return true;
+}
+
+bool SandboxApplication::ShutdownApplication()
+{
+	printf("SandboxApplication::ShutdownApplication()\n");
+	return true;
 }

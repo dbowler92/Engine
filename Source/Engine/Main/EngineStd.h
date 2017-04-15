@@ -6,7 +6,10 @@
 
 #pragma once
 
+#include "../Config/EngineConfig.h" //Build settings
+
 //Windows
+#ifdef ENGINE_CONFIG_PLATFORM_WIN32
 #include <windows.h>
 #include <windowsx.h>
 
@@ -15,11 +18,12 @@
 
 //tChar
 #include <tchar.h>
+#endif
 
 //Forward declare the base application class. 
 namespace EngineAPI
 {
-	namespace Base
+	namespace Core
 	{
 		class Application;
 	};
@@ -41,5 +45,12 @@ namespace EngineAPI
 
 //Entry for lib/engine in EngineMain.cpp. Projects using the engine lib should
 //include this file so they can call the engines entry function. 
-extern int APIENTRY EngineMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, 
-	LPWSTR lpCmdLine, int nCmdShow, EngineAPI::Base::Application* gameAppInstance);
+#ifdef ENGINE_CONFIG_PLATFORM_WIN32
+extern int EngineMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, 
+	LPWSTR lpCmdLine, int nCmdShow, EngineAPI::Core::Application* gameAppInstance);
+#endif
+
+#ifdef ENGINE_CONFIG_PLATFORM_ORBIS
+extern int EngineMain(int argc, char* argv[], 
+	EngineAPI::Core::Application* gameAppInstance);
+#endif
