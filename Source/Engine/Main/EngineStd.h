@@ -29,6 +29,25 @@ namespace EngineAPI
 	};
 };
 
+//Typedefs
+#ifdef ENGINE_CONFIG_PLATFORM_WIN32
+typedef TCHAR EWIDECHAR;
+typedef char ECHAR;
+typedef bool EBOOL;
+typedef int EINT;
+typedef float EFLOAT;
+typedef double EDOUBLE;
+#endif
+
+#ifdef ENGINE_CONFIG_PLATFORM_ORBIS
+typedef char EWIDECHAR; //TODO
+typedef char ECHAR;
+typedef bool EBOOL;
+typedef int EINT;
+typedef float EFLOAT;
+typedef double EDOUBLE;
+#endif
+
 //For debug builds, output extra info everytime we dynamically allocate memory
 #if defined(_DEBUG) | defined(DEBUG)
 #define GE_NEW new(_NORMAL_BLOCK,__FILE__, __LINE__)

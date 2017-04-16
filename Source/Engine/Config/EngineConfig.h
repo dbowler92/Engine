@@ -17,7 +17,8 @@
 #define GRAPHICS_API_IDX_OPENGL 3
 #define GRAPHICS_API_IDX_GNM 4 //PS4
 
-//Current platform to build & grpahics API to use
+//Current platform to build & grpahics API to use - this should really be set
+//through a VS build configuration. But for now, this will do. 
 #define ENGINE_BUILD_SETTINGS_PLATFORM PLATFORM_IDX_WIN32 
 #define ENGINE_BUILD_SETTINGS_GRAPHICS_API GRAPHICS_API_IDX_VULKAN
 
@@ -48,7 +49,3 @@
 #if ENGINE_BUILD_SETTINGS_GRAPHICS_API == GRAPHICS_API_IDX_GNM
 #define ENGINE_CONFIG_GRAPHICS_API_GNM
 #endif
-
-//
-//Precompiler error checking? If PS4 build, must be GNM. If PC build, must not be GNM
-//

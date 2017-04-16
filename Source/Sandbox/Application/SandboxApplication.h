@@ -18,7 +18,7 @@ public:
 	//
 	//Virtual functions. Game specific implementations
 	//
-	virtual TCHAR *GetGameTitle() { return _T("Sandbox"); };
+	virtual ECHAR* GetGameTitle();
 
 	//Inits sandbox game
 	virtual bool InitApplication();
