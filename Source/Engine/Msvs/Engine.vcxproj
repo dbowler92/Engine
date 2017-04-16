@@ -15,6 +15,7 @@
     <ClCompile Include="..\Application\Common\CommonApplication.cpp" />
     <ClCompile Include="..\Application\Orbis\OrbisApplication.cpp" />
     <ClCompile Include="..\Application\Win32\Win32Application.cpp" />
+    <ClCompile Include="..\Debug\Log\DebugLog.cpp" />
     <ClCompile Include="..\Main\EngineMain.cpp" />
     <ClCompile Include="..\Utils\GameTimer\GameTimer.cpp" />
   </ItemGroup>
@@ -24,6 +25,7 @@
     <ClInclude Include="..\Application\Orbis\OrbisApplication.h" />
     <ClInclude Include="..\Application\Win32\Win32Application.h" />
     <ClInclude Include="..\Config\EngineConfig.h" />
+    <ClInclude Include="..\Debug\Log\DebugLog.h" />
     <ClInclude Include="..\Main\EngineStd.h" />
     <ClInclude Include="..\Utils\GameTimer\GameTimer.h" />
   </ItemGroup>
@@ -37,13 +39,13 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v120</PlatformToolset>
+    <PlatformToolset>v140</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v120</PlatformToolset>
+    <PlatformToolset>v140</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>

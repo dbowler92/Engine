@@ -9,6 +9,7 @@
 
 #include "../../Config/EngineConfig.h" //Engine settings
 #include "../../Main/EngineStd.h"
+#include "../../Debug/Log/DebugLog.h" //Debug logging
 
 namespace EngineAPI
 {

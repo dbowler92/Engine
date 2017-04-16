@@ -17,7 +17,7 @@ bool OrbisApplication::InitEngine(int argc, char* argv[], int screenWidth, int s
 	//TODO: Plenty more init work that needs to be completed once I get to the relivent
 	//chapters in the book. Eg: Registering all engine events
 	// 
-	printf("OrbisApplication::InitEngine()\n");
+	EngineAPI::Debug::DebugLog::PrintInfoMessage("OrbisApplication::InitEngine()\n");
 
 	//Store data             
 	appWidth = screenWidth;
@@ -35,7 +35,7 @@ bool OrbisApplication::InitEngine(int argc, char* argv[], int screenWidth, int s
 
 bool OrbisApplication::ShutdownEngine()
 {
-	printf("OrbisApplication::ShutdownEngine()\n");
+	EngineAPI::Debug::DebugLog::PrintInfoMessage("OrbisApplication::ShutdownEngine()\n");
 	return true;
 }
 

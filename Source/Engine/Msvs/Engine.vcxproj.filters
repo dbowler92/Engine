@@ -43,6 +43,12 @@
     <Filter Include="Src\Application\Common">
       <UniqueIdentifier>{f48f99c7-8357-4ff5-8bd5-9ecf987d70dd}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Src\Debug">
+      <UniqueIdentifier>{89c77d83-7144-43cf-a5cb-3ac50a0f107b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Debug\Log">
+      <UniqueIdentifier>{6445d5da-54d6-40bf-a64a-aab0d830d03e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Main\EngineMain.cpp">
@@ -62,6 +68,9 @@
     </ClCompile>
     <ClCompile Include="..\Application\Common\CommonApplication.cpp">
       <Filter>Src\Application\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Debug\Log\DebugLog.cpp">
+      <Filter>Src\Debug\Log</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -85,6 +94,9 @@
     </ClInclude>
     <ClInclude Include="..\Application\Common\CommonApplication.h">
       <Filter>Src\Application\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Debug\Log\DebugLog.h">
+      <Filter>Src\Debug\Log</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -155,7 +155,7 @@ bool Win32Application::InitEngine(HINSTANCE hInstance, LPWSTR lpCmdLine, HWND hW
 	//TODO: Plenty more init work that needs to be completed once I get to the relivent
 	//chapters in the book. Eg: Registering all engine events
 	// 
-	printf("Win32Application::InitEngine()\n");
+	EngineAPI::Debug::DebugLog::PrintInfoMessage("Win32Application::InitEngine()\n");
 
 	//Store data             
 	hInst = hInstance;
@@ -174,7 +174,7 @@ bool Win32Application::InitEngine(HINSTANCE hInstance, LPWSTR lpCmdLine, HWND hW
 
 bool Win32Application::ShutdownEngine()
 {
-	printf("Win32Application::ShutdownEngine()\n");
+	EngineAPI::Debug::DebugLog::PrintInfoMessage("Win32Application::ShutdownEngine()\n");
 	return true;
 }
 

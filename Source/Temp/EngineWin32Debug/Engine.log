@@ -1,24 +1,2 @@
-﻿Build started 16/04/2017 01:29:20.
-     1>Project "C:\Users\Dan\Documents\Programming\3DGameEngine\Game_Engine\3DGCCEngine\Source\Engine\Msvs\Engine.vcxproj" on node 2 (Build target(s)).
-     1>ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _WINDOWS /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"C:\Users\Dan\Documents\Programming\3DGameEngine\Game_Engine\3DGCCEngine\Source\Engine\Msvs\..\..\Temp\EngineWin32Debug\\" /Fd"C:\Users\Dan\Documents\Programming\3DGameEngine\Game_Engine\3DGCCEngine\Source\Engine\Msvs\..\..\Temp\EngineWin32Debug\vc120.pdb" /Gd /TP /analyze- /errorReport:prompt ..\Application\Application.cpp ..\Application\Orbis\OrbisApplication.cpp ..\Application\Win32\Win32Application.cpp ..\Main\EngineMain.cpp
-         Application.cpp
-         Generating Code...
-         Compiling...
-         EngineMain.cpp
-         Win32Application.cpp
-         OrbisApplication.cpp
-         Generating Code...
-       Lib:
-         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\Lib.exe /OUT:"C:\Users\Dan\Documents\Programming\3DGameEngine\Game_Engine\3DGCCEngine\Source\Engine\Msvs\..\..\Lib\Win32Debug\Engine.lib" /NOLOGO C:\Users\Dan\Documents\Programming\3DGameEngine\Game_Engine\3DGCCEngine\Source\Engine\Msvs\..\..\Temp\EngineWin32Debug\Application.obj
-         C:\Users\Dan\Documents\Programming\3DGameEngine\Game_Engine\3DGCCEngine\Source\Engine\Msvs\..\..\Temp\EngineWin32Debug\CommonApplication.obj
-         C:\Users\Dan\Documents\Programming\3DGameEngine\Game_Engine\3DGCCEngine\Source\Engine\Msvs\..\..\Temp\EngineWin32Debug\OrbisApplication.obj
-         C:\Users\Dan\Documents\Programming\3DGameEngine\Game_Engine\3DGCCEngine\Source\Engine\Msvs\..\..\Temp\EngineWin32Debug\Win32Application.obj
-         C:\Users\Dan\Documents\Programming\3DGameEngine\Game_Engine\3DGCCEngine\Source\Engine\Msvs\..\..\Temp\EngineWin32Debug\EngineMain.obj
-         C:\Users\Dan\Documents\Programming\3DGameEngine\Game_Engine\3DGCCEngine\Source\Engine\Msvs\..\..\Temp\EngineWin32Debug\GameTimer.obj
-         Engine.vcxproj -> C:\Users\Dan\Documents\Programming\3DGameEngine\Game_Engine\3DGCCEngine\Source\Engine\Msvs\..\..\Lib\Win32Debug\Engine.lib
-     1>Done Building Project "C:\Users\Dan\Documents\Programming\3DGameEngine\Game_Engine\3DGCCEngine\Source\Engine\Msvs\Engine.vcxproj" (Build target(s)).
-
-Build succeeded.
-
-Time Elapsed 00:00:02.25
+﻿  EngineMain.cpp
+  Engine.vcxproj -> C:\Users\Dan\Documents\Programming\3DGameEngine\Game_Engine\3DGCCEngine\Source\Engine\Msvs\..\..\Lib\Win32Debug\Engine.lib

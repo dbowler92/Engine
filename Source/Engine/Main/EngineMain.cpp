@@ -17,6 +17,7 @@
 
 #include "EngineStd.h"
 #include "../Application/Application.h"
+#include "../Debug/Log/DebugLog.h"
 #include <iostream>
 
 //Link libs
@@ -52,12 +53,12 @@ int EngineMain(HINSTANCE hInstance,
 	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 #endif
 
-	//Enable console for debugging purposes
-	ShowConsoleW32();
+	//Enables console for debugging purposes
+	//ShowConsoleW32();
 
 	//Ensure an app exists.  
 	if (gameAppInstance == NULL)
-		printf("EngineMain Error: gameAppInstance == NULL. Make sure to create a project specific Application instance.\n");
+		EngineAPI::Debug::DebugLog::PrintErrorMessage("EngineMain: gameAppInstance == NULL. Make sure to create a project specific Application instance.\n");
 	
 	//Set app global pointer & init the engine. 
 	g_App = (EngineAPI::Core::Application*)gameAppInstance;
@@ -89,7 +90,7 @@ int EngineMain(int argc, char* argv[],
 {
 	//Ensure an app exists.  
 	if (gameAppInstance == NULL)
-		printf("EngineMain Error: gameAppInstance == NULL. Make sure to create a project specific Application instance.\n");
+		EngineAPI::Debug::DebugLog::PrintErrorMessage("EngineMain: gameAppInstance == NULL. Make sure to create a project specific Application instance.\n");
 
 	//Set app global pointer & init the engine. 
 	g_App = (EngineAPI::Core::Application*)gameAppInstance;

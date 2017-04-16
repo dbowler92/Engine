@@ -26,12 +26,12 @@ ECHAR* SandboxApplication::GetGameTitle()
 
 bool SandboxApplication::InitApplication()
 {
-	printf("SandboxApplication::InitApplication()\n");
+	EngineAPI::Debug::DebugLog::PrintInfoMessage("SandboxApplication::InitApplication()\n");
 	return true;
 }
 
 bool SandboxApplication::ShutdownApplication()
 {
-	printf("SandboxApplication::ShutdownApplication()\n");
+	EngineAPI::Debug::DebugLog::PrintInfoMessage("SandboxApplication::ShutdownApplication()\n");
 	return true;
 }
