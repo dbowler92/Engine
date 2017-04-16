@@ -16,6 +16,9 @@
     <ClCompile Include="..\Application\Orbis\OrbisApplication.cpp" />
     <ClCompile Include="..\Application\Win32\Win32Application.cpp" />
     <ClCompile Include="..\Debug\Log\DebugLog.cpp" />
+    <ClCompile Include="..\Graphics\Manager\Common\CommonGraphicsManager.cpp" />
+    <ClCompile Include="..\Graphics\Manager\GraphicsManager.cpp" />
+    <ClCompile Include="..\Graphics\Manager\Vulkan\VulkanGraphicsManager.cpp" />
     <ClCompile Include="..\Main\EngineMain.cpp" />
     <ClCompile Include="..\Utils\GameTimer\GameTimer.cpp" />
   </ItemGroup>
@@ -26,6 +29,9 @@
     <ClInclude Include="..\Application\Win32\Win32Application.h" />
     <ClInclude Include="..\Config\EngineConfig.h" />
     <ClInclude Include="..\Debug\Log\DebugLog.h" />
+    <ClInclude Include="..\Graphics\Manager\Common\CommonGraphicsManager.h" />
+    <ClInclude Include="..\Graphics\Manager\GraphicsManager.h" />
+    <ClInclude Include="..\Graphics\Manager\Vulkan\VulkanGraphicsManager.h" />
     <ClInclude Include="..\Main\EngineStd.h" />
     <ClInclude Include="..\Utils\GameTimer\GameTimer.h" />
   </ItemGroup>
@@ -65,8 +71,8 @@
     <IntDir>$(SolutionDir)..\..\Temp\$(ProjectName)$(PlatformName)$(Configuration)\</IntDir>
     <OutDir>$(SolutionDir)..\..\Lib\$(PlatformName)$(Configuration)\</OutDir>
     <TargetExt>.lib</TargetExt>
-    <IncludePath>C:\Users\Dan\Documents\Programming\3DGameEngine\Game_Engine\3DGCCEngine\Source\Engine\3rdParty\DXUT\Optional;C:\Users\Dan\Documents\Programming\3DGameEngine\Game_Engine\3DGCCEngine\Source\Engine\3rdParty\DXUT\Core;$(DXSDK_DIR)Include;$(IncludePath)</IncludePath>
-    <LibraryPath>$(DXSDK_DIR)Lib\x86;$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\Users\Dan\Documents\Programming\3DGameEngine\Game_Engine\3DGCCEngine\Source\Engine\3rdParty\DXUT\Optional;C:\Users\Dan\Documents\Programming\3DGameEngine\Game_Engine\3DGCCEngine\Source\Engine\3rdParty\DXUT\Core;$(DXSDK_DIR)Include;C:\VulkanSDK\1.0.46.0\Include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(DXSDK_DIR)Lib\x86;C:\VulkanSDK\1.0.46.0\Lib32;C:\VulkanSDK\1.0.46.0\Lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
@@ -74,8 +80,8 @@
     <IntDir>$(SolutionDir)..\..\Temp\$(ProjectName)$(PlatformName)$(Configuration)\</IntDir>
     <OutDir>$(SolutionDir)..\..\Lib\$(PlatformName)$(Configuration)\</OutDir>
     <TargetExt>.lib</TargetExt>
-    <IncludePath>C:\Users\Dan\Documents\Programming\3DGameEngine\Game_Engine\3DGCCEngine\Source\Engine\3rdParty\DXUT\Optional;C:\Users\Dan\Documents\Programming\3DGameEngine\Game_Engine\3DGCCEngine\Source\Engine\3rdParty\DXUT\Core;$(DXSDK_DIR)Include;$(IncludePath)</IncludePath>
-    <LibraryPath>$(DXSDK_DIR)Lib\x86;$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\Users\Dan\Documents\Programming\3DGameEngine\Game_Engine\3DGCCEngine\Source\Engine\3rdParty\DXUT\Optional;C:\Users\Dan\Documents\Programming\3DGameEngine\Game_Engine\3DGCCEngine\Source\Engine\3rdParty\DXUT\Core;$(DXSDK_DIR)Include;C:\VulkanSDK\1.0.46.0\Include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(DXSDK_DIR)Lib\x86;C:\VulkanSDK\1.0.46.0\Lib32;C:\VulkanSDK\1.0.46.0\Lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>

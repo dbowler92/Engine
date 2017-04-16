@@ -1,2 +1,10 @@
-﻿  EngineMain.cpp
+﻿  Application.cpp
+  Generating Code...
+  Compiling...
+  EngineMain.cpp
+  VulkanGraphicsManager.cpp
+  Win32Application.cpp
+c:\users\dan\documents\programming\3dgameengine\game_engine\3dgccengine\source\engine\application\win32\win32application.cpp(208): warning C4838: conversion from 'unsigned int' to 'LONG' requires a narrowing conversion
+  OrbisApplication.cpp
+  Generating Code...
   Engine.vcxproj -> C:\Users\Dan\Documents\Programming\3DGameEngine\Game_Engine\3DGCCEngine\Source\Engine\Msvs\..\..\Lib\Win32Debug\Engine.lib

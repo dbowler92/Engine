@@ -49,3 +49,8 @@
 #if ENGINE_BUILD_SETTINGS_GRAPHICS_API == GRAPHICS_API_IDX_GNM
 #define ENGINE_CONFIG_GRAPHICS_API_GNM
 #endif
+
+//Win32 lean and mean
+#ifdef _WIN32
+#define WIN32_LEAN_AND_MEAN
+#endif

@@ -175,6 +175,10 @@ bool Win32Application::InitEngine(HINSTANCE hInstance, LPWSTR lpCmdLine, HWND hW
 bool Win32Application::ShutdownEngine()
 {
 	EngineAPI::Debug::DebugLog::PrintInfoMessage("Win32Application::ShutdownEngine()\n");
+
+	//Shutdown subsystems - reverse order to creation
+	graphicsSubsystem->ShutdownSubsystem();
+
 	return true;
 }
 
@@ -239,6 +243,8 @@ bool Win32Application::InitWin32App()
 bool Win32Application::InitEngineSubsystems()
 {
 	//Init graphics
+	graphicsSubsystem = GE_NEW EngineAPI::Graphics::GraphicsManager();
+	graphicsSubsystem->InitSubsystem();
 
 	//Done
 	return true;

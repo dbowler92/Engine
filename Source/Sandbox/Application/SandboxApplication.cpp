@@ -27,6 +27,7 @@ ECHAR* SandboxApplication::GetGameTitle()
 bool SandboxApplication::InitApplication()
 {
 	EngineAPI::Debug::DebugLog::PrintInfoMessage("SandboxApplication::InitApplication()\n");
+
 	return true;
 }
 

@@ -49,6 +49,24 @@
     <Filter Include="Src\Debug\Log">
       <UniqueIdentifier>{6445d5da-54d6-40bf-a64a-aab0d830d03e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Src\Graphics\Manager\Common">
+      <UniqueIdentifier>{ef3f3f46-5729-43e9-bbb4-b0968d41ca4f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Graphics\Manager\Vulkan">
+      <UniqueIdentifier>{f53f4e19-2eb4-4795-b20d-53b7f0106b41}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Graphics\Manager\GNM">
+      <UniqueIdentifier>{c511a193-4021-4e12-b1fe-499827dba984}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Graphics\Manager\D3D11">
+      <UniqueIdentifier>{3fce95ef-9e82-4726-90ed-1c1fafd15511}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Graphics\Manager\D3D12">
+      <UniqueIdentifier>{ec829b90-319f-4fbf-af81-76d08e88dddf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Graphics\Manager\OpenGL">
+      <UniqueIdentifier>{98b17905-1015-45c4-bf12-3fcd83cdb90d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Main\EngineMain.cpp">
@@ -71,6 +89,15 @@
     </ClCompile>
     <ClCompile Include="..\Debug\Log\DebugLog.cpp">
       <Filter>Src\Debug\Log</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Graphics\Manager\Common\CommonGraphicsManager.cpp">
+      <Filter>Src\Graphics\Manager\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Graphics\Manager\GraphicsManager.cpp">
+      <Filter>Src\Graphics\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Graphics\Manager\Vulkan\VulkanGraphicsManager.cpp">
+      <Filter>Src\Graphics\Manager\Vulkan</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -97,6 +124,15 @@
     </ClInclude>
     <ClInclude Include="..\Debug\Log\DebugLog.h">
       <Filter>Src\Debug\Log</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Graphics\Manager\Common\CommonGraphicsManager.h">
+      <Filter>Src\Graphics\Manager\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Graphics\Manager\GraphicsManager.h">
+      <Filter>Src\Graphics\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Graphics\Manager\Vulkan\VulkanGraphicsManager.h">
+      <Filter>Src\Graphics\Manager\Vulkan</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

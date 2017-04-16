@@ -11,6 +11,9 @@
 #include "../../Main/EngineStd.h"
 #include "../../Debug/Log/DebugLog.h" //Debug logging
 
+//Subsystems
+#include "../../Graphics/Manager/GraphicsManager.h"
+
 namespace EngineAPI
 {
 	namespace Core
@@ -46,6 +49,10 @@ namespace EngineAPI
 
 				//Game loop
 				virtual void EnterGameLoop() = 0; 
+
+			protected:
+				//Subsystems / managers
+				EngineAPI::Graphics::GraphicsManager* graphicsSubsystem;
 			};
 		};
 	};
