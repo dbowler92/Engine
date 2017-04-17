@@ -7,6 +7,10 @@
 #pragma once
 
 #include "../Config/EngineConfig.h" //Build settings
+#include "EngineStd.h"
+#include "../Application/Application.h"
+#include "../Debug/Log/DebugLog.h"
+#include <iostream>
 
 #ifdef ENGINE_CONFIG_PLATFORM_WIN32
 //Show console W32 builds
@@ -15,12 +19,25 @@
 #include <fcntl.h>
 #endif 
 
-#include "EngineStd.h"
-#include "../Application/Application.h"
-#include "../Debug/Log/DebugLog.h"
-#include <iostream>
-
 //Link libs
+#ifdef ENGINE_CONFIG_GRAPHICS_API_VULKAN
+#pragma comment (lib, "vulkan-1.lib")
+#endif
+
+#ifdef ENGINE_CONFIG_GRAPHICS_API_D3D11
+#pragma comment (lib, "d3d11.lib")
+#pragma comment (lib, "D3DCompiler.lib")
+#pragma comment (lib, "DxErr.lib")
+#pragma comment (lib, "dxgi.lib")
+
+#if defined(DEBUG) | defined(_DEBUG)
+#pragma comment (lib, "d3dx11d.lib")
+#pragma comment (lib, "Effects11d.lib")
+#else
+#pragma comment (lib, "d3dx11.lib")
+#pragma comment (lib, "Effects11.lib")
+#endif
+#endif
 
 #ifdef ENGINE_CONFIG_PLATFORM_WIN32
 void ShowConsoleW32()
@@ -46,6 +63,7 @@ int EngineMain(HINSTANCE hInstance,
 	HINSTANCE hPrevInstance,
 	LPWSTR     lpCmdLine,
 	int       nCmdShow, 
+	int appVersionMajor, int appVersionMinor, int appVersionPatch,
 	EngineAPI::Core::Application* gameAppInstance)
 {    
 	//Set up checks for memory leaks.  
@@ -62,7 +80,7 @@ int EngineMain(HINSTANCE hInstance,
 	
 	//Set app global pointer & init the engine. 
 	g_App = (EngineAPI::Core::Application*)gameAppInstance;
-	if (!g_App->InitEngine(hInstance, lpCmdLine, NULL, 960, 540)) //Win32
+	if (!g_App->InitEngine(hInstance, lpCmdLine, NULL, appVersionMajor, appVersionMinor, appVersionPatch, 960, 540)) //Win32
 		return -1;
 
 	//Init the game / application
@@ -86,6 +104,7 @@ int EngineMain(HINSTANCE hInstance,
 
 #ifdef ENGINE_CONFIG_PLATFORM_ORBIS
 int EngineMain(int argc, char* argv[], 
+	int appVersionMajor, int appVersionMinor, int appVersionPatch,
 	EngineAPI::Core::Application* gameAppInstance)
 {
 	//Ensure an app exists.  
@@ -94,7 +113,7 @@ int EngineMain(int argc, char* argv[],
 
 	//Set app global pointer & init the engine. 
 	g_App = (EngineAPI::Core::Application*)gameAppInstance;
-	if (!g_App->InitEngine(argc, argv, 960, 540)) //Orbis
+	if (!g_App->InitEngine(argc, argv, appVersionMajor, appVersionMinor, appVersionPatch, 960, 540)) //Orbis
 		return -1;
 
 	//Init the game / application

@@ -37,7 +37,9 @@ namespace EngineAPI
 				//
 				//Init engine & engine subsystems. Interacts with PS4 SDK. Called before initing the 
 				//game 
-				bool InitEngine(int argc, char* argv[], int screenWidth = 960, int screenHeight = 540);
+				bool InitEngine(int argc, char* argv[], 
+					int appVersionMajor = 1, int appVersionMinor = 0, int appVersionPatch = 0,
+					int screenWidth = 960, int screenHeight = 540);
 
 				//Shutsdown the engine - called after shutting down the 
 				bool ShutdownEngine();

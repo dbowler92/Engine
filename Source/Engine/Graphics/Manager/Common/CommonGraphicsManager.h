@@ -6,6 +6,9 @@
 
 #pragma once
 
+//Globals
+#include "../../../Main/EngineStd.h"
+
 //Debug
 #include "../../../Debug/Log/DebugLog.h"
 
@@ -21,7 +24,9 @@ namespace EngineAPI
 				CommonGraphicsManager() {};
 
 				//Inits the graphics subsystem / manager
-				virtual bool InitSubsystem() = 0;
+				virtual bool InitSubsystem(ECHAR* appTitle,
+					int appVersionMajor, int appVersionMinor, int appVersionPatch,
+					unsigned screenWidth, unsigned screenHeight) = 0;
 
 				//Shutsdown the graphics manager
 				virtual bool ShutdownSubsystem() = 0;

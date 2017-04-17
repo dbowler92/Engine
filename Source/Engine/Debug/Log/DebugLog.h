@@ -17,6 +17,7 @@ namespace EngineAPI
 		{
 		public:
 			//To VS output window
+			static void PrintMessage(const ECHAR* msg);
 			static void PrintInfoMessage(const ECHAR* msg);
 			static void PrintWarningMessage(const ECHAR* msg);
 			static void PrintErrorMessage(const ECHAR* msg);

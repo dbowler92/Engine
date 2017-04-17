@@ -13,6 +13,11 @@
 #ifdef ENGINE_CONFIG_GRAPHICS_API_VULKAN
 #include "Vulkan\VulkanGraphicsManager.h"
 #endif
+#ifdef ENGINE_CONFIG_GRAPHICS_API_D3D11
+#include "D3D11\D3D11GraphicsManager.h"
+#endif
+//...
+//...
 //...
 #ifdef ENGINE_CONFIG_GRAPHICS_API_GNM
 #include "GNM\GNMGraphicsManager.h"
@@ -26,6 +31,11 @@ namespace EngineAPI
 #ifdef ENGINE_CONFIG_GRAPHICS_API_VULKAN 
 			public EngineAPI::Graphics::Platform::VulkanGraphicsManager
 #endif
+#ifdef ENGINE_CONFIG_GRAPHICS_API_D3D11
+			public EngineAPI::Graphics::Platform::D3D11GraphicsManager
+#endif
+			//...
+			//...
 			//...
 #ifdef ENGINE_CONFIG_GRAPHICS_API_GNM
 			public EngineAPI::Graphics::Platform::GNMGraphicsManager

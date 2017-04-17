@@ -17,7 +17,7 @@
 #include "../Common/CommonGraphicsManager.h"
 
 //Vulkan header. 
-#include <vulkan/vulkan.h>
+#include <vulkan\vulkan.h>
 
 namespace EngineAPI
 {
@@ -31,10 +31,27 @@ namespace EngineAPI
 				VulkanGraphicsManager() {};
 
 				//Inits the graphics subsystem / manager (VK)
-				bool InitSubsystem() override;
+				bool InitSubsystem(ECHAR* appTitle, 
+					int appVersionMajor, int appVersionMinor, int appVersionPatch,
+					unsigned screenWidth, unsigned screenHeight) override;
 
 				//Shutsdown the graphics manager (VK)
 				bool ShutdownSubsystem() override;
+
+			private:
+				//Vulkan data
+				VkInstance vkInstance = nullptr;
+
+			private:
+				//Vulkan init code
+				VkResult InitVKInstance(ECHAR* applicationTitle, int appVersionMajor, int appVersionMinor, int appVersionPatch);
+				VkResult InitVKDevice();
+
+
+			private:
+				//Vulkan deinit / shutdown code
+				void ShutdownVKInstance();
+				void ShutdownVKDevice();
 			};
 		};
 	};

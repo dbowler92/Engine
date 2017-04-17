@@ -2,6 +2,16 @@
 
 using namespace EngineAPI::Debug;
 
+void DebugLog::PrintMessage(const ECHAR* msg)
+{
+#ifdef ENGINE_CONFIG_PLATFORM_WIN32
+	OutputDebugStringA(msg);
+#endif
+#ifdef ENGINE_CONFIG_PLATFORM_ORBIS
+	printf(msg);
+#endif
+}
+
 void DebugLog::PrintInfoMessage(const ECHAR* msg)
 {
 #ifdef ENGINE_CONFIG_PLATFORM_WIN32

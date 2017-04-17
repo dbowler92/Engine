@@ -53,6 +53,11 @@ namespace EngineAPI
 			protected:
 				//Subsystems / managers
 				EngineAPI::Graphics::GraphicsManager* graphicsSubsystem;
+
+			protected:
+				//Shared data
+				unsigned appWidth, appHeight; //Dimentions of application window
+				int appVersionMajor, appVersionMinor, appVersionPatch; //Application version
 			};
 		};
 	};

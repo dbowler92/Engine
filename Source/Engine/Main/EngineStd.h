@@ -65,11 +65,13 @@ typedef double EDOUBLE;
 //Entry for lib/engine in EngineMain.cpp. Projects using the engine lib should
 //include this file so they can call the engines entry function. 
 #ifdef ENGINE_CONFIG_PLATFORM_WIN32
-extern int EngineMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, 
-	LPWSTR lpCmdLine, int nCmdShow, EngineAPI::Core::Application* gameAppInstance);
+extern int EngineMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLine, int nCmdShow,
+	int appVersionMajor, int appVersionMinor, int appVersionPatch, 
+	EngineAPI::Core::Application* gameAppInstance);
 #endif
 
 #ifdef ENGINE_CONFIG_PLATFORM_ORBIS
 extern int EngineMain(int argc, char* argv[], 
+	int appVersionMajor, int appVersionMinor, int appVersionPatch,
 	EngineAPI::Core::Application* gameAppInstance);
 #endif

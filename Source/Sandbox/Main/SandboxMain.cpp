@@ -6,6 +6,7 @@
 
 #pragma once
 
+#include "../App Config/AppConfig.h"
 #include "../../Engine/Config/EngineConfig.h" //Build settings etc
 #include "../../Engine/Main/EngineStd.h" //Allows us to easily call entey function for Engine lib
 #include "../../Sandbox/Application/SandboxApplication.h" //Our application
@@ -24,6 +25,7 @@ INT WINAPI wWinMain(HINSTANCE hInstance,
 {
 	//Enter in to engine main passing the game specific applcation
 	int exit = EngineMain(hInstance, hPrevInstance, lpCmdLine, nCmdShow, 
+		APPLICATION_VERSION_MAJOR, APPLICATION_VERSION_MINOR, APPLICATION_VERSION_PATCH,
 		&g_SandboxApp);
 
 	//Keep console open for a while. 
@@ -41,7 +43,9 @@ INT WINAPI wWinMain(HINSTANCE hInstance,
 	int       nCmdShow)
 {
 	//Enter in to engine main passing the game specific applcation
-	int exit = EngineMain(0, NULL, &g_SandboxApp);
+	int exit = EngineMain(0, NULL, 
+		APPLICATION_VERSION_MAJOR, APPLICATION_VERSION_MINOR, APPLICATION_VERSION_PATCH,
+		&g_SandboxApp);
 
 	//Keep console open for a while. 
 	std::cin >> exit;

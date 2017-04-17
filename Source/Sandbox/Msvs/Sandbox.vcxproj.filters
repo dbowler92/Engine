@@ -10,6 +10,9 @@
     <Filter Include="Src\SandboxApplication">
       <UniqueIdentifier>{25f087a4-24d2-4901-a8c3-82d7f07edb76}</UniqueIdentifier>
     </Filter>
+    <Filter Include="App Config">
+      <UniqueIdentifier>{713c60f4-8c88-4d28-8933-7ad4507836e0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Main\SandboxMain.cpp">
@@ -22,6 +25,9 @@
   <ItemGroup>
     <ClInclude Include="..\Application\SandboxApplication.h">
       <Filter>Src\SandboxApplication</Filter>
+    </ClInclude>
+    <ClInclude Include="..\App Config\AppConfig.h">
+      <Filter>App Config</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

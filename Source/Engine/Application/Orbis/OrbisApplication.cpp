@@ -11,7 +11,9 @@ OrbisApplication::OrbisApplication()
 	: appPaused(false), minimized(false), maximized(false), resizing(false)
 {}
 
-bool OrbisApplication::InitEngine(int argc, char* argv[], int screenWidth, int screenHeight)
+bool OrbisApplication::InitEngine(int argc, char* argv[],
+	int appVersionMajor, int appVersionMinor, int appVersionPatch,
+	int screenWidth, int screenHeight)
 {
 	//   
 	//TODO: Plenty more init work that needs to be completed once I get to the relivent
@@ -22,6 +24,9 @@ bool OrbisApplication::InitEngine(int argc, char* argv[], int screenWidth, int s
 	//Store data             
 	appWidth = screenWidth;
 	appHeight = screenHeight;
+	this->appVersionMajor = appVersionMajor;
+	this->appVersionMinor = appVersionMinor;
+	this->appVersionPatch = appVersionPatch;
 
 	//Setup window
 	bool success = InitOrbisApp();
@@ -36,6 +41,10 @@ bool OrbisApplication::InitEngine(int argc, char* argv[], int screenWidth, int s
 bool OrbisApplication::ShutdownEngine()
 {
 	EngineAPI::Debug::DebugLog::PrintInfoMessage("OrbisApplication::ShutdownEngine()\n");
+
+	//Shutdown subsystems - reverse order to creation
+	graphicsSubsystem->ShutdownSubsystem();
+
 	return true;
 }
 
@@ -48,6 +57,10 @@ bool OrbisApplication::InitOrbisApp()
 bool OrbisApplication::InitEngineSubsystems()
 {
 	//Init graphics
+	graphicsSubsystem = GE_NEW EngineAPI::Graphics::GraphicsManager();
+	graphicsSubsystem->InitSubsystem(GetGameTitle(),
+		appVersionMajor, appVersionMinor, appVersionPatch,
+		appWidth, appHeight);
 
 	//Done
 	return true;

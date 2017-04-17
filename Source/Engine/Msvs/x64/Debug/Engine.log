@@ -1,0 +1,21 @@
+﻿  GameTimer.cpp
+  EngineMain.cpp
+c:\users\dan\documents\programming\3dgameengine\game_engine\3dgccengine\source\engine\main\enginemain.cpp(48): warning C4311: 'type cast': pointer truncation from 'HANDLE' to 'long'
+c:\users\dan\documents\programming\3dgameengine\game_engine\3dgccengine\source\engine\main\enginemain.cpp(48): warning C4302: 'type cast': truncation from 'HANDLE' to 'long'
+c:\users\dan\documents\programming\3dgameengine\game_engine\3dgccengine\source\engine\main\enginemain.cpp(54): warning C4311: 'type cast': pointer truncation from 'HANDLE' to 'long'
+c:\users\dan\documents\programming\3dgameengine\game_engine\3dgccengine\source\engine\main\enginemain.cpp(54): warning C4302: 'type cast': truncation from 'HANDLE' to 'long'
+  VulkanGraphicsManager.cpp
+c:\users\dan\documents\programming\3dgameengine\game_engine\3dgccengine\source\engine\graphics\manager\vulkan\vulkangraphicsmanager.cpp(18): warning C4101: 'result': unreferenced local variable
+c:\users\dan\documents\programming\3dgameengine\game_engine\3dgccengine\source\engine\graphics\manager\vulkan\vulkangraphicsmanager.cpp(12): warning C4101: 'vkInfoMsg': unreferenced local variable
+c:\users\dan\documents\programming\3dgameengine\game_engine\3dgccengine\source\engine\graphics\manager\vulkan\vulkangraphicsmanager.cpp(76): error C2039: 'result': is not a member of 'VkInstanceCreateInfo'
+  c:\vulkansdk\1.0.46.0\include\vulkan\vulkan.h(1289): note: see declaration of 'VkInstanceCreateInfo'
+  GraphicsManager.cpp
+  D3D11GraphicsManager.cpp
+c:\users\dan\documents\programming\3dgameengine\game_engine\3dgccengine\source\engine\graphics\manager\d3d11\d3d11graphicsmanager.cpp(12): warning C4101: 'd3d11InfoMsg': unreferenced local variable
+  CommonGraphicsManager.cpp
+  DebugLog.cpp
+  Win32Application.cpp
+  OrbisApplication.cpp
+  CommonApplication.cpp
+  Application.cpp
+  Generating Code...

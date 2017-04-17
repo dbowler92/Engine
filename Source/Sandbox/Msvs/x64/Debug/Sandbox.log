@@ -1,0 +1,4 @@
+﻿  SandboxMain.cpp
+  SandboxApplication.cpp
+  Generating Code...
+LINK : fatal error LNK1104: cannot open file 'Engine.lib'

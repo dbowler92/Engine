@@ -99,6 +99,9 @@
     <ClCompile Include="..\Graphics\Manager\Vulkan\VulkanGraphicsManager.cpp">
       <Filter>Src\Graphics\Manager\Vulkan</Filter>
     </ClCompile>
+    <ClCompile Include="..\Graphics\Manager\D3D11\D3D11GraphicsManager.cpp">
+      <Filter>Src\Graphics\Manager\D3D11</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Main\EngineStd.h">
@@ -133,6 +136,9 @@
     </ClInclude>
     <ClInclude Include="..\Graphics\Manager\Vulkan\VulkanGraphicsManager.h">
       <Filter>Src\Graphics\Manager\Vulkan</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Graphics\Manager\D3D11\D3D11GraphicsManager.h">
+      <Filter>Src\Graphics\Manager\D3D11</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

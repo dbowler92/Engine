@@ -6,6 +6,14 @@
 
 #pragma once
 
+//Engine name
+#define ENGINE_NAME "Real Engine 4"
+
+//Engine version
+#define ENGINE_VERSION_MAJOR 0
+#define ENGINE_VERSION_MINOR 2
+#define ENGINE_VERSION_PATCH 0
+
 //Platform - not really used for now?
 #define PLATFORM_IDX_WIN32 0
 #define PLATFORM_IDX_ORBIS 1  //PS4
@@ -18,8 +26,8 @@
 #define GRAPHICS_API_IDX_GNM 4 //PS4
 
 //Current platform to build & grpahics API to use - this should really be set
-//through a VS build configuration. But for now, this will do. 
-#define ENGINE_BUILD_SETTINGS_PLATFORM PLATFORM_IDX_WIN32 
+//through a VS build configuration. But for now, this will do.  
+#define ENGINE_BUILD_SETTINGS_PLATFORM PLATFORM_IDX_WIN32
 #define ENGINE_BUILD_SETTINGS_GRAPHICS_API GRAPHICS_API_IDX_VULKAN
 
 //
@@ -34,8 +42,15 @@
 #endif
 
 //So we can use #ifdef and #ifndef
+//
+//Also, some API specific configs. Eg: Minumum supported vulkan API version
 #if ENGINE_BUILD_SETTINGS_GRAPHICS_API == GRAPHICS_API_IDX_VULKAN
 #define ENGINE_CONFIG_GRAPHICS_API_VULKAN
+
+#define ENGINE_CONFIG_MINIMUM_VULKAN_API_MAJOR 1
+#define ENGINE_CONFIG_MINIMUM_VULKAN_API_MINOR 0
+#define ENGINE_CONFIG_MINIMUM_VULKAN_API_PATCH 0
+
 #endif
 #if ENGINE_BUILD_SETTINGS_GRAPHICS_API == GRAPHICS_API_IDX_D3D11
 #define ENGINE_CONFIG_GRAPHICS_API_D3D11
@@ -54,3 +69,7 @@
 #ifdef _WIN32
 #define WIN32_LEAN_AND_MEAN
 #endif
+
+//Should we output debug info when setting up the graphics subsystem. Eg: Number
+//of debug layers for vulkan etc. 
+#define SHOULD_PRINT_GRAPHICS_INIT_INFO 1

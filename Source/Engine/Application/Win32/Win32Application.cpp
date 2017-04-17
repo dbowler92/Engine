@@ -149,7 +149,9 @@ LRESULT Win32Application::WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lPa
 	return DefWindowProc(hwnd, msg, wParam, lParam);
 }
 
-bool Win32Application::InitEngine(HINSTANCE hInstance, LPWSTR lpCmdLine, HWND hWnd, int screenWidth, int screenHeight)
+bool Win32Application::InitEngine(HINSTANCE hInstance, LPWSTR lpCmdLine, HWND hWnd, 
+	int appVersionMajor, int appVersionMinor, int appVersionPatch,
+	int screenWidth, int screenHeight)
 {
 	//   
 	//TODO: Plenty more init work that needs to be completed once I get to the relivent
@@ -159,8 +161,11 @@ bool Win32Application::InitEngine(HINSTANCE hInstance, LPWSTR lpCmdLine, HWND hW
 
 	//Store data             
 	hInst = hInstance;
-	appWidth = screenWidth;
-	appHeight = screenHeight;
+	appWidth = (unsigned)screenWidth;
+	appHeight = (unsigned)screenHeight;
+	this->appVersionMajor = appVersionMajor;
+	this->appVersionMinor = appVersionMinor;
+	this->appVersionPatch = appVersionPatch;
 
 	//Setup window
 	bool success = InitWin32App();
@@ -205,7 +210,7 @@ bool Win32Application::InitWin32App()
 	// Compute window rectangle dimensions based on requested client area dimensions.
 	// Will be the same values as the initial values specified in the two int consts
 	// in the header file. 
-	RECT R = { 0, 0, appWidth, appHeight };
+	RECT R = { 0, 0, (LONG)appWidth, (LONG)appHeight };
 	AdjustWindowRect(&R, WS_OVERLAPPEDWINDOW, false);
 	int width = R.right - R.left;
 	int height = R.bottom - R.top;
@@ -244,7 +249,9 @@ bool Win32Application::InitEngineSubsystems()
 {
 	//Init graphics
 	graphicsSubsystem = GE_NEW EngineAPI::Graphics::GraphicsManager();
-	graphicsSubsystem->InitSubsystem();
+	graphicsSubsystem->InitSubsystem(GetGameTitle(), 
+		appVersionMajor, appVersionMinor, appVersionPatch,
+		appWidth, appHeight);
 
 	//Done
 	return true;

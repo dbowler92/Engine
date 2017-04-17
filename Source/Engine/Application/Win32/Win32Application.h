@@ -44,6 +44,7 @@ namespace EngineAPI
 				//Init engine & engine subsystems. Will bring up a W32 window. Called before initing the 
 				//game 
 				bool InitEngine(HINSTANCE hInstance, LPWSTR lpCmdLine, HWND hWnd = NULL,
+					int appVersionMajor = 1, int appVersionMinor = 0, int appVersionPatch = 0,
 					int screenWidth = 960, int screenHeight = 540);
 
 				//Shutsdown the engine - called after shutting down the 
@@ -68,8 +69,7 @@ namespace EngineAPI
 
 			protected:
 				HINSTANCE hInst;			  //App instance handle
-				HWND mainWnd;				  //Window handle
-				unsigned appWidth, appHeight; //Dimentions of application window				
+				HWND mainWnd;				  //Window handle				
 				bool appPaused, minimized, maximized, resizing; //State of app
 				Utils::GameTimer mainGameLoopTimer; //Calculates frame delta
 			};
