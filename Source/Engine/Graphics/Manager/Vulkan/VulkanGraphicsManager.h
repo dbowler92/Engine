@@ -42,16 +42,20 @@ namespace EngineAPI
 				bool ShutdownSubsystem() override;
 
 			private:
-				//Vulkan data
-				VkInstance vkInstance = nullptr;
-				VkDevice vkDevice = nullptr; //Logical device
+				//Vulkan data / handles
+				VkInstance vkInstance = NULL;
+				VkPhysicalDevice vkPhysicalDevice = NULL; 
+				VkDevice vkLogicalDevice = NULL;		 
 
 			private:
-				//Vulkan init code
+				//VK Init
+				//
 				bool InitVKInstance(ECHAR* applicationTitle, int appVersionMajor, int appVersionMinor, int appVersionPatch);
 				bool InitVKDevice(); //Logical device is created
 
 			private:
+				//VK Validations
+				//
 				//Validate requested instance layers and extentions. We will
 				//pass a list of layers and extentions to this function that we wish
 				//to enable and these functions will see if they are available for us
@@ -67,7 +71,17 @@ namespace EngineAPI
 				bool ValidateVKInstanceExtentions(std::vector<const char*> *desiredInstanceExtentions);
 
 			private:
-				//Vulkan deinit / shutdown code
+				//VK Helpers
+				//
+				//Finds the "best" Vulkan enabled physical device for us to use
+				//when creating the Vulkan physical device. Currently, it just picks the
+				//first which should be the Vulkan handle to our GPU
+				VkPhysicalDevice PickBestVulkanPhysicalDevice(VkPhysicalDevice** availPhysicalDevices,
+					uint32_t availPhysicalDevicesCount);
+
+			private:
+				//VK Shutdown
+				//
 				void ShutdownVKInstance();
 				void ShutdownVKDevice();
 			};

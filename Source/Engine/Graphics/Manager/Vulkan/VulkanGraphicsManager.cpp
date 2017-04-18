@@ -35,6 +35,7 @@ bool VulkanGraphicsManager::InitSubsystem(ECHAR* appTitle,
 	if (!InitVKDevice())
 		return false;
 
+	//Done
 	return true;
 }
 
@@ -90,7 +91,7 @@ bool VulkanGraphicsManager::InitVKInstance(ECHAR* applicationTitle,
 #if ENGINE_CONFIG_VULKAN_API_ENABLE_VALIDATION_AND_DEBUG_LAYERS_ON_INSTANCE
 	std::vector<const char *> enabledInstanceLayers = 
 	{
-		"VK_LAYER_LUNARG_standard_validation"
+		"VK_LAYER_LUNARG_standard_validation", 
 	};
 #else
 	std::vector<const char *> enabledInstanceLayers(0);
@@ -151,31 +152,39 @@ bool VulkanGraphicsManager::InitVKInstance(ECHAR* applicationTitle,
 
 bool VulkanGraphicsManager::InitVKDevice()
 {
-	VkResult result;
-
 	//
-	//Pick physical device
-	//
-	VkPhysicalDevice vkPickedPhysicalDevice = nullptr;
-	uint32_t physicalDeviceCount = 0;
-	
+	//Pick a physical device
+	//	
 	//Get number of physical devices
+	uint32_t physicalDeviceCount = 0;
 	vkEnumeratePhysicalDevices(vkInstance, &physicalDeviceCount, nullptr);
 
-	//Get the devices
-	std::vector<VkPhysicalDevice*>vkPhysicalDevicesArray(physicalDeviceCount);
-	vkEnumeratePhysicalDevices(vkInstance, &physicalDeviceCount, *vkPhysicalDevicesArray.data());
+	//Ensure that we have at least one valid devices
+	if (physicalDeviceCount == 0)
+	{
+		EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanGraphicsManager::InitVKDevice(): 0 VK Physical Devices found in this system.\n");
+		return false;
+	} 
+	else if (physicalDeviceCount > 1) //Just incase...
+		EngineAPI::Debug::DebugLog::PrintWarningMessage("VulkanGraphicsManager::InitVKDevice(): > 1 VK Physical Devices found in this system!\n");
+
+	//Get all the possible/available physical devices
+	VkPhysicalDevice* vkPhysicalDevicesArray = GE_NEW VkPhysicalDevice[physicalDeviceCount];
+	vkEnumeratePhysicalDevices(vkInstance, &physicalDeviceCount, &vkPhysicalDevicesArray[0]);
+
+	//Pick the best...
+	vkPhysicalDevice = PickBestVulkanPhysicalDevice(&vkPhysicalDevicesArray, physicalDeviceCount);
 
 	//
-	//Device extentions
+	//Enabled device layers 
+	//
+	
+	//
+	//Enabled device extentions
 	//
 
 	//
-	//Device layers
-	//
-
-	//
-	//Enabled features
+	//Enabled features (API stuff we want access too)
 	//
 
 	//
@@ -190,12 +199,19 @@ bool VulkanGraphicsManager::InitVKDevice()
 	//TODO
 
 	//Create logical device
-	result = vkCreateDevice(vkPickedPhysicalDevice, &vkDeviceCreateInfo, nullptr, &vkDevice);
+	VkResult result = vkCreateDevice(vkPhysicalDevice, &vkDeviceCreateInfo, nullptr, &vkLogicalDevice);
+
+	//Cleanup memory
+	delete[] vkPhysicalDevicesArray;
+	
+	//Validate that the logical device was created
 	if (result != VK_SUCCESS)
 	{
 		EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanGraphicsManager::InitVKDevice(): vkCreateDevice() failed.\n");
 		return false;
 	}
+
+	//Done
 	return true;
 }
 
@@ -227,13 +243,13 @@ bool VulkanGraphicsManager::ValidateVKInstanceLayers(std::vector<const char*> *d
 	int layerAvailableMatchedWithRequestedCount = 0;
 
 	//For each of the available instance layers...
-	for (int i = 0; i < availInstanceLayerCount; i++)
+	for (int i = 0; i < (int)availInstanceLayerCount; i++)
 	{
 		//ith layer...
 		VkLayerProperties* layerProperty = &availLayersArray[i];
 
 		//Does this layer name match with one of our requested layers. If so, increment a counter
-		for (int j = 0; j < desiredInstanceLayers->size(); j++)
+		for (int j = 0; j < (int)desiredInstanceLayers->size(); j++)
 		{
 			if (strcmp(layerProperty->layerName, (*desiredInstanceLayers)[j]) == 0)
 			{
@@ -256,7 +272,8 @@ bool VulkanGraphicsManager::ValidateVKInstanceLayers(std::vector<const char*> *d
 		return true;
 	else
 	{
-		EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanGraphicsManager: Error when validating Vulkan Instance Layers!\n");
+		EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanGraphicsManager: Error when validating Vulkan Instance Layers! ");
+		EngineAPI::Debug::DebugLog::PrintMessage("It's likely that at least one requested instance layer is not avilable for you to use in this Vulkan implentation.\n");
 		return false;
 	}
 }
@@ -285,13 +302,13 @@ bool VulkanGraphicsManager::ValidateVKInstanceExtentions(std::vector<const char*
 
 	//Are the instance extentions we want available for us to use...
 	int instanceExtentionsAvailToRequestedCounter = 0;
-	for (int i = 0; i < availInstanceExtentionsCount; i++)
+	for (int i = 0; i < (int)availInstanceExtentionsCount; i++)
 	{
 		//ith instance extention...
 		VkExtensionProperties* instanceExtention = &availInstanceExtentions[i];
 		
 		//Does this match (by name) with a requested extention. If so, increment a counter.
-		for (int j = 0; j < desiredInstanceExtentions->size(); j++)
+		for (int j = 0; j < (int)desiredInstanceExtentions->size(); j++)
 		{
 			if (strcmp(instanceExtention->extensionName, (*desiredInstanceExtentions)[j]) == 0)
 			{
@@ -315,10 +332,28 @@ bool VulkanGraphicsManager::ValidateVKInstanceExtentions(std::vector<const char*
 		return true;
 	else
 	{
-		EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanGraphicsManager: Error when validating Vulkan Instance Extentions!\n");
+		EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanGraphicsManager: Error when validating Vulkan Instance Extentions! ");
+		EngineAPI::Debug::DebugLog::PrintMessage("It's likely that at least one requested instance extention is not avilable for you to use in this Vulkan implentation.\n");
 		return false;
 	}
 }
+
+//
+//VK Helper
+//
+
+VkPhysicalDevice VulkanGraphicsManager::PickBestVulkanPhysicalDevice(VkPhysicalDevice** availPhysicalDevices,
+	uint32_t availPhysicalDevicesCount)
+{
+	VkPhysicalDevice vkPickedPhysicalDevice = NULL;
+
+	//Just pick the first... TODO: Look in to this later
+	vkPickedPhysicalDevice = *availPhysicalDevices[0];
+
+	//Done
+	return vkPickedPhysicalDevice;
+}
+
 
 //
 //VK Shutdown
@@ -327,11 +362,12 @@ bool VulkanGraphicsManager::ValidateVKInstanceExtentions(std::vector<const char*
 void VulkanGraphicsManager::ShutdownVKInstance()
 {
 	vkDestroyInstance(vkInstance, nullptr);
-	vkInstance = nullptr;
+	vkInstance = NULL;
 }
 
 void VulkanGraphicsManager::ShutdownVKDevice()
 {
-	vkDestroyDevice(vkDevice, nullptr);
-	vkDevice = nullptr;
+	vkDestroyDevice(vkLogicalDevice, nullptr);
+	vkLogicalDevice = NULL;
+	vkPhysicalDevice = NULL;
 }

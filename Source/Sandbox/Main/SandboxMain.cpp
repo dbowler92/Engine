@@ -24,13 +24,9 @@ INT WINAPI wWinMain(HINSTANCE hInstance,
 	int       nCmdShow)    
 {
 	//Enter in to engine main passing the game specific applcation
-	int exit = EngineMain(hInstance, hPrevInstance, lpCmdLine, nCmdShow, 
+	return EngineMain(hInstance, hPrevInstance, lpCmdLine, nCmdShow, 
 		APPLICATION_VERSION_MAJOR, APPLICATION_VERSION_MINOR, APPLICATION_VERSION_PATCH,
 		&g_SandboxApp);
-
-	//Keep console open for a while. 
-	std::cin >> exit;
-	return exit;
 }                
 #endif 
 
