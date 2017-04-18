@@ -8,6 +8,8 @@ SandboxApplication::SandboxApplication()
 
 ECHAR* SandboxApplication::GetGameTitle()
 {
+	return "Sandbox";
+/*
 #ifdef ENGINE_CONFIG_GRAPHICS_API_VULKAN
 	return "Sandbox (Vulkan)"; 
 #endif
@@ -23,6 +25,7 @@ ECHAR* SandboxApplication::GetGameTitle()
 #ifdef ENGINE_CONFIG_GRAPHICS_API_GNM
 	return "Sandbox (GNM - Orbis)";
 #endif
+*/
 };
 
 bool SandboxApplication::InitApplication()

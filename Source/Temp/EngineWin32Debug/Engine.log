@@ -1,10 +1,14 @@
 ﻿  VulkanGraphicsManager.cpp
-c:\users\dan\documents\programming\3dgameengine\game_engine\3dgccengine\source\engine\graphics\manager\vulkan\vulkangraphicsmanager.cpp(14): warning C4101: 'vkInfoMsg': unreferenced local variable
-c:\users\dan\documents\programming\3dgameengine\game_engine\3dgccengine\source\engine\graphics\manager\vulkan\vulkangraphicsmanager.cpp(84): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+c:\users\dan\documents\programming\3dgameengine\game_engine\3dgccengine\source\engine\graphics\manager\vulkan\vulkangraphicsmanager.cpp(17): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
   c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\stdio.h(1769): note: see declaration of 'sprintf'
-c:\users\dan\documents\programming\3dgameengine\game_engine\3dgccengine\source\engine\graphics\manager\vulkan\vulkangraphicsmanager.cpp(89): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+c:\users\dan\documents\programming\3dgameengine\game_engine\3dgccengine\source\engine\graphics\manager\vulkan\vulkangraphicsmanager.cpp(22): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
   c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\stdio.h(1769): note: see declaration of 'sprintf'
-c:\users\dan\documents\programming\3dgameengine\game_engine\3dgccengine\source\engine\graphics\manager\vulkan\vulkangraphicsmanager.cpp(94): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+c:\users\dan\documents\programming\3dgameengine\game_engine\3dgccengine\source\engine\graphics\manager\vulkan\vulkangraphicsmanager.cpp(27): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
   c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\stdio.h(1769): note: see declaration of 'sprintf'
-c:\users\dan\documents\programming\3dgameengine\game_engine\3dgccengine\source\engine\graphics\manager\vulkan\vulkangraphicsmanager.cpp(125): warning C4700: uninitialized local variable 'result' used
+c:\users\dan\documents\programming\3dgameengine\game_engine\3dgccengine\source\engine\graphics\manager\vulkan\vulkangraphicsmanager.cpp(230): warning C4018: '<': signed/unsigned mismatch
+c:\users\dan\documents\programming\3dgameengine\game_engine\3dgccengine\source\engine\graphics\manager\vulkan\vulkangraphicsmanager.cpp(236): warning C4018: '<': signed/unsigned mismatch
+c:\users\dan\documents\programming\3dgameengine\game_engine\3dgccengine\source\engine\graphics\manager\vulkan\vulkangraphicsmanager.cpp(288): warning C4018: '<': signed/unsigned mismatch
+c:\users\dan\documents\programming\3dgameengine\game_engine\3dgccengine\source\engine\graphics\manager\vulkan\vulkangraphicsmanager.cpp(294): warning C4018: '<': signed/unsigned mismatch
+  Win32Application.cpp
+  Generating Code...
   Engine.vcxproj -> C:\Users\Dan\Documents\Programming\3DGameEngine\Game_Engine\3DGCCEngine\Source\Engine\Msvs\..\..\Lib\Win32Debug\Engine.lib

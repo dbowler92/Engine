@@ -37,6 +37,8 @@
     <ClInclude Include="..\Application\Orbis\OrbisApplication.h" />
     <ClInclude Include="..\Application\Win32\Win32Application.h" />
     <ClInclude Include="..\Config\EngineConfig.h" />
+    <ClInclude Include="..\Config\VulkanConfig.h" />
+    <ClInclude Include="..\Config\Win32Config.h" />
     <ClInclude Include="..\Debug\Log\DebugLog.h" />
     <ClInclude Include="..\Graphics\Manager\Common\CommonGraphicsManager.h" />
     <ClInclude Include="..\Graphics\Manager\D3D11\D3D11GraphicsManager.h" />

@@ -140,5 +140,11 @@
     <ClInclude Include="..\Graphics\Manager\D3D11\D3D11GraphicsManager.h">
       <Filter>Src\Graphics\Manager\D3D11</Filter>
     </ClInclude>
+    <ClInclude Include="..\Config\VulkanConfig.h">
+      <Filter>Engine Config</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Config\Win32Config.h">
+      <Filter>Engine Config</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

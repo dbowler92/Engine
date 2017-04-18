@@ -16,6 +16,9 @@
 //Shared interface
 #include "../Common/CommonGraphicsManager.h"
 
+//Vector
+#include <vector>
+
 //Vulkan header. 
 #include <vulkan\vulkan.h>
 
@@ -41,12 +44,27 @@ namespace EngineAPI
 			private:
 				//Vulkan data
 				VkInstance vkInstance = nullptr;
+				VkDevice vkDevice = nullptr; //Logical device
 
 			private:
 				//Vulkan init code
-				VkResult InitVKInstance(ECHAR* applicationTitle, int appVersionMajor, int appVersionMinor, int appVersionPatch);
-				VkResult InitVKDevice();
+				bool InitVKInstance(ECHAR* applicationTitle, int appVersionMajor, int appVersionMinor, int appVersionPatch);
+				bool InitVKDevice(); //Logical device is created
 
+			private:
+				//Validate requested instance layers and extentions. We will
+				//pass a list of layers and extentions to this function that we wish
+				//to enable and these functions will see if they are available for us
+				//to use. 
+				//
+				//Currently, they will return false if the desired layers and/or extentions
+				//are not available and the app should probably quit at this point. A better solution
+				//would be to attempt to continue with the reduced feature set. Eg: If the 
+				//Win32 surface extention is not available, the graphics subsystem would attempt
+				//to find a solution to intergrate with the OS window using alternative
+				//techniques
+				bool ValidateVKInstanceLayers(std::vector<const char*> *desiredInstanceLayers);
+				bool ValidateVKInstanceExtentions(std::vector<const char*> *desiredInstanceExtentions);
 
 			private:
 				//Vulkan deinit / shutdown code

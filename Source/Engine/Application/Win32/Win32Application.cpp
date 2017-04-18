@@ -249,9 +249,8 @@ bool Win32Application::InitEngineSubsystems()
 {
 	//Init graphics
 	graphicsSubsystem = GE_NEW EngineAPI::Graphics::GraphicsManager();
-	graphicsSubsystem->InitSubsystem(GetGameTitle(), 
-		appVersionMajor, appVersionMinor, appVersionPatch,
-		appWidth, appHeight);
+	if (!graphicsSubsystem->InitSubsystem(GetGameTitle(), appVersionMajor, appVersionMinor, appVersionPatch, appWidth, appHeight))
+		return false;
 
 	//Done
 	return true;
