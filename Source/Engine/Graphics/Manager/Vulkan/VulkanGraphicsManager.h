@@ -70,9 +70,11 @@ namespace EngineAPI
 				bool ValidateVKInstanceLayers(std::vector<const char*> *desiredInstanceLayers);
 				bool ValidateVKInstanceExtentions(std::vector<const char*> *desiredInstanceExtentions);
 
-				//Like above, validates our chosen device extentions - Are the ones
+				//Like above, validates our chosen device extentions & layers (Depreciated I think. However, 
+				//I will add the code in needed just incase!)- Are the ones
 				//we want available to us? Again, doesnt attempt to recover in the
 				//case they do not exist. 
+				bool ValidateVKDeviceLayers(std::vector<const char*> *desiredDeviceLayers);
 				bool ValidateVKDeviceExtentions(std::vector<const char*> *desiredDeviceExtentions);
 
 			private:

@@ -190,25 +190,12 @@ bool VulkanGraphicsManager::InitVKDevice()
 	//********************************************************************************
 	//
 	//Find all device layers available to us + number of them
-	/*
-	uint32_t deviceLayersCount = 0;
-	vkEnumerateDeviceLayerProperties(vkPhysicalDevice, &deviceLayersCount, nullptr);
-	VkLayerProperties* availDeviceLayers = nullptr;
-	if (deviceLayersCount > 0)
-	{
-		//Get all available device layers. 
-		availDeviceLayers = GE_NEW VkLayerProperties[deviceLayersCount];
-		vkEnumerateDeviceLayerProperties(vkPhysicalDevice, &deviceLayersCount, &availDeviceLayers[0]);
-	
-		//TODO: Select some to enable (May not actually be required to be honest...)
+	std::vector<const char*> deviceLayersNames =
+	{};
 
-		//TODO: Validate
-
-		//Cleanup memory containing all available device layers.
-		if (availDeviceLayers)
-			delete[] availDeviceLayers;
-	}
-	*/
+	//Validate
+	if (!ValidateVKDeviceLayers(&deviceLayersNames))
+		return false;
 
 	//********************************************************************************
 	//********************************************************************************
@@ -254,10 +241,32 @@ bool VulkanGraphicsManager::InitVKDevice()
 	vkDeviceCreateInfo.sType = VK_STRUCTURE_TYPE_DEVICE_CREATE_INFO;
 	vkDeviceCreateInfo.pNext = nullptr;
 	vkDeviceCreateInfo.flags = 0; //Not used in VK 1.0.0
-	vkDeviceCreateInfo.ppEnabledLayerNames = nullptr; //Depreciated???
-	vkDeviceCreateInfo.enabledLayerCount   = 0;
-	vkDeviceCreateInfo.ppEnabledExtensionNames = deviceExtensionNames.data();
-	vkDeviceCreateInfo.enabledExtensionCount   = deviceExtensionNames.size();
+
+	//Device layers
+	if (deviceLayersNames.size() > 0) //Depreciated???
+	{
+		vkDeviceCreateInfo.ppEnabledLayerNames = deviceLayersNames.data();
+		vkDeviceCreateInfo.enabledLayerCount = deviceLayersNames.size();
+	}
+	else
+	{
+		vkDeviceCreateInfo.ppEnabledLayerNames = nullptr;
+		vkDeviceCreateInfo.enabledLayerCount = 0;
+	}
+
+	//Device extentions
+	if (deviceExtensionNames.size() > 0)
+	{
+		vkDeviceCreateInfo.ppEnabledExtensionNames = deviceExtensionNames.data();
+		vkDeviceCreateInfo.enabledExtensionCount = deviceExtensionNames.size();
+	}
+	else
+	{
+		vkDeviceCreateInfo.ppEnabledExtensionNames = nullptr;
+		vkDeviceCreateInfo.enabledExtensionCount = 0;
+	}
+
+	//TODO: Queues, API features etc
 
 	//Create logical device
 	VkResult result = vkCreateDevice(vkPhysicalDevice, &vkDeviceCreateInfo, nullptr, &vkLogicalDevice);
@@ -396,6 +405,66 @@ bool VulkanGraphicsManager::ValidateVKInstanceExtentions(std::vector<const char*
 	}
 }
 
+bool VulkanGraphicsManager::ValidateVKDeviceLayers(std::vector<const char*> *desiredDeviceLayers)
+{
+	//No need to check...
+	if (desiredDeviceLayers->size() == 0)
+	{
+#if SHOULD_PRINT_GRAPHICS_INIT_INFO
+		EngineAPI::Debug::DebugLog::PrintInfoMessage("VulkanGraphicsManager: Vulkan enabling NO device layers\n");
+#endif
+		return true;
+	}
+
+	//Get the device layers count
+	uint32_t deviceLayersCount = 0;
+	vkEnumerateDeviceLayerProperties(vkPhysicalDevice, &deviceLayersCount, nullptr);
+	VkLayerProperties* availDeviceLayers = nullptr;
+
+	//Get all device layers
+	availDeviceLayers = GE_NEW VkLayerProperties[deviceLayersCount];
+	vkEnumerateDeviceLayerProperties(vkPhysicalDevice, &deviceLayersCount, &availDeviceLayers[0]);
+
+	//Are all of our requested device extentions available for us to use? 
+	int numDeviceLayersMatchedWithRequested = 0;
+	for (int i = 0; i < (int)deviceLayersCount; i++)
+	{
+		//ith device extentions properties
+		VkLayerProperties* deviceLayer = &availDeviceLayers[i];
+
+		//Can we find each and every one of our requested device extentions (by name)
+		for (int j = 0; j < (int)desiredDeviceLayers->size(); j++)
+		{
+			if (strcmp(deviceLayer->layerName, (*desiredDeviceLayers)[j]) == 0)
+			{
+#if SHOULD_PRINT_GRAPHICS_INIT_INFO
+				EngineAPI::Debug::DebugLog::PrintInfoMessage("VulkanGraphicsManager: Vulkan enabling device layer: ");
+				EngineAPI::Debug::DebugLog::PrintMessage(deviceLayer->layerName);
+				EngineAPI::Debug::DebugLog::PrintMessage("\n");
+#endif
+
+				//Found
+				numDeviceLayersMatchedWithRequested++;
+				break;
+			}
+		}
+	}
+
+	//Cleanup 
+	if (availDeviceLayers)
+		delete[] availDeviceLayers;
+
+	//Do validation
+	if (numDeviceLayersMatchedWithRequested == desiredDeviceLayers->size())
+		return true;
+	else
+	{
+		EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanGraphicsManager: Error when validating Vulkan Device Layers! ");
+		EngineAPI::Debug::DebugLog::PrintMessage("It's likely that at least one requested device layer is not avilable for you to use in this Vulkan implentation.\n");
+		return false;
+	}
+}
+
 bool VulkanGraphicsManager::ValidateVKDeviceExtentions(std::vector<const char*> *desiredDeviceExtentions)
 {
 	//No need to check...
@@ -453,9 +522,6 @@ bool VulkanGraphicsManager::ValidateVKDeviceExtentions(std::vector<const char*> 
 		EngineAPI::Debug::DebugLog::PrintMessage("It's likely that at least one requested device extention is not avilable for you to use in this Vulkan implentation.\n");
 		return false;
 	}
-
-	//done
-	return true;
 }
 
 //
