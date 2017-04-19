@@ -22,8 +22,8 @@ bool OrbisApplication::InitEngine(int argc, char* argv[],
 	EngineAPI::Debug::DebugLog::PrintInfoMessage("OrbisApplication::InitEngine()\n");
 
 	//Store data             
-	appWidth = screenWidth;
-	appHeight = screenHeight;
+	osWindow.UpdateWindowWidth(screenWidth);
+	osWindow.UpdateWindowHeight(screenHeight);
 	this->appVersionMajor = appVersionMajor;
 	this->appVersionMinor = appVersionMinor;
 	this->appVersionPatch = appVersionPatch;
@@ -58,9 +58,10 @@ bool OrbisApplication::InitEngineSubsystems()
 {
 	//Init graphics
 	graphicsSubsystem = GE_NEW EngineAPI::Graphics::GraphicsManager();
-	graphicsSubsystem->InitSubsystem(GetGameTitle(),
+	if (!graphicsSubsystem->InitSubsystem(&osWindow, GetGameTitle(),
 		appVersionMajor, appVersionMinor, appVersionPatch,
-		appWidth, appHeight);
+		osWindow.GetWindowWidth(), osWindow.GetWindowHeight()))
+		return false;
 
 	//Done
 	return true;

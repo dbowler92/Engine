@@ -14,6 +14,7 @@ class SandboxApplication : public EngineAPI::Core::Application
 	HIDE_COPY_ASSIGNMENT(SandboxApplication)
 public:  
 	SandboxApplication();
+	~SandboxApplication() {};
 	 
 	//
 	//Virtual functions. Game specific implementations

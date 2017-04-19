@@ -32,10 +32,11 @@ namespace EngineAPI
 			{
 			public:
 				VulkanGraphicsManager() {};
+				virtual ~VulkanGraphicsManager() = 0 {};
 
 				//Inits the graphics subsystem / manager (VK)
-				bool InitSubsystem(ECHAR* appTitle, 
-					int appVersionMajor, int appVersionMinor, int appVersionPatch,
+				bool InitSubsystem(EngineAPI::OS::OSWindow* osWindow,
+					ECHAR* appTitle, int appVersionMajor, int appVersionMinor, int appVersionPatch,
 					unsigned screenWidth, unsigned screenHeight) override;
 
 				//Shutsdown the graphics manager (VK)
@@ -51,7 +52,7 @@ namespace EngineAPI
 				VkPhysicalDeviceProperties vkDeviceProperties;
 
 				//Device queue families
-				VkQueueFamilyProperties* vkQueueFamiliesArray;
+				VkQueueFamilyProperties* vkQueueFamiliesArray = nullptr;
 				uint32_t vkQueueFamiliesCount;
 
 				//Device memory info
@@ -59,10 +60,12 @@ namespace EngineAPI
 
 			private:
 				//VK Init
-				//
 				bool InitVKInstance(ECHAR* applicationTitle, int appVersionMajor, int appVersionMinor, int appVersionPatch);
 				bool InitVKDevice(); //Logical device is created
 				void CacheVKDeviceMemoryInfo();
+
+				//VK Swapchain / Presentation
+				bool InitVKPresentation(EngineAPI::OS::OSWindow* osWindow);
 
 			private:
 				//VK Validations

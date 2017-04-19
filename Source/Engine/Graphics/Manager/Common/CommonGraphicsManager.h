@@ -12,6 +12,9 @@
 //Debug
 #include "../../../Debug/Log/DebugLog.h"
 
+//OS window info - so the graphics API can talk to the OS windowing system.
+#include "../../../OSWindow/OSWindow.h"
+
 namespace EngineAPI
 {
 	namespace Graphics
@@ -22,10 +25,11 @@ namespace EngineAPI
 			{
 			public:
 				CommonGraphicsManager() {};
+				virtual ~CommonGraphicsManager() = 0 {};
 
 				//Inits the graphics subsystem / manager
-				virtual bool InitSubsystem(ECHAR* appTitle,
-					int appVersionMajor, int appVersionMinor, int appVersionPatch,
+				virtual bool InitSubsystem(EngineAPI::OS::OSWindow* osWindow,
+					ECHAR* appTitle, int appVersionMajor, int appVersionMinor, int appVersionPatch,
 					unsigned screenWidth, unsigned screenHeight) = 0;
 
 				//Shutsdown the graphics manager

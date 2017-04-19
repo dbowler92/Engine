@@ -48,8 +48,8 @@ LRESULT Win32Application::WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lPa
 		// WM_SIZE is sent when the user resizes the window.  
 	case WM_SIZE:
 		// Save the new client area dimensions.
-		appWidth = LOWORD(lParam);
-		appHeight = HIWORD(lParam);
+		osWindow.UpdateWindowWidth(LOWORD(lParam));
+		osWindow.UpdateWindowHeight(HIWORD(lParam));
 		if (wParam == SIZE_MINIMIZED)
 		{
 			appPaused = true;
@@ -160,14 +160,14 @@ bool Win32Application::InitEngine(HINSTANCE hInstance, LPWSTR lpCmdLine, HWND hW
 	EngineAPI::Debug::DebugLog::PrintInfoMessage("Win32Application::InitEngine()\n");
 
 	//Store data             
-	hInst = hInstance;
-	appWidth = (unsigned)screenWidth;
-	appHeight = (unsigned)screenHeight;
+	osWindow.SetWin32AppInstance(hInstance);
+	osWindow.UpdateWindowWidth((unsigned)screenWidth);
+	osWindow.UpdateWindowHeight((unsigned)screenHeight);
 	this->appVersionMajor = appVersionMajor;
 	this->appVersionMinor = appVersionMinor;
 	this->appVersionPatch = appVersionPatch;
 
-	//Setup window
+	//Setup window first.
 	bool success = InitWin32App();
 
 	//Init engine subsystems - eg: Graphics
@@ -199,7 +199,7 @@ bool Win32Application::InitWin32App()
 	wc.lpfnWndProc = GlobalWndProc;
 	wc.cbClsExtra = 0;
 	wc.cbWndExtra = 0;
-	wc.hInstance = hInst;
+	wc.hInstance = osWindow.GetAppInstanceHandle();
 	wc.hIcon = LoadIcon(0, IDI_APPLICATION);
 	wc.hCursor = LoadCursor(0, IDC_ARROW);
 	wc.hbrBackground = (HBRUSH)GetStockObject(NULL_BRUSH);
@@ -215,7 +215,7 @@ bool Win32Application::InitWin32App()
 	// Compute window rectangle dimensions based on requested client area dimensions.
 	// Will be the same values as the initial values specified in the two int consts
 	// in the header file. 
-	RECT R = { 0, 0, (LONG)appWidth, (LONG)appHeight };
+	RECT R = { 0, 0, (LONG)osWindow.GetWindowWidth(), (LONG)osWindow.GetWindowHeight()};
 	AdjustWindowRect(&R, WS_OVERLAPPEDWINDOW, false);
 	int width = R.right - R.left;
 	int height = R.bottom - R.top;
@@ -228,9 +228,9 @@ bool Win32Application::InitWin32App()
 		windowsAppTitle[i] = str[i];
 
 	//Create the window.
-	mainWnd = CreateWindow(L"WndClassName", windowsAppTitle,
+	HWND mainWnd = CreateWindow(L"WndClassName", windowsAppTitle,
 		WS_OVERLAPPEDWINDOW, CW_USEDEFAULT, CW_USEDEFAULT,
-		width, height, 0, 0, hInst, 0);
+		width, height, 0, 0, osWindow.GetAppInstanceHandle(), 0);
 
 	if (!mainWnd)
 	{
@@ -238,6 +238,9 @@ bool Win32Application::InitWin32App()
 		MessageBox(0, L"CreateWindow Failed.", 0, 0);
 		return false;
 	}
+
+	//Update with new handle. 
+	osWindow.SetWin32AppMainWindowHandle(mainWnd);
 
 	//Display window.
 	ShowWindow(mainWnd, SW_SHOW);
@@ -254,7 +257,9 @@ bool Win32Application::InitEngineSubsystems()
 {
 	//Init graphics
 	graphicsSubsystem = GE_NEW EngineAPI::Graphics::GraphicsManager();
-	if (!graphicsSubsystem->InitSubsystem(GetGameTitle(), appVersionMajor, appVersionMinor, appVersionPatch, appWidth, appHeight))
+	if (!graphicsSubsystem->InitSubsystem(&osWindow, 
+		GetGameTitle(), appVersionMajor, appVersionMinor, appVersionPatch, 
+		osWindow.GetWindowWidth(), osWindow.GetWindowHeight()))
 		return false;
 
 	//Done
@@ -313,7 +318,7 @@ void Win32Application::CalculateFrameRateStats()
 		outs << (GetGameTitle()) << L"    "
 			<< L"FPS: " << fps << L"    "
 			<< L"Frame Time: " << mspf << L" (ms)";
-		SetWindowText(mainWnd, outs.str().c_str());
+		SetWindowText(osWindow.GetAppMainWindowHandle(), outs.str().c_str());
 
 		// Reset for next average.
 		frameCnt = 0;

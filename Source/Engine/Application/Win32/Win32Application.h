@@ -8,7 +8,6 @@
 
 #include <Windows.h>
 #include "../Common/CommonApplication.h"
-#include "../../Utils/GameTimer/GameTimer.h"
 
 namespace EngineAPI
 {
@@ -21,6 +20,7 @@ namespace EngineAPI
 				HIDE_COPY_ASSIGNMENT(Win32Application)
 			public:
 				Win32Application();
+				virtual ~Win32Application() = 0 {};
 
 				//
 				//Virtual functions. Game specific instance of this class should implement these
@@ -67,11 +67,9 @@ namespace EngineAPI
 				//Outputs FPS
 				void CalculateFrameRateStats();
 
-			protected:
-				HINSTANCE hInst;			  //App instance handle
-				HWND mainWnd;				  //Window handle				
+			protected:		
 				bool appPaused, minimized, maximized, resizing; //State of app
-				Utils::GameTimer mainGameLoopTimer; //Calculates frame delta
+				Utils::GameTimer mainGameLoopTimer;			    //Calculates frame delta
 			};
 		};
 	};

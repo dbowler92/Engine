@@ -29,6 +29,9 @@
     <ClCompile Include="..\Graphics\Manager\GraphicsManager.cpp" />
     <ClCompile Include="..\Graphics\Manager\Vulkan\VulkanGraphicsManager.cpp" />
     <ClCompile Include="..\Main\EngineMain.cpp" />
+    <ClCompile Include="..\OSWindow\Common\CommonOSWindow.cpp" />
+    <ClCompile Include="..\OSWindow\OSWindow.cpp" />
+    <ClCompile Include="..\OSWindow\Win32\Win32OSWindow.cpp" />
     <ClCompile Include="..\Utils\GameTimer\GameTimer.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -45,6 +48,9 @@
     <ClInclude Include="..\Graphics\Manager\GraphicsManager.h" />
     <ClInclude Include="..\Graphics\Manager\Vulkan\VulkanGraphicsManager.h" />
     <ClInclude Include="..\Main\EngineStd.h" />
+    <ClInclude Include="..\OSWindow\Common\CommonOSWindow.h" />
+    <ClInclude Include="..\OSWindow\OSWindow.h" />
+    <ClInclude Include="..\OSWindow\Win32\Win32OSWindow.h" />
     <ClInclude Include="..\Utils\GameTimer\GameTimer.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

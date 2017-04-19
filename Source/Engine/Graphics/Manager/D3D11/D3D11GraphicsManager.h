@@ -25,10 +25,11 @@ namespace EngineAPI
 			{
 			public:
 				D3D11GraphicsManager() {};
+				virtual ~D3D11GraphicsManager() = 0 {};
 
 				//Inits the graphics subsystem / manager (D3D11)
-				bool InitSubsystem(ECHAR* appTitle,
-					int appVersionMajor, int appVersionMinor, int appVersionPatch,
+				bool InitSubsystem(EngineAPI::OS::OSWindow* osWindow,
+					ECHAR* appTitle, int appVersionMajor, int appVersionMinor, int appVersionPatch,
 					unsigned screenWidth, unsigned screenHeight) override;
 
 				//Shutsdown the graphics manager (D3D11)

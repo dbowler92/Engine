@@ -5,7 +5,6 @@
 //PS4 implementation of the base application class
 
 #include "../Common/CommonApplication.h"
-#include "../../Utils/GameTimer/GameTimer.h"
 
 namespace EngineAPI
 {
@@ -18,6 +17,7 @@ namespace EngineAPI
 				HIDE_COPY_ASSIGNMENT(OrbisApplication)
 			public:
 				OrbisApplication();
+				virtual ~OrbisApplication() = 0 {};
 
 				//
 				//Virtual functions. Game specific instance of this class should implement these
@@ -57,8 +57,7 @@ namespace EngineAPI
 				//Called when the window is resized
 				void OnResize();
 
-			private:
-				unsigned appWidth, appHeight; //Dimentions of application window				
+			private:			
 				bool appPaused, minimized, maximized, resizing; //State of app
 				Utils::GameTimer mainGameLoopTimer; //Calculates frame delta
 			};

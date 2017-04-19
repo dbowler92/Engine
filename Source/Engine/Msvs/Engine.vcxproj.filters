@@ -67,6 +67,15 @@
     <Filter Include="Src\Graphics\Manager\OpenGL">
       <UniqueIdentifier>{98b17905-1015-45c4-bf12-3fcd83cdb90d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Src\OSWindow">
+      <UniqueIdentifier>{2562fa0d-6943-443c-9bd6-cc851fca91d2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\OSWindow\Common">
+      <UniqueIdentifier>{eedd0a88-e881-4cd3-b8c9-9ce522c8ea10}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\OSWindow\Win32">
+      <UniqueIdentifier>{6e138a38-d601-44fb-8533-3052e1538775}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Main\EngineMain.cpp">
@@ -101,6 +110,15 @@
     </ClCompile>
     <ClCompile Include="..\Graphics\Manager\D3D11\D3D11GraphicsManager.cpp">
       <Filter>Src\Graphics\Manager\D3D11</Filter>
+    </ClCompile>
+    <ClCompile Include="..\OSWindow\Common\CommonOSWindow.cpp">
+      <Filter>Src\OSWindow\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\OSWindow\Win32\Win32OSWindow.cpp">
+      <Filter>Src\OSWindow\Win32</Filter>
+    </ClCompile>
+    <ClCompile Include="..\OSWindow\OSWindow.cpp">
+      <Filter>Src\OSWindow</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -145,6 +163,15 @@
     </ClInclude>
     <ClInclude Include="..\Config\Win32Config.h">
       <Filter>Engine Config</Filter>
+    </ClInclude>
+    <ClInclude Include="..\OSWindow\Common\CommonOSWindow.h">
+      <Filter>Src\OSWindow\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\OSWindow\Win32\Win32OSWindow.h">
+      <Filter>Src\OSWindow\Win32</Filter>
+    </ClInclude>
+    <ClInclude Include="..\OSWindow\OSWindow.h">
+      <Filter>Src\OSWindow</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

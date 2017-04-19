@@ -3,8 +3,8 @@
 
 using namespace EngineAPI::Graphics::Platform;
 
-bool D3D11GraphicsManager::InitSubsystem(ECHAR* appTitle,
-	int appVersionMajor, int appVersionMinor, int appVersionPatch,
+bool D3D11GraphicsManager::InitSubsystem(EngineAPI::OS::OSWindow* osWindow,
+	ECHAR* appTitle, int appVersionMajor, int appVersionMinor, int appVersionPatch,
 	unsigned screenWidth, unsigned screenHeight)
 {
 	EngineAPI::Debug::DebugLog::PrintInfoMessage("D3D11GraphicsManager::InitSubsystem()\n");

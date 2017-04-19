@@ -43,6 +43,7 @@ namespace EngineAPI
 		{
 		public:
 			GraphicsManager() {};
+			~GraphicsManager() {};
 		};
 	};
 };

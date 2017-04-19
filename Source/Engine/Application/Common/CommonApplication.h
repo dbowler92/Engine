@@ -11,6 +11,9 @@
 #include "../../Main/EngineStd.h"
 #include "../../Debug/Log/DebugLog.h" //Debug logging
 
+#include "../../Utils/GameTimer/GameTimer.h"
+#include "../../OSWindow/OSWindow.h"
+
 //Subsystems
 #include "../../Graphics/Manager/GraphicsManager.h"
 
@@ -24,6 +27,7 @@ namespace EngineAPI
 			{
 			public:
 				CommonApplication() {};
+				virtual ~CommonApplication() = 0 {};
 
 				//Define in your own game applications
 				//
@@ -56,7 +60,7 @@ namespace EngineAPI
 
 			protected:
 				//Shared data
-				unsigned appWidth, appHeight; //Dimentions of application window
+				EngineAPI::OS::OSWindow osWindow;
 				int appVersionMajor, appVersionMinor, appVersionPatch; //Application version
 			};
 		};

@@ -39,6 +39,7 @@ namespace EngineAPI
 			HIDE_COPY_ASSIGNMENT(Application)
 		public:
 			Application();
+			virtual ~Application() = 0 {};
 
 			//
 			//Virtual functions. Game specific instance of this class should implement these

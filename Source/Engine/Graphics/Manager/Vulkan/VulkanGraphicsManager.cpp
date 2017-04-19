@@ -4,8 +4,8 @@
 
 using namespace EngineAPI::Graphics::Platform;
 
-bool VulkanGraphicsManager::InitSubsystem(ECHAR* appTitle,
-	int appVersionMajor, int appVersionMinor, int appVersionPatch,
+bool VulkanGraphicsManager::InitSubsystem(EngineAPI::OS::OSWindow* osWindow,
+	ECHAR* appTitle, int appVersionMajor, int appVersionMinor, int appVersionPatch,
 	unsigned screenWidth, unsigned screenHeight)
 {
 	EngineAPI::Debug::DebugLog::PrintInfoMessage("VulkanGraphicsManager::InitSubsystem()\n");
@@ -35,7 +35,12 @@ bool VulkanGraphicsManager::InitSubsystem(ECHAR* appTitle,
 	if (!InitVKDevice())
 		return false;
 
+	//Cache memory info for our Vulkan device. 
 	CacheVKDeviceMemoryInfo();
+
+	//Setup the swapchain
+	if (!InitVKPresentation(osWindow))
+		return false;
 
 	//Done
 	return true;
@@ -323,6 +328,19 @@ void VulkanGraphicsManager::CacheVKDeviceMemoryInfo()
 	//Stores the memory properties of our selected device
 	vkDeviceMemoryProperties = {};
 	vkGetPhysicalDeviceMemoryProperties(vkPhysicalDevice, &vkDeviceMemoryProperties);
+}
+
+bool VulkanGraphicsManager::InitVKPresentation(EngineAPI::OS::OSWindow* osWindow)
+{
+	//
+	//Win32
+	//
+	VkWin32SurfaceCreateInfoKHR win32SurfaceInfo = {};
+
+	//vkCreateWin32SurfaceKHR()
+
+	//Done
+	return true;
 }
 
 //
