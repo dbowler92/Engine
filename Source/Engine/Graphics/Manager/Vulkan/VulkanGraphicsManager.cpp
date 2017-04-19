@@ -60,7 +60,7 @@ bool VulkanGraphicsManager::InitVKInstance(ECHAR* applicationTitle,
 	//
 	//Decribes application & what vulkan API to use (minimum supported)
 	//
-	VkApplicationInfo appInfo{};
+	VkApplicationInfo appInfo = {};
 	appInfo.sType = VK_STRUCTURE_TYPE_APPLICATION_INFO;
 	appInfo.pNext = nullptr;
 	appInfo.apiVersion = VK_MAKE_VERSION(ENGINE_CONFIG_MINIMUM_VULKAN_API_MAJOR, ENGINE_CONFIG_MINIMUM_VULKAN_API_MINOR, ENGINE_CONFIG_MINIMUM_VULKAN_API_PATCH);
@@ -72,7 +72,7 @@ bool VulkanGraphicsManager::InitVKInstance(ECHAR* applicationTitle,
 	//
 	//How do we want to construct the vulkan instance
 	//
-	VkInstanceCreateInfo createInfo{};
+	VkInstanceCreateInfo createInfo = {};
 	createInfo.sType = VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO;
 	createInfo.pApplicationInfo = &appInfo;
 	createInfo.pNext = nullptr;
@@ -223,7 +223,7 @@ bool VulkanGraphicsManager::InitVKDevice()
 	//********************************************************************************
 	//
 	//Requested features
-	VkPhysicalDeviceFeatures vkDeviceEnabledFeaturesArray{};
+	VkPhysicalDeviceFeatures vkDeviceEnabledFeaturesArray = {};
 
 	//Validate (TODO)
 	//if (!ValidateVKDeviceFeatures(&vkDeviceEnabledFeaturesArray))
@@ -231,12 +231,55 @@ bool VulkanGraphicsManager::InitVKDevice()
 
 	//********************************************************************************
 	//********************************************************************************
-	//***********************************Queues***************************************
+	//**********************************Queue(s)**************************************
 	//********************************************************************************
 	//********************************************************************************
 	//
-	//Search queue families for the (?) queue family for graphics (and compute???)
+	//Get the chosen devices queue families (count)
+	uint32_t queueFamilyCount = 0;
+	vkGetPhysicalDeviceQueueFamilyProperties(vkPhysicalDevice, &queueFamilyCount, nullptr); //Count
+	
+	//Get all queue families
+	VkQueueFamilyProperties* queueFamiliesArray = GE_NEW VkQueueFamilyProperties[queueFamilyCount];
+	vkGetPhysicalDeviceQueueFamilyProperties(vkPhysicalDevice, &queueFamilyCount, &queueFamiliesArray[0]);
 
+	//Search queue families for the graphics queue: VK_QUEUE_GRAPHICS_BIT
+	uint32_t graphicsQueueHandle = 0;
+	bool hasFoundQueue = false;
+	hasFoundQueue = GetGraphicsQueueFamilyHandle(&queueFamiliesArray[0], queueFamilyCount, graphicsQueueHandle);
+
+	//Check
+	if (!hasFoundQueue)
+	{
+		//Fail!
+	}
+
+	//Graphics queue
+	VkDeviceQueueCreateInfo graphicsQueueCreateInfo = {};
+	float queuePriorities[1] = { 0.0 };
+	graphicsQueueCreateInfo.sType = VK_STRUCTURE_TYPE_DEVICE_QUEUE_CREATE_INFO;
+	graphicsQueueCreateInfo.pNext = nullptr;
+	graphicsQueueCreateInfo.flags = 0; //Reserved
+	graphicsQueueCreateInfo.queueFamilyIndex = graphicsQueueHandle;
+	graphicsQueueCreateInfo.queueCount = ENGINE_CONFIG_VULKAN_API_GRAPHICS_QUEUE_COUNT;
+	graphicsQueueCreateInfo.pQueuePriorities = queuePriorities;
+
+	//TODO: Other queue families
+
+	//Number of family queues we wish to create queues in
+	uint32_t numFamilyQueuesToCreate = 0;
+#if ENGINE_CONFIG_VULKAN_API_GRAPHICS_QUEUE_COUNT
+	numFamilyQueuesToCreate++;
+#endif 
+#if ENGINE_CONFIG_VULKAN_API_COMPUTE_QUEUE_COUNT
+	numFamilyQueuesToCreate++;
+#endif 
+#if ENGINE_CONFIG_VULKAN_API_TRANSFER_QUEUE_COUNT
+	numFamilyQueuesToCreate++;
+#endif 
+#if ENGINE_CONFIG_VULKAN_API_SPARSE_QUEUE_COUNT
+	numFamilyQueuesToCreate++;
+#endif 
 
 	//********************************************************************************
 	//********************************************************************************
@@ -245,7 +288,7 @@ bool VulkanGraphicsManager::InitVKDevice()
 	//********************************************************************************
 	//
 	//Description struct
-	VkDeviceCreateInfo vkDeviceCreateInfo{};
+	VkDeviceCreateInfo vkDeviceCreateInfo = {};
 	vkDeviceCreateInfo.sType = VK_STRUCTURE_TYPE_DEVICE_CREATE_INFO;
 	vkDeviceCreateInfo.pNext = nullptr;
 	vkDeviceCreateInfo.flags = 0; //Not used in VK 1.0.0
@@ -254,13 +297,15 @@ bool VulkanGraphicsManager::InitVKDevice()
 	vkDeviceCreateInfo.enabledExtensionCount   = (uint32_t)deviceExtensionNames.size();									
 	vkDeviceCreateInfo.ppEnabledExtensionNames = (deviceExtensionNames.size() > 0) ? deviceExtensionNames.data() : NULL;
 	vkDeviceCreateInfo.pEnabledFeatures = &vkDeviceEnabledFeaturesArray;
-
-	//Queues & queues create info struct
-	vkDeviceCreateInfo.pQueueCreateInfos    = nullptr;
-	vkDeviceCreateInfo.queueCreateInfoCount = 0;
+	vkDeviceCreateInfo.pQueueCreateInfos    = &graphicsQueueCreateInfo;
+	vkDeviceCreateInfo.queueCreateInfoCount = numFamilyQueuesToCreate;
 
 	//Create logical device
 	VkResult result = vkCreateDevice(vkPhysicalDevice, &vkDeviceCreateInfo, nullptr, &vkLogicalDevice);
+
+	//Cleanup
+	if (queueFamiliesArray)
+		delete[] queueFamiliesArray;
 
 	//Validate that the logical device was created
 	if (result != VK_SUCCESS)
@@ -619,6 +664,24 @@ VkPhysicalDevice VulkanGraphicsManager::PickBestVulkanPhysicalDevice(VkPhysicalD
 	return vkPickedPhysicalDevice;
 }
 
+bool VulkanGraphicsManager::GetGraphicsQueueFamilyHandle(
+	VkQueueFamilyProperties* deviceQueueFamiliesArray, uint32_t queueFamilyCount,
+	uint32_t& graphicsHandleOut)
+{
+	for (int i = 0; i < queueFamilyCount; i++)
+	{
+		if (deviceQueueFamiliesArray[i].queueFlags & VK_QUEUE_GRAPHICS_BIT)
+		{
+			//Get handle and return true
+			graphicsHandleOut = i;
+			return true;
+		}
+	}
+
+	//False
+	graphicsHandleOut = 0;
+	return false;
+}
 
 //
 //VK Shutdown

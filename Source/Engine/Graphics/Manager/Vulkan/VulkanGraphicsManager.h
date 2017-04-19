@@ -99,6 +99,11 @@ namespace EngineAPI
 				VkPhysicalDevice PickBestVulkanPhysicalDevice(VkPhysicalDevice** availPhysicalDevices,
 					uint32_t availPhysicalDevicesCount);
 
+				//Gets the queue handle for a given type. TODO: Compute etc. 
+				bool GetGraphicsQueueFamilyHandle(
+					VkQueueFamilyProperties* deviceQueueFamiliesArray, uint32_t queueFamilyCount, 
+					uint32_t& graphicsHandleOut);
+
 			private:
 				//VK Shutdown
 				//
