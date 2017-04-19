@@ -221,13 +221,21 @@ bool VulkanGraphicsManager::InitVKDevice()
 	//****************Enabled features (API stuff we want access too)*****************
 	//********************************************************************************
 	//********************************************************************************
+	//
+	//Requested features
+	VkPhysicalDeviceFeatures vkDeviceEnabledFeaturesArray{};
 
+	//Validate (TODO)
+	//if (!ValidateVKDeviceFeatures(&vkDeviceEnabledFeaturesArray))
+	//	return false;
 
 	//********************************************************************************
 	//********************************************************************************
 	//***********************************Queues***************************************
 	//********************************************************************************
 	//********************************************************************************
+	//
+	//Search queue families for the (?) queue family for graphics (and compute???)
 
 
 	//********************************************************************************
@@ -241,32 +249,15 @@ bool VulkanGraphicsManager::InitVKDevice()
 	vkDeviceCreateInfo.sType = VK_STRUCTURE_TYPE_DEVICE_CREATE_INFO;
 	vkDeviceCreateInfo.pNext = nullptr;
 	vkDeviceCreateInfo.flags = 0; //Not used in VK 1.0.0
+	vkDeviceCreateInfo.enabledLayerCount   = (uint32_t)deviceLayersNames.size();								   //Depreciated
+	vkDeviceCreateInfo.ppEnabledLayerNames = (deviceLayersNames.size() > 0) ? deviceLayersNames.data() : NULL;     //Depreciated
+	vkDeviceCreateInfo.enabledExtensionCount   = (uint32_t)deviceExtensionNames.size();									
+	vkDeviceCreateInfo.ppEnabledExtensionNames = (deviceExtensionNames.size() > 0) ? deviceExtensionNames.data() : NULL;
+	vkDeviceCreateInfo.pEnabledFeatures = &vkDeviceEnabledFeaturesArray;
 
-	//Device layers
-	if (deviceLayersNames.size() > 0) //Depreciated???
-	{
-		vkDeviceCreateInfo.ppEnabledLayerNames = deviceLayersNames.data();
-		vkDeviceCreateInfo.enabledLayerCount = deviceLayersNames.size();
-	}
-	else
-	{
-		vkDeviceCreateInfo.ppEnabledLayerNames = nullptr;
-		vkDeviceCreateInfo.enabledLayerCount = 0;
-	}
-
-	//Device extentions
-	if (deviceExtensionNames.size() > 0)
-	{
-		vkDeviceCreateInfo.ppEnabledExtensionNames = deviceExtensionNames.data();
-		vkDeviceCreateInfo.enabledExtensionCount = deviceExtensionNames.size();
-	}
-	else
-	{
-		vkDeviceCreateInfo.ppEnabledExtensionNames = nullptr;
-		vkDeviceCreateInfo.enabledExtensionCount = 0;
-	}
-
-	//TODO: Queues, API features etc
+	//Queues & queues create info struct
+	vkDeviceCreateInfo.pQueueCreateInfos    = nullptr;
+	vkDeviceCreateInfo.queueCreateInfoCount = 0;
 
 	//Create logical device
 	VkResult result = vkCreateDevice(vkPhysicalDevice, &vkDeviceCreateInfo, nullptr, &vkLogicalDevice);
@@ -524,6 +515,14 @@ bool VulkanGraphicsManager::ValidateVKDeviceExtentions(std::vector<const char*> 
 	}
 }
 
+/*
+bool VulkanGraphicsManager::ValidateVKDeviceFeatures(VkPhysicalDeviceFeatures* requestedDeviceFeatures)
+{
+	//TODO
+	return true;
+}
+*/
+
 //
 //VK Helper
 //
@@ -540,7 +539,7 @@ VkPhysicalDevice VulkanGraphicsManager::PickBestVulkanPhysicalDevice(VkPhysicalD
 	//menu)
 	//
 	VkPhysicalDevice vkPickedPhysicalDevice = NULL;
-
+	
 	//If only one is available, pick it
 	if (availPhysicalDevicesCount == 1)
 		vkPickedPhysicalDevice = *availPhysicalDevices[0];
@@ -563,6 +562,58 @@ VkPhysicalDevice VulkanGraphicsManager::PickBestVulkanPhysicalDevice(VkPhysicalD
 			}
 		}
 	}
+
+#if SHOULD_PRINT_GRAPHICS_INIT_INFO 
+	//Info to print
+	VkPhysicalDeviceProperties deviceProperties{};
+	vkGetPhysicalDeviceProperties(vkPickedPhysicalDevice, &deviceProperties);
+
+	//String
+	char str[256];
+	int major = 0;
+	int minor = 0;
+	int patch = 0;
+
+	//Device name
+	EngineAPI::Debug::DebugLog::PrintInfoMessage("VulkanGraphicsManager: Vulkan Device Selected: ");
+	EngineAPI::Debug::DebugLog::PrintMessage(deviceProperties.deviceName);
+	EngineAPI::Debug::DebugLog::PrintMessage("\n");
+
+	//Device type
+	sprintf(&str[0], "%i", deviceProperties.deviceType);
+	EngineAPI::Debug::DebugLog::PrintInfoMessage("VulkanGraphicsManager: Vulkan Device Type (VkPhysicalDeviceType Enum): ");
+	EngineAPI::Debug::DebugLog::PrintMessage(str);
+	EngineAPI::Debug::DebugLog::PrintMessage("\n");
+
+	//Limits - device bytes
+	uint64_t deviceBytes = deviceProperties.limits.sparseAddressSpaceSize;
+	sprintf(&str[0], "%u", deviceBytes);
+	EngineAPI::Debug::DebugLog::PrintInfoMessage("VulkanGraphicsManager: Maximum Available Memory: ");
+	EngineAPI::Debug::DebugLog::PrintMessage(str);
+	EngineAPI::Debug::DebugLog::PrintMessage("\n");
+
+	//Driver version
+	sprintf(&str[0], "%i.%i", VK_VERSION_MAJOR(deviceProperties.driverVersion), 
+		VK_VERSION_MINOR(deviceProperties.driverVersion));
+	EngineAPI::Debug::DebugLog::PrintInfoMessage("VulkanGraphicsManager: Vulkan Device Driver Version: ");
+	EngineAPI::Debug::DebugLog::PrintMessage(str);
+	EngineAPI::Debug::DebugLog::PrintMessage("\n");
+
+	//Device ID && Vendor ID
+	sprintf(&str[0], "%i. VendorID: %i", deviceProperties.deviceID, deviceProperties.vendorID);
+	EngineAPI::Debug::DebugLog::PrintInfoMessage("VulkanGraphicsManager: Vulkan Device ID: ");
+	EngineAPI::Debug::DebugLog::PrintMessage(str);
+	EngineAPI::Debug::DebugLog::PrintMessage("\n");
+	
+	//API version
+	sprintf(&str[0], "%i.%i.%i", VK_VERSION_MAJOR(deviceProperties.apiVersion),
+		VK_VERSION_MINOR(deviceProperties.apiVersion), 
+		VK_VERSION_PATCH(deviceProperties.apiVersion));
+	EngineAPI::Debug::DebugLog::PrintInfoMessage("VulkanGraphicsManager: Vulkan Device API Version: ");
+	EngineAPI::Debug::DebugLog::PrintMessage(str);
+	EngineAPI::Debug::DebugLog::PrintMessage("\n");
+
+#endif
 
 	//Done
 	return vkPickedPhysicalDevice;
