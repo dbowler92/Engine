@@ -77,6 +77,17 @@ namespace EngineAPI
 				bool ValidateVKDeviceLayers(std::vector<const char*> *desiredDeviceLayers);
 				bool ValidateVKDeviceExtentions(std::vector<const char*> *desiredDeviceExtentions);
 
+				//Again, like above, this function checks to see if our device can
+				//support the requested API feature set. NOTE: This likely should
+				//be done before/at the same time we pick a specific device -> Thus, we
+				//could reject a potential device that doesn't support the requested features
+				//of our game/app/engine. 
+				//
+				//IMPORTANT: As VK is new, this function is pointless (all devices will
+				//support the stuff we need) and doesnt actually do anything 
+				//(instantly return true).
+				//bool ValidateVKDeviceFeatures(VkPhysicalDeviceFeatures* requestedDeviceFeatures);
+
 			private:
 				//VK Helpers
 				//

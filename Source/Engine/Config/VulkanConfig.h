@@ -19,6 +19,15 @@
 #define ENGINE_CONFIG_MINIMUM_VULKAN_API_MINOR 0
 #define ENGINE_CONFIG_MINIMUM_VULKAN_API_PATCH 0
 
+//
+//TODO: API feature set (VkPhysicalDeviceFeatures struct) - eg: compute, geometry
+//shader, tessellation stage etc. 
+//
+
+//Queues
+#define ENGINE_CONFIG_VULKAN_API_GRAPHICS_QUEUE_COUNT 1
+#define ENGINE_CONFIG_VULKAN_API_COMPUTE_QUEUE_COUNT  0 //TODO?
+
 //Should we enable debug layers & extentions (instance)
 #define ENGINE_CONFIG_VULKAN_API_ENABLE_VALIDATION_AND_DEBUG_LAYERS_ON_INSTANCE 1
 #define ENGINE_CONFIG_VULKAN_API_ENABLE_VALIDATION_AND_DEBUG_EXTENTIONS_ON_INSTANCE 1
