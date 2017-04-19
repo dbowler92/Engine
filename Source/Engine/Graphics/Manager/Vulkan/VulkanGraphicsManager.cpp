@@ -255,9 +255,8 @@ bool VulkanGraphicsManager::InitVKDevice()
 	vkGetPhysicalDeviceQueueFamilyProperties(vkPhysicalDevice, &vkQueueFamiliesCount, &vkQueueFamiliesArray[0]);
 
 	//Search queue families for the graphics queue: VK_QUEUE_GRAPHICS_BIT
-	uint32_t graphicsQueueHandle = 0;
 	bool hasFoundQueue = false;
-	hasFoundQueue = GetGraphicsQueueFamilyHandle(&vkQueueFamiliesArray[0], vkQueueFamiliesCount, graphicsQueueHandle);
+	hasFoundQueue = GetGraphicsQueueFamilyHandle(&vkQueueFamiliesArray[0], vkQueueFamiliesCount);
 
 	//Check
 	if (!hasFoundQueue)
@@ -269,7 +268,7 @@ bool VulkanGraphicsManager::InitVKDevice()
 	graphicsQueueCreateInfo.sType = VK_STRUCTURE_TYPE_DEVICE_QUEUE_CREATE_INFO;
 	graphicsQueueCreateInfo.pNext = nullptr;
 	graphicsQueueCreateInfo.flags = 0; //Reserved
-	graphicsQueueCreateInfo.queueFamilyIndex = graphicsQueueHandle;
+	graphicsQueueCreateInfo.queueFamilyIndex = vkGraphicsQueueFamilyIndex;
 	graphicsQueueCreateInfo.queueCount = ENGINE_CONFIG_VULKAN_API_GRAPHICS_QUEUE_COUNT;
 	graphicsQueueCreateInfo.pQueuePriorities = queuePriorities;
 
@@ -684,7 +683,6 @@ VkPhysicalDevice VulkanGraphicsManager::PickBestVulkanPhysicalDevice(VkPhysicalD
 	EngineAPI::Debug::DebugLog::PrintInfoMessage("VulkanGraphicsManager: Vulkan Device API Version: ");
 	EngineAPI::Debug::DebugLog::PrintMessage(str);
 	EngineAPI::Debug::DebugLog::PrintMessage("\n");
-
 #endif
 
 	//Done
@@ -692,22 +690,21 @@ VkPhysicalDevice VulkanGraphicsManager::PickBestVulkanPhysicalDevice(VkPhysicalD
 }
 
 bool VulkanGraphicsManager::GetGraphicsQueueFamilyHandle(
-	VkQueueFamilyProperties* deviceQueueFamiliesArray, uint32_t queueFamilyCount,
-	uint32_t& graphicsHandleOut)
+	VkQueueFamilyProperties* deviceQueueFamiliesArray, uint32_t queueFamilyCount)
 {
 	for (int i = 0; i < queueFamilyCount; i++)
 	{
 		if (deviceQueueFamiliesArray[i].queueFlags & VK_QUEUE_GRAPHICS_BIT)
 		{
-			//Get handle and return true
-			graphicsHandleOut = i;
+			//Store handle and return true
+			vkGraphicsQueueFamilyIndex = i; 
 			return true;
 		}
 	}
 
 	//False
 	EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanGraphicsManager::GetGraphicsQueueFamilyHandle(): Failed to find the graphics queue family.\n");
-	graphicsHandleOut = 0;
+	vkGraphicsQueueFamilyIndex = 0;
 	return false;
 }
 

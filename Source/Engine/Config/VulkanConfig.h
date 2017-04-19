@@ -7,6 +7,9 @@
 
 #pragma once
 
+//Macro which will select the correct subclass to inherit from for graphics classes
+#define RENDERING_PLATFORM_IMPLEMENTATION(TYPE) Platform::##Vulkan##TYPE
+
 //Win32 - nice and easy way to have Vulkan interact with the Win32 OS
 #ifdef ENGINE_CONFIG_PLATFORM_WIN32
 #define VK_USE_PLATFORM_WIN32_KHR

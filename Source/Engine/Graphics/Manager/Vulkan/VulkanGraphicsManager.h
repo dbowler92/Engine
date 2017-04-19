@@ -55,6 +55,9 @@ namespace EngineAPI
 				VkQueueFamilyProperties* vkQueueFamiliesArray = nullptr;
 				uint32_t vkQueueFamiliesCount;
 
+				//Index to our graphics queue family????
+				uint32_t vkGraphicsQueueFamilyIndex = 0;
+
 				//Device memory info
 				VkPhysicalDeviceMemoryProperties vkDeviceMemoryProperties;
 
@@ -114,9 +117,7 @@ namespace EngineAPI
 					uint32_t availPhysicalDevicesCount);
 
 				//Gets the queue handle for a given type. TODO: Compute etc. 
-				bool GetGraphicsQueueFamilyHandle(
-					VkQueueFamilyProperties* deviceQueueFamiliesArray, uint32_t queueFamilyCount, 
-					uint32_t& graphicsHandleOut);
+				bool GetGraphicsQueueFamilyHandle(VkQueueFamilyProperties* deviceQueueFamiliesArray, uint32_t queueFamilyCount);
 
 			private:
 				//VK Shutdown

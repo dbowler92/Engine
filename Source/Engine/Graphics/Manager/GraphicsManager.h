@@ -27,19 +27,16 @@ namespace EngineAPI
 {
 	namespace Graphics
 	{
-		class GraphicsManager :
-#ifdef ENGINE_CONFIG_GRAPHICS_API_VULKAN 
-			public EngineAPI::Graphics::Platform::VulkanGraphicsManager
-#endif
-#ifdef ENGINE_CONFIG_GRAPHICS_API_D3D11
-			public EngineAPI::Graphics::Platform::D3D11GraphicsManager
-#endif
-			//...
-			//...
-			//...
-#ifdef ENGINE_CONFIG_GRAPHICS_API_GNM
-			public EngineAPI::Graphics::Platform::GNMGraphicsManager
-#endif
+		class GraphicsManager : public RENDERING_PLATFORM_IMPLEMENTATION(GraphicsManager)
+//#ifdef ENGINE_CONFIG_GRAPHICS_API_VULKAN 
+//			public EngineAPI::Graphics::Platform::VulkanGraphicsManager
+//#endif
+//#ifdef ENGINE_CONFIG_GRAPHICS_API_D3D11
+//			public EngineAPI::Graphics::Platform::D3D11GraphicsManager
+//#endif
+//#ifdef ENGINE_CONFIG_GRAPHICS_API_GNM
+//			public EngineAPI::Graphics::Platform::GNMGraphicsManager
+//#endif
 		{
 		public:
 			GraphicsManager() {};
