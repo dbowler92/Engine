@@ -22,3 +22,7 @@
 //Should we enable debug layers & extentions (instance)
 #define ENGINE_CONFIG_VULKAN_API_ENABLE_VALIDATION_AND_DEBUG_LAYERS_ON_INSTANCE 1
 #define ENGINE_CONFIG_VULKAN_API_ENABLE_VALIDATION_AND_DEBUG_EXTENTIONS_ON_INSTANCE 1
+
+//Should we enable debug extentions (device) - I think the device layers are depreciated ->
+//at least, according to my book!
+#define ENGINE_CONFIG_VULKAN_API_ENABLE_VALIDATION_AND_DEBUG_EXTENTIONS_ON_DEVICE 1

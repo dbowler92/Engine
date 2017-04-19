@@ -152,9 +152,12 @@ bool VulkanGraphicsManager::InitVKInstance(ECHAR* applicationTitle,
 
 bool VulkanGraphicsManager::InitVKDevice()
 {
+	//********************************************************************************
+	//********************************************************************************
+	//***********************Pick a physical device***********************************
+	//********************************************************************************
+	//********************************************************************************
 	//
-	//Pick a physical device
-	//	
 	//Get number of physical devices
 	uint32_t physicalDeviceCount = 0;
 	vkEnumeratePhysicalDevices(vkInstance, &physicalDeviceCount, nullptr);
@@ -175,35 +178,90 @@ bool VulkanGraphicsManager::InitVKDevice()
 	//Pick the best...
 	vkPhysicalDevice = PickBestVulkanPhysicalDevice(&vkPhysicalDevicesArray, physicalDeviceCount);
 
+	//Cleanup memory holding all possible physical devices (we have cahced the handle of
+	//our chosen device/GPU so this is fine)
+	if (vkPhysicalDevicesArray)
+		delete[] vkPhysicalDevicesArray;
+
+	//********************************************************************************
+	//********************************************************************************
+	//*******************Enabled device layers (Depreciated??)************************
+	//********************************************************************************
+	//********************************************************************************
 	//
-	//Enabled device layers 
-	//
+	//Find all device layers available to us + number of them
+	/*
+	uint32_t deviceLayersCount = 0;
+	vkEnumerateDeviceLayerProperties(vkPhysicalDevice, &deviceLayersCount, nullptr);
+	VkLayerProperties* availDeviceLayers = nullptr;
+	if (deviceLayersCount > 0)
+	{
+		//Get all available device layers. 
+		availDeviceLayers = GE_NEW VkLayerProperties[deviceLayersCount];
+		vkEnumerateDeviceLayerProperties(vkPhysicalDevice, &deviceLayersCount, &availDeviceLayers[0]);
 	
-	//
-	//Enabled device extentions
-	//
+		//TODO: Select some to enable (May not actually be required to be honest...)
 
-	//
-	//Enabled features (API stuff we want access too)
-	//
+		//TODO: Validate
 
-	//
-	//Queues
-	//
+		//Cleanup memory containing all available device layers.
+		if (availDeviceLayers)
+			delete[] availDeviceLayers;
+	}
+	*/
 
-	//Description
+	//********************************************************************************
+	//********************************************************************************
+	//**********************Enabled device extentions*********************************
+	//********************************************************************************
+	//********************************************************************************
+	//
+	//NOTE: Doesnt look for device extentions which are
+	//provided by a layer -> Just finds the device extentions provided by the Vulkan
+	//implementation
+	//Pick some device extentions
+	std::vector<const char *> deviceExtensionNames = 
+	{
+		VK_KHR_SWAPCHAIN_EXTENSION_NAME, 
+	};
+
+	//Validate
+	if (!ValidateVKDeviceExtentions(&deviceExtensionNames))
+		return false;
+
+	//********************************************************************************
+	//********************************************************************************
+	//****************Enabled features (API stuff we want access too)*****************
+	//********************************************************************************
+	//********************************************************************************
+
+
+	//********************************************************************************
+	//********************************************************************************
+	//***********************************Queues***************************************
+	//********************************************************************************
+	//********************************************************************************
+
+
+	//********************************************************************************
+	//********************************************************************************
+	//**************************Create logical device*********************************
+	//********************************************************************************
+	//********************************************************************************
+	//
+	//Description struct
 	VkDeviceCreateInfo vkDeviceCreateInfo{};
 	vkDeviceCreateInfo.sType = VK_STRUCTURE_TYPE_DEVICE_CREATE_INFO;
 	vkDeviceCreateInfo.pNext = nullptr;
 	vkDeviceCreateInfo.flags = 0; //Not used in VK 1.0.0
-	//TODO
+	vkDeviceCreateInfo.ppEnabledLayerNames = nullptr; //Depreciated???
+	vkDeviceCreateInfo.enabledLayerCount   = 0;
+	vkDeviceCreateInfo.ppEnabledExtensionNames = deviceExtensionNames.data();
+	vkDeviceCreateInfo.enabledExtensionCount   = deviceExtensionNames.size();
 
 	//Create logical device
 	VkResult result = vkCreateDevice(vkPhysicalDevice, &vkDeviceCreateInfo, nullptr, &vkLogicalDevice);
 
-	//Cleanup memory
-	delete[] vkPhysicalDevicesArray;
-	
 	//Validate that the logical device was created
 	if (result != VK_SUCCESS)
 	{
@@ -338,6 +396,68 @@ bool VulkanGraphicsManager::ValidateVKInstanceExtentions(std::vector<const char*
 	}
 }
 
+bool VulkanGraphicsManager::ValidateVKDeviceExtentions(std::vector<const char*> *desiredDeviceExtentions)
+{
+	//No need to check...
+	if (desiredDeviceExtentions->size() == 0)
+	{
+#if SHOULD_PRINT_GRAPHICS_INIT_INFO
+		EngineAPI::Debug::DebugLog::PrintInfoMessage("VulkanGraphicsManager: Vulkan enabling NO device extentions\n");
+#endif
+		return true;
+	}
+
+	//Get the device extentions count
+	uint32_t deviceExtentionsCount = 0;
+	vkEnumerateDeviceExtensionProperties(vkPhysicalDevice, NULL, &deviceExtentionsCount, nullptr);
+	VkExtensionProperties* availDeviceExtentions = nullptr;
+	
+	//Get all device extentions
+	availDeviceExtentions = GE_NEW VkExtensionProperties[deviceExtentionsCount];
+	vkEnumerateDeviceExtensionProperties(vkPhysicalDevice, NULL, &deviceExtentionsCount, &availDeviceExtentions[0]);
+
+	//Are all of our requested device extentions available for us to use? 
+	int numDeviceExtentionsMatchedWithRequested = 0;
+	for (int i = 0; i < (int)deviceExtentionsCount; i++)
+	{
+		//ith device extentions properties
+		VkExtensionProperties* deviceExtention = &availDeviceExtentions[i];
+
+		//Can we find each and every one of our requested device extentions (by name)
+		for (int j = 0; j < (int)desiredDeviceExtentions->size(); j++)
+		{
+			if (strcmp(deviceExtention->extensionName, (*desiredDeviceExtentions)[j]) == 0)
+			{
+#if SHOULD_PRINT_GRAPHICS_INIT_INFO
+				EngineAPI::Debug::DebugLog::PrintInfoMessage("VulkanGraphicsManager: Vulkan enabling device extention: ");
+				EngineAPI::Debug::DebugLog::PrintMessage(deviceExtention->extensionName);
+				EngineAPI::Debug::DebugLog::PrintMessage("\n");
+#endif
+
+				//Found
+				numDeviceExtentionsMatchedWithRequested++;
+				break;
+			}
+		}
+	}
+
+	//Cleanup memory
+	delete[] availDeviceExtentions;
+
+	//Do validation
+	if (numDeviceExtentionsMatchedWithRequested == desiredDeviceExtentions->size())
+		return true;
+	else
+	{
+		EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanGraphicsManager: Error when validating Vulkan Device Extentions! ");
+		EngineAPI::Debug::DebugLog::PrintMessage("It's likely that at least one requested device extention is not avilable for you to use in this Vulkan implentation.\n");
+		return false;
+	}
+
+	//done
+	return true;
+}
+
 //
 //VK Helper
 //
@@ -345,10 +465,38 @@ bool VulkanGraphicsManager::ValidateVKInstanceExtentions(std::vector<const char*
 VkPhysicalDevice VulkanGraphicsManager::PickBestVulkanPhysicalDevice(VkPhysicalDevice** availPhysicalDevices,
 	uint32_t availPhysicalDevicesCount)
 {
+	//
+	//NOTE: Will need improvements later - A potential solution would be to pick one
+	//that the engine deems to be the best (discrete && with the most VRam. Falling back
+	//to something else if this doesnt exist incase the user is running an integrated
+	//GPU) but offer the user the ability to change the physical/logical device
+	//at runtime (give them a list of all possible vulkan GPUs/devices in the options
+	//menu)
+	//
 	VkPhysicalDevice vkPickedPhysicalDevice = NULL;
 
-	//Just pick the first... TODO: Look in to this later
-	vkPickedPhysicalDevice = *availPhysicalDevices[0];
+	//If only one is available, pick it
+	if (availPhysicalDevicesCount == 1)
+		vkPickedPhysicalDevice = *availPhysicalDevices[0];
+	else
+	{
+		//Pick the best somehow. 
+		for (int i = 0; i < availPhysicalDevicesCount; i++)
+		{
+			//ith device properties - eg: Is it a discrete GPU?
+			VkPhysicalDeviceProperties deviceProperties{};
+			vkGetPhysicalDeviceProperties((*availPhysicalDevices)[i], &deviceProperties);
+
+			//TEMP: Look for the first discrete GPU. Should really cache these
+			//and then pick the one with the most VRAM. Falling back to integrated GPU and, 
+			//if this fails, pick whatever & tell the user to upgrade their wooden PC!
+			if (deviceProperties.deviceType == VkPhysicalDeviceType::VK_PHYSICAL_DEVICE_TYPE_DISCRETE_GPU)
+			{
+				vkPickedPhysicalDevice = (*availPhysicalDevices)[i];
+				break;
+			}
+		}
+	}
 
 	//Done
 	return vkPickedPhysicalDevice;

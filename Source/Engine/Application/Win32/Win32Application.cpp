@@ -182,7 +182,12 @@ bool Win32Application::ShutdownEngine()
 	EngineAPI::Debug::DebugLog::PrintInfoMessage("Win32Application::ShutdownEngine()\n");
 
 	//Shutdown subsystems - reverse order to creation
-	graphicsSubsystem->ShutdownSubsystem();
+	if (graphicsSubsystem)
+	{
+		graphicsSubsystem->ShutdownSubsystem();
+		delete graphicsSubsystem;
+		graphicsSubsystem = nullptr;
+	}
 
 	return true;
 }

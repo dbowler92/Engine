@@ -70,12 +70,19 @@ namespace EngineAPI
 				bool ValidateVKInstanceLayers(std::vector<const char*> *desiredInstanceLayers);
 				bool ValidateVKInstanceExtentions(std::vector<const char*> *desiredInstanceExtentions);
 
+				//Like above, validates our chosen device extentions - Are the ones
+				//we want available to us? Again, doesnt attempt to recover in the
+				//case they do not exist. 
+				bool ValidateVKDeviceExtentions(std::vector<const char*> *desiredDeviceExtentions);
+
 			private:
 				//VK Helpers
 				//
 				//Finds the "best" Vulkan enabled physical device for us to use
 				//when creating the Vulkan physical device. Currently, it just picks the
-				//first which should be the Vulkan handle to our GPU
+				//first discrete GPU which should be fine for us.
+				//
+				//See comments for a better approach. 
 				VkPhysicalDevice PickBestVulkanPhysicalDevice(VkPhysicalDevice** availPhysicalDevices,
 					uint32_t availPhysicalDevicesCount);
 
