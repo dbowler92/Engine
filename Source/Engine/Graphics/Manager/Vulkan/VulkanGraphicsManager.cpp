@@ -35,6 +35,8 @@ bool VulkanGraphicsManager::InitSubsystem(ECHAR* appTitle,
 	if (!InitVKDevice())
 		return false;
 
+	CacheVKDeviceMemoryInfo();
+
 	//Done
 	return true;
 }
@@ -44,6 +46,10 @@ bool VulkanGraphicsManager::ShutdownSubsystem()
 	EngineAPI::Debug::DebugLog::PrintInfoMessage("VulkanGraphicsManager::ShutdownSubsystem()\n");	
 	
 	//Cleanup vulkan
+	//
+	if (vkQueueFamiliesArray)
+		delete[] vkQueueFamiliesArray;
+
 	ShutdownVKDevice();
 	ShutdownVKInstance();
 	
@@ -236,23 +242,21 @@ bool VulkanGraphicsManager::InitVKDevice()
 	//********************************************************************************
 	//
 	//Get the chosen devices queue families (count)
-	uint32_t queueFamilyCount = 0;
-	vkGetPhysicalDeviceQueueFamilyProperties(vkPhysicalDevice, &queueFamilyCount, nullptr); //Count
+	vkQueueFamiliesCount = 0;
+	vkGetPhysicalDeviceQueueFamilyProperties(vkPhysicalDevice, &vkQueueFamiliesCount, nullptr); //Count
 	
 	//Get all queue families
-	VkQueueFamilyProperties* queueFamiliesArray = GE_NEW VkQueueFamilyProperties[queueFamilyCount];
-	vkGetPhysicalDeviceQueueFamilyProperties(vkPhysicalDevice, &queueFamilyCount, &queueFamiliesArray[0]);
+	vkQueueFamiliesArray = GE_NEW VkQueueFamilyProperties[vkQueueFamiliesCount];
+	vkGetPhysicalDeviceQueueFamilyProperties(vkPhysicalDevice, &vkQueueFamiliesCount, &vkQueueFamiliesArray[0]);
 
 	//Search queue families for the graphics queue: VK_QUEUE_GRAPHICS_BIT
 	uint32_t graphicsQueueHandle = 0;
 	bool hasFoundQueue = false;
-	hasFoundQueue = GetGraphicsQueueFamilyHandle(&queueFamiliesArray[0], queueFamilyCount, graphicsQueueHandle);
+	hasFoundQueue = GetGraphicsQueueFamilyHandle(&vkQueueFamiliesArray[0], vkQueueFamiliesCount, graphicsQueueHandle);
 
 	//Check
 	if (!hasFoundQueue)
-	{
-		//Fail!
-	}
+		return false;
 
 	//Graphics queue
 	VkDeviceQueueCreateInfo graphicsQueueCreateInfo = {};
@@ -303,10 +307,6 @@ bool VulkanGraphicsManager::InitVKDevice()
 	//Create logical device
 	VkResult result = vkCreateDevice(vkPhysicalDevice, &vkDeviceCreateInfo, nullptr, &vkLogicalDevice);
 
-	//Cleanup
-	if (queueFamiliesArray)
-		delete[] queueFamiliesArray;
-
 	//Validate that the logical device was created
 	if (result != VK_SUCCESS)
 	{
@@ -316,6 +316,13 @@ bool VulkanGraphicsManager::InitVKDevice()
 
 	//Done
 	return true;
+}
+
+void VulkanGraphicsManager::CacheVKDeviceMemoryInfo()
+{
+	//Stores the memory properties of our selected device
+	vkDeviceMemoryProperties = {};
+	vkGetPhysicalDeviceMemoryProperties(vkPhysicalDevice, &vkDeviceMemoryProperties);
 }
 
 //
@@ -608,11 +615,13 @@ VkPhysicalDevice VulkanGraphicsManager::PickBestVulkanPhysicalDevice(VkPhysicalD
 		}
 	}
 
+	//Store info on picked device
+	vkDeviceProperties = {};
+	vkGetPhysicalDeviceProperties(vkPickedPhysicalDevice, &vkDeviceProperties);
+
 #if SHOULD_PRINT_GRAPHICS_INIT_INFO 
 	//Info to print
-	VkPhysicalDeviceProperties deviceProperties{};
-	vkGetPhysicalDeviceProperties(vkPickedPhysicalDevice, &deviceProperties);
-
+	//
 	//String
 	char str[256];
 	int major = 0;
@@ -621,39 +630,39 @@ VkPhysicalDevice VulkanGraphicsManager::PickBestVulkanPhysicalDevice(VkPhysicalD
 
 	//Device name
 	EngineAPI::Debug::DebugLog::PrintInfoMessage("VulkanGraphicsManager: Vulkan Device Selected: ");
-	EngineAPI::Debug::DebugLog::PrintMessage(deviceProperties.deviceName);
+	EngineAPI::Debug::DebugLog::PrintMessage(vkDeviceProperties.deviceName);
 	EngineAPI::Debug::DebugLog::PrintMessage("\n");
 
 	//Device type
-	sprintf(&str[0], "%i", deviceProperties.deviceType);
+	sprintf(&str[0], "%i", vkDeviceProperties.deviceType);
 	EngineAPI::Debug::DebugLog::PrintInfoMessage("VulkanGraphicsManager: Vulkan Device Type (VkPhysicalDeviceType Enum): ");
 	EngineAPI::Debug::DebugLog::PrintMessage(str);
 	EngineAPI::Debug::DebugLog::PrintMessage("\n");
 
 	//Limits - device bytes
-	uint64_t deviceBytes = deviceProperties.limits.sparseAddressSpaceSize;
+	uint64_t deviceBytes = vkDeviceProperties.limits.sparseAddressSpaceSize;
 	sprintf(&str[0], "%u", deviceBytes);
 	EngineAPI::Debug::DebugLog::PrintInfoMessage("VulkanGraphicsManager: Maximum Available Memory: ");
 	EngineAPI::Debug::DebugLog::PrintMessage(str);
 	EngineAPI::Debug::DebugLog::PrintMessage("\n");
 
 	//Driver version
-	sprintf(&str[0], "%i.%i", VK_VERSION_MAJOR(deviceProperties.driverVersion), 
-		VK_VERSION_MINOR(deviceProperties.driverVersion));
+	sprintf(&str[0], "%i.%i", VK_VERSION_MAJOR(vkDeviceProperties.driverVersion),
+		VK_VERSION_MINOR(vkDeviceProperties.driverVersion));
 	EngineAPI::Debug::DebugLog::PrintInfoMessage("VulkanGraphicsManager: Vulkan Device Driver Version: ");
 	EngineAPI::Debug::DebugLog::PrintMessage(str);
 	EngineAPI::Debug::DebugLog::PrintMessage("\n");
 
 	//Device ID && Vendor ID
-	sprintf(&str[0], "%i. VendorID: %i", deviceProperties.deviceID, deviceProperties.vendorID);
+	sprintf(&str[0], "%i. VendorID: %i", vkDeviceProperties.deviceID, vkDeviceProperties.vendorID);
 	EngineAPI::Debug::DebugLog::PrintInfoMessage("VulkanGraphicsManager: Vulkan Device ID: ");
 	EngineAPI::Debug::DebugLog::PrintMessage(str);
 	EngineAPI::Debug::DebugLog::PrintMessage("\n");
 	
 	//API version
-	sprintf(&str[0], "%i.%i.%i", VK_VERSION_MAJOR(deviceProperties.apiVersion),
-		VK_VERSION_MINOR(deviceProperties.apiVersion), 
-		VK_VERSION_PATCH(deviceProperties.apiVersion));
+	sprintf(&str[0], "%i.%i.%i", VK_VERSION_MAJOR(vkDeviceProperties.apiVersion),
+		VK_VERSION_MINOR(vkDeviceProperties.apiVersion),
+		VK_VERSION_PATCH(vkDeviceProperties.apiVersion));
 	EngineAPI::Debug::DebugLog::PrintInfoMessage("VulkanGraphicsManager: Vulkan Device API Version: ");
 	EngineAPI::Debug::DebugLog::PrintMessage(str);
 	EngineAPI::Debug::DebugLog::PrintMessage("\n");
@@ -679,6 +688,7 @@ bool VulkanGraphicsManager::GetGraphicsQueueFamilyHandle(
 	}
 
 	//False
+	EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanGraphicsManager::GetGraphicsQueueFamilyHandle(): Failed to find the graphics queue family.\n");
 	graphicsHandleOut = 0;
 	return false;
 }

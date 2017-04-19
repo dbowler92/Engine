@@ -47,11 +47,22 @@ namespace EngineAPI
 				VkPhysicalDevice vkPhysicalDevice = NULL; 
 				VkDevice vkLogicalDevice = NULL;		 
 
+				//Device properties
+				VkPhysicalDeviceProperties vkDeviceProperties;
+
+				//Device queue families
+				VkQueueFamilyProperties* vkQueueFamiliesArray;
+				uint32_t vkQueueFamiliesCount;
+
+				//Device memory info
+				VkPhysicalDeviceMemoryProperties vkDeviceMemoryProperties;
+
 			private:
 				//VK Init
 				//
 				bool InitVKInstance(ECHAR* applicationTitle, int appVersionMajor, int appVersionMinor, int appVersionPatch);
 				bool InitVKDevice(); //Logical device is created
+				void CacheVKDeviceMemoryInfo();
 
 			private:
 				//VK Validations
