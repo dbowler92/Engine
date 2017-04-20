@@ -3,6 +3,9 @@
 //Created By Daniel Bowler
 //
 //Represents an Win32 OS window
+//
+//TODO: Move some of the code from Win32App over to here (Eg: The window creationn & 
+//registration code). 
 
 #pragma once
 

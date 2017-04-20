@@ -15,6 +15,10 @@
 //OS window info - so the graphics API can talk to the OS windowing system.
 #include "../../../OSWindow/OSWindow.h"
 
+//Abstractions of rendering API
+#include "../../Instance/RenderInstance.h"
+#include "../../Device/RenderDevice.h"
+
 namespace EngineAPI
 {
 	namespace Graphics
@@ -34,6 +38,12 @@ namespace EngineAPI
 
 				//Shutsdown the graphics manager
 				virtual bool ShutdownSubsystem() = 0;
+
+			protected:
+				//Instance, device and swapchain handlers
+				RenderInstance renderingInstance;
+				RenderDevice renderingDevice;
+
 			};
 		};
 	};

@@ -9,7 +9,7 @@
 //Platform
 #include "../Config/EngineConfig.h"
 
-//WHich os to inherit from
+//Which os to inherit from
 #ifdef ENGINE_CONFIG_PLATFORM_WIN32
 #include "Win32\Win32OSWindow.h"
 #endif

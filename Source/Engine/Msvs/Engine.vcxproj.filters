@@ -22,15 +22,6 @@
     <Filter Include="Src\Graphics\Manager">
       <UniqueIdentifier>{3e240ec2-235b-48a7-9083-dc046111c077}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Src\Graphics\Texture2D">
-      <UniqueIdentifier>{f388de51-4e07-43be-baef-ab931599c5ae}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Src\Graphics\Mesh">
-      <UniqueIdentifier>{c65af4e6-3987-46d4-856e-648fbaac77db}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Src\Graphics\Shader">
-      <UniqueIdentifier>{7cb17b67-6878-4c9b-ad59-3eae43fc7276}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Engine Config">
       <UniqueIdentifier>{aa0a4e36-46de-4e53-a751-0736d5414f9c}</UniqueIdentifier>
     </Filter>
@@ -76,6 +67,57 @@
     <Filter Include="Src\OSWindow\Win32">
       <UniqueIdentifier>{6e138a38-d601-44fb-8533-3052e1538775}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Src\Rendering">
+      <UniqueIdentifier>{de7b93c8-d802-4fc2-bc19-d73b467f2c47}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Rendering\Texture2D">
+      <UniqueIdentifier>{f388de51-4e07-43be-baef-ab931599c5ae}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Rendering\Shader">
+      <UniqueIdentifier>{7cb17b67-6878-4c9b-ad59-3eae43fc7276}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Geometry">
+      <UniqueIdentifier>{3b1b2047-d2f3-4272-88b1-33751e74ceea}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Geometry\Mesh">
+      <UniqueIdentifier>{c65af4e6-3987-46d4-856e-648fbaac77db}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Graphics\Device">
+      <UniqueIdentifier>{9e462ca7-1017-476d-ad01-e608a0358e34}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Graphics\Instance">
+      <UniqueIdentifier>{baedc1f3-01fd-42af-8c88-13b7fd96b00b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Graphics\Swapchain">
+      <UniqueIdentifier>{dfe4a73a-2419-4a12-a7e1-74b58fc4675d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Graphics\Device\Common">
+      <UniqueIdentifier>{e206d4b9-8a62-467b-85b9-832a86baa154}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Graphics\Device\Vulkan">
+      <UniqueIdentifier>{a37828ea-7a56-4a86-8e83-e281663e7007}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Graphics\Instance\Common">
+      <UniqueIdentifier>{3c0b7c2d-98ea-41aa-8721-77dee1a91755}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Graphics\Instance\Vulkan">
+      <UniqueIdentifier>{309d3a13-42bb-43d3-afec-329221dc4b70}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Graphics\Swapchain\Common">
+      <UniqueIdentifier>{fb769883-8972-4d6d-a0b2-9060ef019f41}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Graphics\Swapchain\Vulkan">
+      <UniqueIdentifier>{d74f35f8-4c50-4996-b4a8-a48161386f0d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Graphics\Device\D3D11">
+      <UniqueIdentifier>{de675bb7-e700-46e3-aa44-50a572727398}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Graphics\Instance\D3D11">
+      <UniqueIdentifier>{f8936347-35ca-4059-a8e4-b1212be2f750}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Graphics\Swapchain\D3D11">
+      <UniqueIdentifier>{d7ab9dee-cbc9-4b74-af52-5f504f7311da}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Main\EngineMain.cpp">
@@ -119,6 +161,30 @@
     </ClCompile>
     <ClCompile Include="..\OSWindow\OSWindow.cpp">
       <Filter>Src\OSWindow</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Graphics\Swapchain\Common\CommonSwapchain.cpp">
+      <Filter>Src\Graphics\Swapchain\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Graphics\Swapchain\Vulkan\VulkanSwapchain.cpp">
+      <Filter>Src\Graphics\Swapchain\Vulkan</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Graphics\Device\RenderDevice.cpp">
+      <Filter>Src\Graphics\Device</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Graphics\Device\Vulkan\VulkanRenderDevice.cpp">
+      <Filter>Src\Graphics\Device\Vulkan</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Graphics\Device\Common\CommonRenderDevice.cpp">
+      <Filter>Src\Graphics\Device\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Graphics\Instance\Common\CommonRenderInstance.cpp">
+      <Filter>Src\Graphics\Instance\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Graphics\Instance\Vulkan\VulkanRenderInstance.cpp">
+      <Filter>Src\Graphics\Instance\Vulkan</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Graphics\Instance\RenderInstance.cpp">
+      <Filter>Src\Graphics\Instance</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -172,6 +238,30 @@
     </ClInclude>
     <ClInclude Include="..\OSWindow\OSWindow.h">
       <Filter>Src\OSWindow</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Graphics\Swapchain\Common\CommonSwapchain.h">
+      <Filter>Src\Graphics\Swapchain\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Graphics\Swapchain\Vulkan\VulkanSwapchain.h">
+      <Filter>Src\Graphics\Swapchain\Vulkan</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Graphics\Device\RenderDevice.h">
+      <Filter>Src\Graphics\Device</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Graphics\Device\Vulkan\VulkanRenderDevice.h">
+      <Filter>Src\Graphics\Device\Vulkan</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Graphics\Device\Common\CommonRenderDevice.h">
+      <Filter>Src\Graphics\Device\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Graphics\Instance\Common\CommonRenderInstance.h">
+      <Filter>Src\Graphics\Instance\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Graphics\Instance\Vulkan\VulkanRenderInstance.h">
+      <Filter>Src\Graphics\Instance\Vulkan</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Graphics\Instance\RenderInstance.h">
+      <Filter>Src\Graphics\Instance</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
