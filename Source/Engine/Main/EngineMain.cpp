@@ -21,7 +21,7 @@
 
 //Link libs
 #ifdef ENGINE_CONFIG_GRAPHICS_API_VULKAN
-#pragma comment (lib, "vulkan-1.lib")
+#pragma comment (lib, "vulkan-1.lib") //Vulkan loader
 #endif
 
 #ifdef ENGINE_CONFIG_GRAPHICS_API_D3D11
@@ -72,7 +72,7 @@ int EngineMain(HINSTANCE hInstance,
 #endif
 
 	//Enables console for debugging purposes
-	//ShowConsoleW32();
+	ShowConsoleW32();
 
 	//Ensure an app exists.  
 	if (gameAppInstance == NULL)

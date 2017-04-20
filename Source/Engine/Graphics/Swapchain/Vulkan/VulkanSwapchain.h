@@ -27,6 +27,24 @@ namespace EngineAPI
 					EngineAPI::Graphics::RenderDevice* renderingDevice) override;
 				void Shutdown() override;
 				
+			private:
+				//Platform specific data: Eg: Surface/swapchain creation function pointers
+#ifdef ENGINE_CONFIG_PLATFORM_WIN32
+				//WSI Extention
+
+#endif
+			private:
+				//Platform specific init: Vulkan supports (to date): Windows, Linux and Android
+#ifdef ENGINE_CONFIG_PLATFORM_WIN32
+				bool InitWin32(EngineAPI::OS::OSWindow* osWindow,
+					EngineAPI::Graphics::RenderInstance* renderingInstance,
+					EngineAPI::Graphics::RenderDevice* renderingDevice);
+#endif
+			private:
+				//Platform specific shutdown: Vulkan supports (to date): Windows, Linux and Android
+#ifdef ENGINE_CONFIG_PLATFORM_WIN32
+				void ShutdownWin32();
+#endif
 			};
 		};
 	};

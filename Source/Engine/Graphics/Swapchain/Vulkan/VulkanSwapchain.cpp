@@ -6,18 +6,31 @@ bool VulkanSwapchain::Init(EngineAPI::OS::OSWindow* osWindow,
 	EngineAPI::Graphics::RenderInstance* renderingInstance,
 	EngineAPI::Graphics::RenderDevice* renderingDevice)
 {
-	//
-	//Win32
-	//
-	VkWin32SurfaceCreateInfoKHR win32SurfaceInfo = {};
-
-	//vkCreateWin32SurfaceKHR()
-
-	//Done 
-	return true;
+#ifdef ENGINE_CONFIG_PLATFORM_WIN32
+	return InitWin32(osWindow, renderingInstance, renderingDevice);
+#endif
 }
 
 void VulkanSwapchain::Shutdown()
 {
-	//TODO
+#ifdef ENGINE_CONFIG_PLATFORM_WIN32
+	ShutdownWin32();
+#endif
 }
+
+//
+//Win32
+//
+#ifdef ENGINE_CONFIG_PLATFORM_WIN32
+bool VulkanSwapchain::InitWin32(EngineAPI::OS::OSWindow* osWindow,
+	EngineAPI::Graphics::RenderInstance* renderingInstance,
+	EngineAPI::Graphics::RenderDevice* renderingDevice)
+{
+	return true;
+}
+
+void VulkanSwapchain::ShutdownWin32()
+{
+
+}
+#endif

@@ -29,7 +29,9 @@ bool VulkanGraphicsManager::InitSubsystem(EngineAPI::OS::OSWindow* osWindow,
 	EngineAPI::Debug::DebugLog::PrintInfoMessage(vkInfoMsg);
 #endif
 
+	//
 	//Init vulkan API
+	//
 	if (!renderingInstance.Init(osWindow, appTitle, appVersionMajor, appVersionMinor, appVersionPatch))
 		return false;
 	if (!renderingDevice.Init(osWindow, &renderingInstance))

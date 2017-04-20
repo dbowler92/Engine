@@ -35,6 +35,11 @@ namespace EngineAPI
 				//Returns the Vulkan instance
 				VkInstance GetVKInstance() { return vkInstance; };
 
+				//Returns a list of enabled (if vkInstance was created succesfully, anyway) instance layers
+				//and instance extentions
+				std::vector<const char*>* GetVKEnabledInstanceLayersList();
+				std::vector<const char*>* GetVKEnabledInstanceExtentionsList();
+
 			private:
 				//Handle to the Vulkan instance we create
 				VkInstance vkInstance = NULL;

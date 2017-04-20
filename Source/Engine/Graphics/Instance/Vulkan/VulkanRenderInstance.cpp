@@ -2,6 +2,34 @@
 
 using namespace EngineAPI::Graphics::Platform;
 
+//
+//Enabled instance layers and extentions
+//
+//Instance layers:
+std::vector<const char *> enabledInstanceLayers =
+{
+#if ENGINE_CONFIG_VULKAN_API_ENABLE_VALIDATION_AND_DEBUG_LAYERS_ON_INSTANCE
+	"VK_LAYER_LUNARG_standard_validation",
+	//"VK_LAYER_LUNARG_core_validation",
+	//"VK_LAYER_LUNARG_api_dump"
+#endif
+};
+
+//Instance extentions:
+std::vector<const char *> enabledInstanceExtensions =
+{
+	VK_KHR_SURFACE_EXTENSION_NAME,
+
+	//Win32 extention
+#ifdef VK_USE_PLATFORM_WIN32_KHR 
+	VK_KHR_WIN32_SURFACE_EXTENSION_NAME,
+#endif
+	//Debug extentions
+#if ENGINE_CONFIG_VULKAN_API_ENABLE_VALIDATION_AND_DEBUG_EXTENTIONS_ON_INSTANCE
+	VK_EXT_DEBUG_REPORT_EXTENSION_NAME,
+#endif
+};
+
 bool VulkanRenderInstance::Init(EngineAPI::OS::OSWindow* osWindow, ECHAR* applicationTitle,
 	int appVersionMajor, int appVersionMinor, int appVersionPatch)
 {
@@ -25,7 +53,7 @@ bool VulkanRenderInstance::Init(EngineAPI::OS::OSWindow* osWindow, ECHAR* applic
 	createInfo.pApplicationInfo = &appInfo;
 	createInfo.pNext = nullptr;
 	createInfo.flags = 0; //Not used as of yet in vulkan
-						  //***These maybe overriden!****
+ //***These maybe overriden!****
 	createInfo.ppEnabledLayerNames = nullptr;
 	createInfo.enabledLayerCount = 0;
 	createInfo.ppEnabledExtensionNames = nullptr;
@@ -36,15 +64,7 @@ bool VulkanRenderInstance::Init(EngineAPI::OS::OSWindow* osWindow, ECHAR* applic
 	//************************Enabled layers (instance)*******************************
 	//********************************************************************************
 	//********************************************************************************
-#if ENGINE_CONFIG_VULKAN_API_ENABLE_VALIDATION_AND_DEBUG_LAYERS_ON_INSTANCE
-	std::vector<const char *> enabledInstanceLayers =
-	{
-		"VK_LAYER_LUNARG_standard_validation",
-	};
-#else
-	std::vector<const char *> enabledInstanceLayers(0);
-#endif
-
+	//
 	//Validate
 	if (!ValidateVKInstanceLayers(&enabledInstanceLayers))
 		return false;
@@ -60,20 +80,7 @@ bool VulkanRenderInstance::Init(EngineAPI::OS::OSWindow* osWindow, ECHAR* applic
 	//************************Enabled extentions (instance)***************************
 	//********************************************************************************
 	//********************************************************************************
-	std::vector<const char *> enabledInstanceExtensions =
-	{
-		VK_KHR_SURFACE_EXTENSION_NAME,
-
-		//Win32 extention
-#ifdef VK_USE_PLATFORM_WIN32_KHR 
-		VK_KHR_WIN32_SURFACE_EXTENSION_NAME,
-#endif
-		//Debug extentions
-#if ENGINE_CONFIG_VULKAN_API_ENABLE_VALIDATION_AND_DEBUG_EXTENTIONS_ON_INSTANCE
-		VK_EXT_DEBUG_REPORT_EXTENSION_NAME,
-#endif
-	};
-
+	//
 	//Validate
 	if (!ValidateVKInstanceExtentions(&enabledInstanceExtensions))
 		return false;
@@ -220,4 +227,14 @@ bool VulkanRenderInstance::ValidateVKInstanceExtentions(std::vector<const char*>
 		EngineAPI::Debug::DebugLog::PrintMessage("It's likely that at least one requested instance extention is not avilable for you to use in this Vulkan implentation.\n");
 		return false;
 	}
+}
+
+std::vector<const char*>* VulkanRenderInstance::GetVKEnabledInstanceLayersList()
+{
+	return &enabledInstanceLayers;
+}
+
+std::vector<const char*>* VulkanRenderInstance::GetVKEnabledInstanceExtentionsList()
+{
+	return &enabledInstanceExtensions;
 }

@@ -23,6 +23,7 @@
     <ClCompile Include="..\Application\Common\CommonApplication.cpp" />
     <ClCompile Include="..\Application\Orbis\OrbisApplication.cpp" />
     <ClCompile Include="..\Application\Win32\Win32Application.cpp" />
+    <ClCompile Include="..\Config\VulkanConfig.cpp" />
     <ClCompile Include="..\Debug\Log\DebugLog.cpp" />
     <ClCompile Include="..\Graphics\Device\Common\CommonRenderDevice.cpp" />
     <ClCompile Include="..\Graphics\Device\RenderDevice.cpp" />

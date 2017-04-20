@@ -2,6 +2,18 @@
 
 using namespace EngineAPI::Graphics::Platform;
 
+//
+//Device layers && extentions enabled. 
+//
+std::vector<const char*> deviceLayersNames =
+{}; //Depreciated
+
+std::vector<const char *> deviceExtensionNames =
+{
+	VK_KHR_SWAPCHAIN_EXTENSION_NAME,
+	//"VK_EXT_debug_report"
+};
+
 bool VulkanRenderDevice::Init(EngineAPI::OS::OSWindow* osWindow, 
 	EngineAPI::Graphics::RenderInstance* renderingInstance)
 {
@@ -42,10 +54,6 @@ bool VulkanRenderDevice::Init(EngineAPI::OS::OSWindow* osWindow,
 	//********************************************************************************
 	//********************************************************************************
 	//
-	//Find all device layers available to us + number of them
-	std::vector<const char*> deviceLayersNames =
-	{};
-
 	//Validate
 	if (!ValidateVKDeviceLayers(&deviceLayersNames))
 		return false;
@@ -59,14 +67,9 @@ bool VulkanRenderDevice::Init(EngineAPI::OS::OSWindow* osWindow,
 	//NOTE: Doesnt look for device extentions which are
 	//provided by a layer -> Just finds the device extentions provided by the Vulkan
 	//implementation
-	//Pick some device extentions
-	std::vector<const char *> deviceExtensionNames =
-	{
-		VK_KHR_SWAPCHAIN_EXTENSION_NAME,
-	};
-
+	//
 	//Validate
-	if (!ValidateVKDeviceExtentions(&deviceExtensionNames))
+	if (!ValidateVKDeviceExtentions(renderingInstance->GetVKEnabledInstanceLayersList(), &deviceExtensionNames))
 		return false;
 
 	//********************************************************************************
@@ -91,8 +94,7 @@ bool VulkanRenderDevice::Init(EngineAPI::OS::OSWindow* osWindow,
 	//Get the chosen devices queue families (count)
 	vkQueueFamiliesCount = 0;
 	vkGetPhysicalDeviceQueueFamilyProperties(vkPhysicalDevice, &vkQueueFamiliesCount, nullptr); //Count
-
-																								//Get all queue families
+																									//Get all queue families
 	vkQueueFamiliesArray = GE_NEW VkQueueFamilyProperties[vkQueueFamiliesCount];
 	vkGetPhysicalDeviceQueueFamilyProperties(vkPhysicalDevice, &vkQueueFamiliesCount, &vkQueueFamiliesArray[0]);
 
@@ -104,7 +106,7 @@ bool VulkanRenderDevice::Init(EngineAPI::OS::OSWindow* osWindow,
 	if (!hasFoundQueue)
 		return false;
 
-	//Graphics queue
+	//Graphics queue creation info struct. 
 	VkDeviceQueueCreateInfo graphicsQueueCreateInfo = {};
 	float queuePriorities[1] = { 0.0 };
 	graphicsQueueCreateInfo.sType = VK_STRUCTURE_TYPE_DEVICE_QUEUE_CREATE_INFO;
@@ -113,10 +115,8 @@ bool VulkanRenderDevice::Init(EngineAPI::OS::OSWindow* osWindow,
 	graphicsQueueCreateInfo.queueFamilyIndex = vkGraphicsQueueFamilyIndex;
 	graphicsQueueCreateInfo.queueCount = ENGINE_CONFIG_VULKAN_API_GRAPHICS_QUEUE_COUNT;
 	graphicsQueueCreateInfo.pQueuePriorities = queuePriorities;
-
-	//TODO: Other queue families
-
-	//Number of family queues we wish to create queues in
+	
+	//Number of family queues we wish to create queues in ???
 	uint32_t numFamilyQueuesToCreate = 0;
 #if ENGINE_CONFIG_VULKAN_API_GRAPHICS_QUEUE_COUNT
 	numFamilyQueuesToCreate++;
@@ -160,8 +160,14 @@ bool VulkanRenderDevice::Init(EngineAPI::OS::OSWindow* osWindow,
 		return false;
 	}
 
-	//Cache memory info
+	//Cache memory info for the physical device
 	CacheVKDeviceMemoryInfo();
+
+	//Cache queue handle object(s)
+	//
+	//Graphics
+	for (int i = 0; i < ENGINE_CONFIG_VULKAN_API_GRAPHICS_QUEUE_COUNT; i++)
+		vkGetDeviceQueue(vkLogicalDevice, vkGraphicsQueueFamilyIndex, i, &vkGraphicsQueue[i]);
 
 	//Done
 	return true;
@@ -244,7 +250,8 @@ bool VulkanRenderDevice::ValidateVKDeviceLayers(std::vector<const char*> *desire
 	}
 }
 
-bool VulkanRenderDevice::ValidateVKDeviceExtentions(std::vector<const char*> *desiredDeviceExtentions)
+bool VulkanRenderDevice::ValidateVKDeviceExtentions(std::vector<const char*> *enabledInstanceLayers,
+	std::vector<const char*> *desiredDeviceExtentions)
 {
 	//No need to check...
 	if (desiredDeviceExtentions->size() == 0)
@@ -255,12 +262,12 @@ bool VulkanRenderDevice::ValidateVKDeviceExtentions(std::vector<const char*> *de
 		return true;
 	}
 
-	//Get the device extentions count
+	//Get the device extentions count - just those provided by the Vulkan implementation. 
 	uint32_t deviceExtentionsCount = 0;
 	vkEnumerateDeviceExtensionProperties(vkPhysicalDevice, NULL, &deviceExtentionsCount, nullptr);
 	VkExtensionProperties* availDeviceExtentions = nullptr;
 
-	//Get all device extentions
+	//Get all device extentions - just those provided by the Vulkan implementation. 
 	availDeviceExtentions = GE_NEW VkExtensionProperties[deviceExtentionsCount];
 	vkEnumerateDeviceExtensionProperties(vkPhysicalDevice, NULL, &deviceExtentionsCount, &availDeviceExtentions[0]);
 
