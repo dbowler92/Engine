@@ -34,8 +34,8 @@ bool VulkanGraphicsManager::InitSubsystem(EngineAPI::OS::OSWindow* osWindow,
 		return false;
 	if (!renderingDevice.Init(osWindow, &renderingInstance))
 		return false;
-	//if (renderingSwapchain.Init(osWindow))
-	//	return false;
+	if (!renderingSwapchain.Init(osWindow, &renderingInstance, &renderingDevice))
+		return false;
 
 	//Done
 	return true;
@@ -43,28 +43,13 @@ bool VulkanGraphicsManager::InitSubsystem(EngineAPI::OS::OSWindow* osWindow,
 
 bool VulkanGraphicsManager::ShutdownSubsystem()
 {
-	EngineAPI::Debug::DebugLog::PrintInfoMessage("VulkanGraphicsManager::ShutdownSubsystem()\n");	
-	
+	EngineAPI::Debug::DebugLog::PrintInfoMessage("VulkanGraphicsManager::ShutdownSubsystem()\n");
+
 	//Cleanup vulkan
-	//renderingSwapchain.Shutdown();
+	renderingSwapchain.Shutdown();
 	renderingDevice.Shutdown();
 	renderingInstance.Shutdown();
 
 	//Done
 	return true;
 }
-
-/*
-bool VulkanGraphicsManager::InitVKSwapchain(EngineAPI::OS::OSWindow* osWindow)
-{
-	//
-	//Win32
-	//
-	VkWin32SurfaceCreateInfoKHR win32SurfaceInfo = {};
-
-	//vkCreateWin32SurfaceKHR()
-
-	//Done
-	return true;
-}
-*/

@@ -18,6 +18,7 @@
 //Abstractions of rendering API
 #include "../../Instance/RenderInstance.h"
 #include "../../Device/RenderDevice.h"
+#include "../../Swapchain/Swapchain.h"
 
 namespace EngineAPI
 {
@@ -43,7 +44,7 @@ namespace EngineAPI
 				//Instance, device and swapchain handlers
 				RenderInstance renderingInstance;
 				RenderDevice renderingDevice;
-
+				Swapchain renderingSwapchain;
 			};
 		};
 	};

@@ -186,6 +186,9 @@
     <ClCompile Include="..\Graphics\Instance\RenderInstance.cpp">
       <Filter>Src\Graphics\Instance</Filter>
     </ClCompile>
+    <ClCompile Include="..\Graphics\Swapchain\Swapchain.cpp">
+      <Filter>Src\Graphics\Swapchain</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Main\EngineStd.h">
@@ -262,6 +265,9 @@
     </ClInclude>
     <ClInclude Include="..\Graphics\Instance\RenderInstance.h">
       <Filter>Src\Graphics\Instance</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Graphics\Swapchain\Swapchain.h">
+      <Filter>Src\Graphics\Swapchain</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
