@@ -70,6 +70,9 @@ namespace EngineAPI
 			
 #if ENGINE_CONFIG_VULKAN_API_ENABLE_VALIDATION_AND_DEBUG_REPORTING
 			private:
+				//Sets debug reporting struct
+				void SetupVulkanDebugReportingInfoStruct();
+
 				//Sets up debug callbacks
 				bool SetupVulkanDebugReportCallbacks();
 

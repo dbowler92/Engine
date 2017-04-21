@@ -18,12 +18,11 @@
 //Should we enable debug layers & extentions + debug reporting to the console thanks
 //to the Vulkan debug report callbacks
 #define ENGINE_CONFIG_VULKAN_API_ENABLE_VALIDATION_AND_DEBUG 1
-#define ENGINE_CONFIG_VULKAN_API_ENABLE_VALIDATION_AND_DEBUG_REPORTING 1 
+#define ENGINE_CONFIG_VULKAN_API_ENABLE_VALIDATION_AND_DEBUG_REPORTING 1
 
 #if ENGINE_CONFIG_VULKAN_API_ENABLE_VALIDATION_AND_DEBUG_REPORTING
 //If reporting errors, should we stop the app in the case of an error report, 
-//warning report and performance warning report? - simple while(true) loop to do
-//this for now.
+//warning report and performance warning report? 
 #define ENGINE_CONFIG_VULKAN_API_STOP_EXECUTION_ON_DEBUG_ERROR 1
 #define ENGINE_CONFIG_VULKAN_API_STOP_EXECUTION_ON_DEBUG_WARNING 0
 #define ENGINE_CONFIG_VULKAN_API_STOP_EXECUTION_ON_DEBUG_PERFORMANCE_WARNING 0

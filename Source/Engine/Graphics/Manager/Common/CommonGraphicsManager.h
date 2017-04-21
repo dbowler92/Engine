@@ -40,11 +40,16 @@ namespace EngineAPI
 				//Shutsdown the graphics manager
 				virtual bool ShutdownSubsystem() = 0;
 
+				//Returns the instance, device and swapchains (pointer)
+				RenderInstance* GetRenderingInstance() { return renderingInstance; };
+				RenderDevice* GetRenderingDevice() { return renderingDevice; };
+				Swapchain* GetRenderingSwapchain() { return renderingSwapchain; };
+
 			protected:
 				//Instance, device and swapchain handlers
-				RenderInstance renderingInstance;
-				RenderDevice renderingDevice;
-				Swapchain renderingSwapchain;
+				RenderInstance* renderingInstance = nullptr;
+				RenderDevice* renderingDevice = nullptr;
+				Swapchain* renderingSwapchain = nullptr;
 			};
 		};
 	};

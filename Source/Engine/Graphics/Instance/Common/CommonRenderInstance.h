@@ -5,6 +5,7 @@
 //All platform / API specific rendering instances will inherit from this base
 //class
 
+
 #pragma once
 
 //Globals

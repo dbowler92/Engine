@@ -45,6 +45,11 @@ std::vector<const char *> enabledInstanceExtensions =
 bool VulkanRenderInstance::Init(EngineAPI::OS::OSWindow* osWindow, ECHAR* applicationTitle,
 	int appVersionMajor, int appVersionMinor, int appVersionPatch)
 {
+#if ENGINE_CONFIG_VULKAN_API_ENABLE_VALIDATION_AND_DEBUG_REPORTING
+	//Debug reporting
+	SetupVulkanDebugReportingInfoStruct();
+#endif
+
 	//
 	//Decribes application & what vulkan API to use (minimum supported)
 	//
@@ -63,7 +68,11 @@ bool VulkanRenderInstance::Init(EngineAPI::OS::OSWindow* osWindow, ECHAR* applic
 	VkInstanceCreateInfo createInfo = {};
 	createInfo.sType = VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO;
 	createInfo.pApplicationInfo = &appInfo;
+#if ENGINE_CONFIG_VULKAN_API_ENABLE_VALIDATION_AND_DEBUG_REPORTING
+	createInfo.pNext = &debugReportCreateInfo; //Debug reporting
+#else
 	createInfo.pNext = nullptr;
+#endif
 	createInfo.flags = 0; //Not used as of yet in vulkan
  //***These maybe overriden!****
 	createInfo.ppEnabledLayerNames = nullptr;
@@ -113,8 +122,8 @@ bool VulkanRenderInstance::Init(EngineAPI::OS::OSWindow* osWindow, ECHAR* applic
 		return false;
 	}
 
-	//Setup debug callbacks
 #if ENGINE_CONFIG_VULKAN_API_ENABLE_VALIDATION_AND_DEBUG_REPORTING
+	//Setup debug callbacks after instance creation
 	if (!SetupVulkanDebugReportCallbacks())
 		return false;
 #endif
@@ -253,6 +262,20 @@ bool VulkanRenderInstance::ValidateVKInstanceExtentions(std::vector<const char*>
 }
 
 #if ENGINE_CONFIG_VULKAN_API_ENABLE_VALIDATION_AND_DEBUG_REPORTING
+void VulkanRenderInstance::SetupVulkanDebugReportingInfoStruct()
+{
+	//Debug control structure
+	debugReportCreateInfo.sType = VK_STRUCTURE_TYPE_DEBUG_REPORT_CREATE_INFO_EXT;
+	debugReportCreateInfo.pfnCallback = DebugReportPrintFunction; //function that prints debug info to console
+	debugReportCreateInfo.pUserData = NULL;
+	debugReportCreateInfo.pNext = NULL;
+	debugReportCreateInfo.flags = VK_DEBUG_REPORT_INFORMATION_BIT_EXT |
+		VK_DEBUG_REPORT_WARNING_BIT_EXT |
+		VK_DEBUG_REPORT_PERFORMANCE_WARNING_BIT_EXT |
+		VK_DEBUG_REPORT_ERROR_BIT_EXT |
+		VK_DEBUG_REPORT_DEBUG_BIT_EXT;
+}
+
 bool VulkanRenderInstance::SetupVulkanDebugReportCallbacks()
 {
 	onCreateDebugReportCallback = (PFN_vkCreateDebugReportCallbackEXT)vkGetInstanceProcAddr(vkInstance, "vkCreateDebugReportCallbackEXT");
@@ -269,17 +292,6 @@ bool VulkanRenderInstance::SetupVulkanDebugReportCallbacks()
 		EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanRenderInstance: vkGetInstanceProcAddr() Could not find vkDestroyDebugReportCallbackEXT\n");
 		return false;
 	}
-
-	//Debug control structure
-	debugReportCreateInfo.sType = VK_STRUCTURE_TYPE_DEBUG_REPORT_CREATE_INFO_EXT;
-	debugReportCreateInfo.pfnCallback = DebugReportPrintFunction; //function that prints debug info to console
-	debugReportCreateInfo.pUserData = NULL;
-	debugReportCreateInfo.pNext = NULL;
-	debugReportCreateInfo.flags = VK_DEBUG_REPORT_INFORMATION_BIT_EXT | 
-		VK_DEBUG_REPORT_WARNING_BIT_EXT |
-		VK_DEBUG_REPORT_PERFORMANCE_WARNING_BIT_EXT |
-		VK_DEBUG_REPORT_ERROR_BIT_EXT |
-		VK_DEBUG_REPORT_DEBUG_BIT_EXT;
 
 	VkResult result = onCreateDebugReportCallback(vkInstance, &debugReportCreateInfo, NULL, &debugReportCallback);
 	if (result != VK_SUCCESS)
@@ -316,7 +328,7 @@ VKAPI_ATTR VkBool32 VKAPI_CALL VulkanRenderInstance::DebugReportPrintFunction(Vk
 		
 #if ENGINE_CONFIG_VULKAN_API_STOP_EXECUTION_ON_DEBUG_ERROR
 		EngineAPI::Debug::DebugLog::PrintInfoMessage("VulkanRenderInstance: Halting execution due to API usage error... \n");
-		while (1) {}
+		exit(-5);
 #endif
 
 		//std::cout << "[VK_DEBUG_REPORT] ERROR: [" << layerPrefix << "] Code" << msgCode << ":" << msg << std::endl;
@@ -334,7 +346,7 @@ VKAPI_ATTR VkBool32 VKAPI_CALL VulkanRenderInstance::DebugReportPrintFunction(Vk
 		
 #if ENGINE_CONFIG_VULKAN_API_STOP_EXECUTION_ON_DEBUG_WARNING
 		EngineAPI::Debug::DebugLog::PrintInfoMessage("VulkanRenderInstance: Halting execution due to API usage warning... \n");
-		while (1) {}
+		exit(-6);
 #endif
 		//std::cout << "[VK_DEBUG_REPORT] WARNING: [" << layerPrefix << "] Code" << msgCode << ":" << msg << std::endl;
 	}
@@ -364,7 +376,7 @@ VKAPI_ATTR VkBool32 VKAPI_CALL VulkanRenderInstance::DebugReportPrintFunction(Vk
 
 #if ENGINE_CONFIG_VULKAN_API_STOP_EXECUTION_ON_DEBUG_PERFORMANCE_WARNING
 		EngineAPI::Debug::DebugLog::PrintInfoMessage("VulkanRenderInstance: Halting execution due to API usage performance warning... \n");
-		while (1) {}
+		exit(-7);
 #endif
 
 		//std::cout << "[VK_DEBUG_REPORT] PERFORMANCE: [" << layerPrefix << "] Code" << msgCode << ":" << msg << std::endl;

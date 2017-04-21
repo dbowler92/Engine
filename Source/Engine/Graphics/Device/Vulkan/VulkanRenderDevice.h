@@ -27,6 +27,12 @@ namespace EngineAPI
 					EngineAPI::Graphics::RenderInstance* renderingInstance) override;
 				void Shutdown() override;
 
+			public:
+				//Important functions to interact with the Vulkan device. Eg: Command buffer 
+				//creation/allocation
+
+
+			public:
 				//Vulkan getters:
 				//
 				//Physical and logical device handles
@@ -69,6 +75,15 @@ namespace EngineAPI
 				uint32_t vkGraphicsQueueFamilyIndex = 0; //Index in to vkQueueFamilesArray & used at queue creation time
 				VkQueue vkGraphicsQueue[ENGINE_CONFIG_VULKAN_API_GRAPHICS_QUEUE_COUNT]; //All graphics processing queues
 
+				//Memory allocation data
+				//
+				//index in to vkDeviceMemoryProperties.memoryTypes[]
+				//
+				//1) When allocating data on the GPU which is seen exclusivly
+				//by said GPU (So not read/writable by CPU) -> Memory allocated
+				//with this type is most efficient for device access. 
+				uint32_t vkMemoryTypeIndexForEfficientDeviceOnlyAllocations = 0;
+				
 			private:
 				//Validates our chosen device extentions & layers (Depreciated I think. However, 
 				//I will add the code in needed just incase!)- Are the ones
@@ -94,6 +109,13 @@ namespace EngineAPI
 				//
 				//Caches info regarding the Vulkan device memory capabilities. 
 				void CacheVKDeviceMemoryInfo();
+
+				//From the cached memory info for the given device, these function
+				//finds the best memory types to be used when allocating resources
+				//
+				//Returns false if no valid memory type && heap can be found
+				bool FindVKMemoryTypeIndexForEfficientDeviceOnlyAllocations();
+				bool FindVKMemoryTypeIndexForMappableAllocations();
 
 				//Finds the "best" Vulkan enabled physical device for us to use
 				//when creating the Vulkan physical device. Currently, it just picks the

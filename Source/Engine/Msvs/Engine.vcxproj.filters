@@ -118,6 +118,15 @@
     <Filter Include="Src\Graphics\Swapchain\D3D11">
       <UniqueIdentifier>{d7ab9dee-cbc9-4b74-af52-5f504f7311da}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Src\Graphics\RenderCommand Buffer">
+      <UniqueIdentifier>{0c3498ef-741f-4808-b876-5958805ed517}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Graphics\RenderCommand Buffer\Vulkan">
+      <UniqueIdentifier>{332ff3d7-1728-42e8-bde5-a7e6c1264c1e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Graphics\RenderCommand Buffer\Common">
+      <UniqueIdentifier>{413981c0-bb92-439a-b4db-03067f889973}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Main\EngineMain.cpp">
@@ -191,6 +200,15 @@
     </ClCompile>
     <ClCompile Include="..\Config\VulkanConfig.cpp">
       <Filter>Engine Config</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Graphics\RenderCommandBuffer\RenderCommandBuffer.cpp">
+      <Filter>Src\Graphics\RenderCommand Buffer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Graphics\RenderCommandBuffer\Common\CommonRenderCommandBuffer.cpp">
+      <Filter>Src\Graphics\RenderCommand Buffer\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Graphics\RenderCommandBuffer\Vulkan\VulkanRenderCommandBuffer.cpp">
+      <Filter>Src\Graphics\RenderCommand Buffer\Vulkan</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -271,6 +289,15 @@
     </ClInclude>
     <ClInclude Include="..\Graphics\Swapchain\Swapchain.h">
       <Filter>Src\Graphics\Swapchain</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Graphics\RenderCommandBuffer\RenderCommandBuffer.h">
+      <Filter>Src\Graphics\RenderCommand Buffer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Graphics\RenderCommandBuffer\Common\CommonRenderCommandBuffer.h">
+      <Filter>Src\Graphics\RenderCommand Buffer\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Graphics\RenderCommandBuffer\Vulkan\VulkanRenderCommandBuffer.h">
+      <Filter>Src\Graphics\RenderCommand Buffer\Vulkan</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

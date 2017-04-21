@@ -35,6 +35,9 @@
     <ClCompile Include="..\Graphics\Manager\D3D11\D3D11GraphicsManager.cpp" />
     <ClCompile Include="..\Graphics\Manager\GraphicsManager.cpp" />
     <ClCompile Include="..\Graphics\Manager\Vulkan\VulkanGraphicsManager.cpp" />
+    <ClCompile Include="..\Graphics\RenderCommandBuffer\Common\CommonRenderCommandBuffer.cpp" />
+    <ClCompile Include="..\Graphics\RenderCommandBuffer\RenderCommandBuffer.cpp" />
+    <ClCompile Include="..\Graphics\RenderCommandBuffer\Vulkan\VulkanRenderCommandBuffer.cpp" />
     <ClCompile Include="..\Graphics\Swapchain\Common\CommonSwapchain.cpp" />
     <ClCompile Include="..\Graphics\Swapchain\Swapchain.cpp" />
     <ClCompile Include="..\Graphics\Swapchain\Vulkan\VulkanSwapchain.cpp" />
@@ -63,6 +66,9 @@
     <ClInclude Include="..\Graphics\Manager\D3D11\D3D11GraphicsManager.h" />
     <ClInclude Include="..\Graphics\Manager\GraphicsManager.h" />
     <ClInclude Include="..\Graphics\Manager\Vulkan\VulkanGraphicsManager.h" />
+    <ClInclude Include="..\Graphics\RenderCommandBuffer\Common\CommonRenderCommandBuffer.h" />
+    <ClInclude Include="..\Graphics\RenderCommandBuffer\RenderCommandBuffer.h" />
+    <ClInclude Include="..\Graphics\RenderCommandBuffer\Vulkan\VulkanRenderCommandBuffer.h" />
     <ClInclude Include="..\Graphics\Swapchain\Common\CommonSwapchain.h" />
     <ClInclude Include="..\Graphics\Swapchain\Swapchain.h" />
     <ClInclude Include="..\Graphics\Swapchain\Vulkan\VulkanSwapchain.h" />

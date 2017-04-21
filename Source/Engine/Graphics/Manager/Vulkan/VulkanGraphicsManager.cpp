@@ -29,14 +29,19 @@ bool VulkanGraphicsManager::InitSubsystem(EngineAPI::OS::OSWindow* osWindow,
 	EngineAPI::Debug::DebugLog::PrintInfoMessage(vkInfoMsg);
 #endif
 
+	//Alloc
+	renderingInstance = GE_NEW EngineAPI::Graphics::RenderInstance();
+	renderingDevice = GE_NEW EngineAPI::Graphics::RenderDevice();
+	renderingSwapchain = GE_NEW EngineAPI::Graphics::Swapchain();
+
 	//
 	//Init vulkan API
 	//
-	if (!renderingInstance.Init(osWindow, appTitle, appVersionMajor, appVersionMinor, appVersionPatch))
+	if (!renderingInstance->Init(osWindow, appTitle, appVersionMajor, appVersionMinor, appVersionPatch))
 		return false;
-	if (!renderingDevice.Init(osWindow, &renderingInstance))
+	if (!renderingDevice->Init(osWindow, renderingInstance))
 		return false;
-	if (!renderingSwapchain.Init(osWindow, &renderingInstance, &renderingDevice))
+	if (!renderingSwapchain->Init(osWindow, renderingInstance, renderingDevice))
 		return false;
 
 	//Done
@@ -47,10 +52,18 @@ bool VulkanGraphicsManager::ShutdownSubsystem()
 {
 	EngineAPI::Debug::DebugLog::PrintInfoMessage("VulkanGraphicsManager::ShutdownSubsystem()\n");
 
-	//Cleanup vulkan
-	renderingSwapchain.Shutdown();
-	renderingDevice.Shutdown();
-	renderingInstance.Shutdown();
+	//Cleanup vulkan (reverse order to creation)
+	renderingSwapchain->Shutdown();
+	renderingDevice->Shutdown();
+	renderingInstance->Shutdown();
+
+	//Cleanup memory
+	if (renderingSwapchain)
+		delete renderingSwapchain;
+	if (renderingDevice)
+		delete renderingDevice;
+	if (renderingInstance)
+		delete renderingInstance;
 
 	//Done
 	return true;
