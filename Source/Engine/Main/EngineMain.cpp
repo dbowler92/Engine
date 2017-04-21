@@ -72,7 +72,8 @@ int EngineMain(HINSTANCE hInstance,
 #endif
 
 	//Enables console for debugging purposes
-	ShowConsoleW32();
+	//ShowConsoleW32();
+	//AttachConsole(GetCurrentProcessId());
 
 	//Ensure an app exists.  
 	if (gameAppInstance == NULL)

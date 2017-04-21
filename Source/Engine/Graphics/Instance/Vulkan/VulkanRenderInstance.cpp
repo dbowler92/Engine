@@ -7,11 +7,23 @@ using namespace EngineAPI::Graphics::Platform;
 //
 //Instance layers:
 std::vector<const char *> enabledInstanceLayers =
-{
-#if ENGINE_CONFIG_VULKAN_API_ENABLE_VALIDATION_AND_DEBUG_LAYERS_ON_INSTANCE
+{ 
+#if ENGINE_CONFIG_VULKAN_API_ENABLE_VALIDATION_AND_DEBUG
 	"VK_LAYER_LUNARG_standard_validation",
 	//"VK_LAYER_LUNARG_core_validation",
 	//"VK_LAYER_LUNARG_api_dump"
+
+	/*
+	"VK_LAYER_GOOGLE_threading",
+	"VK_LAYER_LUNARG_parameter_validation",
+	"VK_LAYER_LUNARG_device_limits",
+	"VK_LAYER_LUNARG_object_tracker",
+	"VK_LAYER_LUNARG_image",
+	"VK_LAYER_LUNARG_core_validation",
+	"VK_LAYER_LUNARG_swapchain",
+	"VK_LAYER_GOOGLE_unique_objects"
+	*/
+
 #endif
 };
 
@@ -25,7 +37,7 @@ std::vector<const char *> enabledInstanceExtensions =
 	VK_KHR_WIN32_SURFACE_EXTENSION_NAME,
 #endif
 	//Debug extentions
-#if ENGINE_CONFIG_VULKAN_API_ENABLE_VALIDATION_AND_DEBUG_EXTENTIONS_ON_INSTANCE
+#if ENGINE_CONFIG_VULKAN_API_ENABLE_VALIDATION_AND_DEBUG
 	VK_EXT_DEBUG_REPORT_EXTENSION_NAME,
 #endif
 };
@@ -101,11 +113,22 @@ bool VulkanRenderInstance::Init(EngineAPI::OS::OSWindow* osWindow, ECHAR* applic
 		return false;
 	}
 
+	//Setup debug callbacks
+#if ENGINE_CONFIG_VULKAN_API_ENABLE_VALIDATION_AND_DEBUG_REPORTING
+	if (!SetupVulkanDebugReportCallbacks())
+		return false;
+#endif
+
 	return true;
 }
 
 void VulkanRenderInstance::Shutdown()
 {
+	//Cleanup debug
+#if ENGINE_CONFIG_VULKAN_API_ENABLE_VALIDATION_AND_DEBUG_REPORTING
+	CleanupVulkanDebugReporting();
+#endif 
+
 	vkDestroyInstance(vkInstance, nullptr);
 	vkInstance = NULL;
 }
@@ -228,6 +251,145 @@ bool VulkanRenderInstance::ValidateVKInstanceExtentions(std::vector<const char*>
 		return false;
 	}
 }
+
+#if ENGINE_CONFIG_VULKAN_API_ENABLE_VALIDATION_AND_DEBUG_REPORTING
+bool VulkanRenderInstance::SetupVulkanDebugReportCallbacks()
+{
+	onCreateDebugReportCallback = (PFN_vkCreateDebugReportCallbackEXT)vkGetInstanceProcAddr(vkInstance, "vkCreateDebugReportCallbackEXT");
+	if (!onCreateDebugReportCallback)
+	{
+		//Failed
+		EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanRenderInstance: vkGetInstanceProcAddr() Could not find vkCreateDebugReportCallbackEXT\n");
+		return false;
+	}
+
+	onDestroyDebugReportCallback = (PFN_vkDestroyDebugReportCallbackEXT)vkGetInstanceProcAddr(vkInstance, "vkDestroyDebugReportCallbackEXT");
+	if (!onDestroyDebugReportCallback)
+	{
+		EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanRenderInstance: vkGetInstanceProcAddr() Could not find vkDestroyDebugReportCallbackEXT\n");
+		return false;
+	}
+
+	//Debug control structure
+	debugReportCreateInfo.sType = VK_STRUCTURE_TYPE_DEBUG_REPORT_CREATE_INFO_EXT;
+	debugReportCreateInfo.pfnCallback = DebugReportPrintFunction; //function that prints debug info to console
+	debugReportCreateInfo.pUserData = NULL;
+	debugReportCreateInfo.pNext = NULL;
+	debugReportCreateInfo.flags = VK_DEBUG_REPORT_INFORMATION_BIT_EXT | 
+		VK_DEBUG_REPORT_WARNING_BIT_EXT |
+		VK_DEBUG_REPORT_PERFORMANCE_WARNING_BIT_EXT |
+		VK_DEBUG_REPORT_ERROR_BIT_EXT |
+		VK_DEBUG_REPORT_DEBUG_BIT_EXT;
+
+	VkResult result = onCreateDebugReportCallback(vkInstance, &debugReportCreateInfo, NULL, &debugReportCallback);
+	if (result != VK_SUCCESS)
+	{
+		EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanRenderInstance: Debug report callback object could not be created.\n");
+		return false;
+	}
+
+	//Done 
+	return true;
+}
+
+void VulkanRenderInstance::CleanupVulkanDebugReporting()
+{
+	onDestroyDebugReportCallback(vkInstance, debugReportCallback, NULL);
+}
+
+#include <sstream> //Num to string
+
+VKAPI_ATTR VkBool32 VKAPI_CALL VulkanRenderInstance::DebugReportPrintFunction(VkFlags msgFlags,
+	VkDebugReportObjectTypeEXT objType, uint64_t srcObject, size_t location,
+	int32_t msgCode, const char *layerPrefix, const char *msg, void *userData)
+{
+	if (msgFlags & VK_DEBUG_REPORT_ERROR_BIT_EXT) 
+	{
+		std::string s;
+		std::stringstream ss;
+		ss << msgCode;
+		s = "VulkanRenderInstance: [VK ERROR REPORT]: [" +
+			std::string(layerPrefix) + std::string("] ") +
+			std::string("Code ") + ss.str() +
+			std::string(": ") + std::string(msg) + std::string("\n");
+		EngineAPI::Debug::DebugLog::PrintErrorMessage(s.c_str());
+		
+#if ENGINE_CONFIG_VULKAN_API_STOP_EXECUTION_ON_DEBUG_ERROR
+		EngineAPI::Debug::DebugLog::PrintInfoMessage("VulkanRenderInstance: Halting execution due to API usage error... \n");
+		while (1) {}
+#endif
+
+		//std::cout << "[VK_DEBUG_REPORT] ERROR: [" << layerPrefix << "] Code" << msgCode << ":" << msg << std::endl;
+	}
+	else if (msgFlags & VK_DEBUG_REPORT_WARNING_BIT_EXT)
+	{
+		std::string s;
+		std::stringstream ss;
+		ss << msgCode;
+		s = "VulkanRenderInstance: [VK WARNING REPORT]: [" +
+			std::string(layerPrefix) + std::string("] ") +
+			std::string("Code ") + ss.str() +
+			std::string(": ") + std::string(msg) + std::string("\n");
+		EngineAPI::Debug::DebugLog::PrintWarningMessage(s.c_str());
+		
+#if ENGINE_CONFIG_VULKAN_API_STOP_EXECUTION_ON_DEBUG_WARNING
+		EngineAPI::Debug::DebugLog::PrintInfoMessage("VulkanRenderInstance: Halting execution due to API usage warning... \n");
+		while (1) {}
+#endif
+		//std::cout << "[VK_DEBUG_REPORT] WARNING: [" << layerPrefix << "] Code" << msgCode << ":" << msg << std::endl;
+	}
+	else if (msgFlags & VK_DEBUG_REPORT_INFORMATION_BIT_EXT)
+	{
+		std::string s;
+		std::stringstream ss;
+		ss << msgCode;
+		s = "VulkanRenderInstance: [VK INFOMATION REPORT]: [" +
+			std::string(layerPrefix) + std::string("] ") +
+			std::string("Code ") + ss.str() +
+			std::string(": ") + std::string(msg) + std::string("\n");
+		EngineAPI::Debug::DebugLog::PrintInfoMessage(s.c_str());
+
+		//std::cout << "[VK_DEBUG_REPORT] INFORMATION: [" << layerPrefix << "] Code" << msgCode << ":" << msg << std::endl;
+	}
+	else if (msgFlags & VK_DEBUG_REPORT_PERFORMANCE_WARNING_BIT_EXT) 
+	{
+		std::string s;
+		std::stringstream ss;
+		ss << msgCode;
+		s = "VulkanRenderInstance: [VK PERFORMANCE WARNING REPORT]: [" +
+			std::string(layerPrefix) + std::string("] ") +
+			std::string("Code ") + ss.str() +
+			std::string(": ") + std::string(msg) + std::string("\n");
+		EngineAPI::Debug::DebugLog::PrintWarningMessage(s.c_str());
+
+#if ENGINE_CONFIG_VULKAN_API_STOP_EXECUTION_ON_DEBUG_PERFORMANCE_WARNING
+		EngineAPI::Debug::DebugLog::PrintInfoMessage("VulkanRenderInstance: Halting execution due to API usage performance warning... \n");
+		while (1) {}
+#endif
+
+		//std::cout << "[VK_DEBUG_REPORT] PERFORMANCE: [" << layerPrefix << "] Code" << msgCode << ":" << msg << std::endl;
+	}
+	else if (msgFlags & VK_DEBUG_REPORT_DEBUG_BIT_EXT) 
+	{
+		std::string s;
+		std::stringstream ss;
+		ss << msgCode;
+		s = "VulkanRenderInstance: [VK DEBUG REPORT]: [" +
+			std::string(layerPrefix) + std::string("] ") +
+			std::string("Code ") + ss.str() +
+			std::string(": ") + std::string(msg) + std::string("\n");
+		EngineAPI::Debug::DebugLog::PrintInfoMessage(s.c_str());
+	
+		//std::cout << "[VK_DEBUG_REPORT] DEBUG: [" << layerPrefix << "] Code" << msgCode << ":" << msg << std::endl;
+	}
+	else 
+		return VK_FALSE;
+
+	//Done
+	return VK_TRUE;
+}
+
+#endif
 
 std::vector<const char*>* VulkanRenderInstance::GetVKEnabledInstanceLayersList()
 {

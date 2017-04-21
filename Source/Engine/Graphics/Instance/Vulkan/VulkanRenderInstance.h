@@ -44,6 +44,15 @@ namespace EngineAPI
 				//Handle to the Vulkan instance we create
 				VkInstance vkInstance = NULL;
 
+#if ENGINE_CONFIG_VULKAN_API_ENABLE_VALIDATION_AND_DEBUG_REPORTING
+			private:
+				//Function pointer for the Vulkan debug report callback (instance) - this
+				//needs to be dynamically linked through vkGetInstanceProcAddr()
+				PFN_vkCreateDebugReportCallbackEXT onCreateDebugReportCallback = NULL;
+				PFN_vkDestroyDebugReportCallbackEXT onDestroyDebugReportCallback = NULL;
+				VkDebugReportCallbackEXT debugReportCallback = NULL;
+				VkDebugReportCallbackCreateInfoEXT debugReportCreateInfo = {};
+#endif
 			private:
 				//Validate requested instance layers and extentions. We will
 				//pass a list of layers and extentions to this function that we wish
@@ -58,6 +67,20 @@ namespace EngineAPI
 				//techniques
 				bool ValidateVKInstanceLayers(std::vector<const char*> *desiredInstanceLayers);
 				bool ValidateVKInstanceExtentions(std::vector<const char*> *desiredInstanceExtentions);
+			
+#if ENGINE_CONFIG_VULKAN_API_ENABLE_VALIDATION_AND_DEBUG_REPORTING
+			private:
+				//Sets up debug callbacks
+				bool SetupVulkanDebugReportCallbacks();
+
+				//Cleans up debug callbacks
+				void CleanupVulkanDebugReporting();
+
+				//Prints debug reports to console
+				static VKAPI_ATTR VkBool32 VKAPI_CALL DebugReportPrintFunction(VkFlags msgFlags,
+					VkDebugReportObjectTypeEXT objType, uint64_t srcObject, size_t location,
+					int32_t msgCode, const char *layerPrefix, const char *msg, void *userData);
+#endif
 			};
 		};
 	};

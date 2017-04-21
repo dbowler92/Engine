@@ -15,6 +15,20 @@
 #define VK_USE_PLATFORM_WIN32_KHR
 #endif
 
+//Should we enable debug layers & extentions + debug reporting to the console thanks
+//to the Vulkan debug report callbacks
+#define ENGINE_CONFIG_VULKAN_API_ENABLE_VALIDATION_AND_DEBUG 1
+#define ENGINE_CONFIG_VULKAN_API_ENABLE_VALIDATION_AND_DEBUG_REPORTING 1 
+
+#if ENGINE_CONFIG_VULKAN_API_ENABLE_VALIDATION_AND_DEBUG_REPORTING
+//If reporting errors, should we stop the app in the case of an error report, 
+//warning report and performance warning report? - simple while(true) loop to do
+//this for now.
+#define ENGINE_CONFIG_VULKAN_API_STOP_EXECUTION_ON_DEBUG_ERROR 1
+#define ENGINE_CONFIG_VULKAN_API_STOP_EXECUTION_ON_DEBUG_WARNING 0
+#define ENGINE_CONFIG_VULKAN_API_STOP_EXECUTION_ON_DEBUG_PERFORMANCE_WARNING 0
+#endif
+
 //Minimum Vulkan driver level required by this application. If the user
 //doesnt have this level, the game/app will not work. Politly tell them 
 //to upgrade to a brand new GPU
@@ -33,10 +47,3 @@
 #define ENGINE_CONFIG_VULKAN_API_TRANSFER_QUEUE_COUNT 0  //DMA
 #define ENGINE_CONFIG_VULKAN_API_SPARSE_QUEUE_COUNT   0  //Spare memory
 
-//Should we enable debug layers & extentions (instance)
-#define ENGINE_CONFIG_VULKAN_API_ENABLE_VALIDATION_AND_DEBUG_LAYERS_ON_INSTANCE 1
-#define ENGINE_CONFIG_VULKAN_API_ENABLE_VALIDATION_AND_DEBUG_EXTENTIONS_ON_INSTANCE 1
-
-//Should we enable debug extentions (device) - I think the device layers are depreciated ->
-//at least, according to my book!
-#define ENGINE_CONFIG_VULKAN_API_ENABLE_VALIDATION_AND_DEBUG_EXTENTIONS_ON_DEVICE 1
