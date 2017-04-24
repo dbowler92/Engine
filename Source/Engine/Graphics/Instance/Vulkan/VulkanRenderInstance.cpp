@@ -45,11 +45,6 @@ std::vector<const char *> enabledInstanceExtensions =
 bool VulkanRenderInstance::Init(EngineAPI::OS::OSWindow* osWindow, ECHAR* applicationTitle,
 	int appVersionMajor, int appVersionMinor, int appVersionPatch)
 {
-#if ENGINE_CONFIG_VULKAN_API_ENABLE_VALIDATION_AND_DEBUG_REPORTING
-	//Debug reporting
-	SetupVulkanDebugReportingInfoStruct();
-#endif
-
 	//
 	//Decribes application & what vulkan API to use (minimum supported)
 	//
@@ -68,11 +63,7 @@ bool VulkanRenderInstance::Init(EngineAPI::OS::OSWindow* osWindow, ECHAR* applic
 	VkInstanceCreateInfo createInfo = {};
 	createInfo.sType = VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO;
 	createInfo.pApplicationInfo = &appInfo;
-#if ENGINE_CONFIG_VULKAN_API_ENABLE_VALIDATION_AND_DEBUG_REPORTING
-	createInfo.pNext = &debugReportCreateInfo; //Debug reporting
-#else
 	createInfo.pNext = nullptr;
-#endif
 	createInfo.flags = 0; //Not used as of yet in vulkan
  //***These maybe overriden!****
 	createInfo.ppEnabledLayerNames = nullptr;
@@ -124,6 +115,7 @@ bool VulkanRenderInstance::Init(EngineAPI::OS::OSWindow* osWindow, ECHAR* applic
 
 #if ENGINE_CONFIG_VULKAN_API_ENABLE_VALIDATION_AND_DEBUG_REPORTING
 	//Setup debug callbacks after instance creation
+	SetupVulkanDebugReportingInfoStruct();
 	if (!SetupVulkanDebugReportCallbacks())
 		return false;
 #endif

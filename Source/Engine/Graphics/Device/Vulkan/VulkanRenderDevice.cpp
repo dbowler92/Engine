@@ -162,14 +162,6 @@ bool VulkanRenderDevice::Init(EngineAPI::OS::OSWindow* osWindow,
 
 	//********************************************************************************
 	//********************************************************************************
-	//***************************Command buffer pools*********************************
-	//********************************************************************************
-	//********************************************************************************
-	//
-	//TODO:
-
-	//********************************************************************************
-	//********************************************************************************
 	//*********************************Memory*****************************************
 	//********************************************************************************
 	//********************************************************************************
@@ -185,11 +177,28 @@ bool VulkanRenderDevice::Init(EngineAPI::OS::OSWindow* osWindow,
 	if (!FindVKMemoryTypeIndexForMappableAllocations())
 		return false;
 
+	//********************************************************************************
+	//********************************************************************************
+	//**********************************Queue(s)**************************************
+	//********************************************************************************
+	//********************************************************************************
+	//
 	//Cache queue handle object(s)
 	//
 	//Graphics
 	for (int i = 0; i < ENGINE_CONFIG_VULKAN_API_GRAPHICS_QUEUE_COUNT; i++)
 		vkGetDeviceQueue(vkLogicalDevice, vkGraphicsQueueFamilyIndex, i, &vkGraphicsQueue[i]);
+
+
+	//********************************************************************************
+	//********************************************************************************
+	//***************************Command buffer pools*********************************
+	//********************************************************************************
+	//********************************************************************************
+	//
+	//Init vulkan command buffer pools
+	if (!InitVKCommandBufferPools())
+		return false;
 
 	//Done
 	return true;
@@ -197,9 +206,19 @@ bool VulkanRenderDevice::Init(EngineAPI::OS::OSWindow* osWindow,
 
 void VulkanRenderDevice::Shutdown()
 {
+	//Cleanup command buffer pools
+	if (vkCommandBufferPoolsArray)
+	{
+		for (int i = 0; i < ENGINE_CONFIG_VULKAN_API_GRAPHICS_COMMAND_BUFFER_POOLS_COUNT; i++)
+			vkCommandBufferPoolsArray[i].Shutdown();
+		delete[] vkCommandBufferPoolsArray;
+	}
+
+	//Queues
 	if (vkQueueFamiliesArray)
 		delete[]vkQueueFamiliesArray;
 
+	//Logical device 
 	vkDestroyDevice(vkLogicalDevice, nullptr);
 	vkLogicalDevice = NULL;
 	vkPhysicalDevice = NULL;
@@ -487,4 +506,36 @@ bool VulkanRenderDevice::GetGraphicsQueueFamilyHandle(
 	EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanRenderDevice::GetGraphicsQueueFamilyHandle(): Failed to find the graphics queue family.\n");
 	vkGraphicsQueueFamilyIndex = 0;
 	return false;
+}
+
+bool VulkanRenderDevice::InitVKCommandBufferPools()
+{
+	//Alloc
+	vkCommandBufferPoolsArray = GE_NEW CommandBufferPool[ENGINE_CONFIG_VULKAN_API_GRAPHICS_COMMAND_BUFFER_POOLS_COUNT];
+	if (!vkCommandBufferPoolsArray)
+	{
+		//Alloc error
+		EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanRenderDevice: Error allocating memory for (VK) Command Buffer Pools\n");
+		return false;
+	}
+
+	//Command pool init description
+	VkCommandPoolCreateInfo vkCommandPoolInitInfo = {};
+	vkCommandPoolInitInfo.sType = VK_STRUCTURE_TYPE_COMMAND_POOL_CREATE_INFO;
+	vkCommandPoolInitInfo.pNext = nullptr;
+	vkCommandPoolInitInfo.flags = VK_COMMAND_POOL_CREATE_RESET_COMMAND_BUFFER_BIT; //TODO
+	vkCommandPoolInitInfo.queueFamilyIndex = vkGraphicsQueueFamilyIndex; //TODO
+
+	for (int i = 0; i < ENGINE_CONFIG_VULKAN_API_GRAPHICS_COMMAND_BUFFER_POOLS_COUNT; i++)
+	{
+		if (!vkCommandBufferPoolsArray[i].InitVKCommandBufferPool(&vkLogicalDevice, &vkCommandPoolInitInfo))
+		{
+			//Init error
+			EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanRenderDevice: Error initing (VK) Command Buffer Pools\n");
+			return false;
+		}
+	}
+
+	//Done
+	return true;
 }

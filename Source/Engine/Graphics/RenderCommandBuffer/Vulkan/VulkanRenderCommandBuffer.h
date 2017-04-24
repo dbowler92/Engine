@@ -27,6 +27,11 @@ namespace EngineAPI
 				bool Init(EngineAPI::Graphics::RenderDevice* renderDevice, 
 					EngineAPI::Graphics::RenderInstance* renderInstance);
 				void Shutdown();
+
+				//Captures vulkan rendering commands in to a reusable command
+				//buffer
+				bool BeginRecordingToCommandBuffer() override;
+				bool EndRecordingToCommandBuffer() override;
 			};
 		};
 	};

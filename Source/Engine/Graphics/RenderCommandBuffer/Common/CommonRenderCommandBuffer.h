@@ -33,6 +33,11 @@ namespace EngineAPI
 				virtual bool Init(EngineAPI::Graphics::RenderDevice* renderDevice, 
 					EngineAPI::Graphics::RenderInstance* renderInstance) = 0;
 				virtual void Shutdown() = 0;
+
+				//Override the begin/end reading function - We will be recording rendering
+				//commands in to this cmd buffer
+				virtual bool BeginRecordingToCommandBuffer() = 0;
+				virtual bool EndRecordingToCommandBuffer() = 0;
 			};
 		};
 	};

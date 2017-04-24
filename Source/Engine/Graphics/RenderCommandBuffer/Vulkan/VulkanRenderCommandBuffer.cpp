@@ -13,3 +13,13 @@ void VulkanRenderCommandBuffer::Shutdown()
 {
 
 }
+
+bool VulkanRenderCommandBuffer::BeginRecordingToCommandBuffer()
+{
+	return true;
+}
+
+bool VulkanRenderCommandBuffer::EndRecordingToCommandBuffer()
+{
+	return true;
+}

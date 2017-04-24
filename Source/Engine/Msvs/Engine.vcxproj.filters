@@ -127,6 +127,33 @@
     <Filter Include="Src\Graphics\RenderCommand Buffer\Common">
       <UniqueIdentifier>{413981c0-bb92-439a-b4db-03067f889973}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Src\Graphics\CommandBufferPool">
+      <UniqueIdentifier>{9224023b-e6e5-4862-8ad5-59d6ae3dd2fb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Graphics\CommandBufferPool\Common">
+      <UniqueIdentifier>{11a5db8b-6b2c-4253-89ca-04bdf7a37989}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Graphics\CommandBufferPool\Vulkan">
+      <UniqueIdentifier>{8c181b43-7fc0-4bec-a3a5-b6373d786f13}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Graphics\GraphicsCommandQueue">
+      <UniqueIdentifier>{37e547fe-28ac-40b1-a234-2ce13a8f7125}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Graphics\GraphicsCommandQueue\Common">
+      <UniqueIdentifier>{fc0f5701-1d24-46f5-b40b-6a0a6df97cfc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Graphics\GraphicsCommandQueue\Vulkan">
+      <UniqueIdentifier>{30a259c7-af51-4745-9202-3e9a7a330095}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Graphics\GraphicsCommandQueueFamily">
+      <UniqueIdentifier>{b714c320-519e-4284-b142-17436f87c3c9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Graphics\GraphicsCommandQueueFamily\Common">
+      <UniqueIdentifier>{0216bdaa-9cd0-46ce-b22b-09216f609cb4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Graphics\GraphicsCommandQueueFamily\Vulkan">
+      <UniqueIdentifier>{dd8e3959-023b-4db4-854c-3154cb452e0c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Main\EngineMain.cpp">
@@ -209,6 +236,24 @@
     </ClCompile>
     <ClCompile Include="..\Graphics\RenderCommandBuffer\Vulkan\VulkanRenderCommandBuffer.cpp">
       <Filter>Src\Graphics\RenderCommand Buffer\Vulkan</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Graphics\CommandBufferPool\Common\CommonCommandBufferPool.cpp">
+      <Filter>Src\Graphics\CommandBufferPool\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Graphics\CommandBufferPool\Vulkan\VulkanCommandBufferPool.cpp">
+      <Filter>Src\Graphics\CommandBufferPool\Vulkan</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Graphics\CommandBufferPool\CommandBufferPool.cpp">
+      <Filter>Src\Graphics\CommandBufferPool</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Graphics\GraphicsCommandQueue\Common\CommonGraphicsCommandQueue.cpp">
+      <Filter>Src\Graphics\GraphicsCommandQueue\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Graphics\GraphicsCommandQueue\Vulkan\VulkanGraphicsCommandQueue.cpp">
+      <Filter>Src\Graphics\GraphicsCommandQueue\Vulkan</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Graphics\GraphicsCommandQueue\GraphicsCommandQueue.cpp">
+      <Filter>Src\Graphics\GraphicsCommandQueue</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -298,6 +343,24 @@
     </ClInclude>
     <ClInclude Include="..\Graphics\RenderCommandBuffer\Vulkan\VulkanRenderCommandBuffer.h">
       <Filter>Src\Graphics\RenderCommand Buffer\Vulkan</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Graphics\CommandBufferPool\Common\CommonCommandBufferPool.h">
+      <Filter>Src\Graphics\CommandBufferPool\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Graphics\CommandBufferPool\Vulkan\VulkanCommandBufferPool.h">
+      <Filter>Src\Graphics\CommandBufferPool\Vulkan</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Graphics\CommandBufferPool\CommandBufferPool.h">
+      <Filter>Src\Graphics\CommandBufferPool</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Graphics\GraphicsCommandQueue\Common\CommonGraphicsCommandQueue.h">
+      <Filter>Src\Graphics\GraphicsCommandQueue\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Graphics\GraphicsCommandQueue\Vulkan\VulkanGraphicsCommandQueue.h">
+      <Filter>Src\Graphics\GraphicsCommandQueue\Vulkan</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Graphics\GraphicsCommandQueue\GraphicsCommandQueue.h">
+      <Filter>Src\Graphics\GraphicsCommandQueue</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

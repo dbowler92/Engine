@@ -46,3 +46,5 @@
 #define ENGINE_CONFIG_VULKAN_API_TRANSFER_QUEUE_COUNT 0  //DMA
 #define ENGINE_CONFIG_VULKAN_API_SPARSE_QUEUE_COUNT   0  //Spare memory
 
+//Number of command buffer pools that we should created
+#define ENGINE_CONFIG_VULKAN_API_GRAPHICS_COMMAND_BUFFER_POOLS_COUNT 1
