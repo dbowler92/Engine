@@ -87,7 +87,7 @@ bool VulkanRenderDevice::Init(EngineAPI::OS::OSWindow* osWindow,
 
 	//********************************************************************************
 	//********************************************************************************
-	//**********************************Queue(s)**************************************
+	//***************************Queue(s) && familes**********************************
 	//********************************************************************************
 	//********************************************************************************
 	//
@@ -98,39 +98,31 @@ bool VulkanRenderDevice::Init(EngineAPI::OS::OSWindow* osWindow,
 	vkQueueFamiliesArray = GE_NEW VkQueueFamilyProperties[vkQueueFamiliesCount];
 	vkGetPhysicalDeviceQueueFamilyProperties(vkPhysicalDevice, &vkQueueFamiliesCount, &vkQueueFamiliesArray[0]);
 
+	//********************************************************************************
+	//********************************************************************************
+	//******************************Graphics Queue************************************
+	//********************************************************************************
+	//********************************************************************************
+
 	//Search queue families for the graphics queue: VK_QUEUE_GRAPHICS_BIT
-	bool hasFoundQueue = false;
-	hasFoundQueue = GetGraphicsQueueFamilyHandle(&vkQueueFamiliesArray[0], vkQueueFamiliesCount);
+	bool hasFoundGraphicsQueue = false;
+	uint32_t graphicsQueueFamilyIdx = 0;
+	hasFoundGraphicsQueue = GetGraphicsQueueFamilyHandle(&vkQueueFamiliesArray[0], vkQueueFamiliesCount, &graphicsQueueFamilyIdx);
 
 	//Check
-	if (!hasFoundQueue)
+	if (!hasFoundGraphicsQueue)
 		return false;
 
-	//Graphics queue creation info struct. 
+	//Graphics queue creation - returns the struct needed when creating the 
+	//logical device. Note: Untill we need a queue with support
+	//for comoute, we don't need to change VkDeviceQueueCreateInfo::pNext!
 	VkDeviceQueueCreateInfo graphicsQueueCreateInfo = {};
 	float queuePriorities[1] = { 0.0 };
-	graphicsQueueCreateInfo.sType = VK_STRUCTURE_TYPE_DEVICE_QUEUE_CREATE_INFO;
-	graphicsQueueCreateInfo.pNext = nullptr;
-	graphicsQueueCreateInfo.flags = 0; //Reserved
-	graphicsQueueCreateInfo.queueFamilyIndex = vkGraphicsQueueFamilyIndex;
-	graphicsQueueCreateInfo.queueCount = ENGINE_CONFIG_VULKAN_API_GRAPHICS_QUEUE_COUNT;
-	graphicsQueueCreateInfo.pQueuePriorities = queuePriorities;
+	vkGraphicsQueueFamily.InitVulkanQueueFamily(QUEUE_FAMILY_SUPPORT_GRAPHICS,
+		graphicsQueueFamilyIdx,
+		ENGINE_CONFIG_VULKAN_API_GRAPHICS_QUEUE_COUNT, queuePriorities,
+		&graphicsQueueCreateInfo);
 	
-	//Number of family queues we wish to create queues in ???
-	uint32_t numFamilyQueuesToCreate = 0;
-#if ENGINE_CONFIG_VULKAN_API_GRAPHICS_QUEUE_COUNT
-	numFamilyQueuesToCreate++;
-#endif 
-#if ENGINE_CONFIG_VULKAN_API_COMPUTE_QUEUE_COUNT
-	numFamilyQueuesToCreate++;
-#endif 
-#if ENGINE_CONFIG_VULKAN_API_TRANSFER_QUEUE_COUNT
-	numFamilyQueuesToCreate++;
-#endif 
-#if ENGINE_CONFIG_VULKAN_API_SPARSE_QUEUE_COUNT
-	numFamilyQueuesToCreate++;
-#endif 
-
 	//********************************************************************************
 	//********************************************************************************
 	//**************************Create logical device*********************************
@@ -147,8 +139,8 @@ bool VulkanRenderDevice::Init(EngineAPI::OS::OSWindow* osWindow,
 	vkDeviceCreateInfo.enabledExtensionCount = (uint32_t)deviceExtensionNames.size();
 	vkDeviceCreateInfo.ppEnabledExtensionNames = (deviceExtensionNames.size() > 0) ? deviceExtensionNames.data() : NULL;
 	vkDeviceCreateInfo.pEnabledFeatures = &vkDeviceEnabledFeaturesArray;
-	vkDeviceCreateInfo.pQueueCreateInfos = &graphicsQueueCreateInfo;
-	vkDeviceCreateInfo.queueCreateInfoCount = numFamilyQueuesToCreate;
+	vkDeviceCreateInfo.pQueueCreateInfos = &graphicsQueueCreateInfo;     //Just graphics
+	vkDeviceCreateInfo.queueCreateInfoCount = 1;					     //Just graphics
 
 	//Create logical device
 	VkResult result = vkCreateDevice(vkPhysicalDevice, &vkDeviceCreateInfo, nullptr, &vkLogicalDevice);
@@ -177,18 +169,6 @@ bool VulkanRenderDevice::Init(EngineAPI::OS::OSWindow* osWindow,
 	if (!FindVKMemoryTypeIndexForMappableAllocations())
 		return false;
 
-	//********************************************************************************
-	//********************************************************************************
-	//**********************************Queue(s)**************************************
-	//********************************************************************************
-	//********************************************************************************
-	//
-	//Cache queue handle object(s)
-	//
-	//Graphics
-	for (int i = 0; i < ENGINE_CONFIG_VULKAN_API_GRAPHICS_QUEUE_COUNT; i++)
-		vkGetDeviceQueue(vkLogicalDevice, vkGraphicsQueueFamilyIndex, i, &vkGraphicsQueue[i]);
-
 
 	//********************************************************************************
 	//********************************************************************************
@@ -198,6 +178,16 @@ bool VulkanRenderDevice::Init(EngineAPI::OS::OSWindow* osWindow,
 	//
 	//Init vulkan command buffer pools
 	if (!InitVKCommandBufferPools())
+		return false;
+
+	//********************************************************************************
+	//********************************************************************************
+	//********************************Final init**************************************
+	//********************************************************************************
+	//********************************************************************************
+	//
+	//Cache queue handle object(s)
+	if (!vkGraphicsQueueFamily.InitVulkanQueues(&vkLogicalDevice))
 		return false;
 
 	//Done
@@ -215,6 +205,7 @@ void VulkanRenderDevice::Shutdown()
 	}
 
 	//Queues
+	vkGraphicsQueueFamily.Shutdown();
 	if (vkQueueFamiliesArray)
 		delete[]vkQueueFamiliesArray;
 
@@ -489,22 +480,22 @@ VkPhysicalDevice VulkanRenderDevice::PickBestVulkanPhysicalDevice(VkPhysicalDevi
 	return vkPickedPhysicalDevice;
 }
 
-bool VulkanRenderDevice::GetGraphicsQueueFamilyHandle(
-	VkQueueFamilyProperties* deviceQueueFamiliesArray, uint32_t queueFamilyCount)
+bool VulkanRenderDevice::GetGraphicsQueueFamilyHandle(VkQueueFamilyProperties* deviceQueueFamiliesArray, uint32_t queueFamilyCount, 
+	uint32_t* graphicsQueueFamilyIndexOut)
 {
 	for (int i = 0; i < queueFamilyCount; i++)
 	{
 		if (deviceQueueFamiliesArray[i].queueFlags & VK_QUEUE_GRAPHICS_BIT)
 		{
 			//Store handle and return true
-			vkGraphicsQueueFamilyIndex = i;
+			*graphicsQueueFamilyIndexOut = i;
 			return true;
 		}
 	}
 
 	//False
 	EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanRenderDevice::GetGraphicsQueueFamilyHandle(): Failed to find the graphics queue family.\n");
-	vkGraphicsQueueFamilyIndex = 0;
+	*graphicsQueueFamilyIndexOut = 0;
 	return false;
 }
 
@@ -524,7 +515,7 @@ bool VulkanRenderDevice::InitVKCommandBufferPools()
 	vkCommandPoolInitInfo.sType = VK_STRUCTURE_TYPE_COMMAND_POOL_CREATE_INFO;
 	vkCommandPoolInitInfo.pNext = nullptr;
 	vkCommandPoolInitInfo.flags = VK_COMMAND_POOL_CREATE_RESET_COMMAND_BUFFER_BIT; //TODO
-	vkCommandPoolInitInfo.queueFamilyIndex = vkGraphicsQueueFamilyIndex; //TODO
+	vkCommandPoolInitInfo.queueFamilyIndex = vkGraphicsQueueFamily.GetVKQueueFamilyIndex(); //TODO
 
 	for (int i = 0; i < ENGINE_CONFIG_VULKAN_API_GRAPHICS_COMMAND_BUFFER_POOLS_COUNT; i++)
 	{
