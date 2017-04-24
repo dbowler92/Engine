@@ -26,6 +26,14 @@ namespace EngineAPI
 
 				//Override shutdown function
 				void Shutdown() override;
+
+				//Vulkan init
+				bool InitVKQueue(VkDevice* logicalDevice, 
+					uint32_t queueFamilyIndex, uint32_t queueIndex);
+
+			protected:
+				//Vulkan queue handle
+				VkQueue vkQueueHandle = NULL;
 			};
 		};
 	};

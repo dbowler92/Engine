@@ -10,6 +10,9 @@
 //Common interface
 #include "../Common/CommonRenderDevice.h"
 
+//Manages (VK) queue families and queues
+#include "../../GraphicsCommandQueueFamily/GraphicsCommandQueueFamily.h"
+
 //Manages (VK) command buffer pools
 #include "../../CommandBufferPool/CommandBufferPool.h"
 
@@ -65,11 +68,8 @@ namespace EngineAPI
 				//with this type is most efficient for device access. 
 				uint32_t vkMemoryTypeIndexForEfficientDeviceOnlyAllocations = 0;
 
-				//Graphics queue - used for general rendering - TODO: Get queue family which is
-				//capable of presentation rather than just the first available 
-				//queue family that can do graphics work. 
-				uint32_t vkGraphicsQueueFamilyIndex = 0; //Index in to vkQueueFamilesArray (above) & used at queue creation time
-				VkQueue vkGraphicsQueue[ENGINE_CONFIG_VULKAN_API_GRAPHICS_QUEUE_COUNT]; //All graphics processing queues
+				//Graphics queue family and queues - general rendering
+				GraphicsCommandQueueFamily vkGraphicsQueueFamily;
 
 				//VUlkan command buffer pool(s)
 				CommandBufferPool* vkCommandBufferPoolsArray = nullptr;
@@ -98,7 +98,8 @@ namespace EngineAPI
 				//Gets the queue handle for a given type. 
 				//TODO: Compute etc. 
 				//TODO: Queue which also supports presentation (Swapchain)???
-				bool GetGraphicsQueueFamilyHandle(VkQueueFamilyProperties* deviceQueueFamiliesArray, uint32_t queueFamilyCount);
+				bool GetGraphicsQueueFamilyHandle(VkQueueFamilyProperties* deviceQueueFamiliesArray, uint32_t queueFamilyCount, 
+					uint32_t* graphicsQueueFamilyIndexOut);
 
 				//Inits Vulkan command buffer pool(s)
 				bool InitVKCommandBufferPools();

@@ -255,6 +255,15 @@
     <ClCompile Include="..\Graphics\GraphicsCommandQueue\GraphicsCommandQueue.cpp">
       <Filter>Src\Graphics\GraphicsCommandQueue</Filter>
     </ClCompile>
+    <ClCompile Include="..\Graphics\GraphicsCommandQueueFamily\Common\CommonGraphicsCommandQueueFamily.cpp">
+      <Filter>Src\Graphics\GraphicsCommandQueueFamily\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Graphics\GraphicsCommandQueueFamily\Vulkan\VulkanGraphicsCommandQueueFamily.cpp">
+      <Filter>Src\Graphics\GraphicsCommandQueueFamily\Vulkan</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Graphics\GraphicsCommandQueueFamily\GraphicsCommandQueueFamily.cpp">
+      <Filter>Src\Graphics\GraphicsCommandQueueFamily</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Main\EngineStd.h">
@@ -361,6 +370,15 @@
     </ClInclude>
     <ClInclude Include="..\Graphics\GraphicsCommandQueue\GraphicsCommandQueue.h">
       <Filter>Src\Graphics\GraphicsCommandQueue</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Graphics\GraphicsCommandQueueFamily\Common\CommonGraphicsCommandQueueFamily.h">
+      <Filter>Src\Graphics\GraphicsCommandQueueFamily\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Graphics\GraphicsCommandQueueFamily\Vulkan\VulkanGraphicsCommandQueueFamily.h">
+      <Filter>Src\Graphics\GraphicsCommandQueueFamily\Vulkan</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Graphics\GraphicsCommandQueueFamily\GraphicsCommandQueueFamily.h">
+      <Filter>Src\Graphics\GraphicsCommandQueueFamily</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

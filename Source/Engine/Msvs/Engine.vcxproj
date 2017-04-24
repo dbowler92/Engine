@@ -31,6 +31,9 @@
     <ClCompile Include="..\Graphics\Device\Common\CommonRenderDevice.cpp" />
     <ClCompile Include="..\Graphics\Device\RenderDevice.cpp" />
     <ClCompile Include="..\Graphics\Device\Vulkan\VulkanRenderDevice.cpp" />
+    <ClCompile Include="..\Graphics\GraphicsCommandQueueFamily\Common\CommonGraphicsCommandQueueFamily.cpp" />
+    <ClCompile Include="..\Graphics\GraphicsCommandQueueFamily\GraphicsCommandQueueFamily.cpp" />
+    <ClCompile Include="..\Graphics\GraphicsCommandQueueFamily\Vulkan\VulkanGraphicsCommandQueueFamily.cpp" />
     <ClCompile Include="..\Graphics\GraphicsCommandQueue\Common\CommonGraphicsCommandQueue.cpp" />
     <ClCompile Include="..\Graphics\GraphicsCommandQueue\GraphicsCommandQueue.cpp" />
     <ClCompile Include="..\Graphics\GraphicsCommandQueue\Vulkan\VulkanGraphicsCommandQueue.cpp" />
@@ -68,6 +71,9 @@
     <ClInclude Include="..\Graphics\Device\Common\CommonRenderDevice.h" />
     <ClInclude Include="..\Graphics\Device\RenderDevice.h" />
     <ClInclude Include="..\Graphics\Device\Vulkan\VulkanRenderDevice.h" />
+    <ClInclude Include="..\Graphics\GraphicsCommandQueueFamily\Common\CommonGraphicsCommandQueueFamily.h" />
+    <ClInclude Include="..\Graphics\GraphicsCommandQueueFamily\GraphicsCommandQueueFamily.h" />
+    <ClInclude Include="..\Graphics\GraphicsCommandQueueFamily\Vulkan\VulkanGraphicsCommandQueueFamily.h" />
     <ClInclude Include="..\Graphics\GraphicsCommandQueue\Common\CommonGraphicsCommandQueue.h" />
     <ClInclude Include="..\Graphics\GraphicsCommandQueue\GraphicsCommandQueue.h" />
     <ClInclude Include="..\Graphics\GraphicsCommandQueue\Vulkan\VulkanGraphicsCommandQueue.h" />
