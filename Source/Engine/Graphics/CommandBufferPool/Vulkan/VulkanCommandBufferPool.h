@@ -27,10 +27,20 @@ namespace EngineAPI
 				//Override shutdown function
 				void Shutdown() override;
 
+				//Resets all command buffers
+				bool ResetCommandBufferPool(bool doReleaseCommandBuffersBackToPool = false) override;
+
+				//Allocs a render command buffer from this pool
+				EngineAPI::Graphics::RenderCommandBuffer* AllocCommandBuffer(bool isPrimaryCmdBuffer = true) override;
+				
+				//Allocs multiple render command buffers from this pool
+				EngineAPI::Graphics::RenderCommandBuffer* AllocCommandBuffersArray(uint32_t cmdBuffersCount, bool isAllPrimaryCmdBuffers = true) override;
+				EngineAPI::Graphics::RenderCommandBuffer* AllocCommandBuffersArray(uint32_t cmdBuffersCount, bool* isPrimaryCmdBuffersArray) override;
+
 			public:
 				//VK init function
-				bool InitVKCommandBufferPool(VkDevice* vulkanLogicalDevice, 
-					VkCommandPoolCreateInfo* poolCreateInfo);
+				bool InitVKCommandBufferPool(VkDevice* vulkanLogicalDevice, uint32_t vkQueueFamilyIndex,
+					bool shouldAllowIndividualCmdBufferResets = true, bool isTransientPool = false);
 
 			protected:
 				//Handle to the vulkan created command pool
@@ -44,6 +54,12 @@ namespace EngineAPI
 				uint32_t cachedVkQueueFamilyIndexForSubmission = 0;
 				//Cache the flags this command pool has been created with
 				uint32_t cachedVkCommandPoolFlags = 0;
+
+				//Can we manually reset command buffers within this pool?
+				bool canIndividuallyResetCommandBuffers;
+
+				//Is pool transient - short lived?
+				bool isCmdPoolTransient;
 			};
 		};
 	};

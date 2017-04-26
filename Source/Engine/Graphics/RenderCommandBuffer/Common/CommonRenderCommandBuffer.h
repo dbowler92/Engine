@@ -13,10 +13,6 @@
 //Debug
 #include "../../../Debug/Log/DebugLog.h"
 
-//Need to know about the device(and maybe instance)
-#include "../../Device/RenderDevice.h"
-#include "../../Instance/RenderInstance.h"
-
 namespace EngineAPI
 {
 	namespace Graphics
@@ -25,15 +21,22 @@ namespace EngineAPI
 		{
 			class CommonRenderCommandBuffer
 			{
+				//TODO: The CommandBufferPool class will be responsable for creating
+				//command buffer objects. 
+				//friend class CommonCommandBufferPool;
+
 			public:
 				CommonRenderCommandBuffer() {};
 				virtual ~CommonRenderCommandBuffer() = 0 {};
 
-				//Override the init and shutdown functions
-				virtual bool Init(EngineAPI::Graphics::RenderDevice* renderDevice, 
-					EngineAPI::Graphics::RenderInstance* renderInstance) = 0;
+				//Override the shutdown functions
 				virtual void Shutdown() = 0;
 
+				//Override the reset function - doesnt destroy/free the buffer by default (release memory back
+				//to the command pool used to create this buffer)
+				virtual bool ResetCommandBuffer(bool shouldReleaseMemoryToCommandPool = false) = 0;
+
+			public:
 				//Override the begin/end reading function - We will be recording rendering
 				//commands in to this cmd buffer
 				virtual bool BeginRecordingToCommandBuffer() = 0;

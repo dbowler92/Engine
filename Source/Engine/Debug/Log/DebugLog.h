@@ -8,6 +8,7 @@
 #pragma once
 
 #include "../../Main/EngineStd.h"
+#include "../../Config/EngineConfig.h"
 
 namespace EngineAPI
 {

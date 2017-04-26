@@ -154,6 +154,12 @@
     <Filter Include="Src\Graphics\GraphicsCommandQueueFamily\Vulkan">
       <UniqueIdentifier>{dd8e3959-023b-4db4-854c-3154cb452e0c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Src\Rendering\Texture">
+      <UniqueIdentifier>{18e3cc19-030b-4eb9-89c7-f8f94e14b89a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Includes">
+      <UniqueIdentifier>{f41ecde8-b268-4638-b8d8-379945c6bac4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Main\EngineMain.cpp">
@@ -379,6 +385,9 @@
     </ClInclude>
     <ClInclude Include="..\Graphics\GraphicsCommandQueueFamily\GraphicsCommandQueueFamily.h">
       <Filter>Src\Graphics\GraphicsCommandQueueFamily</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Includes\GraphicsIncludes.h">
+      <Filter>Includes</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

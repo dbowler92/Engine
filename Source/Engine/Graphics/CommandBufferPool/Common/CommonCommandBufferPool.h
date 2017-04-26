@@ -14,6 +14,9 @@
 //Debug
 #include "../../../Debug/Log/DebugLog.h"
 
+//Will return command buffers
+#include "../../RenderCommandBuffer/RenderCommandBuffer.h"
+
 namespace EngineAPI
 {
 	namespace Graphics
@@ -22,12 +25,27 @@ namespace EngineAPI
 		{
 			class CommonCommandBufferPool
 			{
+				//TODO: The rendering device should be the one who creates and manages
+				//command pools. 
+				//friend class RenderDevice;
+
 			public:
 				CommonCommandBufferPool() {};
 				virtual ~CommonCommandBufferPool() = 0 {};
 
 				//Override the shutdown functions
 				virtual void Shutdown() = 0;
+
+				//Override the reset pool function
+				virtual bool ResetCommandBufferPool(bool doReleaseCommandBuffersBackToPool = false) = 0;
+			
+			public:
+				//Returns a command buffer from this pool
+				virtual EngineAPI::Graphics::RenderCommandBuffer* AllocCommandBuffer(bool isPrimaryCmdBuffer = true) = 0;
+			
+				//Returns multiple command buffers allocated from this pool
+				virtual EngineAPI::Graphics::RenderCommandBuffer* AllocCommandBuffersArray(uint32_t cmdBuffersCount, bool isAllPrimaryCmdBuffers = true) = 0;
+				virtual EngineAPI::Graphics::RenderCommandBuffer* AllocCommandBuffersArray(uint32_t cmdBuffersCount, bool* isPrimaryCmdBuffersArray) = 0;
 			};
 		};
 	};

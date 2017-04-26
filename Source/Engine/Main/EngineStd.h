@@ -55,6 +55,19 @@ typedef double EDOUBLE;
 #define GE_NEW new
 #endif
 
+//TODO? Delete...
+#if defined(_DEBUG) | defined(DEBUG)
+#define GE_DELETE delete
+#else
+#define GE_DELETE delete
+#endif
+
+#if defined(_DEBUG) | defined(DEBUG)
+#define GE_DELETE_ARRAY delete[]
+#else
+#define GE_DELETE_ARRAY delete[]
+#endif
+
 //Macro to disable/hide copy constructor and assignment operator
 #define HIDE_COPY_ASSIGNMENT(c) private: c(const c &other); c& operator = (const c &other);
 

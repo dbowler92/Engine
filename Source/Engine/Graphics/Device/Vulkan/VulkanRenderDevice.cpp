@@ -190,6 +190,34 @@ bool VulkanRenderDevice::Init(EngineAPI::OS::OSWindow* osWindow,
 	if (!vkGraphicsQueueFamily.InitVulkanQueues(&vkLogicalDevice))
 		return false;
 
+	//
+	//
+	//TESTING
+	//
+	//
+	//RenderCommandBuffer* cmdBuffer = vkCommandBufferPoolsArray[0].AllocCommandBuffer(true);
+	//cmdBuffer->BeginRecordingToCommandBuffer();
+	//cmdBuffer->EndRecordingToCommandBuffer();
+
+	RenderCommandBuffer* cmdBufferSingle = vkCommandBufferPoolsArray[0].AllocCommandBuffer(true);
+	RenderCommandBuffer *cmdBuffersArray;
+	bool primaryFlags[2] = { true, false };
+	cmdBuffersArray = vkCommandBufferPoolsArray[0].AllocCommandBuffersArray(2, primaryFlags);
+
+	if (!cmdBuffersArray[0].ResetCommandBuffer())
+	{
+		int x = 3123123;
+		x++;
+	}
+	if (!vkCommandBufferPoolsArray[0].ResetCommandBufferPool())
+	{
+		int x = 90;
+		x++; 
+	}
+
+	GE_DELETE cmdBufferSingle;
+	GE_DELETE_ARRAY cmdBuffersArray;
+
 	//Done
 	return true;
 }
@@ -501,6 +529,12 @@ bool VulkanRenderDevice::GetGraphicsQueueFamilyHandle(VkQueueFamilyProperties* d
 
 bool VulkanRenderDevice::InitVKCommandBufferPools()
 {
+	//*************************************************************************************
+	//*************************************************************************************
+	//**************************GRAPHICS QUEUE FAMILY**************************************
+	//*************************************************************************************
+	//*************************************************************************************
+
 	//Alloc
 	vkCommandBufferPoolsArray = GE_NEW CommandBufferPool[ENGINE_CONFIG_VULKAN_API_GRAPHICS_COMMAND_BUFFER_POOLS_COUNT];
 	if (!vkCommandBufferPoolsArray)
@@ -510,16 +544,14 @@ bool VulkanRenderDevice::InitVKCommandBufferPools()
 		return false;
 	}
 
-	//Command pool init description
-	VkCommandPoolCreateInfo vkCommandPoolInitInfo = {};
-	vkCommandPoolInitInfo.sType = VK_STRUCTURE_TYPE_COMMAND_POOL_CREATE_INFO;
-	vkCommandPoolInitInfo.pNext = nullptr;
-	vkCommandPoolInitInfo.flags = VK_COMMAND_POOL_CREATE_RESET_COMMAND_BUFFER_BIT; //TODO
-	vkCommandPoolInitInfo.queueFamilyIndex = vkGraphicsQueueFamily.GetVKQueueFamilyIndex(); //TODO
+	//Command pool alloc info.
+	uint32_t cmdPoolSubmissionQueueFamilyIdxGraphics = vkGraphicsQueueFamily.GetVKQueueFamilyIndex();
 
 	for (int i = 0; i < ENGINE_CONFIG_VULKAN_API_GRAPHICS_COMMAND_BUFFER_POOLS_COUNT; i++)
 	{
-		if (!vkCommandBufferPoolsArray[i].InitVKCommandBufferPool(&vkLogicalDevice, &vkCommandPoolInitInfo))
+		if (!vkCommandBufferPoolsArray[i].InitVKCommandBufferPool(&vkLogicalDevice, cmdPoolSubmissionQueueFamilyIdxGraphics,
+			ENGINE_CONFIG_VULKAN_API_GRAPHICS_COMMAND_BUFFER_POOLS_ALLOW_BUFFER_RESETS,
+			ENGINE_CONFIG_VULKAN_API_GRAPHICS_COMMAND_BUFFER_POOLS_IS_TRANSIENT))
 		{
 			//Init error
 			EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanRenderDevice: Error initing (VK) Command Buffer Pools\n");
