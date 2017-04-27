@@ -1,2 +1,3 @@
-﻿  VulkanCommandBufferPool.cpp
+﻿  VulkanCommandQueue.cpp
+c:\users\dan\documents\programming\3dgameengine\game_engine\engine\source\engine\graphics\commandqueue\vulkan\vulkancommandqueue.cpp(51): warning C4101: 'fence': unreferenced local variable
   Engine.vcxproj -> C:\Users\Dan\Documents\Programming\3DGameEngine\Game_Engine\Engine\Source\Engine\Msvs\..\..\Lib\Win32Debug\Engine.lib

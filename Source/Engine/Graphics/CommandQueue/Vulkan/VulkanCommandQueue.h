@@ -32,13 +32,14 @@ namespace EngineAPI
 					uint32_t queueFamilyIndex, uint32_t queueIndex);
 
 			public:
-				//Submits a VkCommandBuffer (or array of them) to this queue for processing
-				bool SubmitCommandBuffer(EngineAPI::Graphics::RenderCommandBuffer* cmdBuffer) override;
-				bool SubmitCommandBufferAndWait(EngineAPI::Graphics::RenderCommandBuffer* cmdBuffer) override;
+				//VkCommandBuffer submission.
+				bool SubmitVKCommandBuffer(VkCommandBuffer* cmdBuffer);
+				bool SubmitVKCommandBufferAndWait(VkCommandBuffer* cmdBuffer);
 
-				bool SubmitCommandBuffersArray(EngineAPI::Graphics::RenderCommandBuffer* cmdBuffers, uint32_t cmdBuffersCount) override;
-				bool SubmitCommandBuffersArrayAndWait(EngineAPI::Graphics::RenderCommandBuffer* cmdBuffers, uint32_t cmdBuffersCount) override;
-			
+				//Takes an array of VkCommandBuffer and submits the work to this queue
+				bool SubmitVKCommandBuffersArray(VkCommandBuffer* cmdBuffersArray, uint32_t cmdBuffersCount);
+				bool SubmitVKCommandBuffersArrayAndWait(VkCommandBuffer* cmdBuffersArray, uint32_t cmdBuffersCount);
+
 			protected:
 				//Vulkan queue handle
 				VkQueue vkQueueHandle = NULL;

@@ -1,5 +1,8 @@
 #include "VulkanCommandQueue.h"
 
+//Debug
+#include "../../../Debug/Log/DebugLog.h"
+
 using namespace EngineAPI::Graphics::Platform;
 
 void VulkanCommandQueue::Shutdown()
@@ -19,22 +22,21 @@ bool VulkanCommandQueue::InitVKQueue(VkDevice* logicalDevice, uint32_t queueFami
 	return true;
 }
 
-bool VulkanCommandQueue::SubmitCommandBuffer(EngineAPI::Graphics::RenderCommandBuffer* cmdBuffer)
+bool VulkanCommandQueue::SubmitVKCommandBuffer(VkCommandBuffer* cmdBuffer)
 {
-	VkCommandBuffer buffers[1];
-	buffers[0] = cmdBuffer->GetVKCommandBufferHandle();
-
+	//Submission info
 	VkSubmitInfo submitInfo = {};
 	submitInfo.sType = VK_STRUCTURE_TYPE_SUBMIT_INFO;
 	submitInfo.pNext = nullptr;
 	submitInfo.commandBufferCount = 1;
-	submitInfo.pCommandBuffers = buffers;
+	submitInfo.pCommandBuffers = cmdBuffer;
 
+	//Submit - don't wait
 	VkResult result = vkQueueSubmit(vkQueueHandle, 1, &submitInfo, NULL);
 	if (result != VK_SUCCESS)
 	{
 		//Error
-		EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanCommandQueue: Error when submititng buffer\n");
+		EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanCommandQueue: Error when submititng VkCommandBuffer\n");
 		return false;
 	}
 
@@ -42,7 +44,7 @@ bool VulkanCommandQueue::SubmitCommandBuffer(EngineAPI::Graphics::RenderCommandB
 	return true;
 }
 
-bool VulkanCommandQueue::SubmitCommandBufferAndWait(EngineAPI::Graphics::RenderCommandBuffer* cmdBuffer)
+bool VulkanCommandQueue::SubmitVKCommandBufferAndWait(VkCommandBuffer* cmdBuffer)
 {
 	//TODO
 
@@ -53,7 +55,7 @@ bool VulkanCommandQueue::SubmitCommandBufferAndWait(EngineAPI::Graphics::RenderC
 	return true;
 }
 
-bool VulkanCommandQueue::SubmitCommandBuffersArray(EngineAPI::Graphics::RenderCommandBuffer* cmdBuffers, uint32_t cmdBuffersCount)
+bool VulkanCommandQueue::SubmitVKCommandBuffersArray(VkCommandBuffer* cmdBuffersArray, uint32_t cmdBuffersCount)
 {
 	//TODO
 
@@ -61,8 +63,7 @@ bool VulkanCommandQueue::SubmitCommandBuffersArray(EngineAPI::Graphics::RenderCo
 	return true;
 }
 
-
-bool VulkanCommandQueue::SubmitCommandBuffersArrayAndWait(EngineAPI::Graphics::RenderCommandBuffer* cmdBuffers, uint32_t cmdBuffersCount)
+bool VulkanCommandQueue::SubmitVKCommandBuffersArrayAndWait(VkCommandBuffer* cmdBuffersArray, uint32_t cmdBuffersCount)
 {
 	//TODO
 
