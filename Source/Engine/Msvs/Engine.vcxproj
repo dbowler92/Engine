@@ -47,6 +47,7 @@
     <ClCompile Include="..\Graphics\RenderCommandBuffer\Common\CommonRenderCommandBuffer.cpp" />
     <ClCompile Include="..\Graphics\RenderCommandBuffer\RenderCommandBuffer.cpp" />
     <ClCompile Include="..\Graphics\RenderCommandBuffer\Vulkan\VulkanRenderCommandBuffer.cpp" />
+    <ClCompile Include="..\Graphics\Statics\Vulkan\VulkanStatics.cpp" />
     <ClCompile Include="..\Graphics\Swapchain\Common\CommonSwapchain.cpp" />
     <ClCompile Include="..\Graphics\Swapchain\Swapchain.cpp" />
     <ClCompile Include="..\Graphics\Swapchain\Vulkan\VulkanSwapchain.cpp" />
@@ -87,6 +88,7 @@
     <ClInclude Include="..\Graphics\RenderCommandBuffer\Common\CommonRenderCommandBuffer.h" />
     <ClInclude Include="..\Graphics\RenderCommandBuffer\RenderCommandBuffer.h" />
     <ClInclude Include="..\Graphics\RenderCommandBuffer\Vulkan\VulkanRenderCommandBuffer.h" />
+    <ClInclude Include="..\Graphics\Statics\Vulkan\VulkanStatics.h" />
     <ClInclude Include="..\Graphics\Swapchain\Common\CommonSwapchain.h" />
     <ClInclude Include="..\Graphics\Swapchain\Swapchain.h" />
     <ClInclude Include="..\Graphics\Swapchain\Vulkan\VulkanSwapchain.h" />

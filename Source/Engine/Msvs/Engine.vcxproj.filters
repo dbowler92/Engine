@@ -160,6 +160,12 @@
     <Filter Include="Src\Graphics\CommandQueueFamily\Vulkan">
       <UniqueIdentifier>{dd8e3959-023b-4db4-854c-3154cb452e0c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Src\Graphics\Statics">
+      <UniqueIdentifier>{b8dd96a7-a335-4262-a738-d2f6278cdd39}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Graphics\Statics\Vulkan">
+      <UniqueIdentifier>{829bf66c-2e89-4107-8df1-da2121b64c4f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Main\EngineMain.cpp">
@@ -269,6 +275,9 @@
     </ClCompile>
     <ClCompile Include="..\Graphics\CommandQueue\Vulkan\VulkanCommandQueue.cpp">
       <Filter>Src\Graphics\CommandQueue\Vulkan</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Graphics\Statics\Vulkan\VulkanStatics.cpp">
+      <Filter>Src\Graphics\Statics\Vulkan</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -388,6 +397,9 @@
     </ClInclude>
     <ClInclude Include="..\Graphics\CommandQueue\Vulkan\VulkanCommandQueue.h">
       <Filter>Src\Graphics\CommandQueue\Vulkan</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Graphics\Statics\Vulkan\VulkanStatics.h">
+      <Filter>Src\Graphics\Statics\Vulkan</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

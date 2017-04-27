@@ -6,6 +6,8 @@
 
 #pragma once
 
+#include "../Graphics/Statics/Vulkan/VulkanStatics.h" //Helper / static functions
+
 #include "../Graphics/Manager/GraphicsManager.h"
 #include "../Graphics/Instance/RenderInstance.h"
 #include "../Graphics/Device/RenderDevice.h"
@@ -14,5 +16,5 @@
 #include "../Graphics/CommandBufferPool/CommandBufferPool.h"
 #include "../Graphics/RenderCommandBuffer/RenderCommandBuffer.h"
 
-#include "../Graphics/GraphicsCommandQueueFamily/GraphicsCommandQueueFamily.h"
-#include "../Graphics/GraphicsCommandQueue/GraphicsCommandQueue.h"
+#include "../Graphics/CommandQueueFamily/CommandQueueFamily.h"
+#include "../Graphics/CommandQueue/CommandQueue.h"

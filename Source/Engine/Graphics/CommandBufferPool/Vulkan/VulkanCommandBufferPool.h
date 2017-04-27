@@ -9,6 +9,9 @@
 //Base
 #include "../Common/CommonCommandBufferPool.h"
 
+//Vulkan static functions
+#include "../../Statics/Vulkan/VulkanStatics.h"
+
 //Vulkan header
 #include <vulkan\vulkan.h>
 
@@ -27,20 +30,18 @@ namespace EngineAPI
 				//Override shutdown function
 				void Shutdown() override;
 
-				//Resets all command buffers
-				bool ResetCommandBufferPool(bool doReleaseCommandBuffersBackToPool = false) override;
-
-				//Allocs a render command buffer from this pool
-				EngineAPI::Graphics::RenderCommandBuffer* AllocCommandBuffer(bool isPrimaryCmdBuffer = true) override;
-				
-				//Allocs multiple render command buffers from this pool
-				EngineAPI::Graphics::RenderCommandBuffer* AllocCommandBuffersArray(uint32_t cmdBuffersCount, bool isAllPrimaryCmdBuffers = true) override;
-				EngineAPI::Graphics::RenderCommandBuffer* AllocCommandBuffersArray(uint32_t cmdBuffersCount, bool* isPrimaryCmdBuffersArray) override;
-
 			public:
 				//VK init function
 				bool InitVKCommandBufferPool(VkDevice* vulkanLogicalDevice, uint32_t vkQueueFamilyIndex,
 					bool shouldAllowIndividualCmdBufferResets = true, bool isTransientPool = false);
+
+			public:
+				//Resets all command buffers
+				bool ResetCommandBufferPool(bool doReleaseCommandBuffersBackToPool = false) override;
+
+				//Returns a VkCommandBuffer(s) from the command pool
+				bool GetVKCommandBufferFromPool(bool isPrimaryCmdBuffer, VkCommandBuffer* vkCommandBufferOut);
+				bool GetVKCommandBuffersArrayFromPool(uint32_t count, bool isAllPrimaryCmdBuffer, VkCommandBuffer* vkCommandBufferArrayOut);
 
 			protected:
 				//Handle to the vulkan created command pool

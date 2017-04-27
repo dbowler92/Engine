@@ -71,6 +71,9 @@ typedef double EDOUBLE;
 //Macro to disable/hide copy constructor and assignment operator
 #define HIDE_COPY_ASSIGNMENT(c) private: c(const c &other); c& operator = (const c &other);
 
+//Macro to disable constructor, destructor, assignment operator && destructor (statics classes)
+#define MAKE_STATICS_CLASS_ONLY(c) private: c(); ~c(); c(const c &other); c& operator = (const c &other);
+
 //Define for namespacers
 #define BEGIN_NAMESPACE(n) namespace n { 
 #define END_NAMESPACE };

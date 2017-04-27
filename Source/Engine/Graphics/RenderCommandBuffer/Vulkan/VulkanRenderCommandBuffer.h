@@ -5,6 +5,13 @@
 //Represents the vulkan command buffer that will be sent to 
 //the GPU for processing. Create one of these by calling command 
 //buffer pool functions rather than creating (new) one manually. 
+//
+//NOTE: 27/04/17 -> Currently, this is depreciated. VulkanCommandBufferPool will alloc and return
+//VkCommandBuffer(s) directly -> This avoids a (currently... I'm not going to delete
+//this class just incase I change my mind!) needless GE_NEW to alloc a new RenderCommandBuffer
+//which simply wraps the VkCommandBuffer. Given that these buffers maybe allocated a lot 
+//at runtime, this seems like a bad idea. Some of the functionality provided here has been
+//moved off to a more general VulkanStatics class for now!
 
 #pragma once
 

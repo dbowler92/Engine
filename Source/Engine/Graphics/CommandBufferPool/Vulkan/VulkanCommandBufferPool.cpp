@@ -58,6 +58,57 @@ bool VulkanCommandBufferPool::ResetCommandBufferPool(bool doReleaseCommandBuffer
 	return true;
 }
 
+bool VulkanCommandBufferPool::GetVKCommandBufferFromPool(bool isPrimaryCmdBuffer, VkCommandBuffer* vkCommandBufferOut)
+{
+	//Alloc structure
+	VkCommandBufferAllocateInfo commandBufferAllocInfo = {};
+	commandBufferAllocInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO;
+	commandBufferAllocInfo.pNext = nullptr;
+	commandBufferAllocInfo.level = isPrimaryCmdBuffer ? VK_COMMAND_BUFFER_LEVEL_PRIMARY : VK_COMMAND_BUFFER_LEVEL_SECONDARY;
+	commandBufferAllocInfo.commandPool = vkCommandPoolHandle;
+	commandBufferAllocInfo.commandBufferCount = 1;
+
+	//Create command buffer
+	VkResult result = vkAllocateCommandBuffers(cachedVkLogicalDeviceHandle, &commandBufferAllocInfo, vkCommandBufferOut);
+	if (result != VK_SUCCESS)
+	{
+		EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanCommandBufferPool: Error allocating VK command buffer.\n");
+		return false;
+	}
+
+	//Done
+	return true;
+}
+
+bool VulkanCommandBufferPool::GetVKCommandBuffersArrayFromPool(uint32_t count, bool isAllPrimaryCmdBuffer, VkCommandBuffer* vkCommandBufferArrayOut)
+{
+	//Alloc structure
+	VkCommandBufferAllocateInfo commandBufferAllocInfo = {};
+	commandBufferAllocInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO;
+	commandBufferAllocInfo.pNext = nullptr;
+	commandBufferAllocInfo.level = isAllPrimaryCmdBuffer ? VK_COMMAND_BUFFER_LEVEL_PRIMARY : VK_COMMAND_BUFFER_LEVEL_SECONDARY;
+	commandBufferAllocInfo.commandPool = vkCommandPoolHandle;
+	commandBufferAllocInfo.commandBufferCount = count;
+
+	//Create command buffer
+	VkResult result = vkAllocateCommandBuffers(cachedVkLogicalDeviceHandle, &commandBufferAllocInfo, vkCommandBufferArrayOut);
+	if (result != VK_SUCCESS)
+	{
+		EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanCommandBufferPool: Error allocating VK command buffers array.\n");
+		return false;
+	}
+
+	//Done
+	return true;
+}
+
+//*********************************************************************************************
+//*********************************************************************************************
+//**************************************DEPRECIATED********************************************
+//*********************************************************************************************
+//*********************************************************************************************
+
+/*
 EngineAPI::Graphics::RenderCommandBuffer* VulkanCommandBufferPool::AllocCommandBuffer(bool isPrimaryCmdBuffer)
 {
 	//Alloc cmd buffer
@@ -83,7 +134,9 @@ EngineAPI::Graphics::RenderCommandBuffer* VulkanCommandBufferPool::AllocCommandB
 	//Return pointer to cmd pool wrapper (heap)
 	return cmdBuffer;
 }
+*/
 
+/*
 EngineAPI::Graphics::RenderCommandBuffer* VulkanCommandBufferPool::AllocCommandBuffersArray(uint32_t cmdBuffersCount, bool isAllPrimaryCmdBuffers)
 {
 	//Error check
@@ -118,7 +171,9 @@ EngineAPI::Graphics::RenderCommandBuffer* VulkanCommandBufferPool::AllocCommandB
 	//Return pointer to first element in buffers array
 	return &cmdBuffers[0];
 }
+*/
 
+/*
 EngineAPI::Graphics::RenderCommandBuffer* VulkanCommandBufferPool::AllocCommandBuffersArray(uint32_t cmdBuffersCount, bool* isPrimaryCmdBuffersArray)
 {
 	//Error check
@@ -158,3 +213,4 @@ EngineAPI::Graphics::RenderCommandBuffer* VulkanCommandBufferPool::AllocCommandB
 	//Return pointer to first element in buffers array
 	return &cmdBuffers[0];
 }
+*/
