@@ -198,12 +198,10 @@ bool VulkanRenderDevice::Init(EngineAPI::OS::OSWindow* osWindow,
 	//RenderCommandBuffer* cmdBuffer = vkCommandBufferPoolsArray[0].AllocCommandBuffer(true);
 	//cmdBuffer->BeginRecordingToCommandBuffer();
 	//cmdBuffer->EndRecordingToCommandBuffer();
-
 	RenderCommandBuffer* cmdBufferSingle = vkCommandBufferPoolsArray[0].AllocCommandBuffer(true);
 	RenderCommandBuffer *cmdBuffersArray;
 	bool primaryFlags[2] = { true, false };
 	cmdBuffersArray = vkCommandBufferPoolsArray[0].AllocCommandBuffersArray(2, primaryFlags);
-
 	if (!cmdBuffersArray[0].ResetCommandBuffer())
 	{
 		int x = 3123123;
@@ -214,7 +212,6 @@ bool VulkanRenderDevice::Init(EngineAPI::OS::OSWindow* osWindow,
 		int x = 90;
 		x++; 
 	}
-
 	GE_DELETE cmdBufferSingle;
 	GE_DELETE_ARRAY cmdBuffersArray;
 

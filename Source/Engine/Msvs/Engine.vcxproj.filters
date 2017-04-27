@@ -252,23 +252,23 @@
     <ClCompile Include="..\Graphics\CommandBufferPool\CommandBufferPool.cpp">
       <Filter>Src\Graphics\CommandBufferPool</Filter>
     </ClCompile>
-    <ClCompile Include="..\Graphics\GraphicsCommandQueue\Common\CommonGraphicsCommandQueue.cpp">
-      <Filter>Src\Graphics\GraphicsCommandQueue\Common</Filter>
+    <ClCompile Include="..\Graphics\CommandQueueFamily\CommandQueueFamily.cpp">
+      <Filter>Src\Graphics\GraphicsCommandQueueFamily</Filter>
     </ClCompile>
-    <ClCompile Include="..\Graphics\GraphicsCommandQueue\Vulkan\VulkanGraphicsCommandQueue.cpp">
-      <Filter>Src\Graphics\GraphicsCommandQueue\Vulkan</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Graphics\GraphicsCommandQueue\GraphicsCommandQueue.cpp">
-      <Filter>Src\Graphics\GraphicsCommandQueue</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Graphics\GraphicsCommandQueueFamily\Common\CommonGraphicsCommandQueueFamily.cpp">
+    <ClCompile Include="..\Graphics\CommandQueueFamily\Common\CommonCommandQueueFamily.cpp">
       <Filter>Src\Graphics\GraphicsCommandQueueFamily\Common</Filter>
     </ClCompile>
-    <ClCompile Include="..\Graphics\GraphicsCommandQueueFamily\Vulkan\VulkanGraphicsCommandQueueFamily.cpp">
+    <ClCompile Include="..\Graphics\CommandQueueFamily\Vulkan\VulkanCommandQueueFamily.cpp">
       <Filter>Src\Graphics\GraphicsCommandQueueFamily\Vulkan</Filter>
     </ClCompile>
-    <ClCompile Include="..\Graphics\GraphicsCommandQueueFamily\GraphicsCommandQueueFamily.cpp">
-      <Filter>Src\Graphics\GraphicsCommandQueueFamily</Filter>
+    <ClCompile Include="..\Graphics\CommandQueue\CommandQueue.cpp">
+      <Filter>Src\Graphics\GraphicsCommandQueue</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Graphics\CommandQueue\Common\CommonCommandQueue.cpp">
+      <Filter>Src\Graphics\GraphicsCommandQueue\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Graphics\CommandQueue\Vulkan\VulkanCommandQueue.cpp">
+      <Filter>Src\Graphics\GraphicsCommandQueue\Vulkan</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -368,26 +368,26 @@
     <ClInclude Include="..\Graphics\CommandBufferPool\CommandBufferPool.h">
       <Filter>Src\Graphics\CommandBufferPool</Filter>
     </ClInclude>
-    <ClInclude Include="..\Graphics\GraphicsCommandQueue\Common\CommonGraphicsCommandQueue.h">
-      <Filter>Src\Graphics\GraphicsCommandQueue\Common</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Graphics\GraphicsCommandQueue\Vulkan\VulkanGraphicsCommandQueue.h">
-      <Filter>Src\Graphics\GraphicsCommandQueue\Vulkan</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Graphics\GraphicsCommandQueue\GraphicsCommandQueue.h">
-      <Filter>Src\Graphics\GraphicsCommandQueue</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Graphics\GraphicsCommandQueueFamily\Common\CommonGraphicsCommandQueueFamily.h">
-      <Filter>Src\Graphics\GraphicsCommandQueueFamily\Common</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Graphics\GraphicsCommandQueueFamily\Vulkan\VulkanGraphicsCommandQueueFamily.h">
-      <Filter>Src\Graphics\GraphicsCommandQueueFamily\Vulkan</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Graphics\GraphicsCommandQueueFamily\GraphicsCommandQueueFamily.h">
-      <Filter>Src\Graphics\GraphicsCommandQueueFamily</Filter>
-    </ClInclude>
     <ClInclude Include="..\Includes\GraphicsIncludes.h">
       <Filter>Includes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Graphics\CommandQueueFamily\CommandQueueFamily.h">
+      <Filter>Src\Graphics\GraphicsCommandQueueFamily</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Graphics\CommandQueueFamily\Common\CommonCommandQueueFamily.h">
+      <Filter>Src\Graphics\GraphicsCommandQueueFamily\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Graphics\CommandQueueFamily\Vulkan\VulkanCommandQueueFamily.h">
+      <Filter>Src\Graphics\GraphicsCommandQueueFamily\Vulkan</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Graphics\CommandQueue\CommandQueue.h">
+      <Filter>Src\Graphics\GraphicsCommandQueue</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Graphics\CommandQueue\Common\CommonCommandQueue.h">
+      <Filter>Src\Graphics\GraphicsCommandQueue\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Graphics\CommandQueue\Vulkan\VulkanCommandQueue.h">
+      <Filter>Src\Graphics\GraphicsCommandQueue\Vulkan</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

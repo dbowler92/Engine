@@ -11,7 +11,7 @@
 #include "../Common/CommonRenderDevice.h"
 
 //Manages (VK) queue families and queues
-#include "../../GraphicsCommandQueueFamily/GraphicsCommandQueueFamily.h"
+#include "../../CommandQueueFamily/CommandQueueFamily.h"
 
 //Manages (VK) command buffer pools
 #include "../../CommandBufferPool/CommandBufferPool.h"
@@ -69,7 +69,7 @@ namespace EngineAPI
 				uint32_t vkMemoryTypeIndexForEfficientDeviceOnlyAllocations = 0;
 
 				//Graphics queue family and queues - general rendering
-				GraphicsCommandQueueFamily vkGraphicsQueueFamily;
+				CommandQueueFamily vkGraphicsQueueFamily;
 
 				//VUlkan command buffer pool(s)
 				CommandBufferPool* vkCommandBufferPoolsArray = nullptr;
