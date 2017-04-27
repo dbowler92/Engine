@@ -1,12 +1,19 @@
 #include "VulkanRenderDevice.h"
 
+//Manages (VK) queue families and queues
+#include "../../CommandQueueFamily/CommandQueueFamily.h"
+
+//Manages (VK) command buffer pools
+#include "../../CommandBufferPool/CommandBufferPool.h"
+
+using namespace EngineAPI::Graphics;
 using namespace EngineAPI::Graphics::Platform;
 
 //
 //Device layers && extentions enabled. 
 //
 std::vector<const char*> deviceLayersNames =
-{}; //Depreciated
+{}; //Depreciated 
 
 std::vector<const char *> deviceExtensionNames =
 {
@@ -116,10 +123,12 @@ bool VulkanRenderDevice::Init(EngineAPI::OS::OSWindow* osWindow,
 	//Graphics queue creation - returns the struct needed when creating the 
 	//logical device. Note: Untill we need a queue with support
 	//for comoute, we don't need to change VkDeviceQueueCreateInfo::pNext!
+	graphicsQueueFamily = GE_NEW CommandQueueFamily();
+
 	VkDeviceQueueCreateInfo graphicsQueueCreateInfo = {};
 	float queuePriorities[1] = { 0.0 };
-	vkGraphicsQueueFamily.InitVulkanQueueFamily(QUEUE_FAMILY_SUPPORT_GRAPHICS,
-		graphicsQueueFamilyIdx,
+	graphicsQueueFamily->InitVulkanQueueFamily(&vkLogicalDevice,
+		QUEUE_FAMILY_SUPPORT_GRAPHICS, graphicsQueueFamilyIdx,
 		ENGINE_CONFIG_VULKAN_API_GRAPHICS_QUEUE_COUNT, queuePriorities,
 		&graphicsQueueCreateInfo);
 	
@@ -177,7 +186,7 @@ bool VulkanRenderDevice::Init(EngineAPI::OS::OSWindow* osWindow,
 	//********************************************************************************
 	//
 	//Init vulkan command buffer pools
-	if (!InitVKCommandBufferPools())
+	if (!InitCommandBufferPools())
 		return false;
 
 	//********************************************************************************
@@ -187,7 +196,7 @@ bool VulkanRenderDevice::Init(EngineAPI::OS::OSWindow* osWindow,
 	//********************************************************************************
 	//
 	//Cache queue handle object(s)
-	if (!vkGraphicsQueueFamily.InitVulkanQueues(&vkLogicalDevice))
+	if (!graphicsQueueFamily->InitVulkanQueues(&vkLogicalDevice))
 		return false;
 
 	//
@@ -198,22 +207,22 @@ bool VulkanRenderDevice::Init(EngineAPI::OS::OSWindow* osWindow,
 	//RenderCommandBuffer* cmdBuffer = vkCommandBufferPoolsArray[0].AllocCommandBuffer(true);
 	//cmdBuffer->BeginRecordingToCommandBuffer();
 	//cmdBuffer->EndRecordingToCommandBuffer();
-	RenderCommandBuffer* cmdBufferSingle = vkCommandBufferPoolsArray[0].AllocCommandBuffer(true);
-	RenderCommandBuffer *cmdBuffersArray;
-	bool primaryFlags[2] = { true, false };
-	cmdBuffersArray = vkCommandBufferPoolsArray[0].AllocCommandBuffersArray(2, primaryFlags);
-	if (!cmdBuffersArray[0].ResetCommandBuffer())
-	{
-		int x = 3123123;
-		x++;
-	}
-	if (!vkCommandBufferPoolsArray[0].ResetCommandBufferPool())
-	{
-		int x = 90;
-		x++; 
-	}
-	GE_DELETE cmdBufferSingle;
-	GE_DELETE_ARRAY cmdBuffersArray;
+	//RenderCommandBuffer* cmdBufferSingle = commandBufferPoolsArray[0].AllocCommandBuffer(true);
+	//RenderCommandBuffer *cmdBuffersArray;
+	//bool primaryFlags[2] = { true, false };
+	//cmdBuffersArray = commandBufferPoolsArray[0].AllocCommandBuffersArray(2, primaryFlags);
+	//if (!cmdBuffersArray[0].ResetCommandBuffer())
+	//{
+	//	int x = 3123123;
+	//	x++;
+	//}
+	//if (!commandBufferPoolsArray[0].ResetCommandBufferPool())
+	//{
+	//	int x = 90;
+	//	x++; 
+	//}
+	//GE_DELETE cmdBufferSingle;
+	//GE_DELETE_ARRAY cmdBuffersArray;
 
 	//Done
 	return true;
@@ -222,15 +231,21 @@ bool VulkanRenderDevice::Init(EngineAPI::OS::OSWindow* osWindow,
 void VulkanRenderDevice::Shutdown()
 {
 	//Cleanup command buffer pools
-	if (vkCommandBufferPoolsArray)
+	if (commandBufferPoolsArray)
 	{
 		for (int i = 0; i < ENGINE_CONFIG_VULKAN_API_GRAPHICS_COMMAND_BUFFER_POOLS_COUNT; i++)
-			vkCommandBufferPoolsArray[i].Shutdown();
-		delete[] vkCommandBufferPoolsArray;
+			commandBufferPoolsArray[i].Shutdown();
+		delete[] commandBufferPoolsArray;
 	}
 
-	//Queues
-	vkGraphicsQueueFamily.Shutdown();
+	//Queue families that we use.
+	if (graphicsQueueFamily)
+	{
+		graphicsQueueFamily->Shutdown();
+		delete[] graphicsQueueFamily;
+	}
+
+	//Queue families info
 	if (vkQueueFamiliesArray)
 		delete[]vkQueueFamiliesArray;
 
@@ -524,7 +539,7 @@ bool VulkanRenderDevice::GetGraphicsQueueFamilyHandle(VkQueueFamilyProperties* d
 	return false;
 }
 
-bool VulkanRenderDevice::InitVKCommandBufferPools()
+bool VulkanRenderDevice::InitCommandBufferPools()
 {
 	//*************************************************************************************
 	//*************************************************************************************
@@ -533,8 +548,8 @@ bool VulkanRenderDevice::InitVKCommandBufferPools()
 	//*************************************************************************************
 
 	//Alloc
-	vkCommandBufferPoolsArray = GE_NEW CommandBufferPool[ENGINE_CONFIG_VULKAN_API_GRAPHICS_COMMAND_BUFFER_POOLS_COUNT];
-	if (!vkCommandBufferPoolsArray)
+	commandBufferPoolsArray = GE_NEW CommandBufferPool[ENGINE_CONFIG_VULKAN_API_GRAPHICS_COMMAND_BUFFER_POOLS_COUNT];
+	if (!commandBufferPoolsArray)
 	{
 		//Alloc error
 		EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanRenderDevice: Error allocating memory for (VK) Command Buffer Pools\n");
@@ -542,11 +557,11 @@ bool VulkanRenderDevice::InitVKCommandBufferPools()
 	}
 
 	//Command pool alloc info.
-	uint32_t cmdPoolSubmissionQueueFamilyIdxGraphics = vkGraphicsQueueFamily.GetVKQueueFamilyIndex();
+	uint32_t cmdPoolSubmissionQueueFamilyIdxGraphics = graphicsQueueFamily->GetVKQueueFamilyIndex();
 
 	for (int i = 0; i < ENGINE_CONFIG_VULKAN_API_GRAPHICS_COMMAND_BUFFER_POOLS_COUNT; i++)
 	{
-		if (!vkCommandBufferPoolsArray[i].InitVKCommandBufferPool(&vkLogicalDevice, cmdPoolSubmissionQueueFamilyIdxGraphics,
+		if (!commandBufferPoolsArray[i].InitVKCommandBufferPool(&vkLogicalDevice, cmdPoolSubmissionQueueFamilyIdxGraphics,
 			ENGINE_CONFIG_VULKAN_API_GRAPHICS_COMMAND_BUFFER_POOLS_ALLOW_BUFFER_RESETS,
 			ENGINE_CONFIG_VULKAN_API_GRAPHICS_COMMAND_BUFFER_POOLS_IS_TRANSIENT))
 		{

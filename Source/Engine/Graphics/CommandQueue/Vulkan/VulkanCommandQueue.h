@@ -38,9 +38,14 @@ namespace EngineAPI
 
 				bool SubmitCommandBuffersArray(EngineAPI::Graphics::RenderCommandBuffer* cmdBuffers, uint32_t cmdBuffersCount) override;
 				bool SubmitCommandBuffersArrayAndWait(EngineAPI::Graphics::RenderCommandBuffer* cmdBuffers, uint32_t cmdBuffersCount) override;
+			
 			protected:
 				//Vulkan queue handle
 				VkQueue vkQueueHandle = NULL;
+
+			protected:
+				//Cached data
+				VkDevice cachedVkDeviceHandle = NULL;
 			};
 		};
 	};

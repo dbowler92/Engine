@@ -136,29 +136,29 @@
     <Filter Include="Src\Graphics\CommandBufferPool\Vulkan">
       <UniqueIdentifier>{8c181b43-7fc0-4bec-a3a5-b6373d786f13}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Src\Graphics\GraphicsCommandQueue">
-      <UniqueIdentifier>{37e547fe-28ac-40b1-a234-2ce13a8f7125}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Src\Graphics\GraphicsCommandQueue\Common">
-      <UniqueIdentifier>{fc0f5701-1d24-46f5-b40b-6a0a6df97cfc}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Src\Graphics\GraphicsCommandQueue\Vulkan">
-      <UniqueIdentifier>{30a259c7-af51-4745-9202-3e9a7a330095}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Src\Graphics\GraphicsCommandQueueFamily">
-      <UniqueIdentifier>{b714c320-519e-4284-b142-17436f87c3c9}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Src\Graphics\GraphicsCommandQueueFamily\Common">
-      <UniqueIdentifier>{0216bdaa-9cd0-46ce-b22b-09216f609cb4}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Src\Graphics\GraphicsCommandQueueFamily\Vulkan">
-      <UniqueIdentifier>{dd8e3959-023b-4db4-854c-3154cb452e0c}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Src\Rendering\Texture">
       <UniqueIdentifier>{18e3cc19-030b-4eb9-89c7-f8f94e14b89a}</UniqueIdentifier>
     </Filter>
     <Filter Include="Includes">
       <UniqueIdentifier>{f41ecde8-b268-4638-b8d8-379945c6bac4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Graphics\CommandQueue">
+      <UniqueIdentifier>{37e547fe-28ac-40b1-a234-2ce13a8f7125}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Graphics\CommandQueue\Common">
+      <UniqueIdentifier>{fc0f5701-1d24-46f5-b40b-6a0a6df97cfc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Graphics\CommandQueue\Vulkan">
+      <UniqueIdentifier>{30a259c7-af51-4745-9202-3e9a7a330095}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Graphics\CommandQueueFamily">
+      <UniqueIdentifier>{b714c320-519e-4284-b142-17436f87c3c9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Graphics\CommandQueueFamily\Common">
+      <UniqueIdentifier>{0216bdaa-9cd0-46ce-b22b-09216f609cb4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Graphics\CommandQueueFamily\Vulkan">
+      <UniqueIdentifier>{dd8e3959-023b-4db4-854c-3154cb452e0c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -253,22 +253,22 @@
       <Filter>Src\Graphics\CommandBufferPool</Filter>
     </ClCompile>
     <ClCompile Include="..\Graphics\CommandQueueFamily\CommandQueueFamily.cpp">
-      <Filter>Src\Graphics\GraphicsCommandQueueFamily</Filter>
+      <Filter>Src\Graphics\CommandQueueFamily</Filter>
     </ClCompile>
     <ClCompile Include="..\Graphics\CommandQueueFamily\Common\CommonCommandQueueFamily.cpp">
-      <Filter>Src\Graphics\GraphicsCommandQueueFamily\Common</Filter>
+      <Filter>Src\Graphics\CommandQueueFamily\Common</Filter>
     </ClCompile>
     <ClCompile Include="..\Graphics\CommandQueueFamily\Vulkan\VulkanCommandQueueFamily.cpp">
-      <Filter>Src\Graphics\GraphicsCommandQueueFamily\Vulkan</Filter>
+      <Filter>Src\Graphics\CommandQueueFamily\Vulkan</Filter>
     </ClCompile>
     <ClCompile Include="..\Graphics\CommandQueue\CommandQueue.cpp">
-      <Filter>Src\Graphics\GraphicsCommandQueue</Filter>
+      <Filter>Src\Graphics\CommandQueue</Filter>
     </ClCompile>
     <ClCompile Include="..\Graphics\CommandQueue\Common\CommonCommandQueue.cpp">
-      <Filter>Src\Graphics\GraphicsCommandQueue\Common</Filter>
+      <Filter>Src\Graphics\CommandQueue\Common</Filter>
     </ClCompile>
     <ClCompile Include="..\Graphics\CommandQueue\Vulkan\VulkanCommandQueue.cpp">
-      <Filter>Src\Graphics\GraphicsCommandQueue\Vulkan</Filter>
+      <Filter>Src\Graphics\CommandQueue\Vulkan</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -372,22 +372,22 @@
       <Filter>Includes</Filter>
     </ClInclude>
     <ClInclude Include="..\Graphics\CommandQueueFamily\CommandQueueFamily.h">
-      <Filter>Src\Graphics\GraphicsCommandQueueFamily</Filter>
+      <Filter>Src\Graphics\CommandQueueFamily</Filter>
     </ClInclude>
     <ClInclude Include="..\Graphics\CommandQueueFamily\Common\CommonCommandQueueFamily.h">
-      <Filter>Src\Graphics\GraphicsCommandQueueFamily\Common</Filter>
+      <Filter>Src\Graphics\CommandQueueFamily\Common</Filter>
     </ClInclude>
     <ClInclude Include="..\Graphics\CommandQueueFamily\Vulkan\VulkanCommandQueueFamily.h">
-      <Filter>Src\Graphics\GraphicsCommandQueueFamily\Vulkan</Filter>
+      <Filter>Src\Graphics\CommandQueueFamily\Vulkan</Filter>
     </ClInclude>
     <ClInclude Include="..\Graphics\CommandQueue\CommandQueue.h">
-      <Filter>Src\Graphics\GraphicsCommandQueue</Filter>
+      <Filter>Src\Graphics\CommandQueue</Filter>
     </ClInclude>
     <ClInclude Include="..\Graphics\CommandQueue\Common\CommonCommandQueue.h">
-      <Filter>Src\Graphics\GraphicsCommandQueue\Common</Filter>
+      <Filter>Src\Graphics\CommandQueue\Common</Filter>
     </ClInclude>
     <ClInclude Include="..\Graphics\CommandQueue\Vulkan\VulkanCommandQueue.h">
-      <Filter>Src\Graphics\GraphicsCommandQueue\Vulkan</Filter>
+      <Filter>Src\Graphics\CommandQueue\Vulkan</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -12,16 +12,23 @@ bool VulkanCommandQueue::InitVKQueue(VkDevice* logicalDevice, uint32_t queueFami
 	//Cache VkQueue handle
 	vkGetDeviceQueue(*logicalDevice, queueFamilyIndex, queueIndex, &vkQueueHandle);
 
+	//Cache device handle for future use (eg: Creating fences)
+	cachedVkDeviceHandle = *logicalDevice;
+
 	//Done
 	return true;
 }
 
 bool VulkanCommandQueue::SubmitCommandBuffer(EngineAPI::Graphics::RenderCommandBuffer* cmdBuffer)
 {
+	VkCommandBuffer buffers[1];
+	buffers[0] = cmdBuffer->GetVKCommandBufferHandle();
+
 	VkSubmitInfo submitInfo = {};
 	submitInfo.sType = VK_STRUCTURE_TYPE_SUBMIT_INFO;
 	submitInfo.pNext = nullptr;
-	//submitInfo.
+	submitInfo.commandBufferCount = 1;
+	submitInfo.pCommandBuffers = buffers;
 
 	VkResult result = vkQueueSubmit(vkQueueHandle, 1, &submitInfo, NULL);
 	if (result != VK_SUCCESS)

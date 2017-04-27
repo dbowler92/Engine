@@ -43,6 +43,10 @@ namespace EngineAPI
 				bool InitVKCommandBuffer(VkDevice* renderingDevice, VkCommandPool* commandPool, 
 					bool poolCreatedWithResetCmdBufferBit, bool isPrimaryCmdBuffer = true);
 
+			public:
+				//Returns the VK handle for this command buffer
+				const VkCommandBuffer GetVKCommandBufferHandle() { return vkCommandBufferHandle; };
+
 			protected:
 				//Handle to the VK command buffer
 				VkCommandBuffer vkCommandBufferHandle = NULL;

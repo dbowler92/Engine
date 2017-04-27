@@ -28,20 +28,20 @@ namespace EngineAPI
 				void Shutdown() override;
 
 			public:
-				//Returns the vulkan assigned index for this queue family. 
-				uint32_t GetVKQueueFamilyIndex() { return vkQueueFamilyIndex; };
-
-			public:
 				//Inits the Vulkan queue family. Once the device has been created, call
 				//InitVulkanQueues() which will cache info on each seperate queue within
 				//this family
-				bool InitVulkanQueueFamily(QueueFamilySupport role,
+				bool InitVulkanQueueFamily(VkDevice* logicalDevice, QueueFamilySupport role,
 					uint32_t vkQueueFamilyIndex, unsigned queueCount, float* queuesPriorties, 
 					VkDeviceQueueCreateInfo* creationStructOut);
 
 				//Once the device has been created, we can init each queue within this
 				//family. 
 				bool InitVulkanQueues(VkDevice* logicalDevice);
+				
+			public:
+				//Returns the vulkan assigned index for this queue family. 
+				uint32_t GetVKQueueFamilyIndex() { return vkQueueFamilyIndex; };
 
 			protected:
 				//VK info

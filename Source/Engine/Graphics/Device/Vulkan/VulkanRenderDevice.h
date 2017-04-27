@@ -10,11 +10,18 @@
 //Common interface
 #include "../Common/CommonRenderDevice.h"
 
-//Manages (VK) queue families and queues
-#include "../../CommandQueueFamily/CommandQueueFamily.h"
+//Vulkan header
+#include <vulkan\vulkan.h>
 
-//Manages (VK) command buffer pools
-#include "../../CommandBufferPool/CommandBufferPool.h"
+//Forward declarations
+namespace EngineAPI
+{
+	namespace Graphics
+	{
+		class CommandQueueFamily;
+		class CommandBufferPool;
+	};
+};
 
 namespace EngineAPI
 {
@@ -32,11 +39,6 @@ namespace EngineAPI
 				bool Init(EngineAPI::OS::OSWindow* osWindow, 
 					EngineAPI::Graphics::RenderInstance* renderingInstance) override;
 				void Shutdown() override;
-
-			public:
-				//Important functions to interact with the Vulkan device. Eg: Command buffer 
-				//creation/allocation
-
 
 			public:
 				//Vulkan getters:
@@ -58,7 +60,7 @@ namespace EngineAPI
 				VkQueueFamilyProperties* vkQueueFamiliesArray = nullptr;
 				uint32_t vkQueueFamiliesCount; //Number of queue families exposed by our selected physical device
 
-			public:
+			private:
 				//Memory allocation data
 				//
 				//index in to vkDeviceMemoryProperties.memoryTypes[]
@@ -69,10 +71,10 @@ namespace EngineAPI
 				uint32_t vkMemoryTypeIndexForEfficientDeviceOnlyAllocations = 0;
 
 				//Graphics queue family and queues - general rendering
-				CommandQueueFamily vkGraphicsQueueFamily;
+				CommandQueueFamily* graphicsQueueFamily = nullptr;
 
 				//VUlkan command buffer pool(s)
-				CommandBufferPool* vkCommandBufferPoolsArray = nullptr;
+				CommandBufferPool* commandBufferPoolsArray = nullptr;
 
 			private:
 				//Vk allocation/init
@@ -102,7 +104,7 @@ namespace EngineAPI
 					uint32_t* graphicsQueueFamilyIndexOut);
 
 				//Inits Vulkan command buffer pool(s)
-				bool InitVKCommandBufferPools();
+				bool InitCommandBufferPools();
 
 			private:
 				//Validates our chosen device extentions & layers (Depreciated I think. However, 

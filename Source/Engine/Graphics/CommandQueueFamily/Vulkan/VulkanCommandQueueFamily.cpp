@@ -15,7 +15,7 @@ void VulkanCommandQueueFamily::Shutdown()
 	}
 }
 
-bool VulkanCommandQueueFamily::InitVulkanQueueFamily(QueueFamilySupport role,
+bool VulkanCommandQueueFamily::InitVulkanQueueFamily(VkDevice* logicalDevice, QueueFamilySupport role,
 	uint32_t vkQueueFamilyIndex, unsigned queueCount, float* queuesPriorties, 
 	VkDeviceQueueCreateInfo* creationStructOut)
 {
