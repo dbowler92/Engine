@@ -31,6 +31,13 @@ namespace EngineAPI
 				bool InitVKQueue(VkDevice* logicalDevice, 
 					uint32_t queueFamilyIndex, uint32_t queueIndex);
 
+			public:
+				//Submits a VkCommandBuffer (or array of them) to this queue for processing
+				bool SubmitCommandBuffer(EngineAPI::Graphics::RenderCommandBuffer* cmdBuffer) override;
+				bool SubmitCommandBufferAndWait(EngineAPI::Graphics::RenderCommandBuffer* cmdBuffer) override;
+
+				bool SubmitCommandBuffersArray(EngineAPI::Graphics::RenderCommandBuffer* cmdBuffers, uint32_t cmdBuffersCount) override;
+				bool SubmitCommandBuffersArrayAndWait(EngineAPI::Graphics::RenderCommandBuffer* cmdBuffers, uint32_t cmdBuffersCount) override;
 			protected:
 				//Vulkan queue handle
 				VkQueue vkQueueHandle = NULL;
