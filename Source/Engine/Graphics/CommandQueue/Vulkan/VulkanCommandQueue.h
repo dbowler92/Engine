@@ -32,13 +32,16 @@ namespace EngineAPI
 					uint32_t queueFamilyIndex, uint32_t queueIndex);
 
 			public:
-				//VkCommandBuffer submission.
-				bool SubmitVKCommandBuffer(VkCommandBuffer* cmdBuffer);
-				bool SubmitVKCommandBufferAndWait(VkCommandBuffer* cmdBuffer);
+				//Submits VkCommandBuffer(s) to the queue.
+				bool SubmitVKCommandBuffers(VkSubmitInfo* submitInfos, uint32_t submitInfosCount,
+					const VkFence& optionalFence = VK_NULL_HANDLE, bool doWaitOnQueueIdle = true);
 
-				//Takes an array of VkCommandBuffer and submits the work to this queue
-				bool SubmitVKCommandBuffersArray(VkCommandBuffer* cmdBuffersArray, uint32_t cmdBuffersCount);
-				bool SubmitVKCommandBuffersArrayAndWait(VkCommandBuffer* cmdBuffersArray, uint32_t cmdBuffersCount);
+				//Default command buffer submission (we generate a default VkSubmitInfo struct)
+				bool SubmitVKCommandBuffersDefault(VkCommandBuffer* cmdBuffers, uint32_t cmdBufferCount,
+					const VkFence& optionalFence = VK_NULL_HANDLE, bool doWaitOnQueueIdle = true);
+
+				//Waits on this queue to become idle / finish its batch
+				bool BlockUntilVKQueueIdle();
 
 			protected:
 				//Vulkan queue handle

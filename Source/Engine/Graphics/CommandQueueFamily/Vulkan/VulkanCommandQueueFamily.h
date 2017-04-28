@@ -40,6 +40,18 @@ namespace EngineAPI
 				bool InitVulkanQueues(VkDevice* logicalDevice);
 				
 			public:
+				//Submits VKCommandBuffer(s) to this queue family (and then queue by index) for processing
+				//NOTE: SubmitVKCommandBuffersToQueueDefault() will generate a VkSubmitInfos
+				//structure with a default setting for us to use when sending the VkCommandBuffer(s)
+				//to the queue for processing. 
+				bool SubmitVKCommandBuffersToQueue(uint32_t queueIndex, 
+					VkSubmitInfo* submitInfos, uint32_t submitInfosCount,
+					const VkFence& optionalFence = VK_NULL_HANDLE, bool doWaitOnQueueIdle = true);
+				bool SubmitVKCommandBuffersToQueueDefault(uint32_t queueIndex,
+					VkCommandBuffer* cmdBuffers, uint32_t cmdBufferCount,
+					const VkFence& optionalFence = VK_NULL_HANDLE, bool doWaitOnQueueIdle = true);
+
+			public:
 				//Returns the vulkan assigned index for this queue family. 
 				uint32_t GetVKQueueFamilyIndex() { return vkQueueFamilyIndex; };
 

@@ -38,6 +38,14 @@ namespace EngineAPI
 				//Override shutdown function for cleanup
 				virtual void Shutdown() = 0 {};
 
+			public:
+				//Returns the queues & number of them
+				CommandQueue* GetCommandQueues() { return commandQueuesArray; };
+				unsigned GetCommandQueueCount() { return commandQueuesCount; };
+
+				//Command queue family role
+				QueueFamilySupport GetCommandQueueFamilyRole() { return queueFamilyRole; };
+
 			protected:
 				//Will contain and manage a set of command queues
 				CommandQueue* commandQueuesArray = nullptr;

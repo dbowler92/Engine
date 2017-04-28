@@ -20,6 +20,10 @@ bool VulkanStatics::CommandBufferReset(VkCommandBuffer* cmdBuffer, bool shouldRe
 
 bool VulkanStatics::CommandBufferBeginRecording(VkCommandBuffer* cmdBuffer, VkCommandBufferBeginInfo* cmdBufferBeginInfo)
 {	
+	//if default settings used?
+	if (!cmdBufferBeginInfo)
+		return VulkanStatics::CommandBufferBeginRecordingDefault(cmdBuffer);
+
 	//Begin reading to this cmd buffer (use passed in info struct) 
 	VkResult result = vkBeginCommandBuffer(*cmdBuffer, cmdBufferBeginInfo);
 	if (result != VK_SUCCESS)
@@ -32,23 +36,12 @@ bool VulkanStatics::CommandBufferBeginRecording(VkCommandBuffer* cmdBuffer, VkCo
 	return true;
 }
 
-bool VulkanStatics::CommandBufferBeginRecordingDefault(VkCommandBuffer* cmdBuffer)
+bool VulkanStatics::CommandBufferEndRecording(VkCommandBuffer* cmdBuffer)
 {
-	//TODO: Default Inheritance info...
-	VkCommandBufferInheritanceInfo defaultInheritanceInfo = {};
-
-	//Default buffer begin reading info
-	VkCommandBufferBeginInfo defaultBeginInfo = {};
-	defaultBeginInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
-	defaultBeginInfo.pNext = nullptr;
-	defaultBeginInfo.pInheritanceInfo = nullptr; //TODO. defaultInheritanceInfo
-	defaultBeginInfo.flags = NULL; //TODO
-
-	//Begin reading to this cmd buffer using default info
-	VkResult result = vkBeginCommandBuffer(*cmdBuffer, &defaultBeginInfo); 
+	VkResult result = vkEndCommandBuffer(*cmdBuffer);
 	if (result != VK_SUCCESS)
 	{
-		EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanStatics::VKCommandBufferBeginRecordingDefault() - Error when beginning command buffer\n");
+		EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanStatics::VKCommandBufferEndRecording() - Error when ending recording to command buffer.\n");
 		return false;
 	}
 
@@ -56,12 +49,31 @@ bool VulkanStatics::CommandBufferBeginRecordingDefault(VkCommandBuffer* cmdBuffe
 	return true;
 }
 
-bool VulkanStatics::CommandBufferEndRecording(VkCommandBuffer* cmdBuffer)
+bool VulkanStatics::CommandBufferBeginRecordingDefault(VkCommandBuffer* cmdBuffer)
 {
-	VkResult result = vkEndCommandBuffer(*cmdBuffer);
+	//Default Inheritance info
+	VkCommandBufferInheritanceInfo defaultInheritanceInfo = {};
+	defaultInheritanceInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_INHERITANCE_INFO;
+	defaultInheritanceInfo.pNext = nullptr;
+	defaultInheritanceInfo.renderPass = VK_NULL_HANDLE;
+	defaultInheritanceInfo.subpass = 0;
+	defaultInheritanceInfo.framebuffer = VK_NULL_HANDLE;
+	defaultInheritanceInfo.occlusionQueryEnable = VK_FALSE;
+	defaultInheritanceInfo.queryFlags = 0;
+	defaultInheritanceInfo.pipelineStatistics = 0;
+
+	//Default buffer begin reading info
+	VkCommandBufferBeginInfo defaultBeginInfo = {};
+	defaultBeginInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
+	defaultBeginInfo.pNext = nullptr;
+	defaultBeginInfo.flags = 0;
+	defaultBeginInfo.pInheritanceInfo = &defaultInheritanceInfo;
+
+	//Begin reading to this cmd buffer using default info
+	VkResult result = vkBeginCommandBuffer(*cmdBuffer, &defaultBeginInfo);
 	if (result != VK_SUCCESS)
 	{
-		EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanStatics::VKCommandBufferEndRecording() - Error when ending recording to command buffer.\n");
+		EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanStatics::VKCommandBufferBeginRecordingDefault() - Error when beginning command buffer\n");
 		return false;
 	}
 

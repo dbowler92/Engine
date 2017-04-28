@@ -35,10 +35,10 @@ bool VulkanCommandQueueFamily::InitVulkanQueueFamily(VkDevice* logicalDevice, Qu
 	//Alloc queues - init InitVulkanQueues() called by the VulkanRenderDevice after device creation
 	commandQueuesArray = GE_NEW CommandQueue[queueCount];
 
-	//Fillout struct which tells the device how we wish to enable this particular
+	//Fill out struct which tells the device how we wish to enable this particular
 	//queue family
 	creationStructOut->sType = VK_STRUCTURE_TYPE_DEVICE_QUEUE_CREATE_INFO;
-	creationStructOut->pNext = nullptr; //Maybe overriden by VulkanRenderDevice if more than one queue family will be enabled
+	creationStructOut->pNext = nullptr; //Maybe overridden by VulkanRenderDevice if more than one queue family will be enabled
 	creationStructOut->flags = 0;
 	creationStructOut->queueFamilyIndex = vkQueueFamilyIndex;
 	creationStructOut->queueCount = commandQueuesCount;
@@ -50,7 +50,7 @@ bool VulkanCommandQueueFamily::InitVulkanQueueFamily(VkDevice* logicalDevice, Qu
 
 bool VulkanCommandQueueFamily::InitVulkanQueues(VkDevice* logicalDevice)
 {
-	//Init each queue in this familyB
+	//Init each queue in this family
 	for (int i = 0; i < commandQueuesCount; i++)
 	{
 		if (!commandQueuesArray[i].InitVKQueue(logicalDevice, vkQueueFamilyIndex, i))
@@ -59,4 +59,36 @@ bool VulkanCommandQueueFamily::InitVulkanQueues(VkDevice* logicalDevice)
 
 	//Done
 	return true;
+}
+
+bool VulkanCommandQueueFamily::SubmitVKCommandBuffersToQueue(uint32_t queueIndex, 
+	VkSubmitInfo* submitInfos, uint32_t submitInfosCount,
+	const VkFence& optionalFence, bool doWaitOnQueueIdle)
+{
+	//Check if queue index is in range
+	if (queueIndex >= commandQueuesCount)
+	{
+		//Error
+		EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanCommandQueueFamily::SubmitVKCommandBuffersToQueue() - Error: Queue index out of range!\n");
+		return false;
+	}
+
+	//Send to queue
+	return commandQueuesArray[queueIndex].SubmitVKCommandBuffers(submitInfos, submitInfosCount, optionalFence, doWaitOnQueueIdle);
+}
+
+bool VulkanCommandQueueFamily::SubmitVKCommandBuffersToQueueDefault(uint32_t queueIndex, 
+	VkCommandBuffer* cmdBuffers, uint32_t cmdBufferCount,
+	const VkFence& optionalFence, bool doWaitOnQueueIdle)
+{
+	//Check if queue index is in range
+	if (queueIndex >= commandQueuesCount)
+	{
+		//Error
+		EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanCommandQueueFamily::SubmitVKCommandBuffersToQueue() - Error: Queue index out of range!\n");
+		return false;
+	}
+
+	//Send to queue w/ default settings. 
+	return commandQueuesArray[queueIndex].SubmitVKCommandBuffersDefault(cmdBuffers, cmdBufferCount, optionalFence, doWaitOnQueueIdle);
 }

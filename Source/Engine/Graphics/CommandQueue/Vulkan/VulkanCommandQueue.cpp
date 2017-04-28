@@ -22,21 +22,13 @@ bool VulkanCommandQueue::InitVKQueue(VkDevice* logicalDevice, uint32_t queueFami
 	return true;
 }
 
-bool VulkanCommandQueue::SubmitVKCommandBuffer(VkCommandBuffer* cmdBuffer)
+bool VulkanCommandQueue::BlockUntilVKQueueIdle()
 {
-	//Submission info
-	VkSubmitInfo submitInfo = {};
-	submitInfo.sType = VK_STRUCTURE_TYPE_SUBMIT_INFO;
-	submitInfo.pNext = nullptr;
-	submitInfo.commandBufferCount = 1;
-	submitInfo.pCommandBuffers = cmdBuffer;
-
-	//Submit - don't wait
-	VkResult result = vkQueueSubmit(vkQueueHandle, 1, &submitInfo, NULL);
+	VkResult result = vkQueueWaitIdle(vkQueueHandle);
 	if (result != VK_SUCCESS)
 	{
 		//Error
-		EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanCommandQueue: Error when submititng VkCommandBuffer\n");
+		EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanCommandQueue::BlockUntilVKQueueIdle() - Error when waiting for queue to become idle\n");
 		return false;
 	}
 
@@ -44,32 +36,54 @@ bool VulkanCommandQueue::SubmitVKCommandBuffer(VkCommandBuffer* cmdBuffer)
 	return true;
 }
 
-bool VulkanCommandQueue::SubmitVKCommandBufferAndWait(VkCommandBuffer* cmdBuffer)
+bool VulkanCommandQueue::SubmitVKCommandBuffers(VkSubmitInfo* submitInfos, uint32_t submitInfosCount,
+	const VkFence& optionalFence, bool doWaitOnQueueIdle)
 {
-	//TODO
+	//Use passed in data
+	VkResult result = vkQueueSubmit(vkQueueHandle, submitInfosCount, submitInfos, optionalFence);
+	if (result != VK_SUCCESS)
+	{
+		//Error
+		EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanCommandQueue::SubmitVKCommandBuffers() - Error when submititng VkCommandBuffers\n");
+		return false;
+	}
 
-	VkFence fence; //Signalled when cmd buffer has finished executing
-	//vkCreateFence();
+	//Wait on queue idle?
+	if (doWaitOnQueueIdle)
+		return BlockUntilVKQueueIdle();
 
 	//Done
 	return true;
 }
 
-bool VulkanCommandQueue::SubmitVKCommandBuffersArray(VkCommandBuffer* cmdBuffersArray, uint32_t cmdBuffersCount)
+bool VulkanCommandQueue::SubmitVKCommandBuffersDefault(VkCommandBuffer* cmdBuffers, uint32_t cmdBufferCount,
+	const VkFence& optionalFence, bool doWaitOnQueueIdle)
 {
-	//TODO
+	//Generate a generic / default VkSubmitInfos struct
+	VkSubmitInfo defaultSubmitInfo = {};
+	defaultSubmitInfo.sType = VK_STRUCTURE_TYPE_SUBMIT_INFO;
+	defaultSubmitInfo.pNext = nullptr;
+	defaultSubmitInfo.waitSemaphoreCount = 0;
+	defaultSubmitInfo.pWaitSemaphores = nullptr;
+	defaultSubmitInfo.signalSemaphoreCount = 0;
+	defaultSubmitInfo.pSignalSemaphores = nullptr;
+	defaultSubmitInfo.pWaitDstStageMask = nullptr;
+	defaultSubmitInfo.commandBufferCount = cmdBufferCount;
+	defaultSubmitInfo.pCommandBuffers = cmdBuffers;
 
-	//Done
-	return true;
-}
+	//Submit
+	VkResult result = vkQueueSubmit(vkQueueHandle, 1, &defaultSubmitInfo, optionalFence);
+	if (result != VK_SUCCESS)
+	{
+		//Error
+		EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanCommandQueue::SubmitVKCommandBuffersDefault() - Error when submititng VkCommandBuffers\n");
+		return false;
+	}
 
-bool VulkanCommandQueue::SubmitVKCommandBuffersArrayAndWait(VkCommandBuffer* cmdBuffersArray, uint32_t cmdBuffersCount)
-{
-	//TODO
-
-	//VkFence fence; //Signalled when cmd buffer has finished executing
-	//vkCreateFence();
-
+	//Wait on queue to become idle again?
+	if (doWaitOnQueueIdle)
+		return BlockUntilVKQueueIdle();
+	
 	//Done
 	return true;
 }

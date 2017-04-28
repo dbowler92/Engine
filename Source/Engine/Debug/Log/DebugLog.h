@@ -22,7 +22,6 @@ namespace EngineAPI
 			static void PrintInfoMessage(const ECHAR* msg);
 			static void PrintWarningMessage(const ECHAR* msg);
 			static void PrintErrorMessage(const ECHAR* msg);
-
 		};
 	};
 };
