@@ -20,6 +20,7 @@ namespace EngineAPI
 	{
 		class CommandQueueFamily;
 		class CommandBufferPool;
+		class DeviceMemoryBlock;
 	};
 };
 
@@ -61,20 +62,16 @@ namespace EngineAPI
 				uint32_t vkQueueFamiliesCount; //Number of queue families exposed by our selected physical device
 
 			private:
-				//Memory allocation data
-				//
-				//index in to vkDeviceMemoryProperties.memoryTypes[]
-				//
-				//1) When allocating data on the GPU which is seen exclusivly
-				//by said GPU (So not read/writable by CPU) -> Memory allocated
-				//with this type is most efficient for device access. 
-				uint32_t vkMemoryTypeIndexForEfficientDeviceOnlyAllocations = 0;
+				//Vulkan command buffer pool(s)
+				CommandBufferPool* commandBufferPoolsArray = nullptr;
 
 				//Graphics queue family and queues - general rendering
 				CommandQueueFamily* graphicsQueueFamily = nullptr;
 
-				//VUlkan command buffer pool(s)
-				CommandBufferPool* commandBufferPoolsArray = nullptr;
+				//Device (GPU) Memory block(s) - used to alloc resources on the GPU. Different blocks
+				//support different things. (eg: Mappable memory, etc)
+				DeviceMemoryBlock* deviceMemoryBlocksArray = nullptr;
+				uint32_t deviceMemoryBlocksCount = 0; //TODO: Probably split this up: device block pointer per use case!
 
 			private:
 				//Vk allocation/init
@@ -86,8 +83,8 @@ namespace EngineAPI
 				//finds the best memory types to be used when allocating resources
 				//
 				//Returns false if no valid memory type && heap can be found
-				bool FindVKMemoryTypeIndexForEfficientDeviceOnlyAllocations();
-				bool FindVKMemoryTypeIndexForMappableAllocations();
+				bool FindVKMemoryTypeIndexForEfficientDeviceOnlyAllocations(uint32_t* memoryTypeIndexOut);
+				bool FindVKMemoryTypeIndexForMappableAllocations(uint32_t* memoryTypeIndexOut);
 
 				//Finds the "best" Vulkan enabled physical device for us to use
 				//when creating the Vulkan physical device. Currently, it just picks the

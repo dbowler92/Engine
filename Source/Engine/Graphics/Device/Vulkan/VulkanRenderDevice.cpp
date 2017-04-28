@@ -6,9 +6,11 @@
 //Manages (VK) command buffer pools
 #include "../../CommandBufferPool/CommandBufferPool.h"
 
+//Manages (VK) Device memory block(s)
+#include "../../DeviceMemoryBlock/DeviceMemoryBlock.h"
+
 using namespace EngineAPI::Graphics;
 using namespace EngineAPI::Graphics::Platform;
-
 //
 //Device layers && extentions enabled. 
 //
@@ -171,12 +173,17 @@ bool VulkanRenderDevice::Init(EngineAPI::OS::OSWindow* osWindow,
 	CacheVKDeviceMemoryInfo();
 	
 	//TODO: Decide on best heap / types (by index) to use when allocating data
-	//in specific ways for this device (eg: Differnt memoryType index will be used
+	//in specific ways for this device (eg: Different memoryType index will be used
 	//during vkAlloc...() depending on if the memory should be mappable or not)
-	if (!FindVKMemoryTypeIndexForEfficientDeviceOnlyAllocations())
+	uint32_t vkMemoryTypeIndexForEfficientDeviceOnlyAllocations = 0;
+	if (!FindVKMemoryTypeIndexForEfficientDeviceOnlyAllocations(&vkMemoryTypeIndexForEfficientDeviceOnlyAllocations))
 		return false;
-	if (!FindVKMemoryTypeIndexForMappableAllocations())
+
+	uint32_t vkMemoryTypeIndexForMappableAllocations = 0; //TODO
+	if (!FindVKMemoryTypeIndexForMappableAllocations(&vkMemoryTypeIndexForMappableAllocations)) //TODO
 		return false;
+
+	//Alloc device memory block(s)
 
 
 	//********************************************************************************
@@ -230,6 +237,14 @@ bool VulkanRenderDevice::Init(EngineAPI::OS::OSWindow* osWindow,
 
 void VulkanRenderDevice::Shutdown()
 {
+	//GPU memory
+	if (deviceMemoryBlocksArray)
+	{
+		for (int i = 0; i < deviceMemoryBlocksCount; i++)
+			deviceMemoryBlocksArray[i].Shutdown();
+		delete[] deviceMemoryBlocksArray;
+	}
+
 	//Cleanup command buffer pools
 	if (commandBufferPoolsArray)
 	{
@@ -262,7 +277,7 @@ void VulkanRenderDevice::CacheVKDeviceMemoryInfo()
 	vkGetPhysicalDeviceMemoryProperties(vkPhysicalDevice, &vkDeviceMemoryProperties);
 }
 
-bool VulkanRenderDevice::FindVKMemoryTypeIndexForEfficientDeviceOnlyAllocations()
+bool VulkanRenderDevice::FindVKMemoryTypeIndexForEfficientDeviceOnlyAllocations(uint32_t* memoryTypeIndexOut)
 {
 	//Look for the memory types that have the flag VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT
 	for (int i = 0; i < vkDeviceMemoryProperties.memoryTypeCount; i++)
@@ -276,7 +291,7 @@ bool VulkanRenderDevice::FindVKMemoryTypeIndexForEfficientDeviceOnlyAllocations(
 			if (vkDeviceMemoryProperties.memoryHeaps[heapIndex].flags & VK_MEMORY_HEAP_DEVICE_LOCAL_BIT)
 			{
 				//Yes - this is the first (and thus best) memory 'type' to be using
-				vkMemoryTypeIndexForEfficientDeviceOnlyAllocations = i;
+				*memoryTypeIndexOut = i;
 				return true;
 			}
 		}
@@ -287,7 +302,7 @@ bool VulkanRenderDevice::FindVKMemoryTypeIndexForEfficientDeviceOnlyAllocations(
 	return false;
 }
 
-bool VulkanRenderDevice::FindVKMemoryTypeIndexForMappableAllocations()
+bool VulkanRenderDevice::FindVKMemoryTypeIndexForMappableAllocations(uint32_t* memoryTypeIndexOut)
 {
 	//TODO
 	return true;

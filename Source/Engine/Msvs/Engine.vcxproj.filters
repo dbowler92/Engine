@@ -166,6 +166,18 @@
     <Filter Include="Src\Graphics\Statics\Vulkan">
       <UniqueIdentifier>{829bf66c-2e89-4107-8df1-da2121b64c4f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Src\Graphics\Statics\Common">
+      <UniqueIdentifier>{2887f8f4-6a92-4bea-a35e-5a2370070940}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Graphics\DeviceMemoryBlock">
+      <UniqueIdentifier>{bbb94d0e-4ca4-4998-ba34-b16e84087d78}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Graphics\DeviceMemoryBlock\Common">
+      <UniqueIdentifier>{de0cda10-ffb5-43e0-9d0b-4507496e194a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Graphics\DeviceMemoryBlock\Vulkan">
+      <UniqueIdentifier>{9983b6b1-907e-42a6-95ef-410ab733de90}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Main\EngineMain.cpp">
@@ -278,6 +290,15 @@
     </ClCompile>
     <ClCompile Include="..\Graphics\Statics\Vulkan\VulkanStatics.cpp">
       <Filter>Src\Graphics\Statics\Vulkan</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Graphics\DeviceMemoryBlock\Common\CommonDeviceMemoryBlock.cpp">
+      <Filter>Src\Graphics\DeviceMemoryBlock\Common</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Graphics\DeviceMemoryBlock\Vulkan\VulkanDeviceMemoryBlock.cpp">
+      <Filter>Src\Graphics\DeviceMemoryBlock\Vulkan</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Graphics\DeviceMemoryBlock\DeviceMemoryBlock.cpp">
+      <Filter>Src\Graphics\DeviceMemoryBlock</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -400,6 +421,15 @@
     </ClInclude>
     <ClInclude Include="..\Graphics\Statics\Vulkan\VulkanStatics.h">
       <Filter>Src\Graphics\Statics\Vulkan</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Graphics\DeviceMemoryBlock\Common\CommonDeviceMemoryBlock.h">
+      <Filter>Src\Graphics\DeviceMemoryBlock\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Graphics\DeviceMemoryBlock\Vulkan\VulkanDeviceMemoryBlock.h">
+      <Filter>Src\Graphics\DeviceMemoryBlock\Vulkan</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Graphics\DeviceMemoryBlock\DeviceMemoryBlock.h">
+      <Filter>Src\Graphics\DeviceMemoryBlock</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

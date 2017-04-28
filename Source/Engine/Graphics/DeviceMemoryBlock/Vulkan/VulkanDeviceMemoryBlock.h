@@ -1,0 +1,53 @@
+//VulkanDeviceMemoryBlock.h
+//Created 28/04/17
+//Created By Daniel Bowler
+//
+//Represents a block of device (GPU) memory. Vulkan provides the application developer
+//the ability to manage GPU memory (In, say, D3D11, this was handled by the driver). This class
+//will represent a block of memory for use in the application (Eg: A memory block could be 
+//allocated for data that persists throughout the entire game. Another block for
+//textures, another for buffers and another for short term allocations)
+
+#pragma once
+
+//Base
+#include "../Common/CommonDeviceMemoryBlock.h"
+
+//Vulkan header
+#include <vulkan\vulkan.h>
+
+namespace EngineAPI
+{
+	namespace Graphics
+	{
+		namespace Platform
+		{
+			class VulkanDeviceMemoryBlock : public EngineAPI::Graphics::Interface::CommonDeviceMemoryBlock
+			{
+			public:
+				VulkanDeviceMemoryBlock() {};
+				~VulkanDeviceMemoryBlock() {};
+
+				//Override shutdown
+				void Shutdown() override;
+
+			public:
+				//Vulkan init. Note: Vulkan implementation will automatically allocate aligned memory which
+				//meets the minimum spec.
+				bool InitVKDeviceMemoryBlock(VkDevice* logicalDevice, 
+					VkDeviceSize deviceMemorySizeInBytesToAlloc,
+					VkPhysicalDeviceMemoryProperties* fullDeviceMemoryProperties, 
+					uint32_t memoryTypeIndex);    //Index in to VkPhysicalDeviceMemoryProperties::memoryTypes[]
+
+
+
+			protected:
+				//Handle to the VK memory block
+				VkDeviceMemory vkMemoryBlockHandle = VK_NULL_HANDLE;
+
+				//Cached logical device - the 'owner' of this block
+				VkDevice cachedVkLogicalDevice = VK_NULL_HANDLE;
+			};
+		};
+	};
+};

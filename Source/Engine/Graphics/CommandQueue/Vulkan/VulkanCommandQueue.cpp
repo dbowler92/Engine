@@ -22,20 +22,6 @@ bool VulkanCommandQueue::InitVKQueue(VkDevice* logicalDevice, uint32_t queueFami
 	return true;
 }
 
-bool VulkanCommandQueue::BlockUntilVKQueueIdle()
-{
-	VkResult result = vkQueueWaitIdle(vkQueueHandle);
-	if (result != VK_SUCCESS)
-	{
-		//Error
-		EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanCommandQueue::BlockUntilVKQueueIdle() - Error when waiting for queue to become idle\n");
-		return false;
-	}
-
-	//Done
-	return true;
-}
-
 bool VulkanCommandQueue::SubmitVKCommandBuffers(VkSubmitInfo* submitInfos, uint32_t submitInfosCount,
 	const VkFence& optionalFence, bool doWaitOnQueueIdle)
 {
@@ -84,6 +70,20 @@ bool VulkanCommandQueue::SubmitVKCommandBuffersDefault(VkCommandBuffer* cmdBuffe
 	if (doWaitOnQueueIdle)
 		return BlockUntilVKQueueIdle();
 	
+	//Done
+	return true;
+}
+
+bool VulkanCommandQueue::BlockUntilVKQueueIdle()
+{
+	VkResult result = vkQueueWaitIdle(vkQueueHandle);
+	if (result != VK_SUCCESS)
+	{
+		//Error
+		EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanCommandQueue::BlockUntilVKQueueIdle() - Error when waiting for queue to become idle\n");
+		return false;
+	}
+
 	//Done
 	return true;
 }

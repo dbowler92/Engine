@@ -28,14 +28,11 @@ namespace EngineAPI
 			//support individual buffer resets. 
 			static bool CommandBufferReset(VkCommandBuffer* cmdBuffer, bool shouldReleaseMemoryToPool = false);
 			
-			//Begin / end VK command recording in to the cmdBuffer. Note: Passing a nullptr for VkCommandBufferBeginInfo
-			//will result in a default structure being used. 
-			static bool CommandBufferBeginRecording(VkCommandBuffer* cmdBuffer, VkCommandBufferBeginInfo* cmdBufferBeginInfo = nullptr); 
-			static bool CommandBufferEndRecording(VkCommandBuffer* cmdBuffer);
-
-		private:
-			//Statics class generates a default VkCommandBufferBeginInfo struct for us
+			//Begin / end VK command recording in to the cmdBuffer. Note: CommandBufferBeginRecordingDefault() will 
+			//generate a default VkCommandBufferBeginInfo struct for us. 
+			static bool CommandBufferBeginRecording(VkCommandBuffer* cmdBuffer, VkCommandBufferBeginInfo* cmdBufferBeginInfo); 
 			static bool CommandBufferBeginRecordingDefault(VkCommandBuffer* cmdBuffer);
+			static bool CommandBufferEndRecording(VkCommandBuffer* cmdBuffer);
 		};
 	}
 }

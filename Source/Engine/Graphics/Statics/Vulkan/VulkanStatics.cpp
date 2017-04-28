@@ -20,10 +20,6 @@ bool VulkanStatics::CommandBufferReset(VkCommandBuffer* cmdBuffer, bool shouldRe
 
 bool VulkanStatics::CommandBufferBeginRecording(VkCommandBuffer* cmdBuffer, VkCommandBufferBeginInfo* cmdBufferBeginInfo)
 {	
-	//if default settings used?
-	if (!cmdBufferBeginInfo)
-		return VulkanStatics::CommandBufferBeginRecordingDefault(cmdBuffer);
-
 	//Begin reading to this cmd buffer (use passed in info struct) 
 	VkResult result = vkBeginCommandBuffer(*cmdBuffer, cmdBufferBeginInfo);
 	if (result != VK_SUCCESS)
@@ -32,19 +28,6 @@ bool VulkanStatics::CommandBufferBeginRecording(VkCommandBuffer* cmdBuffer, VkCo
 		return false;
 	}
 	
-	//Done
-	return true;
-}
-
-bool VulkanStatics::CommandBufferEndRecording(VkCommandBuffer* cmdBuffer)
-{
-	VkResult result = vkEndCommandBuffer(*cmdBuffer);
-	if (result != VK_SUCCESS)
-	{
-		EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanStatics::VKCommandBufferEndRecording() - Error when ending recording to command buffer.\n");
-		return false;
-	}
-
 	//Done
 	return true;
 }
@@ -74,6 +57,20 @@ bool VulkanStatics::CommandBufferBeginRecordingDefault(VkCommandBuffer* cmdBuffe
 	if (result != VK_SUCCESS)
 	{
 		EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanStatics::VKCommandBufferBeginRecordingDefault() - Error when beginning command buffer\n");
+		return false;
+	}
+
+	//Done
+	return true;
+}
+
+
+bool VulkanStatics::CommandBufferEndRecording(VkCommandBuffer* cmdBuffer)
+{
+	VkResult result = vkEndCommandBuffer(*cmdBuffer);
+	if (result != VK_SUCCESS)
+	{
+		EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanStatics::VKCommandBufferEndRecording() - Error when ending recording to command buffer.\n");
 		return false;
 	}
 

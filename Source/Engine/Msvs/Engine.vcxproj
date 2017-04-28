@@ -34,6 +34,9 @@
     <ClCompile Include="..\Graphics\CommandQueue\CommandQueue.cpp" />
     <ClCompile Include="..\Graphics\CommandQueue\Common\CommonCommandQueue.cpp" />
     <ClCompile Include="..\Graphics\CommandQueue\Vulkan\VulkanCommandQueue.cpp" />
+    <ClCompile Include="..\Graphics\DeviceMemoryBlock\Common\CommonDeviceMemoryBlock.cpp" />
+    <ClCompile Include="..\Graphics\DeviceMemoryBlock\DeviceMemoryBlock.cpp" />
+    <ClCompile Include="..\Graphics\DeviceMemoryBlock\Vulkan\VulkanDeviceMemoryBlock.cpp" />
     <ClCompile Include="..\Graphics\Device\Common\CommonRenderDevice.cpp" />
     <ClCompile Include="..\Graphics\Device\RenderDevice.cpp" />
     <ClCompile Include="..\Graphics\Device\Vulkan\VulkanRenderDevice.cpp" />
@@ -75,6 +78,9 @@
     <ClInclude Include="..\Graphics\CommandQueue\CommandQueue.h" />
     <ClInclude Include="..\Graphics\CommandQueue\Common\CommonCommandQueue.h" />
     <ClInclude Include="..\Graphics\CommandQueue\Vulkan\VulkanCommandQueue.h" />
+    <ClInclude Include="..\Graphics\DeviceMemoryBlock\Common\CommonDeviceMemoryBlock.h" />
+    <ClInclude Include="..\Graphics\DeviceMemoryBlock\DeviceMemoryBlock.h" />
+    <ClInclude Include="..\Graphics\DeviceMemoryBlock\Vulkan\VulkanDeviceMemoryBlock.h" />
     <ClInclude Include="..\Graphics\Device\Common\CommonRenderDevice.h" />
     <ClInclude Include="..\Graphics\Device\RenderDevice.h" />
     <ClInclude Include="..\Graphics\Device\Vulkan\VulkanRenderDevice.h" />
