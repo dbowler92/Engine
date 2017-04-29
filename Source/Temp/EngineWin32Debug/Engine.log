@@ -1,4 +1,22 @@
-﻿  VulkanRenderDevice.cpp
+﻿  GameTimer.cpp
+  VulkanTextureResource.cpp
+  VulkanTexture2D.cpp
+  Win32OSWindow.cpp
+  EngineMain.cpp
+  VulkanSwapchain.cpp
+  VulkanStatics.cpp
+  VulkanRenderCommandBuffer.cpp
+  VulkanGraphicsManager.cpp
+c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\manager\vulkan\vulkangraphicsmanager.cpp(17): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\stdio.h(1769): note: see declaration of 'sprintf'
+c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\manager\vulkan\vulkangraphicsmanager.cpp(22): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\stdio.h(1769): note: see declaration of 'sprintf'
+c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\manager\vulkan\vulkangraphicsmanager.cpp(27): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\stdio.h(1769): note: see declaration of 'sprintf'
+  D3D11GraphicsManager.cpp
+c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\manager\d3d11\d3d11graphicsmanager.cpp(14): warning C4101: 'd3d11InfoMsg': unreferenced local variable
+  VulkanRenderInstance.cpp
+  VulkanRenderDevice.cpp
 c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\device\vulkan\vulkanrenderdevice.cpp(243): warning C4018: '<': signed/unsigned mismatch
 c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\device\vulkan\vulkanrenderdevice.cpp(283): warning C4018: '<': signed/unsigned mismatch
 c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\device\vulkan\vulkanrenderdevice.cpp(464): warning C4018: '<': signed/unsigned mismatch
@@ -16,4 +34,14 @@ c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\dev
 c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\device\vulkan\vulkanrenderdevice.cpp(526): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
   c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\stdio.h(1769): note: see declaration of 'sprintf'
 c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\device\vulkan\vulkanrenderdevice.cpp(541): warning C4018: '<': signed/unsigned mismatch
+  VulkanDeviceMemoryBlock.cpp
+  VulkanCommandQueue.cpp
+  VulkanCommandQueueFamily.cpp
+c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\commandqueuefamily\vulkan\vulkancommandqueuefamily.cpp(12): warning C4018: '<': signed/unsigned mismatch
+c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\commandqueuefamily\vulkan\vulkancommandqueuefamily.cpp(54): warning C4018: '<': signed/unsigned mismatch
+  VulkanCommandBufferPool.cpp
+  DebugLog.cpp
+  Win32Application.cpp
+  OrbisApplication.cpp
+  Generating Code...
   Engine.vcxproj -> C:\Users\B1032464\Documents\Programming\Engine\Engine\Source\Engine\Msvs\..\..\Lib\Win32Debug\Engine.lib

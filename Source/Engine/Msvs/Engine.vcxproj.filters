@@ -70,9 +70,6 @@
     <Filter Include="Src\Rendering">
       <UniqueIdentifier>{de7b93c8-d802-4fc2-bc19-d73b467f2c47}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Src\Rendering\Texture2D">
-      <UniqueIdentifier>{f388de51-4e07-43be-baef-ab931599c5ae}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Src\Rendering\Shader">
       <UniqueIdentifier>{7cb17b67-6878-4c9b-ad59-3eae43fc7276}</UniqueIdentifier>
     </Filter>
@@ -136,9 +133,6 @@
     <Filter Include="Src\Graphics\CommandBufferPool\Vulkan">
       <UniqueIdentifier>{8c181b43-7fc0-4bec-a3a5-b6373d786f13}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Src\Rendering\Texture">
-      <UniqueIdentifier>{18e3cc19-030b-4eb9-89c7-f8f94e14b89a}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Includes">
       <UniqueIdentifier>{f41ecde8-b268-4638-b8d8-379945c6bac4}</UniqueIdentifier>
     </Filter>
@@ -178,13 +172,31 @@
     <Filter Include="Src\Graphics\DeviceMemoryBlock\Vulkan">
       <UniqueIdentifier>{9983b6b1-907e-42a6-95ef-410ab733de90}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Src\Rendering\TextureResource">
+      <UniqueIdentifier>{18e3cc19-030b-4eb9-89c7-f8f94e14b89a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Rendering\TextureResource\Common">
+      <UniqueIdentifier>{bd621564-ae5d-4840-b8b8-df64c03d1077}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Rendering\TextureResource\Vulkan">
+      <UniqueIdentifier>{e28e7ead-7a61-4a70-869c-27dc796b9873}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Rendering\Texture2D">
+      <UniqueIdentifier>{f388de51-4e07-43be-baef-ab931599c5ae}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Rendering\Texture2D\Common">
+      <UniqueIdentifier>{8901ebca-1e60-4507-8e96-c970dd7d761d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Rendering\Texture2D\Vulkan">
+      <UniqueIdentifier>{9ff536c0-5ae1-41d6-8699-dd8e68559be7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Rendering\Texture2DArray">
+      <UniqueIdentifier>{537e79eb-72ad-4a8b-9166-2dd83fdcefb5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Main\EngineMain.cpp">
       <Filter>Src\Main</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Application\Application.cpp">
-      <Filter>Src\Application</Filter>
     </ClCompile>
     <ClCompile Include="..\Utils\GameTimer\GameTimer.cpp">
       <Filter>Src\Utils\GameTimer</Filter>
@@ -195,17 +207,8 @@
     <ClCompile Include="..\Application\Orbis\OrbisApplication.cpp">
       <Filter>Src\Application\Orbis</Filter>
     </ClCompile>
-    <ClCompile Include="..\Application\Common\CommonApplication.cpp">
-      <Filter>Src\Application\Common</Filter>
-    </ClCompile>
     <ClCompile Include="..\Debug\Log\DebugLog.cpp">
       <Filter>Src\Debug\Log</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Graphics\Manager\Common\CommonGraphicsManager.cpp">
-      <Filter>Src\Graphics\Manager\Common</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Graphics\Manager\GraphicsManager.cpp">
-      <Filter>Src\Graphics\Manager</Filter>
     </ClCompile>
     <ClCompile Include="..\Graphics\Manager\Vulkan\VulkanGraphicsManager.cpp">
       <Filter>Src\Graphics\Manager\Vulkan</Filter>
@@ -213,77 +216,26 @@
     <ClCompile Include="..\Graphics\Manager\D3D11\D3D11GraphicsManager.cpp">
       <Filter>Src\Graphics\Manager\D3D11</Filter>
     </ClCompile>
-    <ClCompile Include="..\OSWindow\Common\CommonOSWindow.cpp">
-      <Filter>Src\OSWindow\Common</Filter>
-    </ClCompile>
     <ClCompile Include="..\OSWindow\Win32\Win32OSWindow.cpp">
       <Filter>Src\OSWindow\Win32</Filter>
-    </ClCompile>
-    <ClCompile Include="..\OSWindow\OSWindow.cpp">
-      <Filter>Src\OSWindow</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Graphics\Swapchain\Common\CommonSwapchain.cpp">
-      <Filter>Src\Graphics\Swapchain\Common</Filter>
     </ClCompile>
     <ClCompile Include="..\Graphics\Swapchain\Vulkan\VulkanSwapchain.cpp">
       <Filter>Src\Graphics\Swapchain\Vulkan</Filter>
     </ClCompile>
-    <ClCompile Include="..\Graphics\Device\RenderDevice.cpp">
-      <Filter>Src\Graphics\Device</Filter>
-    </ClCompile>
     <ClCompile Include="..\Graphics\Device\Vulkan\VulkanRenderDevice.cpp">
       <Filter>Src\Graphics\Device\Vulkan</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Graphics\Device\Common\CommonRenderDevice.cpp">
-      <Filter>Src\Graphics\Device\Common</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Graphics\Instance\Common\CommonRenderInstance.cpp">
-      <Filter>Src\Graphics\Instance\Common</Filter>
     </ClCompile>
     <ClCompile Include="..\Graphics\Instance\Vulkan\VulkanRenderInstance.cpp">
       <Filter>Src\Graphics\Instance\Vulkan</Filter>
     </ClCompile>
-    <ClCompile Include="..\Graphics\Instance\RenderInstance.cpp">
-      <Filter>Src\Graphics\Instance</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Graphics\Swapchain\Swapchain.cpp">
-      <Filter>Src\Graphics\Swapchain</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Config\VulkanConfig.cpp">
-      <Filter>Engine Config</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Graphics\RenderCommandBuffer\RenderCommandBuffer.cpp">
-      <Filter>Src\Graphics\RenderCommand Buffer</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Graphics\RenderCommandBuffer\Common\CommonRenderCommandBuffer.cpp">
-      <Filter>Src\Graphics\RenderCommand Buffer\Common</Filter>
-    </ClCompile>
     <ClCompile Include="..\Graphics\RenderCommandBuffer\Vulkan\VulkanRenderCommandBuffer.cpp">
       <Filter>Src\Graphics\RenderCommand Buffer\Vulkan</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Graphics\CommandBufferPool\Common\CommonCommandBufferPool.cpp">
-      <Filter>Src\Graphics\CommandBufferPool\Common</Filter>
     </ClCompile>
     <ClCompile Include="..\Graphics\CommandBufferPool\Vulkan\VulkanCommandBufferPool.cpp">
       <Filter>Src\Graphics\CommandBufferPool\Vulkan</Filter>
     </ClCompile>
-    <ClCompile Include="..\Graphics\CommandBufferPool\CommandBufferPool.cpp">
-      <Filter>Src\Graphics\CommandBufferPool</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Graphics\CommandQueueFamily\CommandQueueFamily.cpp">
-      <Filter>Src\Graphics\CommandQueueFamily</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Graphics\CommandQueueFamily\Common\CommonCommandQueueFamily.cpp">
-      <Filter>Src\Graphics\CommandQueueFamily\Common</Filter>
-    </ClCompile>
     <ClCompile Include="..\Graphics\CommandQueueFamily\Vulkan\VulkanCommandQueueFamily.cpp">
       <Filter>Src\Graphics\CommandQueueFamily\Vulkan</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Graphics\CommandQueue\CommandQueue.cpp">
-      <Filter>Src\Graphics\CommandQueue</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Graphics\CommandQueue\Common\CommonCommandQueue.cpp">
-      <Filter>Src\Graphics\CommandQueue\Common</Filter>
     </ClCompile>
     <ClCompile Include="..\Graphics\CommandQueue\Vulkan\VulkanCommandQueue.cpp">
       <Filter>Src\Graphics\CommandQueue\Vulkan</Filter>
@@ -291,14 +243,14 @@
     <ClCompile Include="..\Graphics\Statics\Vulkan\VulkanStatics.cpp">
       <Filter>Src\Graphics\Statics\Vulkan</Filter>
     </ClCompile>
-    <ClCompile Include="..\Graphics\DeviceMemoryBlock\Common\CommonDeviceMemoryBlock.cpp">
-      <Filter>Src\Graphics\DeviceMemoryBlock\Common</Filter>
-    </ClCompile>
     <ClCompile Include="..\Graphics\DeviceMemoryBlock\Vulkan\VulkanDeviceMemoryBlock.cpp">
       <Filter>Src\Graphics\DeviceMemoryBlock\Vulkan</Filter>
     </ClCompile>
-    <ClCompile Include="..\Graphics\DeviceMemoryBlock\DeviceMemoryBlock.cpp">
-      <Filter>Src\Graphics\DeviceMemoryBlock</Filter>
+    <ClCompile Include="..\Rendering\TextureResource\Vulkan\VulkanTextureResource.cpp">
+      <Filter>Src\Rendering\TextureResource\Vulkan</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Rendering\Texture2D\Vulkan\VulkanTexture2D.cpp">
+      <Filter>Src\Rendering\Texture2D\Vulkan</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -430,6 +382,24 @@
     </ClInclude>
     <ClInclude Include="..\Graphics\DeviceMemoryBlock\DeviceMemoryBlock.h">
       <Filter>Src\Graphics\DeviceMemoryBlock</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Rendering\TextureResource\Vulkan\VulkanTextureResource.h">
+      <Filter>Src\Rendering\TextureResource\Vulkan</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Rendering\TextureResource\TextureResource.h">
+      <Filter>Src\Rendering\TextureResource</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Rendering\TextureResource\Common\CommomTextureResource.h">
+      <Filter>Src\Rendering\TextureResource\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Rendering\Texture2D\Common\CommonTexture2D.h">
+      <Filter>Src\Rendering\Texture2D\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Rendering\Texture2D\Vulkan\VulkanTexture2D.h">
+      <Filter>Src\Rendering\Texture2D\Vulkan</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Rendering\Texture2D\Texture2D.h">
+      <Filter>Src\Rendering\Texture2D</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -38,7 +38,7 @@ namespace EngineAPI
 		{
 			HIDE_COPY_ASSIGNMENT(Application)
 		public:
-			Application();
+			Application() {};
 			virtual ~Application() = 0 {};
 
 			//

@@ -19,45 +19,24 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\Application\Application.cpp" />
-    <ClCompile Include="..\Application\Common\CommonApplication.cpp" />
     <ClCompile Include="..\Application\Orbis\OrbisApplication.cpp" />
     <ClCompile Include="..\Application\Win32\Win32Application.cpp" />
-    <ClCompile Include="..\Config\VulkanConfig.cpp" />
     <ClCompile Include="..\Debug\Log\DebugLog.cpp" />
-    <ClCompile Include="..\Graphics\CommandBufferPool\CommandBufferPool.cpp" />
-    <ClCompile Include="..\Graphics\CommandBufferPool\Common\CommonCommandBufferPool.cpp" />
     <ClCompile Include="..\Graphics\CommandBufferPool\Vulkan\VulkanCommandBufferPool.cpp" />
-    <ClCompile Include="..\Graphics\CommandQueueFamily\CommandQueueFamily.cpp" />
-    <ClCompile Include="..\Graphics\CommandQueueFamily\Common\CommonCommandQueueFamily.cpp" />
     <ClCompile Include="..\Graphics\CommandQueueFamily\Vulkan\VulkanCommandQueueFamily.cpp" />
-    <ClCompile Include="..\Graphics\CommandQueue\CommandQueue.cpp" />
-    <ClCompile Include="..\Graphics\CommandQueue\Common\CommonCommandQueue.cpp" />
     <ClCompile Include="..\Graphics\CommandQueue\Vulkan\VulkanCommandQueue.cpp" />
-    <ClCompile Include="..\Graphics\DeviceMemoryBlock\Common\CommonDeviceMemoryBlock.cpp" />
-    <ClCompile Include="..\Graphics\DeviceMemoryBlock\DeviceMemoryBlock.cpp" />
     <ClCompile Include="..\Graphics\DeviceMemoryBlock\Vulkan\VulkanDeviceMemoryBlock.cpp" />
-    <ClCompile Include="..\Graphics\Device\Common\CommonRenderDevice.cpp" />
-    <ClCompile Include="..\Graphics\Device\RenderDevice.cpp" />
     <ClCompile Include="..\Graphics\Device\Vulkan\VulkanRenderDevice.cpp" />
-    <ClCompile Include="..\Graphics\Instance\Common\CommonRenderInstance.cpp" />
-    <ClCompile Include="..\Graphics\Instance\RenderInstance.cpp" />
     <ClCompile Include="..\Graphics\Instance\Vulkan\VulkanRenderInstance.cpp" />
-    <ClCompile Include="..\Graphics\Manager\Common\CommonGraphicsManager.cpp" />
     <ClCompile Include="..\Graphics\Manager\D3D11\D3D11GraphicsManager.cpp" />
-    <ClCompile Include="..\Graphics\Manager\GraphicsManager.cpp" />
     <ClCompile Include="..\Graphics\Manager\Vulkan\VulkanGraphicsManager.cpp" />
-    <ClCompile Include="..\Graphics\RenderCommandBuffer\Common\CommonRenderCommandBuffer.cpp" />
-    <ClCompile Include="..\Graphics\RenderCommandBuffer\RenderCommandBuffer.cpp" />
     <ClCompile Include="..\Graphics\RenderCommandBuffer\Vulkan\VulkanRenderCommandBuffer.cpp" />
     <ClCompile Include="..\Graphics\Statics\Vulkan\VulkanStatics.cpp" />
-    <ClCompile Include="..\Graphics\Swapchain\Common\CommonSwapchain.cpp" />
-    <ClCompile Include="..\Graphics\Swapchain\Swapchain.cpp" />
     <ClCompile Include="..\Graphics\Swapchain\Vulkan\VulkanSwapchain.cpp" />
     <ClCompile Include="..\Main\EngineMain.cpp" />
-    <ClCompile Include="..\OSWindow\Common\CommonOSWindow.cpp" />
-    <ClCompile Include="..\OSWindow\OSWindow.cpp" />
     <ClCompile Include="..\OSWindow\Win32\Win32OSWindow.cpp" />
+    <ClCompile Include="..\Rendering\Texture2D\Vulkan\VulkanTexture2D.cpp" />
+    <ClCompile Include="..\Rendering\TextureResource\Vulkan\VulkanTextureResource.cpp" />
     <ClCompile Include="..\Utils\GameTimer\GameTimer.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -103,6 +82,12 @@
     <ClInclude Include="..\OSWindow\Common\CommonOSWindow.h" />
     <ClInclude Include="..\OSWindow\OSWindow.h" />
     <ClInclude Include="..\OSWindow\Win32\Win32OSWindow.h" />
+    <ClInclude Include="..\Rendering\Texture2D\Common\CommonTexture2D.h" />
+    <ClInclude Include="..\Rendering\Texture2D\Texture2D.h" />
+    <ClInclude Include="..\Rendering\Texture2D\Vulkan\VulkanTexture2D.h" />
+    <ClInclude Include="..\Rendering\TextureResource\Common\CommomTextureResource.h" />
+    <ClInclude Include="..\Rendering\TextureResource\TextureResource.h" />
+    <ClInclude Include="..\Rendering\TextureResource\Vulkan\VulkanTextureResource.h" />
     <ClInclude Include="..\Utils\GameTimer\GameTimer.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

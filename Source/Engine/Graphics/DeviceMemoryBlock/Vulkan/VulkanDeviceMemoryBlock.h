@@ -26,7 +26,7 @@ namespace EngineAPI
 			{
 			public:
 				VulkanDeviceMemoryBlock() {};
-				~VulkanDeviceMemoryBlock() {};
+				virtual ~VulkanDeviceMemoryBlock() = 0 {};
 
 				//Override shutdown
 				void Shutdown() override;
