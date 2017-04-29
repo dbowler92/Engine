@@ -9,6 +9,9 @@
 //Base class
 #include "../Common/CommonTexture2D.h"
 
+//Vulkan header
+#include <vulkan/vulkan.h>
+
 namespace EngineAPI
 {
 	namespace Rendering

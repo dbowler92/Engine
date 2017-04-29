@@ -23,11 +23,11 @@ namespace EngineAPI
 {
 	namespace Rendering
 	{
-		class TextureResource : RENDERING_PLATFORM_IMPLEMENTATION(TextureResource)
+		class TextureResource : public RENDERING_PLATFORM_IMPLEMENTATION(TextureResource)
 		{
 		public:
 			TextureResource() {};
-			virtual ~TextureResource() = 0 {};
+			virtual ~TextureResource() = 0 {}; //Abstract class - TextureResource should not be created manually
 		};
 	};
 };

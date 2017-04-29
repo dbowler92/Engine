@@ -18,7 +18,7 @@ namespace EngineAPI
 {
 	namespace Rendering
 	{
-		class Texture2D : RENDERING_PLATFORM_IMPLEMENTATION(Texture2D)
+		class Texture2D : public RENDERING_PLATFORM_IMPLEMENTATION(Texture2D)
 		{
 		public:
 			Texture2D() {};

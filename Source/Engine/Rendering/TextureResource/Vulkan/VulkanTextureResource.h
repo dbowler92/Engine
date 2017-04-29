@@ -9,6 +9,9 @@
 //Base texture resource
 #include "../Common/CommomTextureResource.h"
 
+//Vulkan header
+#include <vulkan/vulkan.h>
+
 namespace EngineAPI
 {
 	namespace Rendering
@@ -20,6 +23,10 @@ namespace EngineAPI
 			public:
 				VulkanTextureResource() {};
 				virtual ~VulkanTextureResource() = 0 {};
+
+			protected:
+				//Vulkan texture / image resource handle
+				VkImage vkImageHandle = VK_NULL_HANDLE;
 			};
 		};
 	};
