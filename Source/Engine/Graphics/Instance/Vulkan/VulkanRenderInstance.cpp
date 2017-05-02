@@ -42,7 +42,7 @@ std::vector<const char *> enabledInstanceExtensions =
 #endif
 };
 
-bool VulkanRenderInstance::Init(EngineAPI::OS::OSWindow* osWindow, ECHAR* applicationTitle,
+bool VulkanRenderInstance::InitVKInstance(EngineAPI::OS::OSWindow* osWindow, ECHAR* applicationTitle,
 	int appVersionMajor, int appVersionMinor, int appVersionPatch)
 {
 	//

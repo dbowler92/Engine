@@ -26,11 +26,12 @@ namespace EngineAPI
 				VulkanRenderInstance(){};
 				virtual ~VulkanRenderInstance() = 0 {};
 
-				//Init and shutdown
-				//Override init and shutdown functions
-				bool Init(EngineAPI::OS::OSWindow* osWindow, ECHAR* applicationTitle,
-					int appVersionMajor, int appVersionMinor, int appVersionPatch) override;
+				//Override shutdown functions
 				void Shutdown() override;
+
+				//Inits the VK instance
+				bool InitVKInstance(EngineAPI::OS::OSWindow* osWindow, ECHAR* applicationTitle,
+					int appVersionMajor, int appVersionMinor, int appVersionPatch);
 
 				//Returns the Vulkan instance
 				VkInstance GetVKInstance() { return vkInstance; };

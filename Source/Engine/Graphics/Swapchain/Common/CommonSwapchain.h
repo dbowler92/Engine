@@ -26,10 +26,7 @@ namespace EngineAPI
 				CommonSwapchain() {};
 				virtual ~CommonSwapchain() = 0 {};
 
-				//Override the init and shutdown functions
-				virtual bool Init(EngineAPI::OS::OSWindow* osWindow,
-					EngineAPI::Graphics::RenderInstance* renderingInstance,
-					EngineAPI::Graphics::RenderDevice* renderingDevice) = 0 {};
+				//Override shutdown functions
 				virtual void Shutdown() = 0 {};
 			};
 		}

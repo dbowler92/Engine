@@ -41,6 +41,16 @@ namespace EngineAPI
 					EngineAPI::Graphics::RenderInstance* renderingInstance) override;
 				void Shutdown() override;
 
+				//Inits vulkan step by step
+				bool InitVKPhysicalDevice(EngineAPI::OS::OSWindow* osWindow,
+					EngineAPI::Graphics::RenderInstance* renderingInstance);
+				bool InitVKLogicalDeviceAndQueues(EngineAPI::OS::OSWindow* osWindow,
+					EngineAPI::Graphics::RenderInstance* renderingInstance);
+				bool InitVKMemoryBlocks(EngineAPI::OS::OSWindow* osWindow,
+					EngineAPI::Graphics::RenderInstance* renderingInstance);
+				bool InitVKCommandBufferPools(EngineAPI::OS::OSWindow* osWindow,
+					EngineAPI::Graphics::RenderInstance* renderingInstance);
+
 			public:
 				//Vulkan getters:
 				//

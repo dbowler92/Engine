@@ -29,9 +29,7 @@ namespace EngineAPI
 				CommonRenderInstance() {};
 				virtual ~CommonRenderInstance() = 0 {};
 
-				//Override init and shutdown functions
-				virtual bool Init(EngineAPI::OS::OSWindow* osWindow, ECHAR* applicationTitle,
-					int appVersionMajor, int appVersionMinor, int appVersionPatch) = 0 {};
+				//Override shutdown function
 				virtual void Shutdown() = 0 {};
 			};
 		}

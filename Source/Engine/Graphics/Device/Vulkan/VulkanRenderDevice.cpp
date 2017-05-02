@@ -245,6 +245,34 @@ bool VulkanRenderDevice::Init(EngineAPI::OS::OSWindow* osWindow,
 	return true;
 }
 
+bool VulkanRenderDevice::InitVKPhysicalDevice(EngineAPI::OS::OSWindow* osWindow,
+	EngineAPI::Graphics::RenderInstance* renderingInstance)
+{
+	//Done
+	return true;
+}
+
+bool VulkanRenderDevice::InitVKLogicalDeviceAndQueues(EngineAPI::OS::OSWindow* osWindow,
+	EngineAPI::Graphics::RenderInstance* renderingInstance)
+{
+	//Done
+	return true;
+}
+
+bool VulkanRenderDevice::InitVKMemoryBlocks(EngineAPI::OS::OSWindow* osWindow,
+	EngineAPI::Graphics::RenderInstance* renderingInstance)
+{
+	//Done
+	return true;
+}
+
+bool VulkanRenderDevice::InitVKCommandBufferPools(EngineAPI::OS::OSWindow* osWindow,
+	EngineAPI::Graphics::RenderInstance* renderingInstance)
+{
+	//Done
+	return true;
+}
+
 void VulkanRenderDevice::Shutdown()
 {
 	//GPU memory

@@ -21,11 +21,16 @@ namespace EngineAPI
 				VulkanSwapchain() {};
 				virtual ~VulkanSwapchain() = 0 {};
 
-				//Override init and shutdown functions
-				bool Init(EngineAPI::OS::OSWindow* osWindow,
-					EngineAPI::Graphics::RenderInstance* renderingInstance,
-					EngineAPI::Graphics::RenderDevice* renderingDevice) override;
+				//Override shutdown function
 				void Shutdown() override;
+
+				//Inits the VK swapchain
+				bool InitVKLogicalSurface(EngineAPI::OS::OSWindow* osWindow,
+					EngineAPI::Graphics::RenderInstance* renderingInstance,
+					EngineAPI::Graphics::RenderDevice* renderingDevice);
+				bool InitVKSwapchain(EngineAPI::OS::OSWindow* osWindow,
+					EngineAPI::Graphics::RenderInstance* renderingInstance,
+					EngineAPI::Graphics::RenderDevice* renderingDevice);
 				
 			private:
 				//Platform specific data: Eg: Surface/swapchain creation function pointers
@@ -57,7 +62,11 @@ namespace EngineAPI
 			private:
 				//Platform specific init: Vulkan supports (to date): Windows, Linux and Android
 #ifdef ENGINE_CONFIG_PLATFORM_WIN32
-				bool InitWin32(EngineAPI::OS::OSWindow* osWindow,
+				bool InitWin32LogicalSurface(EngineAPI::OS::OSWindow* osWindow,
+					EngineAPI::Graphics::RenderInstance* renderingInstance,
+					EngineAPI::Graphics::RenderDevice* renderingDevice);
+
+				bool InitWin32Swapchain(EngineAPI::OS::OSWindow* osWindow,
 					EngineAPI::Graphics::RenderInstance* renderingInstance,
 					EngineAPI::Graphics::RenderDevice* renderingDevice);
 #endif

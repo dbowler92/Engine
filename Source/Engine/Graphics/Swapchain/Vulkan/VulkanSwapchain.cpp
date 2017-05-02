@@ -2,12 +2,21 @@
 
 using namespace EngineAPI::Graphics::Platform;
 
-bool VulkanSwapchain::Init(EngineAPI::OS::OSWindow* osWindow,
+bool VulkanSwapchain::InitVKLogicalSurface(EngineAPI::OS::OSWindow* osWindow,
 	EngineAPI::Graphics::RenderInstance* renderingInstance,
 	EngineAPI::Graphics::RenderDevice* renderingDevice)
 {
 #ifdef ENGINE_CONFIG_PLATFORM_WIN32
-	return InitWin32(osWindow, renderingInstance, renderingDevice);
+	return InitWin32LogicalSurface(osWindow, renderingInstance, renderingDevice);
+#endif
+}
+
+bool VulkanSwapchain::InitVKSwapchain(EngineAPI::OS::OSWindow* osWindow,
+	EngineAPI::Graphics::RenderInstance* renderingInstance,
+	EngineAPI::Graphics::RenderDevice* renderingDevice)
+{
+#ifdef ENGINE_CONFIG_PLATFORM_WIN32
+	return InitWin32Swapchain(osWindow, renderingInstance, renderingDevice);
 #endif
 }
 
@@ -22,7 +31,7 @@ void VulkanSwapchain::Shutdown()
 //Win32
 //
 #ifdef ENGINE_CONFIG_PLATFORM_WIN32
-bool VulkanSwapchain::InitWin32(EngineAPI::OS::OSWindow* osWindow,
+bool VulkanSwapchain::InitWin32LogicalSurface(EngineAPI::OS::OSWindow* osWindow,
 	EngineAPI::Graphics::RenderInstance* renderingInstance,
 	EngineAPI::Graphics::RenderDevice* renderingDevice)
 {
@@ -117,6 +126,14 @@ bool VulkanSwapchain::InitWin32(EngineAPI::OS::OSWindow* osWindow,
 		return false;
 	}
 
+	//Done
+	return true;
+}
+
+bool VulkanSwapchain::InitWin32Swapchain(EngineAPI::OS::OSWindow* osWindow,
+	EngineAPI::Graphics::RenderInstance* renderingInstance,
+	EngineAPI::Graphics::RenderDevice* renderingDevice)
+{
 	//Done
 	return true;
 }
