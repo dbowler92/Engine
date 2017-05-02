@@ -113,11 +113,9 @@ namespace EngineAPI
 				//Gets the queue handle for a given type. 
 				//
 				//Finds queue for graphics and queue for presentation (Ideally the same!)
-				bool GetGraphicsAndPresentQueueFamilyHandle(VkQueueFamilyProperties* deviceQueueFamiliesArray, uint32_t queueFamilyCount, 
+				bool GetGraphicsAndPresentQueueFamilyHandle(const VkSurfaceKHR logicalSurface,
+					VkQueueFamilyProperties* deviceQueueFamiliesArray, uint32_t queueFamilyCount, 
 					uint32_t* graphicsQueueFamilyIndexOut, uint32_t* presentQueeuFamilyIndexOut);
-
-				//Inits Vulkan command buffer pool(s)
-				bool InitCommandBufferPools();
 
 			private:
 				//Validates our chosen device extentions & layers (Depreciated I think. However, 

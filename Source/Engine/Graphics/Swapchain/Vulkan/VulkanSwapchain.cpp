@@ -132,6 +132,27 @@ bool VulkanSwapchain::InitWin32Swapchain(EngineAPI::OS::OSWindow* osWindow,
 		return false;
 	}
 
+	//Get supported formats for the swapchain
+	uint32_t surfaceFormatsCount = 0;
+	VkSurfaceFormatKHR* surfaceFormatsArray = nullptr;
+	VkResult result = vkGetPhysicalDeviceSurfaceFormatsKHR(renderingDevice->GetVKPhysicalDevice(), vkSurfaceHandle, &surfaceFormatsCount, nullptr);
+	
+	//Get all formats
+	surfaceFormatsArray = GE_NEW VkSurfaceFormatKHR[surfaceFormatsCount];
+	result = vkGetPhysicalDeviceSurfaceFormatsKHR(renderingDevice->GetVKPhysicalDevice(), vkSurfaceHandle, &surfaceFormatsCount, &surfaceFormatsArray[0]);
+	if (result != VK_SUCCESS)
+	{
+		EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanSwapchain::InitWin32Swapchain() Error: Could not get surface formats\n");
+		return false;
+	}
+
+	//Select a format
+	if (!SelectVKSurfaceFormatForSwapchain(surfaceFormatsArray, surfaceFormatsCount, &vkSurfaceFormat))
+		return false;
+
+	//Cleanup before returning
+	delete[] surfaceFormatsArray;
+
 	//Done
 	return true;
 }
@@ -142,3 +163,16 @@ void VulkanSwapchain::ShutdownWin32()
 	fpDestroySurfaceKHR(cachedVKInstance, vkSurfaceHandle, nullptr);
 }
 #endif
+
+bool VulkanSwapchain::SelectVKSurfaceFormatForSwapchain(VkSurfaceFormatKHR* surfaceFormatsArray, uint32_t surfaceFormatsCount,
+	VkFormat* surfaceFormatOut)
+{
+	//Incase VK_FORMAT_UNDEFINED, use default R8G8B8A8_UNORM format
+	if (surfaceFormatsCount == 1 && surfaceFormatsArray[0].format == VK_FORMAT_UNDEFINED)
+		*surfaceFormatOut = VK_FORMAT_R8G8B8A8_UNORM;
+	else
+		*surfaceFormatOut = surfaceFormatsArray[0].format; //TODO: Pick the best - may not need to be honest. 
+
+	//Done
+	return true;
+}

@@ -58,8 +58,13 @@ bool VulkanRenderDevice::InitVKPhysicalDevice(EngineAPI::OS::OSWindow* osWindow,
 bool VulkanRenderDevice::InitVKLogicalDeviceAndQueues(EngineAPI::OS::OSWindow* osWindow,
 	EngineAPI::Graphics::RenderInstance* renderingInstance, const VkSurfaceKHR logicalSurfaceHandle)
 {
-	//Extension function pointers - used to ask queues if they support presentation
+	//Extension function pointers needed by the device - used to ask queues if they support presentation
 	fpGetPhysicalDeviceSurfaceSupportKHR = (PFN_vkGetPhysicalDeviceSurfaceSupportKHR)vkGetInstanceProcAddr(renderingInstance->GetVKInstance(), "vkGetPhysicalDeviceSurfaceSupportKHR");
+	if (!fpGetPhysicalDeviceSurfaceSupportKHR)
+	{
+		EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanRenderDevice::InitVKLogicalDeviceAndQueues() - Could not find vkGetPhysicalDeviceSurfaceSupportKHR\n");
+		return false;
+	}
 
 	//Validate device layers, extentions and feature set
 	//
@@ -94,27 +99,31 @@ bool VulkanRenderDevice::InitVKLogicalDeviceAndQueues(EngineAPI::OS::OSWindow* o
 	//********************Graphics Queue && Presentation******************************
 	//********************************************************************************
 	//********************************************************************************
-
-	//Search queue families for the graphics queue: VK_QUEUE_GRAPHICS_BIT
-	bool hasFoundGraphicsQueue = false;
+	//
+	//Search queue families for the graphics queue: VK_QUEUE_GRAPHICS_BIT - We also want 
+	//to find the queue with present abilities (ideally, the same queue family. However, we 
+	//can adapt if it isnt)
 	uint32_t graphicsQueueFamilyIdx = 0;
 	uint32_t presentQueueFamilyIdx = 0;
-	hasFoundGraphicsQueue = GetGraphicsAndPresentQueueFamilyHandle(&vkQueueFamiliesArray[0], vkQueueFamiliesCount,
-		&graphicsQueueFamilyIdx, &presentQueueFamilyIdx);
+	if (!GetGraphicsAndPresentQueueFamilyHandle(logicalSurfaceHandle, &vkQueueFamiliesArray[0], vkQueueFamiliesCount, &graphicsQueueFamilyIdx, &presentQueueFamilyIdx))
+		return false;
 
-	//Check
-	if (!hasFoundGraphicsQueue)
+	//Is both the graphics and present queues the same family?
+	bool isSameQueueFamily = (graphicsQueueFamilyIdx == presentQueueFamilyIdx);
+	
+	//TEMP: Ensure that the graphics and presentation queues are the same
+	if (!isSameQueueFamily)
 		return false;
 
 	//Graphics queue creation - returns the struct needed when creating the 
-	//logical device. Note: Untill we need a queue with support
-	//for comoute, we don't need to change VkDeviceQueueCreateInfo::pNext!
+	//logical device. Note: Until we need a queue with support
+	//for compute, we don't need to change VkDeviceQueueCreateInfo::pNext!
 	graphicsQueueFamily = GE_NEW CommandQueueFamily();
 
 	VkDeviceQueueCreateInfo graphicsQueueCreateInfo = {};
 	float queuePriorities[1] = { 0.0 };
 	graphicsQueueFamily->InitVulkanQueueFamily(&vkLogicalDevice,
-		QUEUE_FAMILY_SUPPORT_GRAPHICS, graphicsQueueFamilyIdx,
+		QUEUE_FAMILY_SUPPORT_GRAPHICS_AND_PRESENTATION, graphicsQueueFamilyIdx,
 		ENGINE_CONFIG_VULKAN_API_GRAPHICS_QUEUE_COUNT, queuePriorities,
 		&graphicsQueueCreateInfo);
 
@@ -186,9 +195,29 @@ bool VulkanRenderDevice::InitVKMemoryBlocks(EngineAPI::OS::OSWindow* osWindow,
 bool VulkanRenderDevice::InitVKCommandBufferPools(EngineAPI::OS::OSWindow* osWindow,
 	EngineAPI::Graphics::RenderInstance* renderingInstance)
 {
-	//Init vulkan command buffer pools
-	if (!InitCommandBufferPools())
+	//Alloc
+	commandBufferPoolsArray = GE_NEW CommandBufferPool[ENGINE_CONFIG_VULKAN_API_GRAPHICS_COMMAND_BUFFER_POOLS_COUNT];
+	if (!commandBufferPoolsArray)
+	{
+		//Alloc error
+		EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanRenderDevice: Error allocating memory for (VK) Command Buffer Pools\n");
 		return false;
+	}
+
+	//Command pool alloc info.
+	uint32_t cmdPoolSubmissionQueueFamilyIdxGraphics = graphicsQueueFamily->GetVKQueueFamilyIndex();
+
+	for (int i = 0; i < ENGINE_CONFIG_VULKAN_API_GRAPHICS_COMMAND_BUFFER_POOLS_COUNT; i++)
+	{
+		if (!commandBufferPoolsArray[i].InitVKCommandBufferPool(&vkLogicalDevice, cmdPoolSubmissionQueueFamilyIdxGraphics,
+			ENGINE_CONFIG_VULKAN_API_GRAPHICS_COMMAND_BUFFER_POOLS_ALLOW_BUFFER_RESETS,
+			ENGINE_CONFIG_VULKAN_API_GRAPHICS_COMMAND_BUFFER_POOLS_IS_TRANSIENT))
+		{
+			//Init error
+			EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanRenderDevice: Error initing (VK) Command Buffer Pools\n");
+			return false;
+		}
+	}
 
 	//Done
 	return true;
@@ -493,68 +522,72 @@ VkPhysicalDevice VulkanRenderDevice::PickBestVulkanPhysicalDevice(VkPhysicalDevi
 	return vkPickedPhysicalDevice;
 }
 
-bool VulkanRenderDevice::GetGraphicsAndPresentQueueFamilyHandle(VkQueueFamilyProperties* deviceQueueFamiliesArray, uint32_t queueFamilyCount,
+bool VulkanRenderDevice::GetGraphicsAndPresentQueueFamilyHandle(const VkSurfaceKHR logicalSurface,
+	VkQueueFamilyProperties* deviceQueueFamiliesArray, uint32_t queueFamilyCount,
 	uint32_t* graphicsQueueFamilyIndexOut, uint32_t* presentQueeuFamilyIndexOut)
 {
 	//Which queue families support presentation?
 	VkBool32* supportsPresentation = GE_NEW VkBool32[queueFamilyCount];
-	//for (int i = 0; i < queueFamilyCount; i++)
-	//	fpGetPhysicalDeviceSurfaceSupportKHR(vkPhysicalDevice, i, vkLogicalSurface, &supportsPresentation[i]);
+	for (int i = 0; i < queueFamilyCount; i++)
+		fpGetPhysicalDeviceSurfaceSupportKHR(vkPhysicalDevice, i, logicalSurface, &supportsPresentation[i]);
+
+	//Index of graphics queue family && index of presentation family
+	uint32_t graphicsFamilyIdx = UINT32_MAX;
+	uint32_t presentationFamilyIdx = UINT32_MAX;
 
 	//Find queue family that supports both graphics work && presentation work. 
 	for (int i = 0; i < queueFamilyCount; i++)
 	{
 		if (deviceQueueFamiliesArray[i].queueFlags & VK_QUEUE_GRAPHICS_BIT)
 		{
-			//Store handle and return true
-			*graphicsQueueFamilyIndexOut = i;
+			if (graphicsFamilyIdx == UINT32_MAX)
+				graphicsFamilyIdx = i;
 
-			//Delete presentation flags
-			delete[] supportsPresentation;
-
-			//Done
-			return true;
+			if (supportsPresentation[i] == VK_TRUE) //Ideally want a queue that supports both. 
+			{
+				graphicsFamilyIdx = i;
+				presentationFamilyIdx = i;
+				break;
+			}
 		}
 	}
 
-	//False
-	EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanRenderDevice::GetGraphicsQueueFamilyHandle(): Failed to find the graphics queue family.\n");
-	*graphicsQueueFamilyIndexOut = 0;
-	delete[] supportsPresentation;;
-	return false;
-}
-
-bool VulkanRenderDevice::InitCommandBufferPools()
-{
-	//*************************************************************************************
-	//*************************************************************************************
-	//**************************GRAPHICS QUEUE FAMILY**************************************
-	//*************************************************************************************
-	//*************************************************************************************
-
-	//Alloc
-	commandBufferPoolsArray = GE_NEW CommandBufferPool[ENGINE_CONFIG_VULKAN_API_GRAPHICS_COMMAND_BUFFER_POOLS_COUNT];
-	if (!commandBufferPoolsArray)
+	//Did we fail to find graphics queue somehow??
+	if (graphicsFamilyIdx == UINT32_MAX)
 	{
-		//Alloc error
-		EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanRenderDevice: Error allocating memory for (VK) Command Buffer Pools\n");
+		EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanRenderDevice::GetGraphicsAndPresentQueueFamilyHandle(): Failed to find the graphics queue family.\n");
+		delete[] supportsPresentation;
 		return false;
 	}
 
-	//Command pool alloc info.
-	uint32_t cmdPoolSubmissionQueueFamilyIdxGraphics = graphicsQueueFamily->GetVKQueueFamilyIndex();
-
-	for (int i = 0; i < ENGINE_CONFIG_VULKAN_API_GRAPHICS_COMMAND_BUFFER_POOLS_COUNT; i++)
+	//If we didnt find a queue that supports both graphics and presentation, find 
+	//separate queues for the roles
+	if (presentationFamilyIdx == UINT32_MAX)
 	{
-		if (!commandBufferPoolsArray[i].InitVKCommandBufferPool(&vkLogicalDevice, cmdPoolSubmissionQueueFamilyIdxGraphics,
-			ENGINE_CONFIG_VULKAN_API_GRAPHICS_COMMAND_BUFFER_POOLS_ALLOW_BUFFER_RESETS,
-			ENGINE_CONFIG_VULKAN_API_GRAPHICS_COMMAND_BUFFER_POOLS_IS_TRANSIENT))
+		for (int i = 0; i < queueFamilyCount; i++)
 		{
-			//Init error
-			EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanRenderDevice: Error initing (VK) Command Buffer Pools\n");
-			return false;
+			if (supportsPresentation[i] == VK_TRUE)
+			{
+				presentationFamilyIdx = i;
+				break;
+			}
 		}
 	}
+
+	//Did we fail to find a presentation queue
+	if (presentationFamilyIdx == UINT32_MAX)
+	{
+		EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanRenderDevice::GetGraphicsAndPresentQueueFamilyHandle(): Failed to find the presentation queue family.\n");
+		delete[] supportsPresentation;
+		return false;
+	}
+
+	//Cleanup before returning 
+	delete[] supportsPresentation;
+
+	//Set output
+	*graphicsQueueFamilyIndexOut = graphicsFamilyIdx;
+	*presentQueeuFamilyIndexOut = presentationFamilyIdx;
 
 	//Done
 	return true;

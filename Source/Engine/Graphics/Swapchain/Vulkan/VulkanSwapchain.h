@@ -58,6 +58,9 @@ namespace EngineAPI
 				//WSI created logical surface
 				VkSurfaceKHR vkSurfaceHandle = VK_NULL_HANDLE;
 
+				//Format of the swapchain colour buffers
+				VkFormat vkSurfaceFormat;
+
 				//Cached VK data
 				VkInstance cachedVKInstance = VK_NULL_HANDLE;
 				VkDevice cachedVKDevice = VK_NULL_HANDLE;
@@ -77,6 +80,11 @@ namespace EngineAPI
 #ifdef ENGINE_CONFIG_PLATFORM_WIN32
 				void ShutdownWin32();
 #endif
+			private:
+				//Finds a good surface format for the swapchain
+				bool SelectVKSurfaceFormatForSwapchain(VkSurfaceFormatKHR* surfaceFormatsArray, uint32_t surfaceFormatsCount,
+					VkFormat* surfaceFormatOut);
+
 			};
 		};
 	};
