@@ -39,6 +39,9 @@ bool VulkanDeviceMemoryBlock::InitVKDeviceMemoryBlock(VkDevice* logicalDevice,
 		return false;
 	}
 
+	//Cache size of the block
+	memoryBlockSizeBytes = allocInfo.allocationSize;
+
 	//Done
 	return true;
 }
@@ -47,4 +50,8 @@ void VulkanDeviceMemoryBlock::Shutdown()
 {
 	//Free the memory block
 	vkFreeMemory(cachedVkLogicalDevice, vkMemoryBlockHandle, nullptr);
+	vkMemoryBlockHandle = VK_NULL_HANDLE;
+
+	memoryBlockSizeBytes = 0;
+	suballocMemoryOffset = 0;
 }

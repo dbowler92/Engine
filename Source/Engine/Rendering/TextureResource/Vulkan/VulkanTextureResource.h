@@ -24,9 +24,20 @@ namespace EngineAPI
 				VulkanTextureResource() {};
 				virtual ~VulkanTextureResource() = 0 {};
 
+				//Override the shutdown - deletes the VkImage
+				virtual void Shutdown() override; //Texture2D etc will override this with its own shutdown code + remember to call super version!
+
+			protected:
+				//Inits the Vulkan image resource. This should be called
+				//by the subclass
+				bool InitVKTexture(VkDevice* logicalDevice, VkImageCreateInfo* imageCreateInfo);
+
 			protected:
 				//Vulkan texture / image resource handle
 				VkImage vkImageHandle = VK_NULL_HANDLE;
+
+				//Cached logical device that owns the resource
+				VkDevice cachedVkDevice = VK_NULL_HANDLE;
 			};
 		};
 	};

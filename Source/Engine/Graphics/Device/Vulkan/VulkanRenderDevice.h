@@ -62,6 +62,12 @@ namespace EngineAPI
 				uint32_t vkQueueFamiliesCount; //Number of queue families exposed by our selected physical device
 
 			private:
+				//Function pointers to extensions (WSI in this case - helps us create swapchains etc).
+				//
+				//Can ask a queue family if it supports presentation work!
+				PFN_vkGetPhysicalDeviceSurfaceSupportKHR fpGetPhysicalDeviceSurfaceSupportKHR = VK_NULL_HANDLE;
+
+			private:
 				//Vulkan command buffer pool(s)
 				CommandBufferPool* commandBufferPoolsArray = nullptr;
 
@@ -70,8 +76,10 @@ namespace EngineAPI
 
 				//Device (GPU) Memory block(s) - used to alloc resources on the GPU. Different blocks
 				//support different things. (eg: Mappable memory, etc)
-				DeviceMemoryBlock* deviceMemoryBlocksArray = nullptr;
-				uint32_t deviceMemoryBlocksCount = 0; //TODO: Probably split this up: device block pointer per use case!
+				//
+				//TEMP: Just alloc the full memory & use this to suballoc as and when required. Later, 
+				//we will want to improve this by having separate blocks for different tasks. 
+				DeviceMemoryBlock* deviceMemoryBlock = nullptr;
 
 			private:
 				//Vk allocation/init
@@ -95,10 +103,10 @@ namespace EngineAPI
 					uint32_t availPhysicalDevicesCount);
 
 				//Gets the queue handle for a given type. 
-				//TODO: Compute etc. 
-				//TODO: Queue which also supports presentation (Swapchain)???
-				bool GetGraphicsQueueFamilyHandle(VkQueueFamilyProperties* deviceQueueFamiliesArray, uint32_t queueFamilyCount, 
-					uint32_t* graphicsQueueFamilyIndexOut);
+				//
+				//Finds queue for graphics and queue for presentation (Ideally the same!)
+				bool GetGraphicsAndPresentQueueFamilyHandle(VkQueueFamilyProperties* deviceQueueFamiliesArray, uint32_t queueFamilyCount, 
+					uint32_t* graphicsQueueFamilyIndexOut, uint32_t* presentQueeuFamilyIndexOut);
 
 				//Inits Vulkan command buffer pool(s)
 				bool InitCommandBufferPools();

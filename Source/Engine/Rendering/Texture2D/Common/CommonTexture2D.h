@@ -4,14 +4,14 @@
 //
 //Interface that each platform specific implementation of texture2D objects
 //will inherit from
-//
-//Note: This class inherits from TextureResource -> Which will contain the code
-//for generic texture types (eg: Vulkan -> VkImage)
 
 #pragma once
 
-//Base
-#include "../../TextureResource/TextureResource.h"
+//Debug
+#include "../../../Debug/Log/DebugLog.h"
+
+//Device used to create this...
+#include "../../../Graphics/Device/RenderDevice.h"
 
 namespace EngineAPI
 {
@@ -19,11 +19,17 @@ namespace EngineAPI
 	{
 		namespace Interface
 		{
-			class CommonTexture2D : public EngineAPI::Rendering::TextureResource
+			class CommonTexture2D
 			{
 			public:
 				CommonTexture2D() {};
 				virtual ~CommonTexture2D() = 0 {};
+
+				//Shutdown function
+				virtual void Shutdown() = 0;
+
+				//TODO: General init function. Taking the format, usage, etc etc etc. 
+				//virtual bool InitTexture2D(EngineAPI::Graphics::RenderDevice* renderingDevice) = 0;
 			};
 		};
 	};

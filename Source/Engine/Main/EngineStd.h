@@ -48,6 +48,11 @@ typedef float EFLOAT;
 typedef double EDOUBLE;
 #endif
 
+//Global macros
+//
+//Converts from mebibyte to bytes
+#define MEB_TO_BYTES(meb) meb * (1024 * 1024)
+
 //For debug builds, output extra info everytime we dynamically allocate memory
 #if defined(_DEBUG) | defined(DEBUG)
 #define GE_NEW new(_NORMAL_BLOCK,__FILE__, __LINE__)

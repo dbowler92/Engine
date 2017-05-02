@@ -28,6 +28,9 @@ namespace EngineAPI
 		public:
 			TextureResource() {};
 			virtual ~TextureResource() = 0 {}; //Abstract class - TextureResource should not be created manually
+
+			//Shutdown function
+			virtual void Shutdown() override { RENDERING_PLATFORM_IMPLEMENTATION(TextureResource)::Shutdown(); };
 		};
 	};
 };

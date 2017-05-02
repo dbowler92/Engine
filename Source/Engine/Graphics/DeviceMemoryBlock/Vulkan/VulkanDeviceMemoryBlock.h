@@ -7,6 +7,9 @@
 //will represent a block of memory for use in the application (Eg: A memory block could be 
 //allocated for data that persists throughout the entire game. Another block for
 //textures, another for buffers and another for short term allocations)
+//
+//TODO: Maybe subject of my MSc dissertation. Failing that, this is a big topic which
+//could be a lot of fun to explore!
 
 #pragma once
 
@@ -39,7 +42,7 @@ namespace EngineAPI
 					VkPhysicalDeviceMemoryProperties* fullDeviceMemoryProperties, 
 					uint32_t memoryTypeIndex);    //Index in to VkPhysicalDeviceMemoryProperties::memoryTypes[]
 
-
+			public:
 
 			protected:
 				//Handle to the VK memory block
@@ -47,6 +50,17 @@ namespace EngineAPI
 
 				//Cached logical device - the 'owner' of this block
 				VkDevice cachedVkLogicalDevice = VK_NULL_HANDLE;
+
+				//Size of the memory block in bytes
+				VkDeviceSize memoryBlockSizeBytes = 0;
+
+				//Used when suballocating from this block. For the time being, everytime we suballoc
+				//from the block, we will move the offset along (move the 'pointer' from where
+				//we can suballoc more memory) - no defraging, no resizing etc. 
+				//
+				//Must be < memoryBlockSizeBytes (otherwise we would be suballocating from 
+				//outside the memory block)
+				VkDeviceSize suballocMemoryOffset = 0;
 			};
 		};
 	};

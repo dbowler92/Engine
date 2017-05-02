@@ -39,9 +39,11 @@ bool VulkanGraphicsManager::InitSubsystem(EngineAPI::OS::OSWindow* osWindow,
 	//
 	if (!renderingInstance->Init(osWindow, appTitle, appVersionMajor, appVersionMinor, appVersionPatch))
 		return false;
+	if (!renderingSwapchain->InitLogicalSurface(osWindow, renderingInstance))
+		return false;
 	if (!renderingDevice->Init(osWindow, renderingInstance))
 		return false;
-	if (!renderingSwapchain->Init(osWindow, renderingInstance, renderingDevice))
+	if (!renderingSwapchain->InitSwapchain(osWindow, renderingInstance, renderingDevice))
 		return false;
 
 	//Done

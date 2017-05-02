@@ -30,9 +30,30 @@ namespace EngineAPI
 			private:
 				//Platform specific data: Eg: Surface/swapchain creation function pointers
 #ifdef ENGINE_CONFIG_PLATFORM_WIN32
-				//WSI Extention
+				//WSI Extension
+				//
+				//Instance based:
+				//PFN_vkGetPhysicalDeviceSurfaceSupportKHR fpGetPhysicalDeviceSurfaceSupportKHR = VK_NULL_HANDLE;
+				PFN_vkGetPhysicalDeviceSurfaceCapabilitiesKHR fpGetPhysicalDeviceSurfaceCapabilitiesKHR = VK_NULL_HANDLE;
+				PFN_vkGetPhysicalDeviceSurfaceFormatsKHR fpGetPhysicalDeviceSurfaceFormatsKHR = VK_NULL_HANDLE;
+				PFN_vkGetPhysicalDeviceSurfacePresentModesKHR fpGetPhysicalDeviceSurfacePresentModesKHR = VK_NULL_HANDLE;
+				PFN_vkDestroySurfaceKHR fpDestroySurfaceKHR = VK_NULL_HANDLE;
 
+				//Device based:
+				PFN_vkCreateSwapchainKHR fpCreateSwapchainKHR = VK_NULL_HANDLE;
+				PFN_vkDestroySwapchainKHR fpDestroySwapchainKHR = VK_NULL_HANDLE;
+				PFN_vkGetSwapchainImagesKHR fpGetSwapchainImagesKHR = VK_NULL_HANDLE;
+				PFN_vkAcquireNextImageKHR fpAcquireNextImageKHR = VK_NULL_HANDLE;
+				PFN_vkQueuePresentKHR fpQueuePresentKHR = VK_NULL_HANDLE;
 #endif
+			private:
+				//WSI created logical surface
+				VkSurfaceKHR vkSurfaceHandle = VK_NULL_HANDLE;
+
+				//Cached VK data
+				VkInstance cachedVKInstance = VK_NULL_HANDLE;
+				VkDevice cachedVKDevice = VK_NULL_HANDLE;
+
 			private:
 				//Platform specific init: Vulkan supports (to date): Windows, Linux and Android
 #ifdef ENGINE_CONFIG_PLATFORM_WIN32

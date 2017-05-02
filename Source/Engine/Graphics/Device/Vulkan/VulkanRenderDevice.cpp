@@ -26,6 +26,9 @@ std::vector<const char *> deviceExtensionNames =
 bool VulkanRenderDevice::Init(EngineAPI::OS::OSWindow* osWindow, 
 	EngineAPI::Graphics::RenderInstance* renderingInstance)
 {
+	//Extention function pointers
+	fpGetPhysicalDeviceSurfaceSupportKHR = (PFN_vkGetPhysicalDeviceSurfaceSupportKHR)vkGetInstanceProcAddr(renderingInstance->GetVKInstance(), "vkGetPhysicalDeviceSurfaceSupportKHR");
+
 	//********************************************************************************
 	//********************************************************************************
 	//***********************Pick a physical device***********************************
@@ -116,7 +119,9 @@ bool VulkanRenderDevice::Init(EngineAPI::OS::OSWindow* osWindow,
 	//Search queue families for the graphics queue: VK_QUEUE_GRAPHICS_BIT
 	bool hasFoundGraphicsQueue = false;
 	uint32_t graphicsQueueFamilyIdx = 0;
-	hasFoundGraphicsQueue = GetGraphicsQueueFamilyHandle(&vkQueueFamiliesArray[0], vkQueueFamiliesCount, &graphicsQueueFamilyIdx);
+	uint32_t presentQueueFamilyIdx = 0;
+	hasFoundGraphicsQueue = GetGraphicsAndPresentQueueFamilyHandle(&vkQueueFamiliesArray[0], vkQueueFamiliesCount, 
+		&graphicsQueueFamilyIdx, &presentQueueFamilyIdx);
 
 	//Check
 	if (!hasFoundGraphicsQueue)
@@ -183,7 +188,12 @@ bool VulkanRenderDevice::Init(EngineAPI::OS::OSWindow* osWindow,
 	if (!FindVKMemoryTypeIndexForMappableAllocations(&vkMemoryTypeIndexForMappableAllocations)) //TODO
 		return false;
 
-	//Alloc device memory block(s)
+	//Alloc device memory block(s) - TEMP: Alloc full memory && suballoc from this. 
+	uint32_t gpuHeapIdx = vkDeviceMemoryProperties.memoryTypes[vkMemoryTypeIndexForEfficientDeviceOnlyAllocations].heapIndex;
+	VkDeviceSize maxVRAM = vkDeviceMemoryProperties.memoryHeaps[gpuHeapIdx].size;
+	deviceMemoryBlock = GE_NEW DeviceMemoryBlock();
+	deviceMemoryBlock->InitVKDeviceMemoryBlock(&vkLogicalDevice, MEB_TO_BYTES(256), 
+		&vkDeviceMemoryProperties, vkMemoryTypeIndexForEfficientDeviceOnlyAllocations);
 
 
 	//********************************************************************************
@@ -238,11 +248,10 @@ bool VulkanRenderDevice::Init(EngineAPI::OS::OSWindow* osWindow,
 void VulkanRenderDevice::Shutdown()
 {
 	//GPU memory
-	if (deviceMemoryBlocksArray)
+	if (deviceMemoryBlock)
 	{
-		for (int i = 0; i < deviceMemoryBlocksCount; i++)
-			deviceMemoryBlocksArray[i].Shutdown();
-		delete[] deviceMemoryBlocksArray;
+		deviceMemoryBlock->Shutdown();
+		delete deviceMemoryBlock;
 	}
 
 	//Cleanup command buffer pools
@@ -535,15 +544,26 @@ VkPhysicalDevice VulkanRenderDevice::PickBestVulkanPhysicalDevice(VkPhysicalDevi
 	return vkPickedPhysicalDevice;
 }
 
-bool VulkanRenderDevice::GetGraphicsQueueFamilyHandle(VkQueueFamilyProperties* deviceQueueFamiliesArray, uint32_t queueFamilyCount, 
-	uint32_t* graphicsQueueFamilyIndexOut)
+bool VulkanRenderDevice::GetGraphicsAndPresentQueueFamilyHandle(VkQueueFamilyProperties* deviceQueueFamiliesArray, uint32_t queueFamilyCount,
+	uint32_t* graphicsQueueFamilyIndexOut, uint32_t* presentQueeuFamilyIndexOut)
 {
+	//Which queue families support presentation?
+	VkBool32* supportsPresentation = GE_NEW VkBool32[queueFamilyCount];
+	for (int i = 0; i < queueFamilyCount; i++)
+		fpGetPhysicalDeviceSurfaceSupportKHR(vkPhysicalDevice, i, vkLogicalSurface, &supportsPresentation[i]);
+
+	//Find queue family that supports both graphics work && presentation work. 
 	for (int i = 0; i < queueFamilyCount; i++)
 	{
 		if (deviceQueueFamiliesArray[i].queueFlags & VK_QUEUE_GRAPHICS_BIT)
 		{
 			//Store handle and return true
 			*graphicsQueueFamilyIndexOut = i;
+
+			//Delete presentation flags
+			delete[] supportsPresentation;
+
+			//Done
 			return true;
 		}
 	}
@@ -551,6 +571,7 @@ bool VulkanRenderDevice::GetGraphicsQueueFamilyHandle(VkQueueFamilyProperties* d
 	//False
 	EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanRenderDevice::GetGraphicsQueueFamilyHandle(): Failed to find the graphics queue family.\n");
 	*graphicsQueueFamilyIndexOut = 0;
+	delete[] supportsPresentation;;
 	return false;
 }
 
