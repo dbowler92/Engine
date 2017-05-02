@@ -39,21 +39,16 @@ bool VulkanGraphicsManager::InitSubsystem(EngineAPI::OS::OSWindow* osWindow,
 	//
 	if (!renderingInstance->InitVKInstance(osWindow, appTitle, appVersionMajor, appVersionMinor, appVersionPatch))
 		return false;
-
 	if (!renderingDevice->InitVKPhysicalDevice(osWindow, renderingInstance))
 		return false;
-
-	if (!renderingSwapchain->InitVKLogicalSurface(osWindow, renderingInstance, renderingDevice))
+	if (!renderingSwapchain->InitVKLogicalSurface(osWindow, renderingInstance))
 		return false;
-
-	if (!renderingDevice->InitVKLogicalDeviceAndQueues(osWindow, renderingInstance))
+	if (!renderingDevice->InitVKLogicalDeviceAndQueues(osWindow, renderingInstance, renderingSwapchain->GetVKLogicalSurfaceKHR()))
 		return false;
 	if (!renderingDevice->InitVKMemoryBlocks(osWindow, renderingInstance))
 		return false;
 	if (!renderingDevice->InitVKCommandBufferPools(osWindow, renderingInstance))
 		return false;
-	//if (!renderingDevice->Init(osWindow, renderingInstance))
-	//	return false;
 	if (!renderingSwapchain->InitVKSwapchain(osWindow, renderingInstance, renderingDevice))
 		return false;
 

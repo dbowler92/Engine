@@ -23,18 +23,9 @@ std::vector<const char *> deviceExtensionNames =
 	//"VK_EXT_debug_report"
 };
 
-bool VulkanRenderDevice::Init(EngineAPI::OS::OSWindow* osWindow, 
+bool VulkanRenderDevice::InitVKPhysicalDevice(EngineAPI::OS::OSWindow* osWindow,
 	EngineAPI::Graphics::RenderInstance* renderingInstance)
 {
-	//Extention function pointers
-	fpGetPhysicalDeviceSurfaceSupportKHR = (PFN_vkGetPhysicalDeviceSurfaceSupportKHR)vkGetInstanceProcAddr(renderingInstance->GetVKInstance(), "vkGetPhysicalDeviceSurfaceSupportKHR");
-
-	//********************************************************************************
-	//********************************************************************************
-	//***********************Pick a physical device***********************************
-	//********************************************************************************
-	//********************************************************************************
-	//
 	//Get number of physical devices
 	uint32_t physicalDeviceCount = 0;
 	vkEnumeratePhysicalDevices(renderingInstance->GetVKInstance(), &physicalDeviceCount, nullptr);
@@ -60,40 +51,28 @@ bool VulkanRenderDevice::Init(EngineAPI::OS::OSWindow* osWindow,
 	if (vkPhysicalDevicesArray)
 		delete[] vkPhysicalDevicesArray;
 
-	//********************************************************************************
-	//********************************************************************************
-	//*******************Enabled device layers (Depreciated??)************************
-	//********************************************************************************
-	//********************************************************************************
-	//
-	//Validate
-	if (!ValidateVKDeviceLayers(&deviceLayersNames))
-		return false;
+	//Done
+	return true;
+}
 
-	//********************************************************************************
-	//********************************************************************************
-	//**********************Enabled device extentions*********************************
-	//********************************************************************************
-	//********************************************************************************
+bool VulkanRenderDevice::InitVKLogicalDeviceAndQueues(EngineAPI::OS::OSWindow* osWindow,
+	EngineAPI::Graphics::RenderInstance* renderingInstance, const VkSurfaceKHR logicalSurfaceHandle)
+{
+	//Extension function pointers - used to ask queues if they support presentation
+	fpGetPhysicalDeviceSurfaceSupportKHR = (PFN_vkGetPhysicalDeviceSurfaceSupportKHR)vkGetInstanceProcAddr(renderingInstance->GetVKInstance(), "vkGetPhysicalDeviceSurfaceSupportKHR");
+
+	//Validate device layers, extentions and feature set
 	//
 	//NOTE: Doesnt look for device extentions which are
 	//provided by a layer -> Just finds the device extentions provided by the Vulkan
 	//implementation
-	//
-	//Validate
+	if (!ValidateVKDeviceLayers(&deviceLayersNames))
+		return false;
 	if (!ValidateVKDeviceExtentions(renderingInstance->GetVKEnabledInstanceLayersList(), &deviceExtensionNames))
 		return false;
 
-	//********************************************************************************
-	//********************************************************************************
-	//****************Enabled features (API stuff we want access too)*****************
-	//********************************************************************************
-	//********************************************************************************
-	//
 	//Requested features
 	VkPhysicalDeviceFeatures vkDeviceEnabledFeaturesArray = {};
-
-	//Validate (TODO)
 	//if (!ValidateVKDeviceFeatures(&vkDeviceEnabledFeaturesArray))
 	//	return false;
 
@@ -106,13 +85,13 @@ bool VulkanRenderDevice::Init(EngineAPI::OS::OSWindow* osWindow,
 	//Get the chosen devices queue families (count)
 	vkQueueFamiliesCount = 0;
 	vkGetPhysicalDeviceQueueFamilyProperties(vkPhysicalDevice, &vkQueueFamiliesCount, nullptr); //Count
-																									//Get all queue families
+																								//Get all queue families
 	vkQueueFamiliesArray = GE_NEW VkQueueFamilyProperties[vkQueueFamiliesCount];
 	vkGetPhysicalDeviceQueueFamilyProperties(vkPhysicalDevice, &vkQueueFamiliesCount, &vkQueueFamiliesArray[0]);
 
 	//********************************************************************************
 	//********************************************************************************
-	//******************************Graphics Queue************************************
+	//********************Graphics Queue && Presentation******************************
 	//********************************************************************************
 	//********************************************************************************
 
@@ -120,7 +99,7 @@ bool VulkanRenderDevice::Init(EngineAPI::OS::OSWindow* osWindow,
 	bool hasFoundGraphicsQueue = false;
 	uint32_t graphicsQueueFamilyIdx = 0;
 	uint32_t presentQueueFamilyIdx = 0;
-	hasFoundGraphicsQueue = GetGraphicsAndPresentQueueFamilyHandle(&vkQueueFamiliesArray[0], vkQueueFamiliesCount, 
+	hasFoundGraphicsQueue = GetGraphicsAndPresentQueueFamilyHandle(&vkQueueFamiliesArray[0], vkQueueFamiliesCount,
 		&graphicsQueueFamilyIdx, &presentQueueFamilyIdx);
 
 	//Check
@@ -138,7 +117,7 @@ bool VulkanRenderDevice::Init(EngineAPI::OS::OSWindow* osWindow,
 		QUEUE_FAMILY_SUPPORT_GRAPHICS, graphicsQueueFamilyIdx,
 		ENGINE_CONFIG_VULKAN_API_GRAPHICS_QUEUE_COUNT, queuePriorities,
 		&graphicsQueueCreateInfo);
-	
+
 	//********************************************************************************
 	//********************************************************************************
 	//**************************Create logical device*********************************
@@ -155,8 +134,8 @@ bool VulkanRenderDevice::Init(EngineAPI::OS::OSWindow* osWindow,
 	vkDeviceCreateInfo.enabledExtensionCount = (uint32_t)deviceExtensionNames.size();
 	vkDeviceCreateInfo.ppEnabledExtensionNames = (deviceExtensionNames.size() > 0) ? deviceExtensionNames.data() : NULL;
 	vkDeviceCreateInfo.pEnabledFeatures = &vkDeviceEnabledFeaturesArray;
-	vkDeviceCreateInfo.pQueueCreateInfos = &graphicsQueueCreateInfo;     //Just graphics
-	vkDeviceCreateInfo.queueCreateInfoCount = 1;					     //Just graphics
+	vkDeviceCreateInfo.pQueueCreateInfos = &graphicsQueueCreateInfo;     //Just graphics && presentation
+	vkDeviceCreateInfo.queueCreateInfoCount = 1;					     //Just graphics && presentation
 
 	//Create logical device
 	VkResult result = vkCreateDevice(vkPhysicalDevice, &vkDeviceCreateInfo, nullptr, &vkLogicalDevice);
@@ -168,15 +147,20 @@ bool VulkanRenderDevice::Init(EngineAPI::OS::OSWindow* osWindow,
 		return false;
 	}
 
-	//********************************************************************************
-	//********************************************************************************
-	//*********************************Memory*****************************************
-	//********************************************************************************
-	//********************************************************************************
-	//
+	//Cache queue handle object(s) once logical device has been created
+	if (!graphicsQueueFamily->InitVulkanQueues(&vkLogicalDevice))
+		return false;
+
+	//Done
+	return true;
+}
+
+bool VulkanRenderDevice::InitVKMemoryBlocks(EngineAPI::OS::OSWindow* osWindow,
+	EngineAPI::Graphics::RenderInstance* renderingInstance)
+{
 	//Cache memory info for the physical device
 	CacheVKDeviceMemoryInfo();
-	
+
 	//TODO: Decide on best heap / types (by index) to use when allocating data
 	//in specific ways for this device (eg: Different memoryType index will be used
 	//during vkAlloc...() depending on if the memory should be mappable or not)
@@ -192,76 +176,9 @@ bool VulkanRenderDevice::Init(EngineAPI::OS::OSWindow* osWindow,
 	uint32_t gpuHeapIdx = vkDeviceMemoryProperties.memoryTypes[vkMemoryTypeIndexForEfficientDeviceOnlyAllocations].heapIndex;
 	VkDeviceSize maxVRAM = vkDeviceMemoryProperties.memoryHeaps[gpuHeapIdx].size;
 	deviceMemoryBlock = GE_NEW DeviceMemoryBlock();
-	deviceMemoryBlock->InitVKDeviceMemoryBlock(&vkLogicalDevice, MEB_TO_BYTES(256), 
+	deviceMemoryBlock->InitVKDeviceMemoryBlock(&vkLogicalDevice, MEB_TO_BYTES(256),
 		&vkDeviceMemoryProperties, vkMemoryTypeIndexForEfficientDeviceOnlyAllocations);
 
-
-	//********************************************************************************
-	//********************************************************************************
-	//***************************Command buffer pools*********************************
-	//********************************************************************************
-	//********************************************************************************
-	//
-	//Init vulkan command buffer pools
-	if (!InitCommandBufferPools())
-		return false;
-
-	//********************************************************************************
-	//********************************************************************************
-	//********************************Final init**************************************
-	//********************************************************************************
-	//********************************************************************************
-	//
-	//Cache queue handle object(s)
-	if (!graphicsQueueFamily->InitVulkanQueues(&vkLogicalDevice))
-		return false;
-
-	//
-	//
-	//TESTING
-	//
-	//
-	//RenderCommandBuffer* cmdBuffer = vkCommandBufferPoolsArray[0].AllocCommandBuffer(true);
-	//cmdBuffer->BeginRecordingToCommandBuffer();
-	//cmdBuffer->EndRecordingToCommandBuffer();
-	//RenderCommandBuffer* cmdBufferSingle = commandBufferPoolsArray[0].AllocCommandBuffer(true);
-	//RenderCommandBuffer *cmdBuffersArray;
-	//bool primaryFlags[2] = { true, false };
-	//cmdBuffersArray = commandBufferPoolsArray[0].AllocCommandBuffersArray(2, primaryFlags);
-	//if (!cmdBuffersArray[0].ResetCommandBuffer())
-	//{
-	//	int x = 3123123;
-	//	x++;
-	//}
-	//if (!commandBufferPoolsArray[0].ResetCommandBufferPool())
-	//{
-	//	int x = 90;
-	//	x++; 
-	//}
-	//GE_DELETE cmdBufferSingle;
-	//GE_DELETE_ARRAY cmdBuffersArray;
-
-	//Done
-	return true;
-}
-
-bool VulkanRenderDevice::InitVKPhysicalDevice(EngineAPI::OS::OSWindow* osWindow,
-	EngineAPI::Graphics::RenderInstance* renderingInstance)
-{
-	//Done
-	return true;
-}
-
-bool VulkanRenderDevice::InitVKLogicalDeviceAndQueues(EngineAPI::OS::OSWindow* osWindow,
-	EngineAPI::Graphics::RenderInstance* renderingInstance)
-{
-	//Done
-	return true;
-}
-
-bool VulkanRenderDevice::InitVKMemoryBlocks(EngineAPI::OS::OSWindow* osWindow,
-	EngineAPI::Graphics::RenderInstance* renderingInstance)
-{
 	//Done
 	return true;
 }
@@ -269,6 +186,10 @@ bool VulkanRenderDevice::InitVKMemoryBlocks(EngineAPI::OS::OSWindow* osWindow,
 bool VulkanRenderDevice::InitVKCommandBufferPools(EngineAPI::OS::OSWindow* osWindow,
 	EngineAPI::Graphics::RenderInstance* renderingInstance)
 {
+	//Init vulkan command buffer pools
+	if (!InitCommandBufferPools())
+		return false;
+
 	//Done
 	return true;
 }
@@ -577,8 +498,8 @@ bool VulkanRenderDevice::GetGraphicsAndPresentQueueFamilyHandle(VkQueueFamilyPro
 {
 	//Which queue families support presentation?
 	VkBool32* supportsPresentation = GE_NEW VkBool32[queueFamilyCount];
-	for (int i = 0; i < queueFamilyCount; i++)
-		fpGetPhysicalDeviceSurfaceSupportKHR(vkPhysicalDevice, i, vkLogicalSurface, &supportsPresentation[i]);
+	//for (int i = 0; i < queueFamilyCount; i++)
+	//	fpGetPhysicalDeviceSurfaceSupportKHR(vkPhysicalDevice, i, vkLogicalSurface, &supportsPresentation[i]);
 
 	//Find queue family that supports both graphics work && presentation work. 
 	for (int i = 0; i < queueFamilyCount; i++)

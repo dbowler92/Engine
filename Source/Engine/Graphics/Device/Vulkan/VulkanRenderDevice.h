@@ -36,16 +36,14 @@ namespace EngineAPI
 				VulkanRenderDevice() {};
 				virtual ~VulkanRenderDevice() = 0 {};
 
-				//Inits the device & shutsdown the device
-				bool Init(EngineAPI::OS::OSWindow* osWindow, 
-					EngineAPI::Graphics::RenderInstance* renderingInstance) override;
+				//Shutdown the device
 				void Shutdown() override;
 
 				//Inits vulkan step by step
 				bool InitVKPhysicalDevice(EngineAPI::OS::OSWindow* osWindow,
 					EngineAPI::Graphics::RenderInstance* renderingInstance);
 				bool InitVKLogicalDeviceAndQueues(EngineAPI::OS::OSWindow* osWindow,
-					EngineAPI::Graphics::RenderInstance* renderingInstance);
+					EngineAPI::Graphics::RenderInstance* renderingInstance, const VkSurfaceKHR logicalSurfaceHandle);
 				bool InitVKMemoryBlocks(EngineAPI::OS::OSWindow* osWindow,
 					EngineAPI::Graphics::RenderInstance* renderingInstance);
 				bool InitVKCommandBufferPools(EngineAPI::OS::OSWindow* osWindow,

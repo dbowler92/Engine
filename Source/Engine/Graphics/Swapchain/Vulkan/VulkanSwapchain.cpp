@@ -3,11 +3,10 @@
 using namespace EngineAPI::Graphics::Platform;
 
 bool VulkanSwapchain::InitVKLogicalSurface(EngineAPI::OS::OSWindow* osWindow,
-	EngineAPI::Graphics::RenderInstance* renderingInstance,
-	EngineAPI::Graphics::RenderDevice* renderingDevice)
+	EngineAPI::Graphics::RenderInstance* renderingInstance)
 {
 #ifdef ENGINE_CONFIG_PLATFORM_WIN32
-	return InitWin32LogicalSurface(osWindow, renderingInstance, renderingDevice);
+	return InitWin32LogicalSurface(osWindow, renderingInstance);
 #endif
 }
 
@@ -32,12 +31,10 @@ void VulkanSwapchain::Shutdown()
 //
 #ifdef ENGINE_CONFIG_PLATFORM_WIN32
 bool VulkanSwapchain::InitWin32LogicalSurface(EngineAPI::OS::OSWindow* osWindow,
-	EngineAPI::Graphics::RenderInstance* renderingInstance,
-	EngineAPI::Graphics::RenderDevice* renderingDevice)
+	EngineAPI::Graphics::RenderInstance* renderingInstance)
 {
-	//Cache instance & device
+	//Cache instance
 	cachedVKInstance = renderingInstance->GetVKInstance();
-	cachedVKDevice = renderingDevice->GetVKLogicalDevice();
 
 	//Query for WSI extension function pointers
 	//
@@ -47,17 +44,8 @@ bool VulkanSwapchain::InitWin32LogicalSurface(EngineAPI::OS::OSWindow* osWindow,
 	fpGetPhysicalDeviceSurfaceFormatsKHR = (PFN_vkGetPhysicalDeviceSurfaceFormatsKHR)vkGetInstanceProcAddr(cachedVKInstance, "vkGetPhysicalDeviceSurfaceFormatsKHR");
 	fpGetPhysicalDeviceSurfacePresentModesKHR = (PFN_vkGetPhysicalDeviceSurfacePresentModesKHR)vkGetInstanceProcAddr(cachedVKInstance, "vkGetPhysicalDeviceSurfacePresentModesKHR");
 	fpDestroySurfaceKHR = (PFN_vkDestroySurfaceKHR)vkGetInstanceProcAddr(cachedVKInstance, "vkDestroySurfaceKHR");
-
-	//Device:
-	fpCreateSwapchainKHR = (PFN_vkCreateSwapchainKHR) vkGetDeviceProcAddr(cachedVKDevice, "vkCreateSwapchainKHR");
-	fpDestroySwapchainKHR = (PFN_vkDestroySwapchainKHR)vkGetDeviceProcAddr(cachedVKDevice, "vkDestroySwapchainKHR");
-	fpGetSwapchainImagesKHR = (PFN_vkGetSwapchainImagesKHR)vkGetDeviceProcAddr(cachedVKDevice, "vkGetSwapchainImagesKHR");
-	fpAcquireNextImageKHR = (PFN_vkAcquireNextImageKHR)vkGetDeviceProcAddr(cachedVKDevice, "vkAcquireNextImageKHR");
-	fpQueuePresentKHR = (PFN_vkQueuePresentKHR)vkGetDeviceProcAddr(cachedVKDevice, "vkQueuePresentKHR");
 	
-	//Error check
-	//
-	//Instance:
+	//Error check:
 	//if (!fpGetPhysicalDeviceSurfaceSupportKHR)
 	//{
 	//	EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanSwapchain::InitWin32(): fpGetPhysicalDeviceSurfaceSupportKHR is NULL\n");
@@ -84,7 +72,40 @@ bool VulkanSwapchain::InitWin32LogicalSurface(EngineAPI::OS::OSWindow* osWindow,
 		return false;
 	}
 	
+	//Create logical surface
+	VkWin32SurfaceCreateInfoKHR logicalSurfaceCreateInfo = {};
+	logicalSurfaceCreateInfo.sType = VK_STRUCTURE_TYPE_WIN32_SURFACE_CREATE_INFO_KHR;
+	logicalSurfaceCreateInfo.pNext = nullptr;
+	logicalSurfaceCreateInfo.flags = 0;
+	logicalSurfaceCreateInfo.hinstance = osWindow->GetAppInstanceHandle();
+	logicalSurfaceCreateInfo.hwnd = osWindow->GetAppMainWindowHandle();
+
+	VkResult result = vkCreateWin32SurfaceKHR(cachedVKInstance, &logicalSurfaceCreateInfo, nullptr, &vkSurfaceHandle);
+	if (result != VK_SUCCESS)
+	{
+		EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanSwapchain::InitWin32(): vkCreateWin32SurfaceKHR failed!\n");
+		return false;
+	}
+
+	//Done
+	return true;
+}
+
+bool VulkanSwapchain::InitWin32Swapchain(EngineAPI::OS::OSWindow* osWindow,
+	EngineAPI::Graphics::RenderInstance* renderingInstance,
+	EngineAPI::Graphics::RenderDevice* renderingDevice)
+{
+	//Cache logical device now it has been created.
+	cachedVKDevice = renderingDevice->GetVKLogicalDevice();
+
 	//Device:
+	fpCreateSwapchainKHR = (PFN_vkCreateSwapchainKHR)vkGetDeviceProcAddr(cachedVKDevice, "vkCreateSwapchainKHR");
+	fpDestroySwapchainKHR = (PFN_vkDestroySwapchainKHR)vkGetDeviceProcAddr(cachedVKDevice, "vkDestroySwapchainKHR");
+	fpGetSwapchainImagesKHR = (PFN_vkGetSwapchainImagesKHR)vkGetDeviceProcAddr(cachedVKDevice, "vkGetSwapchainImagesKHR");
+	fpAcquireNextImageKHR = (PFN_vkAcquireNextImageKHR)vkGetDeviceProcAddr(cachedVKDevice, "vkAcquireNextImageKHR");
+	fpQueuePresentKHR = (PFN_vkQueuePresentKHR)vkGetDeviceProcAddr(cachedVKDevice, "vkQueuePresentKHR");
+
+	//Error check:
 	if (!fpCreateSwapchainKHR)
 	{
 		EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanSwapchain::InitWin32(): fpCreateSwapchainKHR is NULL\n");
@@ -111,29 +132,6 @@ bool VulkanSwapchain::InitWin32LogicalSurface(EngineAPI::OS::OSWindow* osWindow,
 		return false;
 	}
 
-	//Create logical surface
-	VkWin32SurfaceCreateInfoKHR logicalSurfaceCreateInfo = {};
-	logicalSurfaceCreateInfo.sType = VK_STRUCTURE_TYPE_WIN32_SURFACE_CREATE_INFO_KHR;
-	logicalSurfaceCreateInfo.pNext = nullptr;
-	logicalSurfaceCreateInfo.flags = 0;
-	logicalSurfaceCreateInfo.hinstance = osWindow->GetAppInstanceHandle();
-	logicalSurfaceCreateInfo.hwnd = osWindow->GetAppMainWindowHandle();
-
-	VkResult result = vkCreateWin32SurfaceKHR(cachedVKInstance, &logicalSurfaceCreateInfo, nullptr, &vkSurfaceHandle);
-	if (result != VK_SUCCESS)
-	{
-		EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanSwapchain::InitWin32(): vkCreateWin32SurfaceKHR failed!\n");
-		return false;
-	}
-
-	//Done
-	return true;
-}
-
-bool VulkanSwapchain::InitWin32Swapchain(EngineAPI::OS::OSWindow* osWindow,
-	EngineAPI::Graphics::RenderInstance* renderingInstance,
-	EngineAPI::Graphics::RenderDevice* renderingDevice)
-{
 	//Done
 	return true;
 }

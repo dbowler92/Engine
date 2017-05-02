@@ -24,10 +24,6 @@ namespace EngineAPI
 				CommonRenderDevice() {};
 				virtual ~CommonRenderDevice() = 0 {};
 
-				//Override this init function for each API implementation
-				virtual bool Init(EngineAPI::OS::OSWindow* osWindow, 
-					EngineAPI::Graphics::RenderInstance* renderingInstance) = 0 {};
-
 				//Override this shutdown function for each API implementation
 				virtual void Shutdown() = 0 {};
 			};

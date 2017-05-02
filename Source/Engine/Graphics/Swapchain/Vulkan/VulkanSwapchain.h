@@ -26,12 +26,15 @@ namespace EngineAPI
 
 				//Inits the VK swapchain
 				bool InitVKLogicalSurface(EngineAPI::OS::OSWindow* osWindow,
-					EngineAPI::Graphics::RenderInstance* renderingInstance,
-					EngineAPI::Graphics::RenderDevice* renderingDevice);
+					EngineAPI::Graphics::RenderInstance* renderingInstance);
 				bool InitVKSwapchain(EngineAPI::OS::OSWindow* osWindow,
 					EngineAPI::Graphics::RenderInstance* renderingInstance,
 					EngineAPI::Graphics::RenderDevice* renderingDevice);
 				
+			public:
+				//Returns the logical surface - needed when creating device queues
+				VkSurfaceKHR GetVKLogicalSurfaceKHR() { return vkSurfaceHandle; };
+
 			private:
 				//Platform specific data: Eg: Surface/swapchain creation function pointers
 #ifdef ENGINE_CONFIG_PLATFORM_WIN32
@@ -63,8 +66,7 @@ namespace EngineAPI
 				//Platform specific init: Vulkan supports (to date): Windows, Linux and Android
 #ifdef ENGINE_CONFIG_PLATFORM_WIN32
 				bool InitWin32LogicalSurface(EngineAPI::OS::OSWindow* osWindow,
-					EngineAPI::Graphics::RenderInstance* renderingInstance,
-					EngineAPI::Graphics::RenderDevice* renderingDevice);
+					EngineAPI::Graphics::RenderInstance* renderingInstance);
 
 				bool InitWin32Swapchain(EngineAPI::OS::OSWindow* osWindow,
 					EngineAPI::Graphics::RenderInstance* renderingInstance,
