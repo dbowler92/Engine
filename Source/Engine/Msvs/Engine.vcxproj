@@ -35,6 +35,7 @@
     <ClCompile Include="..\Graphics\Swapchain\Vulkan\VulkanSwapchain.cpp" />
     <ClCompile Include="..\Main\EngineMain.cpp" />
     <ClCompile Include="..\OSWindow\Win32\Win32OSWindow.cpp" />
+    <ClCompile Include="..\Rendering\DepthTexture\Vulkan\VulkanDepthTexture.cpp" />
     <ClCompile Include="..\Rendering\Texture2D\Vulkan\VulkanTexture2D.cpp" />
     <ClCompile Include="..\Rendering\TextureResource\Vulkan\VulkanTextureResource.cpp" />
     <ClCompile Include="..\Utils\GameTimer\GameTimer.cpp" />
@@ -45,6 +46,7 @@
     <ClInclude Include="..\Application\Orbis\OrbisApplication.h" />
     <ClInclude Include="..\Application\Win32\Win32Application.h" />
     <ClInclude Include="..\Config\EngineConfig.h" />
+    <ClInclude Include="..\Config\GraphicsConfig.h" />
     <ClInclude Include="..\Config\VulkanConfig.h" />
     <ClInclude Include="..\Config\Win32Config.h" />
     <ClInclude Include="..\Debug\Log\DebugLog.h" />
@@ -82,6 +84,9 @@
     <ClInclude Include="..\OSWindow\Common\CommonOSWindow.h" />
     <ClInclude Include="..\OSWindow\OSWindow.h" />
     <ClInclude Include="..\OSWindow\Win32\Win32OSWindow.h" />
+    <ClInclude Include="..\Rendering\DepthTexture\Common\CommonDepthTexture.h" />
+    <ClInclude Include="..\Rendering\DepthTexture\DepthTexture.h" />
+    <ClInclude Include="..\Rendering\DepthTexture\Vulkan\VulkanDepthTexture.h" />
     <ClInclude Include="..\Rendering\Texture2D\Common\CommonTexture2D.h" />
     <ClInclude Include="..\Rendering\Texture2D\Texture2D.h" />
     <ClInclude Include="..\Rendering\Texture2D\Vulkan\VulkanTexture2D.h" />

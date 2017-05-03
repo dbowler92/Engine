@@ -24,6 +24,9 @@ namespace EngineAPI
 				//Override shutdown function
 				void Shutdown() override;
 
+				//Override the OnResize event
+				bool OnResize(ESize2D newWindowSize) override;
+
 				//Inits the VK swapchain
 				bool InitVKLogicalSurface(EngineAPI::OS::OSWindow* osWindow,
 					EngineAPI::Graphics::RenderInstance* renderingInstance);
@@ -39,13 +42,18 @@ namespace EngineAPI
 				//WSI created logical surface
 				VkSurfaceKHR vkSurfaceHandle = VK_NULL_HANDLE;
 
-				//Swpahcian handle
+				//Swapchain handle
 				VkSwapchainKHR vkSwapchainHandle = VK_NULL_HANDLE;
 
-				//Swapchain images - NOTE: We should *not* destroy these ourselves - the extention
+				//Swapchain images (colour buffers) - NOTE: We should *not* destroy these ourselves - the extention
 				//owns and manages them!
-				VkImage* vkSwapchainImages = nullptr;
-				uint32_t vkSwapchainImagesCount = 0; //Actual nunber of images created
+				VkImage* vkSwapchainColourImages = nullptr;
+				VkImageView* vkSwapchainColourImageViews = nullptr;
+				uint32_t vkSwapchainColourImagesCount = 0; //Actual number of images created
+
+				//Index in to vkSwapchainColourImages[] && vkSwpachainColourImageViews[] of the
+				//currently set colour buffer that we are rendering in to. 
+				uint32_t currentColourBufferIndex = 0;
 
 				//Cached VK data
 				VkInstance cachedVKInstance = VK_NULL_HANDLE;
@@ -66,6 +74,11 @@ namespace EngineAPI
 				VkPresentModeKHR vkSwapchainPresentMode; 
 				uint32_t vkSwapchainDesiredBuffersCount; 
 				VkSurfaceTransformFlagBitsKHR vkSwapchainSurfacePreTransformFlags;
+
+			private:
+				//Creates and manages a depth buffer to be used alongside the
+				//swapchain
+				EngineAPI::Rendering::DepthTexture* depthTexture = nullptr;
 
 			private:
 				//Platform specific data: Eg: Surface/swapchain creation function pointers
@@ -132,7 +145,15 @@ namespace EngineAPI
 				bool CreateVKSwpachain();
 
 				//Gets the swapchain images and stores reference to them
-				bool CacheSwapchainImages();
+				bool CacheSwapchainColourImages();
+
+				//From the swapchains images, we have to create Vulkan views for them
+				bool CreateVKSwapchainColourImageViews();
+
+				//After the swapchain colour buffers have been created, we will
+				//create a depth texture/buffer to be used alongside the swapchain
+				//colour images
+				bool CreateDepthBuffer(EngineAPI::Graphics::RenderDevice* renderingDevice);
 			};
 		};
 	};

@@ -14,6 +14,9 @@
 #include "../../Instance/RenderInstance.h"
 #include "../../Device/RenderDevice.h"
 
+//Will need to manage a depth buffer
+#include "../../../Rendering/DepthTexture/DepthTexture.h"
+
 namespace EngineAPI
 {
 	namespace Graphics
@@ -28,6 +31,9 @@ namespace EngineAPI
 
 				//Override shutdown functions
 				virtual void Shutdown() = 0 {};
+
+				//Called on a resize event
+				virtual bool OnResize(ESize2D newWindowSize) = 0 {};
 			};
 		}
 	};

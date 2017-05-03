@@ -193,6 +193,18 @@
     <Filter Include="Src\Rendering\Texture2DArray">
       <UniqueIdentifier>{537e79eb-72ad-4a8b-9166-2dd83fdcefb5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Src\Rendering\RenderTarget">
+      <UniqueIdentifier>{b150735f-7e34-4fa5-97f6-1e79f5fbb7d5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Rendering\DepthTexture">
+      <UniqueIdentifier>{d42e626a-974b-4f93-981b-033fc6b1a3e4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Rendering\DepthTexture\Common">
+      <UniqueIdentifier>{be86319f-f5ae-4345-9792-492f57caaf6f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Rendering\DepthTexture\Vulkan">
+      <UniqueIdentifier>{a9967bb6-2465-4014-b370-4e4d900a5fe1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Main\EngineMain.cpp">
@@ -251,6 +263,9 @@
     </ClCompile>
     <ClCompile Include="..\Rendering\Texture2D\Vulkan\VulkanTexture2D.cpp">
       <Filter>Src\Rendering\Texture2D\Vulkan</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Rendering\DepthTexture\Vulkan\VulkanDepthTexture.cpp">
+      <Filter>Src\Rendering\DepthTexture\Vulkan</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -400,6 +415,18 @@
     </ClInclude>
     <ClInclude Include="..\Rendering\Texture2D\Texture2D.h">
       <Filter>Src\Rendering\Texture2D</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Rendering\DepthTexture\Common\CommonDepthTexture.h">
+      <Filter>Src\Rendering\DepthTexture\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Rendering\DepthTexture\Vulkan\VulkanDepthTexture.h">
+      <Filter>Src\Rendering\DepthTexture\Vulkan</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Rendering\DepthTexture\DepthTexture.h">
+      <Filter>Src\Rendering\DepthTexture</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Config\GraphicsConfig.h">
+      <Filter>Engine Config</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

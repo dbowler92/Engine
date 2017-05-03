@@ -25,10 +25,22 @@ void VulkanSwapchain::Shutdown()
 	delete[] surfaceFormatsArray;
 	delete[] presentationModesArray;
 
-	//Delete array of handles to the swapchain images - DO NOT DELETE the
+	//Destroy depth texture
+	if (depthTexture)
+	{
+		depthTexture->Shutdown();
+		delete depthTexture;
+	}
+
+	//Delete image views - we own these not the WSI extention (unlike the underlying image)
+	for (int i = 0; i < vkSwapchainColourImagesCount; i++)
+		vkDestroyImageView(cachedVKDevice, vkSwapchainColourImageViews[i], nullptr);
+	delete[] vkSwapchainColourImageViews;
+
+	//Delete array of handles to the swapchain images  - DO NOT DELETE the
 	//actual images -> The extention owns them and will destroy them
 	//for us
-	delete[] vkSwapchainImages;
+	delete[] vkSwapchainColourImages;
 
 	//Destroy swapchain
 	fpDestroySwapchainKHR(cachedVKDevice, vkSwapchainHandle, nullptr);
@@ -37,6 +49,14 @@ void VulkanSwapchain::Shutdown()
 	//vkDestroySurfaceKHR(cachedVKInstance, vkSurfaceHandle, nullptr);
 	fpDestroySurfaceKHR(cachedVKInstance, vkSurfaceHandle, nullptr);
 	vkSurfaceHandle = VK_NULL_HANDLE;
+}
+
+bool VulkanSwapchain::OnResize(ESize2D newWindowSize)
+{
+	//TODO
+
+	//Done
+	return true;
 }
 
 //
@@ -128,8 +148,18 @@ bool VulkanSwapchain::InitWin32Swapchain(EngineAPI::OS::OSWindow* osWindow,
 		return false;
 
 	//7) Gets a reference to the swapchain images
-	if (!CacheSwapchainImages())
+	if (!CacheSwapchainColourImages())
 		return false;
+
+	//8) Creates VkImageViewes of the swapchain images
+	if (!CreateVKSwapchainColourImageViews())
+		return false;
+
+#if GRAPHICS_CONFIG_DO_CREATE_DEPTH_TEXTURE_ALONGSIDE_SWAPCHAIN
+	//9) Create the depth buffer image that we will be using.
+	if (!CreateDepthBuffer(renderingDevice))
+		return false;
+#endif
 
 	//Done
 	return true;
@@ -294,6 +324,14 @@ bool VulkanSwapchain::SelectDefaultSwapchainImageExtents(EngineAPI::OS::OSWindow
 		vkSwapchainExtents = surfaceCapabilities.currentExtent;
 	}
 
+	//Are the dimensions the same as the osWindow? If not, spit out a warning (for now since we want to pause
+	//on said warning). Later, this should be a simple message as the app should be able to handle this
+	//potential issue. 
+	if (vkSwapchainExtents.width != osWindow->GetWindowWidth())
+		EngineAPI::Debug::DebugLog::PrintWarningMessage("VulkanSwapchain::SelectDefaultSwapchainImageExtents() - Swapchain images width != OS window width\n");
+	if (vkSwapchainExtents.height != osWindow->GetWindowHeight())
+		EngineAPI::Debug::DebugLog::PrintWarningMessage("VulkanSwapchain::SelectDefaultSwapchainImageExtents() - Swapchain images height != OS window height\n");
+
 	//Done 
 	return true;
 }
@@ -449,16 +487,16 @@ bool VulkanSwapchain::CreateVKSwpachain()
 	return true;
 }
 
-bool VulkanSwapchain::CacheSwapchainImages()
+bool VulkanSwapchain::CacheSwapchainColourImages()
 {
 	//Number of swapchain images
-	VkResult result = fpGetSwapchainImagesKHR(cachedVKDevice, vkSwapchainHandle, &vkSwapchainImagesCount, nullptr);
+	VkResult result = fpGetSwapchainImagesKHR(cachedVKDevice, vkSwapchainHandle, &vkSwapchainColourImagesCount, nullptr);
 
 	//Match desired buffer count we sent in at Init time? 
 	//
 	//Driver presumably can overrule us and provide more images if it decides (im thinking of
 	//nvidia inspector and forcing tripple buffering)
-	if (vkSwapchainImagesCount != vkSwapchainDesiredBuffersCount)
+	if (vkSwapchainColourImagesCount != vkSwapchainDesiredBuffersCount)
 	{
 		//Keep this as a warning for now...
 		EngineAPI::Debug::DebugLog::PrintWarningMessage("VulkanSwapchain::CacheSwapchainImages() - Swapchain buffer count && images returned does not match\n");
@@ -466,14 +504,75 @@ bool VulkanSwapchain::CacheSwapchainImages()
 	}
 
 	//Get all of the images and store the handles
-	vkSwapchainImages = GE_NEW VkImage[vkSwapchainImagesCount];
-	result = fpGetSwapchainImagesKHR(cachedVKDevice, vkSwapchainHandle, &vkSwapchainImagesCount, &vkSwapchainImages[0]);
+	vkSwapchainColourImages = GE_NEW VkImage[vkSwapchainColourImagesCount];
+	result = fpGetSwapchainImagesKHR(cachedVKDevice, vkSwapchainHandle, &vkSwapchainColourImagesCount, &vkSwapchainColourImages[0]);
 	if (result != VK_SUCCESS)
 	{
 		EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanSwapchain::CacheSwapchainImages() - Error when caching swapchain VkImage handles\n");
 		return false;
 	}
 	
+	//Done
+	return true;
+}
+
+bool VulkanSwapchain::CreateVKSwapchainColourImageViews()
+{
+	//Alloc array of image views. 
+	vkSwapchainColourImageViews = GE_NEW VkImageView[vkSwapchainColourImagesCount];
+
+	//For each colour image
+	for (int i = 0; i < vkSwapchainColourImagesCount; i++)
+	{
+		//Creation info
+		VkImageViewCreateInfo imageViewCreateInfo = {};
+		imageViewCreateInfo.sType = VK_STRUCTURE_TYPE_IMAGE_VIEW_CREATE_INFO;
+		imageViewCreateInfo.pNext = nullptr;
+		imageViewCreateInfo.flags = 0;
+		imageViewCreateInfo.format = vkSwapchainSurfaceFormat; 
+		imageViewCreateInfo.components = { VK_COMPONENT_SWIZZLE_IDENTITY };
+		imageViewCreateInfo.subresourceRange.aspectMask     = VK_IMAGE_ASPECT_COLOR_BIT;
+		imageViewCreateInfo.subresourceRange.baseMipLevel   = 0;
+		imageViewCreateInfo.subresourceRange.levelCount     = 1;
+		imageViewCreateInfo.subresourceRange.baseArrayLayer = 0;
+		imageViewCreateInfo.subresourceRange.layerCount     = 1;
+		imageViewCreateInfo.viewType = VK_IMAGE_VIEW_TYPE_2D;
+		imageViewCreateInfo.image = vkSwapchainColourImages[i];
+
+		//Create a VkImageView to each colour buffer
+		VkResult result = vkCreateImageView(cachedVKDevice, &imageViewCreateInfo, NULL, &vkSwapchainColourImageViews[i]);
+		if (result != VK_SUCCESS)
+		{
+			//Error
+			EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanSwapchain::CreateVKSwapchainColourImageViews(): Error creating image views to swapchain colour images\n");
+			return false;
+		}
+	}
+
+	//Done
+	return true;
+}
+
+bool VulkanSwapchain::CreateDepthBuffer(EngineAPI::Graphics::RenderDevice* renderingDevice)
+{
+	//Alloc depth texture
+	depthTexture = GE_NEW EngineAPI::Rendering::DepthTexture();
+
+	//Size - same as colour buffers. 
+	ESize2D depthTextureDimentions;
+	depthTextureDimentions.Width = (EUINT_32)vkSwapchainExtents.width;
+	depthTextureDimentions.Height = (EUINT_32)vkSwapchainExtents.height;
+
+	//Usage
+	DepthTextureUsageFlags depthTextureUsageFlag = DEPTH_TEXTURE_USAGE_RENDER_TARGET;
+
+	//Init
+	if (!depthTexture->Init(renderingDevice, GRAPHICS_CONFIG_DEPTH_TEXTURE_FORMAT, depthTextureDimentions, depthTextureUsageFlag))
+	{
+		EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanSwapchain::CreateDepthBuffer() - Error initing depth texture\n");
+		return false;
+	}
+
 	//Done
 	return true;
 }

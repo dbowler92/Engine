@@ -18,6 +18,10 @@
 
 //tChar
 #include <tchar.h>
+
+//Standard c types - ??? Cross platform?
+#include <cinttypes>
+
 #endif
 
 //Forward declare the base application class. 
@@ -37,6 +41,8 @@ typedef bool EBOOL;
 typedef int EINT;
 typedef float EFLOAT;
 typedef double EDOUBLE;
+typedef uint32_t EUINT_32;
+typedef uint16_t EUINT_16;
 #endif
 
 #ifdef ENGINE_CONFIG_PLATFORM_ORBIS
@@ -47,6 +53,13 @@ typedef int EINT;
 typedef float EFLOAT;
 typedef double EDOUBLE;
 #endif
+
+struct ESize2D
+{
+public:
+	EUINT_32 Width;
+	EUINT_32 Height;
+};
 
 //Global macros
 //

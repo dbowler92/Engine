@@ -1,11 +1,2 @@
-﻿  VulkanSwapchain.cpp
-c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\swapchain\vulkan\vulkanswapchain.cpp(313): warning C4018: '<': signed/unsigned mismatch
-c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\swapchain\vulkan\vulkanswapchain.cpp(336): warning C4018: '<': signed/unsigned mismatch
-  Generating Code...
-  Skipping... (no relevant changes detected)
-  EngineMain.cpp
-  VulkanGraphicsManager.cpp
-  D3D11GraphicsManager.cpp
-  Win32Application.cpp
-  OrbisApplication.cpp
+﻿  VulkanDepthTexture.cpp
   Engine.vcxproj -> C:\Users\B1032464\Documents\Programming\Engine\Engine\Source\Engine\Msvs\..\..\Lib\Win32Debug\Engine.lib

@@ -7,6 +7,9 @@
 
 #pragma once
 
+//Global graphics settings
+#include "GraphicsConfig.h"
+
 //Macro which will select the correct subclass to inherit from for graphics classes
 #define RENDERING_PLATFORM_IMPLEMENTATION(TYPE) Platform::##Vulkan##TYPE
 
