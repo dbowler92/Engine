@@ -1,17 +1,11 @@
 ﻿  VulkanSwapchain.cpp
+c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\swapchain\vulkan\vulkanswapchain.cpp(313): warning C4018: '<': signed/unsigned mismatch
+c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\swapchain\vulkan\vulkanswapchain.cpp(336): warning C4018: '<': signed/unsigned mismatch
   Generating Code...
-  Compiling...
+  Skipping... (no relevant changes detected)
   EngineMain.cpp
   VulkanGraphicsManager.cpp
-c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\manager\vulkan\vulkangraphicsmanager.cpp(17): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\stdio.h(1769): note: see declaration of 'sprintf'
-c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\manager\vulkan\vulkangraphicsmanager.cpp(22): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\stdio.h(1769): note: see declaration of 'sprintf'
-c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\manager\vulkan\vulkangraphicsmanager.cpp(27): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\stdio.h(1769): note: see declaration of 'sprintf'
   D3D11GraphicsManager.cpp
-c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\manager\d3d11\d3d11graphicsmanager.cpp(14): warning C4101: 'd3d11InfoMsg': unreferenced local variable
   Win32Application.cpp
   OrbisApplication.cpp
-  Generating Code...
   Engine.vcxproj -> C:\Users\B1032464\Documents\Programming\Engine\Engine\Source\Engine\Msvs\..\..\Lib\Win32Debug\Engine.lib
