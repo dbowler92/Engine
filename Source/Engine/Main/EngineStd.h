@@ -61,6 +61,8 @@ public:
 	EUINT_32 Height;
 };
 
+typedef EUINT_32 EFlag;
+
 //Global macros
 //
 //Converts from mebibyte to bytes

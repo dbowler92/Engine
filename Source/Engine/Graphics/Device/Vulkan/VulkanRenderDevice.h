@@ -85,9 +85,16 @@ namespace EngineAPI
 				//Device (GPU) Memory block(s) - used to alloc resources on the GPU. Different blocks
 				//support different things. (eg: Mappable memory, etc)
 				//
-				//TEMP: Just alloc the full memory & use this to suballoc as and when required. Later, 
-				//we will want to improve this by having separate blocks for different tasks. 
-				DeviceMemoryBlock* deviceMemoryBlock = nullptr;
+				//Memory block of fixed size for global & static GPU data -> Eg: Main menu
+				//text textures, etc.
+				DeviceMemoryBlock* globalStaicMemoryBlock = nullptr;
+
+				//Memory block(s) for render targets - Eg: Gbuffers, depth buffer and runtime
+				//render targets. Note: textures in here will *not* be CPU read-writeable. 
+				//
+				//When we run out of space in a memory block, we should allocate
+				//a new block to begin using
+				std::vector<DeviceMemoryBlock*> staticRenderTargetsMemoryBlocksArray;
 
 			private:
 				//Vk allocation/init

@@ -29,6 +29,7 @@
     <ClCompile Include="..\Graphics\Device\Vulkan\VulkanRenderDevice.cpp" />
     <ClCompile Include="..\Graphics\Instance\Vulkan\VulkanRenderInstance.cpp" />
     <ClCompile Include="..\Graphics\Manager\D3D11\D3D11GraphicsManager.cpp" />
+    <ClCompile Include="..\Graphics\Manager\GraphicsManager.cpp" />
     <ClCompile Include="..\Graphics\Manager\Vulkan\VulkanGraphicsManager.cpp" />
     <ClCompile Include="..\Graphics\RenderCommandBuffer\Vulkan\VulkanRenderCommandBuffer.cpp" />
     <ClCompile Include="..\Graphics\Statics\Vulkan\VulkanStatics.cpp" />

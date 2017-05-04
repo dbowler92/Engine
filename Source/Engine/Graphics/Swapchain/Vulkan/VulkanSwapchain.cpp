@@ -300,9 +300,16 @@ bool VulkanSwapchain::SelectDefaultVKSurfaceFormatForSwapchain()
 {
 	//Incase VK_FORMAT_UNDEFINED, use default R8G8B8A8_UNORM format
 	if (surfaceFormatsCount == 1 && surfaceFormatsArray[0].format == VK_FORMAT_UNDEFINED)
-		vkSwapchainSurfaceFormat = VK_FORMAT_R8G8B8A8_UNORM;
+	{
+		vkSwapchainSurfaceFormat = VK_FORMAT_B8G8R8A8_UNORM; //VK_FORMAT_R8G8B8A8_UNORM;
+		vkSwapchainColourBufferColourSpace = VK_COLOR_SPACE_SRGB_NONLINEAR_KHR;
+	}
 	else
+	{
 		vkSwapchainSurfaceFormat = surfaceFormatsArray[0].format; //TODO: Pick the best - may not need to be honest. 
+		//vkSwapchainColourBufferColourSpace = surfaceFormatsArray[0].colorSpace;
+		vkSwapchainColourBufferColourSpace = VK_COLOR_SPACE_SRGB_NONLINEAR_KHR;
+	}
 
 	//Done
 	return true;
@@ -469,7 +476,7 @@ bool VulkanSwapchain::CreateVKSwpachain()
 	swapchainCreateInfo.presentMode			  = vkSwapchainPresentMode;
 	swapchainCreateInfo.oldSwapchain		  = VK_NULL_HANDLE;  //???Incase of recreating, should this be vkSwapchainHandle && not destroyed manually above???
 	swapchainCreateInfo.clipped				  = true;
-	swapchainCreateInfo.imageColorSpace		  = VK_COLOR_SPACE_SRGB_NONLINEAR_KHR;
+	swapchainCreateInfo.imageColorSpace		  = vkSwapchainColourBufferColourSpace;
 	swapchainCreateInfo.imageUsage		      = VK_IMAGE_USAGE_COLOR_ATTACHMENT_BIT | VK_IMAGE_USAGE_TRANSFER_DST_BIT;
 	swapchainCreateInfo.imageSharingMode	  = VK_SHARING_MODE_EXCLUSIVE;
 	swapchainCreateInfo.queueFamilyIndexCount = 0;
@@ -564,10 +571,10 @@ bool VulkanSwapchain::CreateDepthBuffer(EngineAPI::Graphics::RenderDevice* rende
 	depthTextureDimentions.Height = (EUINT_32)vkSwapchainExtents.height;
 
 	//Usage
-	DepthTextureUsageFlags depthTextureUsageFlag = DEPTH_TEXTURE_USAGE_RENDER_TARGET;
-
-	//Init
-	if (!depthTexture->Init(renderingDevice, GRAPHICS_CONFIG_DEPTH_TEXTURE_FORMAT, depthTextureDimentions, depthTextureUsageFlag))
+	DepthTextureUsageFlag usageFlag = 0; //No need for shader input
+	
+	//Init - 
+	if (!depthTexture->Init(renderingDevice, GRAPHICS_CONFIG_DEPTH_TEXTURE_FORMAT, depthTextureDimentions, usageFlag))
 	{
 		EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanSwapchain::CreateDepthBuffer() - Error initing depth texture\n");
 		return false;

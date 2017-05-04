@@ -256,7 +256,8 @@ bool Win32Application::InitWin32App()
 bool Win32Application::InitEngineSubsystems()
 {
 	//Init graphics
-	graphicsSubsystem = GE_NEW EngineAPI::Graphics::GraphicsManager();
+	//graphicsSubsystem = GE_NEW EngineAPI::Graphics::GraphicsManager();
+	graphicsSubsystem = EngineAPI::Graphics::GraphicsManager::GetInstance();
 	if (!graphicsSubsystem->InitSubsystem(&osWindow, 
 		GetGameTitle(), appVersionMajor, appVersionMinor, appVersionPatch, 
 		osWindow.GetWindowWidth(), osWindow.GetWindowHeight()))

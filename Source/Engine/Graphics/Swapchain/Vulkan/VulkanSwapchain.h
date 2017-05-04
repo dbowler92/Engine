@@ -70,10 +70,11 @@ namespace EngineAPI
 
 				//Swapchain settings
 				VkFormat vkSwapchainSurfaceFormat;
+				VkColorSpaceKHR vkSwapchainColourBufferColourSpace;
 				VkExtent2D vkSwapchainExtents;
 				VkPresentModeKHR vkSwapchainPresentMode; 
 				uint32_t vkSwapchainDesiredBuffersCount; 
-				VkSurfaceTransformFlagBitsKHR vkSwapchainSurfacePreTransformFlags;
+				VkSurfaceTransformFlagBitsKHR vkSwapchainSurfacePreTransformFlags; //Transform relative to the presentation engines natural orientation
 
 			private:
 				//Creates and manages a depth buffer to be used alongside the

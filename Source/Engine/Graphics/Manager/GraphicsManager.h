@@ -41,6 +41,12 @@ namespace EngineAPI
 		public:
 			GraphicsManager() {};
 			~GraphicsManager() {};
+
+			//Graphics manager is a singleton
+			static GraphicsManager* GetInstance();
+
+		private:
+			static GraphicsManager* instance;
 		};
 	};
 };

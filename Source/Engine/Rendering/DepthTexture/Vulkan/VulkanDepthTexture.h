@@ -24,8 +24,12 @@ namespace EngineAPI
 				//Override init and shutdown with Vulkan specific code. 
 				bool Init(EngineAPI::Graphics::RenderDevice* renderingDevice,
 					DepthTextureFormat depthTextureFormat, ESize2D depthTextureDimentions,
-					DepthTextureUsageFlags depthTextureUsageFlags) override;
+					DepthTextureUsageFlag depthTextureUsageFlags) override;
 				void Shutdown() override;
+
+			protected:
+				//Vulkan tiling mode
+				VkImageTiling vkImageTilingMode;
 			};
 		};
 	};

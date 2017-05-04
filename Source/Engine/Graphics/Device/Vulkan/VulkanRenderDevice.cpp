@@ -181,12 +181,39 @@ bool VulkanRenderDevice::InitVKMemoryBlocks(EngineAPI::OS::OSWindow* osWindow,
 	if (!FindVKMemoryTypeIndexForMappableAllocations(&vkMemoryTypeIndexForMappableAllocations)) //TODO
 		return false;
 
-	//Alloc device memory block(s) - TEMP: Alloc full memory && suballoc from this. 
 	uint32_t gpuHeapIdx = vkDeviceMemoryProperties.memoryTypes[vkMemoryTypeIndexForEfficientDeviceOnlyAllocations].heapIndex;
 	VkDeviceSize maxVRAM = vkDeviceMemoryProperties.memoryHeaps[gpuHeapIdx].size;
-	deviceMemoryBlock = GE_NEW DeviceMemoryBlock();
-	deviceMemoryBlock->InitVKDeviceMemoryBlock(&vkLogicalDevice, MEB_TO_BYTES(256),
-		&vkDeviceMemoryProperties, vkMemoryTypeIndexForEfficientDeviceOnlyAllocations);
+
+	//Alloc device memory block(s)
+	//
+	//1) Global static memory -> Will contain GPU data that is loaded at the start of the
+	//application and remains loaded right through the entire game. Eg: menu text/textures etc 
+	globalStaicMemoryBlock = GE_NEW DeviceMemoryBlock();
+	if (!globalStaicMemoryBlock->InitVKDeviceMemoryBlock(&vkLogicalDevice,
+		MEB_TO_BYTES(ENGINE_CONFIG_VULKAN_API_GLOBAL_STATIC_MEMORY_BLOCK_SIZE_MB),
+		&vkDeviceMemoryProperties, vkMemoryTypeIndexForEfficientDeviceOnlyAllocations))
+	{
+		EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanRenderDevice::InitVKMemoryBlocks(): Error initing global static memory block\n");
+		return false;
+	}
+
+	//2) Initial memory block used for static (not CPU read/writable) render targets (GBuffers if 
+	//deferred is used and general gameplay render targets - Eg: Render-to-texture)
+	//&& depth buffers (eg: One created with swapchain).
+	//
+	//Since a) The swapchain && depth buffer and/or GBuffers maybe resized at runtime due to user
+	//settings and b) we don't know at compile time how many render targets we may need, we need to
+	//ensure that the engine will handle the situation that we have ran out of memory for this memory
+	//block - hence the fact we have a std::vector of these blocks. 
+	staticRenderTargetsMemoryBlocksArray.resize(1); 
+	staticRenderTargetsMemoryBlocksArray[0] = GE_NEW DeviceMemoryBlock();
+	if (!staticRenderTargetsMemoryBlocksArray[0]->InitVKDeviceMemoryBlock(&vkLogicalDevice,
+		MEB_TO_BYTES(ENGINE_CONFIG_VULKAN_API_STAITC_RENDER_TARGETS_MEMORY_BLOCK_SIZE_MB),
+		&vkDeviceMemoryProperties, vkMemoryTypeIndexForEfficientDeviceOnlyAllocations))
+	{
+		EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanRenderDevice::InitVKMemoryBlocks(): Error initing initial static render targets memory block\n");
+		return false;
+	}
 
 	//Done
 	return true;
@@ -226,11 +253,18 @@ bool VulkanRenderDevice::InitVKCommandBufferPools(EngineAPI::OS::OSWindow* osWin
 void VulkanRenderDevice::Shutdown()
 {
 	//GPU memory
-	if (deviceMemoryBlock)
+	if (globalStaicMemoryBlock)
 	{
-		deviceMemoryBlock->Shutdown();
-		delete deviceMemoryBlock;
+		globalStaicMemoryBlock->Shutdown();
+		delete globalStaicMemoryBlock;
 	}
+
+	for (int i = 0; i < staticRenderTargetsMemoryBlocksArray.size(); i++)
+	{
+		staticRenderTargetsMemoryBlocksArray[i]->Shutdown();
+		delete staticRenderTargetsMemoryBlocksArray[i];
+	}
+	staticRenderTargetsMemoryBlocksArray.clear();
 
 	//Cleanup command buffer pools
 	if (commandBufferPoolsArray)

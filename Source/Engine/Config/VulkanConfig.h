@@ -66,3 +66,18 @@
 
 //Desired swpachain buffer count (double buffering)
 #define ENGINE_CONFIG_VULKAN_API_SWAPCHAIN_DEFAULT_BUFFER_COUNT 2
+
+//Memory
+//
+//Size of the static block of memory used to hold data that remains throughout the
+//entire life of the application.
+//
+//NOTE: This value should be easy to work out with a proper asset pipeline - just count the 
+//bytes needed for textures, resources etc all marked as having a lifespan that lasts the 
+//full run of the game in a build process. This would reduce wasted memory. However, thats
+//a bit outside the scope of this engine for now -> so i've reverted to a nice and simple #define!
+#define ENGINE_CONFIG_VULKAN_API_GLOBAL_STATIC_MEMORY_BLOCK_SIZE_MB 32
+
+//Size of each block of memory which will be used to hold static (GPU only) render targets, 
+//GBuffers, depth buffers etc
+#define ENGINE_CONFIG_VULKAN_API_STAITC_RENDER_TARGETS_MEMORY_BLOCK_SIZE_MB 256
