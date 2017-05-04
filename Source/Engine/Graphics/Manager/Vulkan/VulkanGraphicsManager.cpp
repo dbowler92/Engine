@@ -45,7 +45,7 @@ bool VulkanGraphicsManager::InitSubsystem(EngineAPI::OS::OSWindow* osWindow,
 		return false;
 	if (!renderingDevice->InitVKLogicalDeviceAndQueues(osWindow, renderingInstance, renderingSwapchain->GetVKLogicalSurfaceKHR()))
 		return false;
-	if (!renderingDevice->InitVKMemoryBlocks(osWindow, renderingInstance))
+	if (!renderingDevice->InitVKMemoryAllocator(osWindow, renderingInstance))
 		return false;
 	if (!renderingDevice->InitVKCommandBufferPools(osWindow, renderingInstance))
 		return false;

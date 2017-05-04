@@ -6,8 +6,8 @@
 //Manages (VK) command buffer pools
 #include "../../CommandBufferPool/CommandBufferPool.h"
 
-//Manages (VK) Device memory block(s)
-#include "../../DeviceMemoryBlock/DeviceMemoryBlock.h"
+//Manages memory allocations for us
+#include "../../DeviceMemoryAllocator/DeviceMemoryAllocator.h"
 
 using namespace EngineAPI::Graphics;
 using namespace EngineAPI::Graphics::Platform;
@@ -164,7 +164,7 @@ bool VulkanRenderDevice::InitVKLogicalDeviceAndQueues(EngineAPI::OS::OSWindow* o
 	return true;
 }
 
-bool VulkanRenderDevice::InitVKMemoryBlocks(EngineAPI::OS::OSWindow* osWindow,
+bool VulkanRenderDevice::InitVKMemoryAllocator(EngineAPI::OS::OSWindow* osWindow,
 	EngineAPI::Graphics::RenderInstance* renderingInstance)
 {
 	//Cache memory info for the physical device
@@ -184,6 +184,11 @@ bool VulkanRenderDevice::InitVKMemoryBlocks(EngineAPI::OS::OSWindow* osWindow,
 	uint32_t gpuHeapIdx = vkDeviceMemoryProperties.memoryTypes[vkMemoryTypeIndexForEfficientDeviceOnlyAllocations].heapIndex;
 	VkDeviceSize maxVRAM = vkDeviceMemoryProperties.memoryHeaps[gpuHeapIdx].size;
 
+	//Allocate the memory allocator/manager
+	deviceMemoryAllocator = GE_NEW DeviceMemoryAllocator();
+	//deviceMemoryAllocator->Init();
+
+	/*
 	//Alloc device memory block(s)
 	//
 	//1) Global static memory -> Will contain GPU data that is loaded at the start of the
@@ -214,6 +219,7 @@ bool VulkanRenderDevice::InitVKMemoryBlocks(EngineAPI::OS::OSWindow* osWindow,
 		EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanRenderDevice::InitVKMemoryBlocks(): Error initing initial static render targets memory block\n");
 		return false;
 	}
+	*/
 
 	//Done
 	return true;
@@ -252,19 +258,15 @@ bool VulkanRenderDevice::InitVKCommandBufferPools(EngineAPI::OS::OSWindow* osWin
 
 void VulkanRenderDevice::Shutdown()
 {
-	//GPU memory
-	if (globalStaicMemoryBlock)
+	//Cleanup memory manager, stores and blocks - any VK resource not yet destroyed
+	//will now be - you may want to comment out the Shutdown() function call if you want
+	//to find VK* objects that have not been correctly cleaned up by the application (your application 
+	//*does* cleanup its resources... doesnt it!?). 
+	if (deviceMemoryAllocator)
 	{
-		globalStaicMemoryBlock->Shutdown();
-		delete globalStaicMemoryBlock;
+		deviceMemoryAllocator->Shutdown();
+		delete deviceMemoryAllocator;
 	}
-
-	for (int i = 0; i < staticRenderTargetsMemoryBlocksArray.size(); i++)
-	{
-		staticRenderTargetsMemoryBlocksArray[i]->Shutdown();
-		delete staticRenderTargetsMemoryBlocksArray[i];
-	}
-	staticRenderTargetsMemoryBlocksArray.clear();
 
 	//Cleanup command buffer pools
 	if (commandBufferPoolsArray)

@@ -196,23 +196,32 @@
     <Filter Include="Src\Rendering\DepthTexture\Vulkan">
       <UniqueIdentifier>{a9967bb6-2465-4014-b370-4e4d900a5fe1}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Src\Graphics\Memory">
-      <UniqueIdentifier>{4668a9ff-0f23-4c8c-a004-9bb5b7b61b79}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Src\Graphics\Memory\DeviceMemoryBlock">
+    <Filter Include="Src\Graphics\DeviceMemoryStore">
       <UniqueIdentifier>{bbb94d0e-4ca4-4998-ba34-b16e84087d78}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Src\Graphics\Memory\DeviceMemoryBlock\Common">
+    <Filter Include="Src\Graphics\DeviceMemoryStore\Common">
       <UniqueIdentifier>{de0cda10-ffb5-43e0-9d0b-4507496e194a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Src\Graphics\Memory\DeviceMemoryBlock\Vulkan">
+    <Filter Include="Src\Graphics\DeviceMemoryStore\Vulkan">
       <UniqueIdentifier>{9983b6b1-907e-42a6-95ef-410ab733de90}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Src\Graphics\Memory\DeviceMemoryManager">
+    <Filter Include="Src\Graphics\DeviceMemoryBlock">
+      <UniqueIdentifier>{991cbdfb-7142-4d98-9304-743983d54674}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Graphics\DeviceMemoryBlock\Common">
+      <UniqueIdentifier>{fcc2bf81-08fb-4871-8fa8-9cd74fa85ef4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Graphics\DeviceMemoryBlock\Vulkan">
+      <UniqueIdentifier>{acdcc7a9-29b5-4962-9d0f-19ba71f106c6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Graphics\DeviceMemoryAllocator">
       <UniqueIdentifier>{252245cb-3b2d-4c33-841e-ab3febe506e7}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Src\Graphics\Memory\DeviceMemoryStore">
-      <UniqueIdentifier>{991cbdfb-7142-4d98-9304-743983d54674}</UniqueIdentifier>
+    <Filter Include="Src\Graphics\DeviceMemoryAllocator\Common">
+      <UniqueIdentifier>{88d59e40-ddbc-457c-98cc-bb0cd681647a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Graphics\DeviceMemoryAllocator\Vulkan">
+      <UniqueIdentifier>{e5170116-ac18-4c3b-b52d-91180ce61fe7}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -264,9 +273,6 @@
     <ClCompile Include="..\Graphics\Statics\Vulkan\VulkanStatics.cpp">
       <Filter>Src\Graphics\Statics\Vulkan</Filter>
     </ClCompile>
-    <ClCompile Include="..\Graphics\DeviceMemoryBlock\Vulkan\VulkanDeviceMemoryBlock.cpp">
-      <Filter>Src\Graphics\Memory\DeviceMemoryBlock\Vulkan</Filter>
-    </ClCompile>
     <ClCompile Include="..\Rendering\TextureResource\Vulkan\VulkanTextureResource.cpp">
       <Filter>Src\Rendering\TextureResource\Vulkan</Filter>
     </ClCompile>
@@ -278,6 +284,15 @@
     </ClCompile>
     <ClCompile Include="..\Graphics\Manager\GraphicsManager.cpp">
       <Filter>Src\Graphics\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Graphics\DeviceMemoryStore\Vulkan\VulkanDeviceMemoryStore.cpp">
+      <Filter>Src\Graphics\DeviceMemoryStore\Vulkan</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Graphics\DeviceMemoryBlock\Vulkan\VulkanDeviceMemoryBlock.cpp">
+      <Filter>Src\Graphics\DeviceMemoryBlock\Vulkan</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Graphics\DeviceMemoryAllocator\Vulkan\VulkanDeviceMemoryAllocator.cpp">
+      <Filter>Src\Graphics\DeviceMemoryAllocator\Vulkan</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -401,15 +416,6 @@
     <ClInclude Include="..\Graphics\Statics\Vulkan\VulkanStatics.h">
       <Filter>Src\Graphics\Statics\Vulkan</Filter>
     </ClInclude>
-    <ClInclude Include="..\Graphics\DeviceMemoryBlock\Common\CommonDeviceMemoryBlock.h">
-      <Filter>Src\Graphics\Memory\DeviceMemoryBlock\Common</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Graphics\DeviceMemoryBlock\Vulkan\VulkanDeviceMemoryBlock.h">
-      <Filter>Src\Graphics\Memory\DeviceMemoryBlock\Vulkan</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Graphics\DeviceMemoryBlock\DeviceMemoryBlock.h">
-      <Filter>Src\Graphics\Memory\DeviceMemoryBlock</Filter>
-    </ClInclude>
     <ClInclude Include="..\Rendering\TextureResource\Vulkan\VulkanTextureResource.h">
       <Filter>Src\Rendering\TextureResource\Vulkan</Filter>
     </ClInclude>
@@ -439,6 +445,33 @@
     </ClInclude>
     <ClInclude Include="..\Config\GraphicsConfig.h">
       <Filter>Engine Config</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Graphics\DeviceMemoryStore\Common\CommonDeviceMemoryStore.h">
+      <Filter>Src\Graphics\DeviceMemoryStore\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Graphics\DeviceMemoryStore\Vulkan\VulkanDeviceMemoryStore.h">
+      <Filter>Src\Graphics\DeviceMemoryStore\Vulkan</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Graphics\DeviceMemoryStore\DeviceMemoryStore.h">
+      <Filter>Src\Graphics\DeviceMemoryStore</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Graphics\DeviceMemoryBlock\Common\CommonDeviceMemoryBlock.h">
+      <Filter>Src\Graphics\DeviceMemoryBlock\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Graphics\DeviceMemoryBlock\Vulkan\VulkanDeviceMemoryBlock.h">
+      <Filter>Src\Graphics\DeviceMemoryBlock\Vulkan</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Graphics\DeviceMemoryBlock\DeviceMemoryBlock.h">
+      <Filter>Src\Graphics\DeviceMemoryBlock</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Graphics\DeviceMemoryAllocator\Common\CommonDeviceMemoryAllocator.h">
+      <Filter>Src\Graphics\DeviceMemoryAllocator\Common</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Graphics\DeviceMemoryAllocator\Vulkan\VulkanDeviceMemoryAllocator.h">
+      <Filter>Src\Graphics\DeviceMemoryAllocator\Vulkan</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Graphics\DeviceMemoryAllocator\DeviceMemoryAllocator.h">
+      <Filter>Src\Graphics\DeviceMemoryAllocator</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

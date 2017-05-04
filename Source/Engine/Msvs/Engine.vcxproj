@@ -25,7 +25,9 @@
     <ClCompile Include="..\Graphics\CommandBufferPool\Vulkan\VulkanCommandBufferPool.cpp" />
     <ClCompile Include="..\Graphics\CommandQueueFamily\Vulkan\VulkanCommandQueueFamily.cpp" />
     <ClCompile Include="..\Graphics\CommandQueue\Vulkan\VulkanCommandQueue.cpp" />
+    <ClCompile Include="..\Graphics\DeviceMemoryAllocator\Vulkan\VulkanDeviceMemoryAllocator.cpp" />
     <ClCompile Include="..\Graphics\DeviceMemoryBlock\Vulkan\VulkanDeviceMemoryBlock.cpp" />
+    <ClCompile Include="..\Graphics\DeviceMemoryStore\Vulkan\VulkanDeviceMemoryStore.cpp" />
     <ClCompile Include="..\Graphics\Device\Vulkan\VulkanRenderDevice.cpp" />
     <ClCompile Include="..\Graphics\Instance\Vulkan\VulkanRenderInstance.cpp" />
     <ClCompile Include="..\Graphics\Manager\D3D11\D3D11GraphicsManager.cpp" />
@@ -60,9 +62,15 @@
     <ClInclude Include="..\Graphics\CommandQueue\CommandQueue.h" />
     <ClInclude Include="..\Graphics\CommandQueue\Common\CommonCommandQueue.h" />
     <ClInclude Include="..\Graphics\CommandQueue\Vulkan\VulkanCommandQueue.h" />
+    <ClInclude Include="..\Graphics\DeviceMemoryAllocator\Common\CommonDeviceMemoryAllocator.h" />
+    <ClInclude Include="..\Graphics\DeviceMemoryAllocator\DeviceMemoryAllocator.h" />
+    <ClInclude Include="..\Graphics\DeviceMemoryAllocator\Vulkan\VulkanDeviceMemoryAllocator.h" />
     <ClInclude Include="..\Graphics\DeviceMemoryBlock\Common\CommonDeviceMemoryBlock.h" />
     <ClInclude Include="..\Graphics\DeviceMemoryBlock\DeviceMemoryBlock.h" />
     <ClInclude Include="..\Graphics\DeviceMemoryBlock\Vulkan\VulkanDeviceMemoryBlock.h" />
+    <ClInclude Include="..\Graphics\DeviceMemoryStore\Common\CommonDeviceMemoryStore.h" />
+    <ClInclude Include="..\Graphics\DeviceMemoryStore\DeviceMemoryStore.h" />
+    <ClInclude Include="..\Graphics\DeviceMemoryStore\Vulkan\VulkanDeviceMemoryStore.h" />
     <ClInclude Include="..\Graphics\Device\Common\CommonRenderDevice.h" />
     <ClInclude Include="..\Graphics\Device\RenderDevice.h" />
     <ClInclude Include="..\Graphics\Device\Vulkan\VulkanRenderDevice.h" />

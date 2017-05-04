@@ -20,7 +20,7 @@ namespace EngineAPI
 	{
 		class CommandQueueFamily;
 		class CommandBufferPool;
-		class DeviceMemoryBlock;
+		class DeviceMemoryAllocator;
 	};
 };
 
@@ -44,7 +44,7 @@ namespace EngineAPI
 					EngineAPI::Graphics::RenderInstance* renderingInstance);
 				bool InitVKLogicalDeviceAndQueues(EngineAPI::OS::OSWindow* osWindow,
 					EngineAPI::Graphics::RenderInstance* renderingInstance, const VkSurfaceKHR logicalSurfaceHandle);
-				bool InitVKMemoryBlocks(EngineAPI::OS::OSWindow* osWindow,
+				bool InitVKMemoryAllocator(EngineAPI::OS::OSWindow* osWindow,
 					EngineAPI::Graphics::RenderInstance* renderingInstance);
 				bool InitVKCommandBufferPools(EngineAPI::OS::OSWindow* osWindow,
 					EngineAPI::Graphics::RenderInstance* renderingInstance);
@@ -82,19 +82,8 @@ namespace EngineAPI
 				//Graphics queue family and queues - general rendering
 				CommandQueueFamily* graphicsQueueFamily = nullptr;
 
-				//Device (GPU) Memory block(s) - used to alloc resources on the GPU. Different blocks
-				//support different things. (eg: Mappable memory, etc)
-				//
-				//Memory block of fixed size for global & static GPU data -> Eg: Main menu
-				//text textures, etc.
-				DeviceMemoryBlock* globalStaicMemoryBlock = nullptr;
-
-				//Memory block(s) for render targets - Eg: Gbuffers, depth buffer and runtime
-				//render targets. Note: textures in here will *not* be CPU read-writeable. 
-				//
-				//When we run out of space in a memory block, we should allocate
-				//a new block to begin using
-				std::vector<DeviceMemoryBlock*> staticRenderTargetsMemoryBlocksArray;
+				//Device memory manager / allocator
+				DeviceMemoryAllocator* deviceMemoryAllocator = nullptr;
 
 			private:
 				//Vk allocation/init

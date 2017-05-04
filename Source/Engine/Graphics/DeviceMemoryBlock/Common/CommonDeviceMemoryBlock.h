@@ -1,8 +1,8 @@
 //CommonDeviceMemoryBlock.h
-//Created 28/04/17
+//Created 04/05/17
 //Created By Daniel Bowler
 //
-//Interface class that API specific implementations must implement. 
+//Common interface that API specific device memory blocks will inherit from
 
 #pragma once
 
@@ -30,3 +30,4 @@ namespace EngineAPI
 		};
 	};
 };
+
