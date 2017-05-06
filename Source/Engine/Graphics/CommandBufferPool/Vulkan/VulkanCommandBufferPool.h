@@ -6,8 +6,11 @@
 
 #pragma once
 
-//Base
-#include "../Common/CommonCommandBufferPool.h"
+//Globals
+#include "../../../Main/EngineStd.h"
+
+//Debug
+#include "../../../Debug/Log/DebugLog.h"
 
 //Vulkan static functions
 #include "../../Statics/Vulkan/VulkanStatics.h"
@@ -21,14 +24,14 @@ namespace EngineAPI
 	{
 		namespace Platform
 		{
-			class VulkanCommandBufferPool : public EngineAPI::Graphics::Interface::CommonCommandBufferPool
+			class VulkanCommandBufferPool
 			{
 			public:
 				VulkanCommandBufferPool() {};
 				virtual ~VulkanCommandBufferPool() = 0 {};
 
 				//Override shutdown function
-				void Shutdown() override;
+				void Shutdown();
 
 			public:
 				//VK init function
@@ -37,7 +40,7 @@ namespace EngineAPI
 
 			public:
 				//Resets all command buffers
-				bool ResetCommandBufferPool(bool doReleaseCommandBuffersBackToPool = false) override;
+				bool ResetCommandBufferPool(bool doReleaseCommandBuffersBackToPool = false);
 
 				//Returns a VkCommandBuffer(s) from the command pool
 				bool GetVKCommandBufferFromPool(bool isPrimaryCmdBuffer, VkCommandBuffer* vkCommandBufferOut);

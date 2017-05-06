@@ -1,4 +1,7 @@
-﻿  VulkanTexture2D.cpp
+﻿  Win32Application.cpp
+  Generating Code...
+  Compiling...
+  VulkanTexture2D.cpp
   VulkanDepthTexture.cpp
   EngineMain.cpp
   VulkanSwapchain.cpp
@@ -6,6 +9,8 @@ c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\swa
 c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\swapchain\vulkan\vulkanswapchain.cpp(358): warning C4018: '<': signed/unsigned mismatch
 c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\swapchain\vulkan\vulkanswapchain.cpp(381): warning C4018: '<': signed/unsigned mismatch
 c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\swapchain\vulkan\vulkanswapchain.cpp(532): warning C4018: '<': signed/unsigned mismatch
+  VulkanStatics.cpp
+  VulkanRenderCommandBuffer.cpp
   VulkanGraphicsManager.cpp
 c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\manager\vulkan\vulkangraphicsmanager.cpp(17): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
   c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\stdio.h(1769): note: see declaration of 'sprintf'
@@ -14,8 +19,6 @@ c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\man
 c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\manager\vulkan\vulkangraphicsmanager.cpp(27): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
   c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\stdio.h(1769): note: see declaration of 'sprintf'
   GraphicsManager.cpp
-  D3D11GraphicsManager.cpp
-c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\manager\d3d11\d3d11graphicsmanager.cpp(14): warning C4101: 'd3d11InfoMsg': unreferenced local variable
   VulkanRenderInstance.cpp
   VulkanRenderDevice.cpp
 c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\device\vulkan\vulkanrenderdevice.cpp(311): warning C4018: '<': signed/unsigned mismatch
@@ -36,6 +39,16 @@ c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\dev
 c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\device\vulkan\vulkanrenderdevice.cpp(572): warning C4018: '<': signed/unsigned mismatch
 c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\device\vulkan\vulkanrenderdevice.cpp(580): warning C4018: '<': signed/unsigned mismatch
 c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\device\vulkan\vulkanrenderdevice.cpp(608): warning C4018: '<': signed/unsigned mismatch
-  Win32Application.cpp
+  VulkanDeviceMemoryStore.cpp
+c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\devicememorystore\vulkan\vulkandevicememorystore.cpp(55): warning C4309: 'argument': truncation of constant value
+c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\devicememorystore\vulkan\vulkandevicememorystore.cpp(71): warning C4018: '<': signed/unsigned mismatch
+  VulkanDeviceMemoryBlock.cpp
+  VulkanDeviceMemoryAllocator.cpp
+  VulkanCommandQueue.cpp
+  VulkanCommandQueueFamily.cpp
+c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\commandqueuefamily\vulkan\vulkancommandqueuefamily.cpp(12): warning C4018: '<': signed/unsigned mismatch
+c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\commandqueuefamily\vulkan\vulkancommandqueuefamily.cpp(54): warning C4018: '<': signed/unsigned mismatch
+  VulkanCommandBufferPool.cpp
+  DebugLog.cpp
   Generating Code...
   Engine.vcxproj -> C:\Users\B1032464\Documents\Programming\Engine\Engine\Source\Engine\Msvs\..\..\Lib\Win32Debug\Engine.lib

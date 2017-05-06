@@ -23,10 +23,6 @@
 
 //Graphics APIs
 #define GRAPHICS_API_IDX_VULKAN 0
-#define GRAPHICS_API_IDX_D3D11 1
-#define GRAPHICS_API_IDX_D3D12 2
-#define GRAPHICS_API_IDX_OPENGL 3
-#define GRAPHICS_API_IDX_GNM 4 //PS4
 
 //Current platform to build & grpahics API to use - this should really be set
 //through a VS build configuration. But for now, this will do.  
@@ -61,20 +57,4 @@
 //Also, some API specific configs. Eg: Minumum supported vulkan API version
 #include "VulkanConfig.h"
 
-#endif
-
-#if ENGINE_BUILD_SETTINGS_GRAPHICS_API == GRAPHICS_API_IDX_D3D11
-#define ENGINE_CONFIG_GRAPHICS_API_D3D11
-#endif
-
-#if ENGINE_BUILD_SETTINGS_GRAPHICS_API == GRAPHICS_API_IDX_D3D12
-#define ENGINE_CONFIG_GRAPHICS_API_D3D12
-#endif
-
-#if ENGINE_BUILD_SETTINGS_GRAPHICS_API == GRAPHICS_API_IDX_OPENGL
-#define ENGINE_CONFIG_GRAPHICS_API_OPENGL
-#endif
-
-#if ENGINE_BUILD_SETTINGS_GRAPHICS_API == GRAPHICS_API_IDX_GNM
-#define ENGINE_CONFIG_GRAPHICS_API_GNM
 #endif

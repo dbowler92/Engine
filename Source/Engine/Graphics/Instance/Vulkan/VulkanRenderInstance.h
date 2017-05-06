@@ -6,8 +6,14 @@
 
 #pragma once
 
-//Interface
-#include "../Common/CommonRenderInstance.h"
+//Globals
+#include "../../../Main/EngineStd.h"
+
+//Debug
+#include "../../../Debug/Log/DebugLog.h"
+
+//May need to know about the OS window
+#include "../../../OSWindow/OSWindow.h"
 
 #include <vector>
 
@@ -20,14 +26,14 @@ namespace EngineAPI
 	{
 		namespace Platform
 		{
-			class VulkanRenderInstance : public EngineAPI::Graphics::Interface::CommonRenderInstance
+			class VulkanRenderInstance
 			{
 			public:
 				VulkanRenderInstance(){};
 				virtual ~VulkanRenderInstance() = 0 {};
 
 				//Override shutdown functions
-				void Shutdown() override;
+				void Shutdown();
 
 				//Inits the VK instance
 				bool InitVKInstance(EngineAPI::OS::OSWindow* osWindow, ECHAR* applicationTitle,

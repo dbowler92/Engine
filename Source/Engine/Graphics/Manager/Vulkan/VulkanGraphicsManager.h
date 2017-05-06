@@ -13,8 +13,19 @@
 
 #pragma once
 
-//Shared interface
-#include "../Common/CommonGraphicsManager.h"
+//Globals
+#include "../../../Main/EngineStd.h"
+
+//Debug
+#include "../../../Debug/Log/DebugLog.h"
+
+//OS window info - so the graphics API can talk to the OS windowing system.
+#include "../../../OSWindow/OSWindow.h"
+
+//Abstractions of rendering API
+#include "../../Instance/RenderInstance.h"
+#include "../../Device/RenderDevice.h"
+#include "../../Swapchain/Swapchain.h"
 
 //Vector
 #include <vector>
@@ -28,7 +39,7 @@ namespace EngineAPI
 	{
 		namespace Platform
 		{
-			class VulkanGraphicsManager : public EngineAPI::Graphics::Interface::CommonGraphicsManager
+			class VulkanGraphicsManager
 			{
 			public:
 				VulkanGraphicsManager() {};
@@ -37,10 +48,21 @@ namespace EngineAPI
 				//Inits the graphics subsystem / manager (VK)
 				bool InitSubsystem(EngineAPI::OS::OSWindow* osWindow,
 					ECHAR* appTitle, int appVersionMajor, int appVersionMinor, int appVersionPatch,
-					unsigned screenWidth, unsigned screenHeight) override;
+					unsigned screenWidth, unsigned screenHeight);
 
 				//Shutsdown the graphics manager (VK)
-				bool ShutdownSubsystem() override;
+				bool ShutdownSubsystem();
+
+				//Returns the instance, device and swapchains (pointer)
+				RenderInstance* GetRenderingInstance() { return renderingInstance; };
+				RenderDevice* GetRenderingDevice() { return renderingDevice; };
+				Swapchain* GetRenderingSwapchain() { return renderingSwapchain; };
+
+			protected:
+				//Instance, device and swapchain handlers
+				RenderInstance* renderingInstance = nullptr;
+				RenderDevice* renderingDevice = nullptr;
+				Swapchain* renderingSwapchain = nullptr;
 			};
 		};
 	};

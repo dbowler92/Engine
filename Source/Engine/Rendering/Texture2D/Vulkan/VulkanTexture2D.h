@@ -6,8 +6,11 @@
 
 #pragma once
 
-//Base class
-#include "../Common/CommonTexture2D.h"
+//Debug
+#include "../../../Debug/Log/DebugLog.h"
+
+//Device used to create this...
+#include "../../../Graphics/Device/RenderDevice.h"
 
 //Vulkan header
 #include <vulkan/vulkan.h>
@@ -18,14 +21,14 @@ namespace EngineAPI
 	{
 		namespace Platform
 		{
-			class VulkanTexture2D : public EngineAPI::Rendering::Interface::CommonTexture2D
+			class VulkanTexture2D
 			{
 			public:
 				VulkanTexture2D() {};
 				virtual ~VulkanTexture2D() = 0 {};
 
 				//Shutdown the texture2D object
-				void Shutdown() override;
+				void Shutdown();
 
 			public:
 				//Inits the Vulkan texture2D (aka, VkImage) - TODO: Replace with a less platform specific Init function!

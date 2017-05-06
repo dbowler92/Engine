@@ -15,8 +15,11 @@
 
 #pragma once
 
-//Base class
-#include "../Common/CommonRenderCommandBuffer.h"
+//Globals
+#include "../../../Main/EngineStd.h"
+
+//Debug
+#include "../../../Debug/Log/DebugLog.h"
 
 //Vulkan header
 #include <vulkan\vulkan.h>
@@ -27,7 +30,7 @@ namespace EngineAPI
 	{
 		namespace Platform
 		{
-			class VulkanRenderCommandBuffer : public EngineAPI::Graphics::Interface::CommonRenderCommandBuffer
+			class VulkanRenderCommandBuffer
 			{
 			public:
 				VulkanRenderCommandBuffer() {};
@@ -35,15 +38,15 @@ namespace EngineAPI
 
 				//Override shutdown function providing vulkan specific
 				//implementation
-				void Shutdown() override;
+				void Shutdown();
 
 				//Resets the command buffer
-				bool ResetCommandBuffer(bool shouldReleaseMemoryToCommandPool = false) override;
+				bool ResetCommandBuffer(bool shouldReleaseMemoryToCommandPool = false);
 
 				//Captures vulkan rendering commands in to a reusable command
 				//buffer
-				bool BeginRecordingToCommandBuffer() override;
-				bool EndRecordingToCommandBuffer() override;
+				bool BeginRecordingToCommandBuffer();
+				bool EndRecordingToCommandBuffer();
 
 			public:
 				//Inits the command buffer (vk)
@@ -61,7 +64,7 @@ namespace EngineAPI
 				//Is this a primary buffer
 				bool vkIsPrimaryBuffer;
 
-				//Does the pool this cmd buffer created within support indivudal 
+				//Does the pool this cmd buffer created within support individual 
 				//resets -> VK_COMMAND_POOL_CREATE_RESET_COMMAND_BUFFER_BIT
 				bool parentPoolCreatedWithResetCommandBufferBit;
 

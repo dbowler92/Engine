@@ -6,11 +6,27 @@
 
 #pragma once
 
-//Base
-#include "../Common/CommonCommandQueueFamily.h"
-
 //Vulkan header
 #include <vulkan\vulkan.h>
+
+//Manages specific command queues
+#include "../../CommandQueue/CommandQueue.h"
+
+//Debug
+#include "../../../Debug/Log/DebugLog.h"
+
+//What are the queues job within this family?
+enum QueueFamilySupport
+{
+	QUEUE_FAMILY_SUPPORT_NULL,                //Not inited yet.
+	QUEUE_FAMILY_SUPPORT_GRAPHICS,
+	QUEUE_FAMILY_SUPPORT_PRESENTATION,
+	QUEUE_FAMILY_SUPPORT_GRAPHICS_AND_PRESENTATION,
+	QUEUE_FAMILY_SUPPORT_COMPUTE,
+	QUEUE_FAMILY_SUPPORT_DMA_TRANSFER,
+	QUEUE_FAMILY_SUPPORT_SPARSE,
+	QUEUE_FAMILY_SUPPORT_ALL_GRAPHICS_WORK    //D3D11 etc -> Probably just have one queue family with one queue doing everything...
+};
 
 namespace EngineAPI
 {
@@ -18,14 +34,14 @@ namespace EngineAPI
 	{
 		namespace Platform
 		{
-			class VulkanCommandQueueFamily : public EngineAPI::Graphics::Interface::CommonCommandQueueFamily
+			class VulkanCommandQueueFamily 
 			{
 			public:
 				VulkanCommandQueueFamily() {};
 				virtual ~VulkanCommandQueueFamily() = 0 {};
 
 				//Override shutdown function
-				void Shutdown() override;
+				void Shutdown();
 
 			public:
 				//Inits the Vulkan queue family. Once the device has been created, call
@@ -39,6 +55,14 @@ namespace EngineAPI
 				//family. 
 				bool InitVulkanQueues(VkDevice* logicalDevice);
 				
+			public:
+				//Returns the queues & number of them
+				CommandQueue* GetCommandQueues() { return commandQueuesArray; };
+				unsigned GetCommandQueueCount() { return commandQueuesCount; };
+
+				//Command queue family role
+				QueueFamilySupport GetCommandQueueFamilyRole() { return queueFamilyRole; };
+
 			public:
 				//Submits VKCommandBuffer(s) to this queue family (and then queue by index) for processing
 				//NOTE: SubmitVKCommandBuffersToQueueDefault() will generate a VkSubmitInfos
@@ -59,6 +83,14 @@ namespace EngineAPI
 				//VK info
 				uint32_t vkQueueFamilyIndex = 0;
 				float* queuesPrioritiesArray = nullptr;
+
+			protected:
+				//Will contain and manage a set of command queues
+				CommandQueue* commandQueuesArray = nullptr;
+
+				//Info on this queue family
+				QueueFamilySupport queueFamilyRole = QUEUE_FAMILY_SUPPORT_NULL;
+				unsigned commandQueuesCount = 0;
 			};
 		};
 	};

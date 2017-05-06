@@ -6,8 +6,27 @@
 
 #pragma once
 
-//Inc base
-#include "../Common/CommonDepthTexture.h"
+//Does need to know about the device to create it
+#include "../../../Graphics/Device/RenderDevice.h"
+
+//Uses Texture2D to create the actual texture resource
+#include "../../Texture2D/Texture2D.h"
+
+//Depth formats
+enum DepthTextureFormat
+{
+	DEPTH_TEXTURE_FORMAT_D16,
+	//DEPTH_TEXTURE_FORMAT_D24,
+	DEPTH_TEXTURE_FORMAT_D32,
+	DEPTH_TEXTURE_FORMAT_D24_S8
+};
+
+//Depth texture usage
+typedef enum DepthTextureUsageFlagsBits
+{
+	DEPTH_TEXTURE_USAGE_SHADER_INPUT_BIT = 0x0000001
+} DepthTextureUsageFlagsBits;
+typedef EFlag DepthTextureUsageFlag;
 
 namespace EngineAPI
 {
@@ -15,7 +34,7 @@ namespace EngineAPI
 	{
 		namespace Platform
 		{
-			class VulkanDepthTexture : public EngineAPI::Rendering::Interface::CommonDepthTexture
+			class VulkanDepthTexture
 			{
 			public:
 				VulkanDepthTexture() {};
@@ -24,12 +43,20 @@ namespace EngineAPI
 				//Override init and shutdown with Vulkan specific code. 
 				bool Init(EngineAPI::Graphics::RenderDevice* renderingDevice,
 					DepthTextureFormat depthTextureFormat, ESize2D depthTextureDimentions,
-					DepthTextureUsageFlag depthTextureUsageFlags) override;
-				void Shutdown() override;
+					DepthTextureUsageFlag depthTextureUsageFlags);
+				void Shutdown();
 
 			protected:
 				//Vulkan tiling mode
 				VkImageTiling vkImageTilingMode;
+
+			protected:
+				//Actual 2D texture for the depth buffer. 
+				EngineAPI::Rendering::Texture2D depthTextureObject;
+
+				//State of the depth texture
+				DepthTextureFormat depthTextureFormat;
+				DepthTextureUsageFlag depthTextureUsage;
 			};
 		};
 	};

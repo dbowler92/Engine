@@ -6,9 +6,6 @@
 
 #pragma once
 
-//Base
-#include "../Common/CommonCommandQueue.h"
-
 //Vulkan header
 #include <vulkan\vulkan.h>
 
@@ -18,14 +15,14 @@ namespace EngineAPI
 	{
 		namespace Platform
 		{
-			class VulkanCommandQueue : public EngineAPI::Graphics::Interface::CommonCommandQueue
+			class VulkanCommandQueue
 			{
 			public:
 				VulkanCommandQueue() {};
 				virtual ~VulkanCommandQueue() = 0 {};
 
 				//Override shutdown function
-				void Shutdown() override;
+				void Shutdown();
 
 				//Vulkan init
 				bool InitVKQueue(VkDevice* logicalDevice, 

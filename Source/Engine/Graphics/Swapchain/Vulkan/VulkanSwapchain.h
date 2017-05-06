@@ -6,8 +6,14 @@
 
 #pragma once
 
-//Base / interface
-#include "../Common/CommonSwapchain.h"
+//OS window, graphics instance and device maybe needed
+//to setup the swapchain
+#include "../../../OSWindow/OSWindow.h"
+#include "../../Instance/RenderInstance.h"
+#include "../../Device/RenderDevice.h"
+
+//Will need to manage a depth buffer
+#include "../../../Rendering/DepthTexture/DepthTexture.h"
 
 namespace EngineAPI
 {
@@ -15,17 +21,17 @@ namespace EngineAPI
 	{
 		namespace Platform
 		{
-			class VulkanSwapchain : public EngineAPI::Graphics::Interface::CommonSwapchain
+			class VulkanSwapchain
 			{
 			public:
 				VulkanSwapchain() {};
 				virtual ~VulkanSwapchain() = 0 {};
 
 				//Override shutdown function
-				void Shutdown() override;
+				void Shutdown();
 
 				//Override the OnResize event
-				bool OnResize(ESize2D newWindowSize) override;
+				bool OnResize(ESize2D newWindowSize);
 
 				//Inits the VK swapchain
 				bool InitVKLogicalSurface(EngineAPI::OS::OSWindow* osWindow,

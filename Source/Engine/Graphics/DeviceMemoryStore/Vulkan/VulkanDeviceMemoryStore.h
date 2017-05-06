@@ -13,8 +13,17 @@
 
 #pragma once
 
-//Base
-#include "../Common/CommonDeviceMemoryStore.h"
+//Globals
+#include "../../../Main/EngineStd.h"
+
+//Debug
+#include "../../../Debug/Log/DebugLog.h"
+
+//Uses std::vector
+#include <vector>
+
+//Manages a set of memory blocks within the store
+#include "../../DeviceMemoryBlock/DeviceMemoryBlock.h"
 
 //Vulkan header
 #include <vulkan\vulkan.h>
@@ -38,14 +47,14 @@ namespace EngineAPI
 	{
 		namespace Platform
 		{
-			class VulkanDeviceMemoryStore : public EngineAPI::Graphics::Interface::CommonDeviceMemoryStore
+			class VulkanDeviceMemoryStore
 			{
 			public:
 				VulkanDeviceMemoryStore() {};
 				virtual ~VulkanDeviceMemoryStore() = 0 {};
 
 				//Override shutdown
-				void Shutdown() override;
+				void Shutdown();
 
 			public:
 				//Vulkan init. Note: Vulkan implementation will automatically allocate aligned memory which
@@ -57,8 +66,8 @@ namespace EngineAPI
 			
 			public:
 				//Override alloc/dealloc functions
-				bool SubAllocMemoryBlock(EUINT_64 blockSize, EngineAPI::Graphics::DeviceMemoryBlock& allocatedBlockOut) override;
-				void DeallocBlock(const EngineAPI::Graphics::DeviceMemoryBlock* block) override;
+				bool SubAllocMemoryBlock(EUINT_64 blockSize, EngineAPI::Graphics::DeviceMemoryBlock& allocatedBlockOut);
+				void DeallocBlock(const EngineAPI::Graphics::DeviceMemoryBlock* block);
 
 			public:
 				//Getters
@@ -66,6 +75,8 @@ namespace EngineAPI
 				VkDevice GetOwningVKLogicalDevice() { return cachedVkLogicalDevice; };
 				uint32_t GetVKMemoryTypeIndex() { return vkMemoryTypeIndex; };
 				VkBool32 IsVKMemoryMappable() { return vkIsStoreMemoryMappable; };
+				EUINT_64 GetMemoryStoreSizeBytes() { return memoryStoreSizeBytes; };
+				std::vector<EngineAPI::Graphics::DeviceMemoryBlock>* GetMemoryBlocksArray() { return &memoryBlocksArray; };
 
 			protected:
 				//Handle to the VK memory store
@@ -82,6 +93,17 @@ namespace EngineAPI
 
 				//Cached logical device - the 'owner' of this store
 				VkDevice cachedVkLogicalDevice = VK_NULL_HANDLE;
+
+			protected:
+				//Size of the store in bytes
+				EUINT_64 memoryStoreSizeBytes = 0;
+
+				//Pointer to the begining of the store if host visible memory
+				void* hostStorePtr = nullptr;
+
+				//Array of blocks - sub allocations from within this block. TODO: Custom 
+				//resizing array. 
+				std::vector<EngineAPI::Graphics::DeviceMemoryBlock> memoryBlocksArray;
 			};
 		};
 	};

@@ -7,8 +7,11 @@
 
 #pragma once
 
-//Common interface
-#include "../Common/CommonRenderDevice.h"
+//Needs to know about the OS window
+#include "../../../OSWindow/OSWindow.h"
+
+//May need the rendering instance to create the device
+#include "../../Instance/RenderInstance.h"
 
 //Vulkan header
 #include <vulkan\vulkan.h>
@@ -30,14 +33,14 @@ namespace EngineAPI
 	{
 		namespace Platform
 		{
-			class VulkanRenderDevice : public EngineAPI::Graphics::Interface::CommonRenderDevice
+			class VulkanRenderDevice
 			{
 			public:
 				VulkanRenderDevice() {};
 				virtual ~VulkanRenderDevice() = 0 {};
 
 				//Shutdown the device
-				void Shutdown() override;
+				void Shutdown();
 
 				//Inits vulkan step by step
 				bool InitVKPhysicalDevice(EngineAPI::OS::OSWindow* osWindow,
@@ -55,6 +58,10 @@ namespace EngineAPI
 				//Physical and logical device handles
 				VkPhysicalDevice GetVKPhysicalDevice() { return vkPhysicalDevice; };
 				VkDevice GetVKLogicalDevice() { return vkLogicalDevice; };
+
+			public:
+				//Returns the managers
+				EngineAPI::Graphics::DeviceMemoryAllocator* GetDeviceMemoryAllocator() { return deviceMemoryAllocator; };
 
 			private:
 				//Vulkan data / handles
@@ -81,6 +88,9 @@ namespace EngineAPI
 
 				//Graphics queue family and queues - general rendering
 				EngineAPI::Graphics::CommandQueueFamily* graphicsQueueFamily = nullptr;
+
+				//Device memory manager / allocator
+				EngineAPI::Graphics::DeviceMemoryAllocator* deviceMemoryAllocator = nullptr;
 
 			private:
 				//Vk allocation/init
