@@ -19,9 +19,6 @@ namespace EngineAPI
 	namespace OS
 	{
 		class OSWindow : public OS_PLATFORM_IMPLEMENTATION(OSWindow)
-//#ifdef ENGINE_CONFIG_PLATFORM_WIN32
-//			public EngineAPI::OS::Platform::Win32OSWindow
-//#endif
 		{
 		public:
 			OSWindow() {};

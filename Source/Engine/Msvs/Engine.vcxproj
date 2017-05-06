@@ -19,7 +19,6 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\Application\Orbis\OrbisApplication.cpp" />
     <ClCompile Include="..\Application\Win32\Win32Application.cpp" />
     <ClCompile Include="..\Debug\Log\DebugLog.cpp" />
     <ClCompile Include="..\Graphics\CommandBufferPool\Vulkan\VulkanCommandBufferPool.cpp" />
@@ -45,8 +44,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Application\Application.h" />
-    <ClInclude Include="..\Application\Common\CommonApplication.h" />
-    <ClInclude Include="..\Application\Orbis\OrbisApplication.h" />
     <ClInclude Include="..\Application\Win32\Win32Application.h" />
     <ClInclude Include="..\Config\EngineConfig.h" />
     <ClInclude Include="..\Config\GraphicsConfig.h" />
@@ -90,7 +87,6 @@
     <ClInclude Include="..\Graphics\Swapchain\Vulkan\VulkanSwapchain.h" />
     <ClInclude Include="..\Includes\GraphicsIncludes.h" />
     <ClInclude Include="..\Main\EngineStd.h" />
-    <ClInclude Include="..\OSWindow\Common\CommonOSWindow.h" />
     <ClInclude Include="..\OSWindow\OSWindow.h" />
     <ClInclude Include="..\OSWindow\Win32\Win32OSWindow.h" />
     <ClInclude Include="..\Rendering\DepthTexture\Common\CommonDepthTexture.h" />

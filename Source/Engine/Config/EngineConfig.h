@@ -20,7 +20,6 @@
 
 //Platform - not really used for now?
 #define PLATFORM_IDX_WIN32 0
-#define PLATFORM_IDX_ORBIS 1  //PS4
 
 //Graphics APIs
 #define GRAPHICS_API_IDX_VULKAN 0
@@ -52,10 +51,6 @@
 //Win32 defines and the like
 #include "Win32Config.h"
 
-#endif
-
-#if ENGINE_BUILD_SETTINGS_PLATFORM == PLATFORM_IDX_ORBIS
-#define ENGINE_CONFIG_PLATFORM_ORBIS
 #endif
 
 //So we can use #ifdef and #ifndef

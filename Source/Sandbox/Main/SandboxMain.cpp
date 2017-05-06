@@ -29,33 +29,3 @@ INT WINAPI wWinMain(HINSTANCE hInstance,
 		&g_SandboxApp);
 }                
 #endif 
-
-#ifdef ENGINE_CONFIG_PLATFORM_ORBIS
-//TEMP: Until I get access to PS4
-#include <Windows.h>
-INT WINAPI wWinMain(HINSTANCE hInstance,
-	HINSTANCE hPrevInstance,
-	LPWSTR     lpCmdLine,
-	int       nCmdShow)
-{
-	//Enter in to engine main passing the game specific applcation
-	int exit = EngineMain(0, NULL, 
-		APPLICATION_VERSION_MAJOR, APPLICATION_VERSION_MINOR, APPLICATION_VERSION_PATCH,
-		&g_SandboxApp);
-
-	//Keep console open for a while. 
-	std::cin >> exit;
-	return exit;
-}
-/*
-int main(int argc, char* argv[])
-{
-	//Enter in to engine main passing the game specific applcation
-	int exit = EngineMain(argc, argv, &g_SandboxApp);
-	
-	//Keep console open for a while...
-	std::cin >> exit;
-	return exit;
-}
-*/
-#endif 

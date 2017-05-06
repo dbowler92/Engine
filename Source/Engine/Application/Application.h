@@ -15,26 +15,11 @@
 #include "Win32\Win32Application.h"
 #endif 
 
-#ifdef ENGINE_CONFIG_PLATFORM_ORBIS
-#include "Orbis\OrbisApplication.h"
-#endif
-
-//#include "../Config/EngineConfig.h" //Engine settings
-//#include <Windows.h>
-//#include "../Main/EngineStd.h"
-//#include "../Utils/GameTimer/GameTimer.h"
-
 namespace EngineAPI 
 {
 	namespace Core
 	{
 		class Application : public OS_PLATFORM_IMPLEMENTATION(Application)
-//#ifdef ENGINE_CONFIG_PLATFORM_WIN32 
-//			public EngineAPI::Core::Platform::Win32Application
-//#endif
-//#ifdef ENGINE_CONFIG_PLATFORM_ORBIS
-//			public EngineAPI::Core::Platform::OrbisApplication
-//#endif
 		{
 			HIDE_COPY_ASSIGNMENT(Application)
 		public:

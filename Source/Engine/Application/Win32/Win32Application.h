@@ -7,7 +7,16 @@
 #pragma once
 
 #include <Windows.h>
-#include "../Common/CommonApplication.h"
+
+#include "../../Config/EngineConfig.h" //Engine settings
+#include "../../Main/EngineStd.h"
+#include "../../Debug/Log/DebugLog.h" //Debug logging
+
+#include "../../Utils/GameTimer/GameTimer.h"
+#include "../../OSWindow/OSWindow.h"
+
+//Subsystems
+#include "../../Graphics/Manager/GraphicsManager.h"
 
 namespace EngineAPI
 {
@@ -15,7 +24,7 @@ namespace EngineAPI
 	{
 		namespace Platform
 		{
-			class Win32Application : public EngineAPI::Core::Interface::CommonApplication
+			class Win32Application
 			{
 				HIDE_COPY_ASSIGNMENT(Win32Application)
 			public:
@@ -70,6 +79,15 @@ namespace EngineAPI
 			protected:		
 				bool appPaused, minimized, maximized, resizing; //State of app
 				Utils::GameTimer mainGameLoopTimer;			    //Calculates frame delta
+
+			protected:
+				//Subsystems / managers
+				EngineAPI::Graphics::GraphicsManager* graphicsSubsystem;
+
+			protected:
+				//Shared data
+				EngineAPI::OS::OSWindow osWindow;
+				int appVersionMajor, appVersionMinor, appVersionPatch; //Application version
 			};
 		};
 	};

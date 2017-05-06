@@ -102,36 +102,3 @@ int EngineMain(HINSTANCE hInstance,
 	return 0;
 }
 #endif
-
-#ifdef ENGINE_CONFIG_PLATFORM_ORBIS
-int EngineMain(int argc, char* argv[], 
-	int appVersionMajor, int appVersionMinor, int appVersionPatch,
-	EngineAPI::Core::Application* gameAppInstance)
-{
-	//Ensure an app exists.  
-	if (gameAppInstance == NULL)
-		EngineAPI::Debug::DebugLog::PrintErrorMessage("EngineMain: gameAppInstance == NULL. Make sure to create a project specific Application instance.\n");
-
-	//Set app global pointer & init the engine. 
-	g_App = (EngineAPI::Core::Application*)gameAppInstance;
-	if (!g_App->InitEngine(argc, argv, appVersionMajor, appVersionMinor, appVersionPatch, 960, 540)) //Orbis
-		return -1;
-
-	//Init the game / application
-	if (!g_App->InitApplication())
-		return -2;
-
-	//Enter loop. Loops until the engine decides it needs to quit (be it an error or 
-	//whatever)
-	g_App->EnterGameLoop();
-
-	//Once game loop exits, shutdown the game followed by the engine & its subsystems
-	if (!g_App->ShutdownApplication())
-		return -3;
-	if (!g_App->ShutdownEngine())
-		return -4;
-
-	//Done. No errors it seems
-	return 0;
-}
-#endif

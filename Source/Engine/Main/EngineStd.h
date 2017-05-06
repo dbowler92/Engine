@@ -46,15 +46,6 @@ typedef uint32_t EUINT_32;
 typedef uint16_t EUINT_16;
 #endif
 
-#ifdef ENGINE_CONFIG_PLATFORM_ORBIS
-typedef char EWIDECHAR; //TODO
-typedef char ECHAR;
-typedef bool EBOOL;
-typedef int EINT;
-typedef float EFLOAT;
-typedef double EDOUBLE;
-#endif
-
 struct ESize2D
 {
 public:
@@ -104,11 +95,5 @@ typedef EUINT_32 EFlag;
 #ifdef ENGINE_CONFIG_PLATFORM_WIN32
 extern int EngineMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPWSTR lpCmdLine, int nCmdShow,
 	int appVersionMajor, int appVersionMinor, int appVersionPatch, 
-	EngineAPI::Core::Application* gameAppInstance);
-#endif
-
-#ifdef ENGINE_CONFIG_PLATFORM_ORBIS
-extern int EngineMain(int argc, char* argv[], 
-	int appVersionMajor, int appVersionMinor, int appVersionPatch,
 	EngineAPI::Core::Application* gameAppInstance);
 #endif
