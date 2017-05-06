@@ -186,7 +186,12 @@ bool VulkanRenderDevice::InitVKMemoryAllocator(EngineAPI::OS::OSWindow* osWindow
 
 	//Allocate the memory allocator/manager
 	deviceMemoryAllocator = GE_NEW DeviceMemoryAllocator();
-	//deviceMemoryAllocator->Init();
+	if (!deviceMemoryAllocator->Init())
+		return false;
+
+	//Set up some stores at the start of the application-  eg: Permanent store which should
+	//be used to store data that lives for the entire life of the app (eg: Main menu
+	//textures, 
 
 	/*
 	//Alloc device memory block(s)

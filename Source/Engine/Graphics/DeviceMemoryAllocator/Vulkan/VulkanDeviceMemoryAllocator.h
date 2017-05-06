@@ -23,6 +23,9 @@ namespace EngineAPI
 
 				//Override shutdown function
 				void Shutdown() override;
+
+				//Override init function
+				bool Init() override;
 			};
 		}
 	}

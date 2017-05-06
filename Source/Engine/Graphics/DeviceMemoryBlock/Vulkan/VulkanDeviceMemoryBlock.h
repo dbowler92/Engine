@@ -25,7 +25,15 @@ namespace EngineAPI
 				virtual ~VulkanDeviceMemoryBlock() = 0 {};
 
 				//Override shutdown
-				virtual void Shutdown() override;
+				void Shutdown() override;
+
+				//Override init
+				bool Init(EngineAPI::Graphics::DeviceMemoryStore* parentStore, EUINT_64 memoryBlockSize,
+					EUINT_64 memoryBlockOffset, bool isBlockMappable) override;
+
+			protected:
+				//Vulkan handle of the device memory this block resides in
+				VkDeviceMemory parentVKDeviceMemory = VK_NULL_HANDLE;
 			};
 		};
 	};

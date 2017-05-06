@@ -41,6 +41,7 @@ typedef bool EBOOL;
 typedef int EINT;
 typedef float EFLOAT;
 typedef double EDOUBLE;
+typedef uint64_t EUINT_64;
 typedef uint32_t EUINT_32;
 typedef uint16_t EUINT_16;
 #endif

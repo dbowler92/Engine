@@ -19,6 +19,19 @@
 //Vulkan header
 #include <vulkan\vulkan.h>
 
+//Type of store
+enum DeviceStoreType
+{
+	DEVICE_STORE_TYPE_GPU_ONLY_ALLOCATIONS,
+	DEVICE_STORE_TYPE_CPU_MAPPABLE_ALLOCATIONS
+};
+
+//Creation info for the stores
+enum DeviceStoreCreateFlags
+{
+
+};
+
 namespace EngineAPI
 {
 	namespace Graphics
@@ -37,30 +50,38 @@ namespace EngineAPI
 			public:
 				//Vulkan init. Note: Vulkan implementation will automatically allocate aligned memory which
 				//meets the minimum spec.
-				bool InitVKDeviceMemoryStore(VkDevice* logicalDevice, 
+				bool InitVKDeviceMemoryStore(VkDevice* logicalDevice,
 					VkDeviceSize deviceMemorySizeInBytesToAlloc,
-					VkPhysicalDeviceMemoryProperties* fullDeviceMemoryProperties, 
-					uint32_t memoryTypeIndex);    //Index in to VkPhysicalDeviceMemoryProperties::memoryTypes[]
+					VkPhysicalDeviceMemoryProperties* fullDeviceMemoryProperties,
+					uint32_t memoryTypeIndex);   //Index in to VkPhysicalDeviceMemoryProperties::memoryTypes[]
+			
+			public:
+				//Override alloc/dealloc functions
+				bool SubAllocMemoryBlock(EUINT_64 blockSize, EngineAPI::Graphics::DeviceMemoryBlock& allocatedBlockOut) override;
+				void DeallocBlock(const EngineAPI::Graphics::DeviceMemoryBlock* block) override;
 
 			public:
+				//Getters
+				VkDeviceMemory GetVKDeviceMemoryHandle() { return vkMemoryStoreHandle; };
+				VkDevice GetOwningVKLogicalDevice() { return cachedVkLogicalDevice; };
+				uint32_t GetVKMemoryTypeIndex() { return vkMemoryTypeIndex; };
+				VkBool32 IsVKMemoryMappable() { return vkIsStoreMemoryMappable; };
 
 			protected:
 				//Handle to the VK memory store
 				VkDeviceMemory vkMemoryStoreHandle = VK_NULL_HANDLE;
 
+				//Vulkan memory type index for this store
+				uint32_t vkMemoryTypeIndex;
+
+				//Vulkan memory property flags
+				VkMemoryPropertyFlags vkMemoryPropertyFlags;
+
+				//Is the store mappable?
+				VkBool32 vkIsStoreMemoryMappable = false;
+
 				//Cached logical device - the 'owner' of this store
 				VkDevice cachedVkLogicalDevice = VK_NULL_HANDLE;
-
-				//Size of the memory store in bytes
-				VkDeviceSize memoryStoreSizeBytes = 0;
-
-				//Used when suballocating from this store. For the time being, everytime we suballoc
-				//from the block, we will move the offset along (move the 'pointer' from where
-				//we can suballoc more memory) - no defraging, no resizing etc. 
-				//
-				//Must be < memoryStoreSizeBytes (otherwise we would be suballocating from 
-				//outside the memory block)
-				VkDeviceSize suballocMemoryOffset = 0;
 			};
 		};
 	};

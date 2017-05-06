@@ -16,6 +16,16 @@ namespace EngineAPI
 {
 	namespace Graphics
 	{
+		class CommandBufferPool;
+		class CommandQueueFamily;
+		class DeviceMemoryAllocator;
+	};
+};
+
+namespace EngineAPI
+{
+	namespace Graphics
+	{
 		namespace Interface
 		{
 			class CommonRenderDevice
@@ -26,6 +36,14 @@ namespace EngineAPI
 
 				//Override this shutdown function for each API implementation
 				virtual void Shutdown() = 0 {};
+
+			public:
+				//Returns the managers
+				EngineAPI::Graphics::DeviceMemoryAllocator* GetDeviceMemoryAllocator() { return deviceMemoryAllocator; };
+
+			protected:
+				//Device memory manager / allocator
+				EngineAPI::Graphics::DeviceMemoryAllocator* deviceMemoryAllocator = nullptr;
 			};
 		};
 	};

@@ -75,15 +75,12 @@ namespace EngineAPI
 				//Can ask a queue family if it supports presentation work!
 				PFN_vkGetPhysicalDeviceSurfaceSupportKHR fpGetPhysicalDeviceSurfaceSupportKHR = VK_NULL_HANDLE;
 
-			private:
-				//Vulkan command buffer pool(s)
-				CommandBufferPool* commandBufferPoolsArray = nullptr;
+			protected:
+				//command buffer pool(s)
+				EngineAPI::Graphics::CommandBufferPool* commandBufferPoolsArray = nullptr;
 
 				//Graphics queue family and queues - general rendering
-				CommandQueueFamily* graphicsQueueFamily = nullptr;
-
-				//Device memory manager / allocator
-				DeviceMemoryAllocator* deviceMemoryAllocator = nullptr;
+				EngineAPI::Graphics::CommandQueueFamily* graphicsQueueFamily = nullptr;
 
 			private:
 				//Vk allocation/init

@@ -10,6 +10,9 @@ bool VulkanDeviceMemoryStore::InitVKDeviceMemoryStore(VkDevice* logicalDevice,
 	//Cache the logical device
 	cachedVkLogicalDevice = *logicalDevice;
 
+	//Cache the memory property flag for future use
+	vkMemoryPropertyFlags = fullDeviceMemoryProperties->memoryTypes[memoryTypeIndex].propertyFlags;
+
 	//Are we requesting more bytes than is available?
 	uint32_t heapIndex = fullDeviceMemoryProperties->memoryTypes[memoryTypeIndex].heapIndex;
 	VkDeviceSize maxHeapSize = fullDeviceMemoryProperties->memoryHeaps[heapIndex].size;
@@ -20,8 +23,10 @@ bool VulkanDeviceMemoryStore::InitVKDeviceMemoryStore(VkDevice* logicalDevice,
 		return false;
 	}
 
-	//TODO: Does this heap && type support what we need from it?
-
+	//Check if memory is  mappable
+	bool isMemoryMappable = false;
+	if (vkMemoryPropertyFlags & VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT)
+		isMemoryMappable = true;
 
 	//Alloc info struct
 	VkMemoryAllocateInfo allocInfo = {};
@@ -30,7 +35,7 @@ bool VulkanDeviceMemoryStore::InitVKDeviceMemoryStore(VkDevice* logicalDevice,
 	allocInfo.allocationSize = deviceMemorySizeInBytesToAlloc;
 	allocInfo.memoryTypeIndex = memoryTypeIndex;
 
-	//Alloc block of memory
+	//Alloc a chunk of memory for this store.
 	VkResult result = vkAllocateMemory(cachedVkLogicalDevice, &allocInfo, nullptr, &vkMemoryStoreHandle);
 	if (result != VK_SUCCESS)
 	{
@@ -39,19 +44,53 @@ bool VulkanDeviceMemoryStore::InitVKDeviceMemoryStore(VkDevice* logicalDevice,
 		return false;
 	}
 
-	//Cache size of the block
+	//Cache data RE this store
 	memoryStoreSizeBytes = allocInfo.allocationSize;
+	vkMemoryTypeIndex = memoryTypeIndex;
+	vkIsStoreMemoryMappable = isMemoryMappable;
 
+	//Get the host memory pointer if available
+	if (isMemoryMappable)
+	{
+		VkResult result = vkMapMemory(cachedVkLogicalDevice, vkMemoryStoreHandle, 0, memoryStoreSizeBytes, VK_WHOLE_SIZE, &hostStorePtr);
+		if ((result != VK_SUCCESS) || hostStorePtr == nullptr)
+		{
+			//Error?
+			EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanDeviceMemoryBlock::InitVKDeviceMemoryBlock() - Could not map memory to obtain host store pointer.\n");
+			return false;
+		}
+	}
+	
 	//Done
 	return true;
 }
 
 void VulkanDeviceMemoryStore::Shutdown()
 {
+	//Clear all blocks in this store
+	for (int i = 0; i < memoryBlocksArray.size(); i++)
+		memoryBlocksArray[i].Shutdown();
+	memoryBlocksArray.clear();
+
 	//Free the memory block
 	vkFreeMemory(cachedVkLogicalDevice, vkMemoryStoreHandle, nullptr);
 	vkMemoryStoreHandle = VK_NULL_HANDLE;
 
 	memoryStoreSizeBytes = 0;
-	suballocMemoryOffset = 0;
+}
+
+bool VulkanDeviceMemoryStore::SubAllocMemoryBlock(EUINT_64 blockSize, EngineAPI::Graphics::DeviceMemoryBlock& allocatedBlockOut)
+{
+
+
+	//Done
+	return true;
+}
+
+void VulkanDeviceMemoryStore::DeallocBlock(const EngineAPI::Graphics::DeviceMemoryBlock* block)
+{
+	//TODO:
+	//
+	//Currently just sets the block to true
+	//auto blockItterator(std::find(memoryBlocksArray.begin(), memoryBlocksArray.end(), block));
 }

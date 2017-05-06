@@ -11,7 +11,7 @@ bool VulkanTexture2D::InitVKTexture2D(EngineAPI::Graphics::RenderDevice* renderi
 	VkResult result = vkCreateImage(cachedVkDevice, imageCreateInfo, nullptr, &vkImageHandle);
 	if (result != VK_SUCCESS)
 	{
-		EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanTextureResource::InitVKTexture() - Error: Could not create VkImage\n");
+		EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanTexture2D::InitVKTexture2D() - Error: Could not create VkImage\n");
 		return false;
 	}
 
@@ -20,6 +20,7 @@ bool VulkanTexture2D::InitVKTexture2D(EngineAPI::Graphics::RenderDevice* renderi
 	vkGetImageMemoryRequirements(cachedVkDevice, vkImageHandle, &textureMemoryRequirments);
 
 	//Alloc memory for the texture on the device
+	EngineAPI::Graphics::DeviceMemoryAllocator* memoryAllocator = renderingDevice->GetDeviceMemoryAllocator();
 
 	//Bind texture to device memory
 
