@@ -15,19 +15,6 @@
 //Contains a list of memory stores
 #include "../../DeviceMemoryStore/DeviceMemoryStore.h"
 
-//Allocation info
-enum DeviceAllocationResourceType
-{
-	DEVICE_ALLOCATION_RESOURCE_TYPE_TEXTURE,
-	DEVICE_ALLOCATION_RESOURCE_TYPE_BUFFER,
-	DEVICE_ALLOCATION_RESOURCE_TYPE_RENDER_TARGET
-};
-
-typedef enum DeviceAllocationFlagsBits
-{
-	DEVICE_ALLOCATION_FLAG_PERMENENT_STORE_FLAG = 0x0000001,
-} DeviceAllocationFlagsBits;
-typedef EFlag DeviceAllocationFlag;
 
 namespace EngineAPI
 {
@@ -41,15 +28,15 @@ namespace EngineAPI
 				VulkanDeviceMemoryAllocator() {};
 				virtual ~VulkanDeviceMemoryAllocator() = 0 {};
 
-				//Override shutdown function
+				//Cleansup
 				void Shutdown();
 
-				//Override init function
-				bool Init();
+				//Inits the Vk Allocator
+				bool InitVKMemoryAllocator();
 
 			public:
 				//Creates a brand new store for a given purpose
-				//virtual bool AllocMemoryStore(DeviceStoreType storeRole, EUINT_64 storeSizeBytes) = 0;
+				//bool AllocMemoryStore(DeviceStoreType storeRole, VkDeviceSize storeSizeBytes) = 0;
 
 			protected:
 				//Array of stores

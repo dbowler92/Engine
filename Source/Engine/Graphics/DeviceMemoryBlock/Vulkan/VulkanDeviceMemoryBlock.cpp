@@ -8,8 +8,8 @@ using namespace EngineAPI::Graphics::Platform;
 void VulkanDeviceMemoryBlock::Shutdown()
 {}
 
-bool VulkanDeviceMemoryBlock::Init(EngineAPI::Graphics::DeviceMemoryStore* parentStore, EUINT_64 memoryBlockSize,
-	EUINT_64 memoryBlockOffset, bool isBlockMappable)
+bool VulkanDeviceMemoryBlock::InitVKMemoryBlock(EngineAPI::Graphics::DeviceMemoryStore* parentStore, VkDeviceSize memoryBlockSize,
+	VkDeviceSize memoryBlockOffset, bool isBlockMappable)
 {
 	//Cache data for this block
 	this->parentStore = parentStore;

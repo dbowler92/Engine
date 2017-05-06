@@ -113,17 +113,22 @@ bool VulkanRenderDevice::InitVKLogicalDeviceAndQueues(EngineAPI::OS::OSWindow* o
 	
 	//TEMP: Ensure that the graphics and presentation queues are the same
 	if (!isSameQueueFamily)
+	{
+		EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanRenderDevice::Init(): Graphics queue family and present queue family are not the same. Support for this is on the list of things to do!");
 		return false;
+	}
 
 	//Graphics queue creation - returns the struct needed when creating the 
 	//logical device. Note: Until we need a queue with support
 	//for compute, we don't need to change VkDeviceQueueCreateInfo::pNext!
 	graphicsQueueFamily = GE_NEW CommandQueueFamily();
 
+	VkQueueFlags queueFlag = vkQueueFamiliesArray[graphicsQueueFamilyIdx].queueFlags;
+
 	VkDeviceQueueCreateInfo graphicsQueueCreateInfo = {};
 	float queuePriorities[1] = { 0.0 };
-	graphicsQueueFamily->InitVulkanQueueFamily(&vkLogicalDevice,
-		QUEUE_FAMILY_SUPPORT_GRAPHICS_AND_PRESENTATION, graphicsQueueFamilyIdx,
+	graphicsQueueFamily->InitVKQueueFamily(&vkLogicalDevice,
+		graphicsQueueFamilyIdx, queueFlag,
 		ENGINE_CONFIG_VULKAN_API_GRAPHICS_QUEUE_COUNT, queuePriorities,
 		&graphicsQueueCreateInfo);
 
@@ -157,7 +162,7 @@ bool VulkanRenderDevice::InitVKLogicalDeviceAndQueues(EngineAPI::OS::OSWindow* o
 	}
 
 	//Cache queue handle object(s) once logical device has been created
-	if (!graphicsQueueFamily->InitVulkanQueues(&vkLogicalDevice))
+	if (!graphicsQueueFamily->InitVKQueues(&vkLogicalDevice))
 		return false;
 
 	//Done
@@ -186,45 +191,8 @@ bool VulkanRenderDevice::InitVKMemoryAllocator(EngineAPI::OS::OSWindow* osWindow
 
 	//Allocate the memory allocator/manager
 	deviceMemoryAllocator = GE_NEW DeviceMemoryAllocator();
-	if (!deviceMemoryAllocator->Init())
+	if (!deviceMemoryAllocator->InitVKMemoryAllocator())
 		return false;
-
-	//Set up some stores at the start of the application-  eg: Permanent store which should
-	//be used to store data that lives for the entire life of the app (eg: Main menu
-	//textures, 
-
-	/*
-	//Alloc device memory block(s)
-	//
-	//1) Global static memory -> Will contain GPU data that is loaded at the start of the
-	//application and remains loaded right through the entire game. Eg: menu text/textures etc 
-	globalStaicMemoryBlock = GE_NEW DeviceMemoryBlock();
-	if (!globalStaicMemoryBlock->InitVKDeviceMemoryBlock(&vkLogicalDevice,
-		MEB_TO_BYTES(ENGINE_CONFIG_VULKAN_API_GLOBAL_STATIC_MEMORY_BLOCK_SIZE_MB),
-		&vkDeviceMemoryProperties, vkMemoryTypeIndexForEfficientDeviceOnlyAllocations))
-	{
-		EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanRenderDevice::InitVKMemoryBlocks(): Error initing global static memory block\n");
-		return false;
-	}
-
-	//2) Initial memory block used for static (not CPU read/writable) render targets (GBuffers if 
-	//deferred is used and general gameplay render targets - Eg: Render-to-texture)
-	//&& depth buffers (eg: One created with swapchain).
-	//
-	//Since a) The swapchain && depth buffer and/or GBuffers maybe resized at runtime due to user
-	//settings and b) we don't know at compile time how many render targets we may need, we need to
-	//ensure that the engine will handle the situation that we have ran out of memory for this memory
-	//block - hence the fact we have a std::vector of these blocks. 
-	staticRenderTargetsMemoryBlocksArray.resize(1); 
-	staticRenderTargetsMemoryBlocksArray[0] = GE_NEW DeviceMemoryBlock();
-	if (!staticRenderTargetsMemoryBlocksArray[0]->InitVKDeviceMemoryBlock(&vkLogicalDevice,
-		MEB_TO_BYTES(ENGINE_CONFIG_VULKAN_API_STAITC_RENDER_TARGETS_MEMORY_BLOCK_SIZE_MB),
-		&vkDeviceMemoryProperties, vkMemoryTypeIndexForEfficientDeviceOnlyAllocations))
-	{
-		EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanRenderDevice::InitVKMemoryBlocks(): Error initing initial static render targets memory block\n");
-		return false;
-	}
-	*/
 
 	//Done
 	return true;

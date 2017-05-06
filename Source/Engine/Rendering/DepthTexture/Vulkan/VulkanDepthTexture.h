@@ -40,8 +40,8 @@ namespace EngineAPI
 				VulkanDepthTexture() {};
 				virtual ~VulkanDepthTexture() = 0 {};
 
-				//Override init and shutdown with Vulkan specific code. 
-				bool Init(EngineAPI::Graphics::RenderDevice* renderingDevice,
+				//Init and shutdown
+				bool InitVKDepthTexture(EngineAPI::Graphics::RenderDevice* renderingDevice,
 					DepthTextureFormat depthTextureFormat, ESize2D depthTextureDimentions,
 					DepthTextureUsageFlag depthTextureUsageFlags);
 				void Shutdown();

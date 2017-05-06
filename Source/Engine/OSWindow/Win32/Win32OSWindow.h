@@ -35,7 +35,7 @@ namespace EngineAPI
 				unsigned GetWindowWidth() { return windowWidth; };
 				unsigned GetWindowHeight() { return windowHeight; };
 
-				//Returns Win32 data - TODO: Really want a more generic way of doing this tbh...
+				//Returns Win32 data 
 				HINSTANCE GetAppInstanceHandle()   { return appInstanceHandle; };
 				HWND      GetAppMainWindowHandle() { return appMainWindowHandle; };
 

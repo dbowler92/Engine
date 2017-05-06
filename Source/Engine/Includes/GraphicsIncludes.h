@@ -6,7 +6,9 @@
 
 #pragma once
 
+#ifdef ENGINE_CONFIG_GRAPHICS_API_VULKAN
 #include "../Graphics/Statics/Vulkan/VulkanStatics.h" //Helper / static functions
+#endif
 
 #include "../Graphics/Manager/GraphicsManager.h"
 #include "../Graphics/Instance/RenderInstance.h"

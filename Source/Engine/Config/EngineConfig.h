@@ -6,10 +6,6 @@
 
 #pragma once
 
-//Picks the common / base class that platform / API specific implementations will inherit from. Eg:
-//class Win32OSWindow : public COMMON_IMPLEMENTATION(OSWindow)
-#define COMMON_IMPLEMENTATION(TYPE) Interface::Common##TYPE
-
 //Engine name
 #define ENGINE_NAME "Real Engine 4"
 

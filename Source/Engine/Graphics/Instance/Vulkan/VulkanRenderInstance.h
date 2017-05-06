@@ -32,7 +32,7 @@ namespace EngineAPI
 				VulkanRenderInstance(){};
 				virtual ~VulkanRenderInstance() = 0 {};
 
-				//Override shutdown functions
+				//Cleansup at the end of the app life cycle
 				void Shutdown();
 
 				//Inits the VK instance
@@ -42,8 +42,8 @@ namespace EngineAPI
 				//Returns the Vulkan instance
 				VkInstance GetVKInstance() { return vkInstance; };
 
-				//Returns a list of enabled (if vkInstance was created succesfully, anyway) instance layers
-				//and instance extentions
+				//Returns a list of enabled (if vkInstance was created successfully, anyway) instance layers
+				//and instance extensions
 				std::vector<const char*>* GetVKEnabledInstanceLayersList();
 				std::vector<const char*>* GetVKEnabledInstanceExtentionsList();
 
@@ -61,16 +61,16 @@ namespace EngineAPI
 				VkDebugReportCallbackCreateInfoEXT debugReportCreateInfo = {};
 #endif
 			private:
-				//Validate requested instance layers and extentions. We will
-				//pass a list of layers and extentions to this function that we wish
+				//Validate requested instance layers and extensions. We will
+				//pass a list of layers and extensions to this function that we wish
 				//to enable and these functions will see if they are available for us
 				//to use. 
 				//
-				//Currently, they will return false if the desired layers and/or extentions
+				//Currently, they will return false if the desired layers and/or extensions
 				//are not available and the app should probably quit at this point. A better solution
 				//would be to attempt to continue with the reduced feature set. Eg: If the 
-				//Win32 surface extention is not available, the graphics subsystem would attempt
-				//to find a solution to intergrate with the OS window using alternative
+				//Win32 surface extension is not available, the graphics subsystem would attempt
+				//to find a solution to integrate with the OS window using alternative
 				//techniques
 				bool ValidateVKInstanceLayers(std::vector<const char*> *desiredInstanceLayers);
 				bool ValidateVKInstanceExtentions(std::vector<const char*> *desiredInstanceExtentions);

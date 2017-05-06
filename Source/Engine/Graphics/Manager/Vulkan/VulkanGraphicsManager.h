@@ -5,11 +5,9 @@
 //Represents the Vulkan API implementation of the common graphics manager. Sets up Vulkan
 //for us and interacts with the OS window provided
 //
-//Vulkan works on Win32, Android* and Linux** as of now.
+//Vulkan works on Win32, Android* and Linux* as of now.
 //
-//*Not supported nor planned. 
-//**Not supported... but I may add Linux support in the future rather than (or in addition too)
-//the PS4 to show off multiplatform nature of this engine (should look good on my CV). 
+//*Not supported nor planned in this engine as of now
 
 #pragma once
 

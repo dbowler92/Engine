@@ -30,7 +30,7 @@ namespace EngineAPI
 				VulkanCommandBufferPool() {};
 				virtual ~VulkanCommandBufferPool() = 0 {};
 
-				//Override shutdown function
+				//Cleansup
 				void Shutdown();
 
 			public:

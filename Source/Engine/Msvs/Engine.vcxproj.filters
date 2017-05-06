@@ -79,9 +79,6 @@
     <Filter Include="Src\Graphics\RenderCommand Buffer\Vulkan">
       <UniqueIdentifier>{332ff3d7-1728-42e8-bde5-a7e6c1264c1e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Src\Graphics\RenderCommand Buffer\Common">
-      <UniqueIdentifier>{413981c0-bb92-439a-b4db-03067f889973}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Src\Graphics\CommandBufferPool">
       <UniqueIdentifier>{9224023b-e6e5-4862-8ad5-59d6ae3dd2fb}</UniqueIdentifier>
     </Filter>
@@ -93,9 +90,6 @@
     </Filter>
     <Filter Include="Src\Graphics\CommandQueue">
       <UniqueIdentifier>{37e547fe-28ac-40b1-a234-2ce13a8f7125}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Src\Graphics\CommandQueue\Common">
-      <UniqueIdentifier>{fc0f5701-1d24-46f5-b40b-6a0a6df97cfc}</UniqueIdentifier>
     </Filter>
     <Filter Include="Src\Graphics\CommandQueue\Vulkan">
       <UniqueIdentifier>{30a259c7-af51-4745-9202-3e9a7a330095}</UniqueIdentifier>
@@ -266,9 +260,6 @@
     <ClInclude Include="..\Graphics\RenderCommandBuffer\RenderCommandBuffer.h">
       <Filter>Src\Graphics\RenderCommand Buffer</Filter>
     </ClInclude>
-    <ClInclude Include="..\Graphics\RenderCommandBuffer\Common\CommonRenderCommandBuffer.h">
-      <Filter>Src\Graphics\RenderCommand Buffer\Common</Filter>
-    </ClInclude>
     <ClInclude Include="..\Graphics\RenderCommandBuffer\Vulkan\VulkanRenderCommandBuffer.h">
       <Filter>Src\Graphics\RenderCommand Buffer\Vulkan</Filter>
     </ClInclude>
@@ -289,9 +280,6 @@
     </ClInclude>
     <ClInclude Include="..\Graphics\CommandQueue\CommandQueue.h">
       <Filter>Src\Graphics\CommandQueue</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Graphics\CommandQueue\Common\CommonCommandQueue.h">
-      <Filter>Src\Graphics\CommandQueue\Common</Filter>
     </ClInclude>
     <ClInclude Include="..\Graphics\CommandQueue\Vulkan\VulkanCommandQueue.h">
       <Filter>Src\Graphics\CommandQueue\Vulkan</Filter>

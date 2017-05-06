@@ -5,7 +5,7 @@ using namespace EngineAPI::Graphics::Platform;
 void VulkanDeviceMemoryAllocator::Shutdown()
 {}
 
-bool VulkanDeviceMemoryAllocator::Init()
+bool VulkanDeviceMemoryAllocator::InitVKMemoryAllocator()
 {
 	//...
 	return true;

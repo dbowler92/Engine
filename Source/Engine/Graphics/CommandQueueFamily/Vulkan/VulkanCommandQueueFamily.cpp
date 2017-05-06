@@ -15,8 +15,8 @@ void VulkanCommandQueueFamily::Shutdown()
 	}
 }
 
-bool VulkanCommandQueueFamily::InitVulkanQueueFamily(VkDevice* logicalDevice, QueueFamilySupport role,
-	uint32_t vkQueueFamilyIndex, unsigned queueCount, float* queuesPriorties, 
+bool VulkanCommandQueueFamily::InitVKQueueFamily(VkDevice* logicalDevice,
+	uint32_t vkQueueFamilyIndex, VkQueueFlags queueSupportFlag, unsigned queueCount, float* queuesPriorties,
 	VkDeviceQueueCreateInfo* creationStructOut)
 {
 	if (!creationStructOut)
@@ -26,7 +26,7 @@ bool VulkanCommandQueueFamily::InitVulkanQueueFamily(VkDevice* logicalDevice, Qu
 	}
 
 	//Cache info
-	queueFamilyRole = role;
+	vkQueueFamilySupportFlags = queueSupportFlag;
 	commandQueuesCount = queueCount;
 	this->vkQueueFamilyIndex = vkQueueFamilyIndex;
 	this->queuesPrioritiesArray = GE_NEW float[queueCount];
@@ -48,7 +48,7 @@ bool VulkanCommandQueueFamily::InitVulkanQueueFamily(VkDevice* logicalDevice, Qu
 	return true;
 }
 
-bool VulkanCommandQueueFamily::InitVulkanQueues(VkDevice* logicalDevice)
+bool VulkanCommandQueueFamily::InitVKQueues(VkDevice* logicalDevice)
 {
 	//Init each queue in this family
 	for (int i = 0; i < commandQueuesCount; i++)

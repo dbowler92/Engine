@@ -5,74 +5,13 @@ using namespace EngineAPI::Graphics::Platform;
 bool VulkanSwapchain::InitVKLogicalSurface(EngineAPI::OS::OSWindow* osWindow,
 	EngineAPI::Graphics::RenderInstance* renderingInstance)
 {
-#ifdef ENGINE_CONFIG_PLATFORM_WIN32
-	return InitWin32LogicalSurface(osWindow, renderingInstance);
-#endif
-}
-
-bool VulkanSwapchain::InitVKSwapchain(EngineAPI::OS::OSWindow* osWindow,
-	EngineAPI::Graphics::RenderInstance* renderingInstance,
-	EngineAPI::Graphics::RenderDevice* renderingDevice)
-{
-#ifdef ENGINE_CONFIG_PLATFORM_WIN32
-	return InitWin32Swapchain(osWindow, renderingInstance, renderingDevice);
-#endif
-}
-
-void VulkanSwapchain::Shutdown()
-{
-	//Cleanup array data
-	delete[] surfaceFormatsArray;
-	delete[] presentationModesArray;
-
-	//Destroy depth texture
-	if (depthTexture)
-	{
-		depthTexture->Shutdown();
-		delete depthTexture;
-	}
-
-	//Delete image views - we own these not the WSI extention (unlike the underlying image)
-	for (int i = 0; i < vkSwapchainColourImagesCount; i++)
-		vkDestroyImageView(cachedVKDevice, vkSwapchainColourImageViews[i], nullptr);
-	delete[] vkSwapchainColourImageViews;
-
-	//Delete array of handles to the swapchain images  - DO NOT DELETE the
-	//actual images -> The extention owns them and will destroy them
-	//for us
-	delete[] vkSwapchainColourImages;
-
-	//Destroy swapchain
-	fpDestroySwapchainKHR(cachedVKDevice, vkSwapchainHandle, nullptr);
-	vkSwapchainHandle = VK_NULL_HANDLE;
-
-	//vkDestroySurfaceKHR(cachedVKInstance, vkSurfaceHandle, nullptr);
-	fpDestroySurfaceKHR(cachedVKInstance, vkSurfaceHandle, nullptr);
-	vkSurfaceHandle = VK_NULL_HANDLE;
-}
-
-bool VulkanSwapchain::OnResize(ESize2D newWindowSize)
-{
-	//TODO
-
-	//Done
-	return true;
-}
-
-//
-//Win32
-//
-#ifdef ENGINE_CONFIG_PLATFORM_WIN32
-bool VulkanSwapchain::InitWin32LogicalSurface(EngineAPI::OS::OSWindow* osWindow,
-	EngineAPI::Graphics::RenderInstance* renderingInstance)
-{
 	//Cache instance
 	cachedVKInstance = renderingInstance->GetVKInstance();
 
 	//Query for WSI extension function pointers
 	if (!CacheInstanceExtentionFunctions(cachedVKInstance))
 		return false;
-	
+
 	//Create logical surface
 	VkWin32SurfaceCreateInfoKHR logicalSurfaceCreateInfo = {};
 	logicalSurfaceCreateInfo.sType = VK_STRUCTURE_TYPE_WIN32_SURFACE_CREATE_INFO_KHR;
@@ -92,7 +31,7 @@ bool VulkanSwapchain::InitWin32LogicalSurface(EngineAPI::OS::OSWindow* osWindow,
 	return true;
 }
 
-bool VulkanSwapchain::InitWin32Swapchain(EngineAPI::OS::OSWindow* osWindow,
+bool VulkanSwapchain::InitVKSwapchain(EngineAPI::OS::OSWindow* osWindow,
 	EngineAPI::Graphics::RenderInstance* renderingInstance,
 	EngineAPI::Graphics::RenderDevice* renderingDevice)
 {
@@ -134,11 +73,11 @@ bool VulkanSwapchain::InitWin32Swapchain(EngineAPI::OS::OSWindow* osWindow,
 	//3) number of buffers
 	if (!SelectDefaultVKSwapchainImageCount())
 		return false;
-	
+
 	//4) Presentation mode/state
 	if (!SelectDefaultVKPresentationMode())
 		return false;
-	
+
 	//5) Pre transform
 	if (!SelectDefaultVKPreTransform())
 		return false;
@@ -164,7 +103,46 @@ bool VulkanSwapchain::InitWin32Swapchain(EngineAPI::OS::OSWindow* osWindow,
 	//Done
 	return true;
 }
-#endif
+
+void VulkanSwapchain::Shutdown()
+{
+	//Cleanup array data
+	delete[] surfaceFormatsArray;
+	delete[] presentationModesArray;
+
+	//Destroy depth texture
+	if (depthTexture)
+	{
+		depthTexture->Shutdown();
+		delete depthTexture;
+	}
+
+	//Delete image views - we own these not the WSI extention (unlike the underlying image)
+	for (int i = 0; i < vkSwapchainColourImagesCount; i++)
+		vkDestroyImageView(cachedVKDevice, vkSwapchainColourImageViews[i], nullptr);
+	delete[] vkSwapchainColourImageViews;
+
+	//Delete array of handles to the swapchain images  - DO NOT DELETE the
+	//actual images -> The extention owns them and will destroy them
+	//for us
+	delete[] vkSwapchainColourImages;
+
+	//Destroy swapchain
+	fpDestroySwapchainKHR(cachedVKDevice, vkSwapchainHandle, nullptr);
+	vkSwapchainHandle = VK_NULL_HANDLE;
+
+	//vkDestroySurfaceKHR(cachedVKInstance, vkSurfaceHandle, nullptr);
+	fpDestroySurfaceKHR(cachedVKInstance, vkSurfaceHandle, nullptr);
+	vkSurfaceHandle = VK_NULL_HANDLE;
+}
+
+bool VulkanSwapchain::OnResize(ESize2D newWindowSize)
+{
+	//TODO
+
+	//Done
+	return true;
+}
 
 bool VulkanSwapchain::CacheInstanceExtentionFunctions(VkInstance instance)
 {
@@ -574,7 +552,7 @@ bool VulkanSwapchain::CreateDepthBuffer(EngineAPI::Graphics::RenderDevice* rende
 	DepthTextureUsageFlag usageFlag = 0; //No need for shader input
 	
 	//Init - 
-	if (!depthTexture->Init(renderingDevice, GRAPHICS_CONFIG_DEPTH_TEXTURE_FORMAT, depthTextureDimentions, usageFlag))
+	if (!depthTexture->InitVKDepthTexture(renderingDevice, GRAPHICS_CONFIG_DEPTH_TEXTURE_FORMAT, depthTextureDimentions, usageFlag))
 	{
 		EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanSwapchain::CreateDepthBuffer() - Error initing depth texture\n");
 		return false;

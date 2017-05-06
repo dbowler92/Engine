@@ -19,6 +19,10 @@ c:\users\b1032464\documents\programming\engine\engine\source\temp\enginewin32deb
 c:\users\b1032464\documents\programming\engine\engine\source\temp\enginewin32debug\vulkantexture2d.obj
 c:\users\b1032464\documents\programming\engine\engine\source\temp\enginewin32debug\vulkantextureresource.obj
 c:\users\b1032464\documents\programming\engine\engine\source\temp\enginewin32debug\gametimer.obj
+c:\users\b1032464\documents\programming\engine\engine\source\temp\enginewin32debug\vulkandepthtexture.obj
+c:\users\b1032464\documents\programming\engine\engine\source\temp\enginewin32debug\graphicsmanager.obj
+c:\users\b1032464\documents\programming\engine\engine\source\temp\enginewin32debug\vulkandevicememorystore.obj
+c:\users\b1032464\documents\programming\engine\engine\source\temp\enginewin32debug\vulkandevicememoryallocator.obj
 c:\users\b1032464\documents\programming\engine\engine\source\lib\win32debug\engine.lib
 c:\users\b1032464\documents\programming\engine\engine\source\engine\msvs\..\..\lib\win32debug\engine.pdb
 c:\users\b1032464\documents\programming\engine\engine\source\engine\msvs\..\..\lib\win32debug\engine.lib

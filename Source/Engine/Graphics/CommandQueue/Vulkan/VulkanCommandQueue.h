@@ -21,7 +21,7 @@ namespace EngineAPI
 				VulkanCommandQueue() {};
 				virtual ~VulkanCommandQueue() = 0 {};
 
-				//Override shutdown function
+				//Cleansup
 				void Shutdown();
 
 				//Vulkan init

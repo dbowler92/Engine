@@ -2,7 +2,7 @@
 
 using namespace EngineAPI::Rendering::Platform;
 
-bool VulkanDepthTexture::Init(EngineAPI::Graphics::RenderDevice* renderingDevice,
+bool VulkanDepthTexture::InitVKDepthTexture(EngineAPI::Graphics::RenderDevice* renderingDevice,
 	DepthTextureFormat depthTextureFormat, ESize2D depthTextureDimentions,
 	DepthTextureUsageFlag depthTextureUsageFlags)
 {

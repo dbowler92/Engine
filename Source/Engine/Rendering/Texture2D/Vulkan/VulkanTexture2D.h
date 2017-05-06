@@ -31,7 +31,7 @@ namespace EngineAPI
 				void Shutdown();
 
 			public:
-				//Inits the Vulkan texture2D (aka, VkImage) - TODO: Replace with a less platform specific Init function!
+				//Inits the Vulkan texture2D (aka, VkImage)
 				bool InitVKTexture2D(EngineAPI::Graphics::RenderDevice* renderingDevice, VkImageCreateInfo* imageCreateInfo);
 
 			protected:

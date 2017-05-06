@@ -4,9 +4,10 @@
 //
 //Represents a store of device memory (GPU local or, perhaps, host local && GPU visible). Vulkan provides the application developer
 //the ability to manage GPU memory (In, say, D3D11, this was handled by the driver). This class
-//will represent a single store of memory for use in the application (Eg: A memory store could be 
-//allocated for data that persists throughout the entire game. Another store for
-//textures, another for buffers and another for short term allocations)
+//will represent a single store of memory for use in the application. We can then suballocate
+//a block from this store when needed. Note: You may have several stores each of which support
+//the same memory index -> For example, when we run out of space for GPU only allocations, a new
+//store will be allocated that handle GPU only allocs. 
 //
 //TODO: Maybe subject of my MSc dissertation. Failing that, this is a big topic which
 //could be a lot of fun to explore!
@@ -28,19 +29,6 @@
 //Vulkan header
 #include <vulkan\vulkan.h>
 
-//Type of store
-enum DeviceStoreType
-{
-	DEVICE_STORE_TYPE_GPU_ONLY_ALLOCATIONS,
-	DEVICE_STORE_TYPE_CPU_MAPPABLE_ALLOCATIONS
-};
-
-//Creation info for the stores
-enum DeviceStoreCreateFlags
-{
-
-};
-
 namespace EngineAPI
 {
 	namespace Graphics
@@ -53,7 +41,7 @@ namespace EngineAPI
 				VulkanDeviceMemoryStore() {};
 				virtual ~VulkanDeviceMemoryStore() = 0 {};
 
-				//Override shutdown
+				//Cleansup - frees all blocks from the store
 				void Shutdown();
 
 			public:
@@ -65,9 +53,9 @@ namespace EngineAPI
 					uint32_t memoryTypeIndex);   //Index in to VkPhysicalDeviceMemoryProperties::memoryTypes[]
 			
 			public:
-				//Override alloc/dealloc functions
-				bool SubAllocMemoryBlock(EUINT_64 blockSize, EngineAPI::Graphics::DeviceMemoryBlock& allocatedBlockOut);
-				void DeallocBlock(const EngineAPI::Graphics::DeviceMemoryBlock* block);
+				//Sub alloc and free
+				bool SubAllocMemoryBlock(VkDeviceSize blockSize, EngineAPI::Graphics::DeviceMemoryBlock& allocatedBlockOut);
+				void FreeBlock(const EngineAPI::Graphics::DeviceMemoryBlock* block);
 
 			public:
 				//Getters
@@ -75,7 +63,7 @@ namespace EngineAPI
 				VkDevice GetOwningVKLogicalDevice() { return cachedVkLogicalDevice; };
 				uint32_t GetVKMemoryTypeIndex() { return vkMemoryTypeIndex; };
 				VkBool32 IsVKMemoryMappable() { return vkIsStoreMemoryMappable; };
-				EUINT_64 GetMemoryStoreSizeBytes() { return memoryStoreSizeBytes; };
+				VkDeviceSize GetMemoryStoreSizeBytes() { return memoryStoreSizeBytes; };
 				std::vector<EngineAPI::Graphics::DeviceMemoryBlock>* GetMemoryBlocksArray() { return &memoryBlocksArray; };
 
 			protected:
@@ -96,7 +84,7 @@ namespace EngineAPI
 
 			protected:
 				//Size of the store in bytes
-				EUINT_64 memoryStoreSizeBytes = 0;
+				VkDeviceSize memoryStoreSizeBytes = 0;
 
 				//Pointer to the begining of the store if host visible memory
 				void* hostStorePtr = nullptr;

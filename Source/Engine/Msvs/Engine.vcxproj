@@ -53,7 +53,6 @@
     <ClInclude Include="..\Graphics\CommandQueueFamily\CommandQueueFamily.h" />
     <ClInclude Include="..\Graphics\CommandQueueFamily\Vulkan\VulkanCommandQueueFamily.h" />
     <ClInclude Include="..\Graphics\CommandQueue\CommandQueue.h" />
-    <ClInclude Include="..\Graphics\CommandQueue\Common\CommonCommandQueue.h" />
     <ClInclude Include="..\Graphics\CommandQueue\Vulkan\VulkanCommandQueue.h" />
     <ClInclude Include="..\Graphics\DeviceMemoryAllocator\DeviceMemoryAllocator.h" />
     <ClInclude Include="..\Graphics\DeviceMemoryAllocator\Vulkan\VulkanDeviceMemoryAllocator.h" />
@@ -67,7 +66,6 @@
     <ClInclude Include="..\Graphics\Instance\Vulkan\VulkanRenderInstance.h" />
     <ClInclude Include="..\Graphics\Manager\GraphicsManager.h" />
     <ClInclude Include="..\Graphics\Manager\Vulkan\VulkanGraphicsManager.h" />
-    <ClInclude Include="..\Graphics\RenderCommandBuffer\Common\CommonRenderCommandBuffer.h" />
     <ClInclude Include="..\Graphics\RenderCommandBuffer\RenderCommandBuffer.h" />
     <ClInclude Include="..\Graphics\RenderCommandBuffer\Vulkan\VulkanRenderCommandBuffer.h" />
     <ClInclude Include="..\Graphics\Statics\Vulkan\VulkanStatics.h" />

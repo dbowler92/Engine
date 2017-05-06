@@ -27,10 +27,10 @@ namespace EngineAPI
 				VulkanSwapchain() {};
 				virtual ~VulkanSwapchain() = 0 {};
 
-				//Override shutdown function
+				//Shutdown at the end of the app
 				void Shutdown();
 
-				//Override the OnResize event
+				//OnResize event - TODO
 				bool OnResize(ESize2D newWindowSize);
 
 				//Inits the VK swapchain
@@ -88,8 +88,6 @@ namespace EngineAPI
 				EngineAPI::Rendering::DepthTexture* depthTexture = nullptr;
 
 			private:
-				//Platform specific data: Eg: Surface/swapchain creation function pointers
-#ifdef ENGINE_CONFIG_PLATFORM_WIN32
 				//WSI Extension
 				//
 				//Instance based:
@@ -105,17 +103,7 @@ namespace EngineAPI
 				PFN_vkGetSwapchainImagesKHR fpGetSwapchainImagesKHR = VK_NULL_HANDLE;
 				PFN_vkAcquireNextImageKHR fpAcquireNextImageKHR = VK_NULL_HANDLE;
 				PFN_vkQueuePresentKHR fpQueuePresentKHR = VK_NULL_HANDLE;
-#endif
-			private:
-				//Platform specific init: Vulkan supports (to date): Windows, Linux and Android
-#ifdef ENGINE_CONFIG_PLATFORM_WIN32
-				bool InitWin32LogicalSurface(EngineAPI::OS::OSWindow* osWindow,
-					EngineAPI::Graphics::RenderInstance* renderingInstance);
 
-				bool InitWin32Swapchain(EngineAPI::OS::OSWindow* osWindow,
-					EngineAPI::Graphics::RenderInstance* renderingInstance,
-					EngineAPI::Graphics::RenderDevice* renderingDevice);
-#endif
 			private:
 				//Cache device and instance based extension functions
 				bool CacheInstanceExtentionFunctions(VkInstance instance);

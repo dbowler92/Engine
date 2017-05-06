@@ -79,7 +79,7 @@ void VulkanDeviceMemoryStore::Shutdown()
 	memoryStoreSizeBytes = 0;
 }
 
-bool VulkanDeviceMemoryStore::SubAllocMemoryBlock(EUINT_64 blockSize, EngineAPI::Graphics::DeviceMemoryBlock& allocatedBlockOut)
+bool VulkanDeviceMemoryStore::SubAllocMemoryBlock(VkDeviceSize blockSize, EngineAPI::Graphics::DeviceMemoryBlock& allocatedBlockOut)
 {
 
 
@@ -87,7 +87,7 @@ bool VulkanDeviceMemoryStore::SubAllocMemoryBlock(EUINT_64 blockSize, EngineAPI:
 	return true;
 }
 
-void VulkanDeviceMemoryStore::DeallocBlock(const EngineAPI::Graphics::DeviceMemoryBlock* block)
+void VulkanDeviceMemoryStore::FreeBlock(const EngineAPI::Graphics::DeviceMemoryBlock* block)
 {
 	//TODO:
 	//

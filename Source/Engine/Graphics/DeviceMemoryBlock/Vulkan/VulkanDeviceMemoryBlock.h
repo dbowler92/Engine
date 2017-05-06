@@ -36,17 +36,17 @@ namespace EngineAPI
 				VulkanDeviceMemoryBlock() {};
 				virtual ~VulkanDeviceMemoryBlock() = 0 {};
 
-				//Override shutdown
+				//Cleansup this block
 				void Shutdown();
 
-				//Override init
-				bool Init(EngineAPI::Graphics::DeviceMemoryStore* parentStore, EUINT_64 memoryBlockSize,
-					EUINT_64 memoryBlockOffset, bool isBlockMappable);
+				//Init block data
+				bool InitVKMemoryBlock(EngineAPI::Graphics::DeviceMemoryStore* parentStore, VkDeviceSize memoryBlockSize,
+					VkDeviceSize memoryBlockOffset, bool isBlockMappable);
 
 			public:
 				//Getters
-				EUINT_64 GetBlockSizeBytes() { return blockSizeBytes; };
-				EUINT_64 GetBlockOffsetInStoreBytes() { return blockOffsetInStoreBytes; };
+				VkDeviceSize GetBlockSizeBytes() { return blockSizeBytes; };
+				VkDeviceSize GetBlockOffsetInStoreBytes() { return blockOffsetInStoreBytes; };
 
 				bool IsBlockFree() { return isFree; };
 				bool IsBlockMappable() { return isMappable; };
@@ -62,10 +62,10 @@ namespace EngineAPI
 				EngineAPI::Graphics::DeviceMemoryStore* parentStore = nullptr;
 
 				//Block size in bytes
-				EUINT_64 blockSizeBytes = 0;
+				VkDeviceSize blockSizeBytes = 0;
 
 				//Offset in to the memory store to the start of this block (bytes)
-				EUINT_64 blockOffsetInStoreBytes = 0;
+				VkDeviceSize blockOffsetInStoreBytes = 0;
 
 				//TODO: Memory block state flags
 				bool isFree = true;               //Available to be used to store data (eg: Buffer data, texture data etc)
