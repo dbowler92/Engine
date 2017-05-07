@@ -15,6 +15,9 @@
 //Contains a list of memory stores
 #include "../../DeviceMemoryStore/DeviceMemoryStore.h"
 
+//Resource - passed when allocating. This is the base class of texture objects
+//and buffers. 
+#include "../../../Rendering/Resource/Resource.h"
 
 namespace EngineAPI
 {
@@ -35,8 +38,8 @@ namespace EngineAPI
 				bool InitVKMemoryAllocator();
 
 			public:
-				//Creates a brand new store for a given purpose
-				//bool AllocMemoryStore(DeviceStoreType storeRole, VkDeviceSize storeSizeBytes) = 0;
+				//Pass a rendering resource to be allocated
+				//bool AllocateResource(EngineAPI::Rendering::Resource* resource);
 
 			protected:
 				//Array of stores

@@ -9,8 +9,8 @@
 //Does need to know about the device to create it
 #include "../../../Graphics/Device/RenderDevice.h"
 
-//Uses Texture2D to create the actual texture resource
-#include "../../Texture2D/Texture2D.h"
+//Uses Texture to create the actual texture resource
+#include "../../Texture/Texture.h"
 
 //Depth formats
 enum DepthTextureFormat
@@ -47,12 +47,8 @@ namespace EngineAPI
 				void Shutdown();
 
 			protected:
-				//Vulkan tiling mode
-				VkImageTiling vkImageTilingMode;
-
-			protected:
 				//Actual 2D texture for the depth buffer. 
-				EngineAPI::Rendering::Texture2D depthTextureObject;
+				EngineAPI::Rendering::Texture depthTextureObject;
 
 				//State of the depth texture
 				DepthTextureFormat depthTextureFormat;

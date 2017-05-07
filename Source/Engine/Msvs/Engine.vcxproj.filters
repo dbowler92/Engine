@@ -106,12 +106,6 @@
     <Filter Include="Src\Graphics\Statics\Vulkan">
       <UniqueIdentifier>{829bf66c-2e89-4107-8df1-da2121b64c4f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Src\Rendering\Texture2D">
-      <UniqueIdentifier>{f388de51-4e07-43be-baef-ab931599c5ae}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Src\Rendering\Texture2D\Vulkan">
-      <UniqueIdentifier>{9ff536c0-5ae1-41d6-8699-dd8e68559be7}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Src\Rendering\Texture2DArray">
       <UniqueIdentifier>{537e79eb-72ad-4a8b-9166-2dd83fdcefb5}</UniqueIdentifier>
     </Filter>
@@ -141,6 +135,18 @@
     </Filter>
     <Filter Include="Src\Graphics\DeviceMemoryAllocator\Vulkan">
       <UniqueIdentifier>{e5170116-ac18-4c3b-b52d-91180ce61fe7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Rendering\Resource">
+      <UniqueIdentifier>{c86645b4-d777-4edc-9ecc-b6edf96048cf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Rendering\Resource\Vulkan">
+      <UniqueIdentifier>{19184592-7d00-42ef-84ea-d87bd40bb361}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Rendering\Texture">
+      <UniqueIdentifier>{f388de51-4e07-43be-baef-ab931599c5ae}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Rendering\Texture\Vulkan">
+      <UniqueIdentifier>{9ff536c0-5ae1-41d6-8699-dd8e68559be7}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -186,9 +192,6 @@
     <ClCompile Include="..\Graphics\Statics\Vulkan\VulkanStatics.cpp">
       <Filter>Src\Graphics\Statics\Vulkan</Filter>
     </ClCompile>
-    <ClCompile Include="..\Rendering\Texture2D\Vulkan\VulkanTexture2D.cpp">
-      <Filter>Src\Rendering\Texture2D\Vulkan</Filter>
-    </ClCompile>
     <ClCompile Include="..\Rendering\DepthTexture\Vulkan\VulkanDepthTexture.cpp">
       <Filter>Src\Rendering\DepthTexture\Vulkan</Filter>
     </ClCompile>
@@ -203,6 +206,12 @@
     </ClCompile>
     <ClCompile Include="..\Graphics\DeviceMemoryAllocator\Vulkan\VulkanDeviceMemoryAllocator.cpp">
       <Filter>Src\Graphics\DeviceMemoryAllocator\Vulkan</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Rendering\Resource\Vulkan\VulkanResource.cpp">
+      <Filter>Src\Rendering\Resource\Vulkan</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Rendering\Texture\Vulkan\VulkanTexture.cpp">
+      <Filter>Src\Rendering\Texture\Vulkan</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -287,12 +296,6 @@
     <ClInclude Include="..\Graphics\Statics\Vulkan\VulkanStatics.h">
       <Filter>Src\Graphics\Statics\Vulkan</Filter>
     </ClInclude>
-    <ClInclude Include="..\Rendering\Texture2D\Vulkan\VulkanTexture2D.h">
-      <Filter>Src\Rendering\Texture2D\Vulkan</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Rendering\Texture2D\Texture2D.h">
-      <Filter>Src\Rendering\Texture2D</Filter>
-    </ClInclude>
     <ClInclude Include="..\Rendering\DepthTexture\Vulkan\VulkanDepthTexture.h">
       <Filter>Src\Rendering\DepthTexture\Vulkan</Filter>
     </ClInclude>
@@ -322,6 +325,18 @@
     </ClInclude>
     <ClInclude Include="..\OSWindow\OSWindow.h">
       <Filter>Src\OSWindow</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Rendering\Resource\Vulkan\VulkanResource.h">
+      <Filter>Src\Rendering\Resource\Vulkan</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Rendering\Texture\Vulkan\VulkanTexture.h">
+      <Filter>Src\Rendering\Texture\Vulkan</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Rendering\Texture\Texture.h">
+      <Filter>Src\Rendering\Texture</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Rendering\Resource\Resource.h">
+      <Filter>Src\Rendering\Resource</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

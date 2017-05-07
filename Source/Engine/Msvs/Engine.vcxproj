@@ -37,7 +37,8 @@
     <ClCompile Include="..\Main\EngineMain.cpp" />
     <ClCompile Include="..\OSWindow\Win32\Win32OSWindow.cpp" />
     <ClCompile Include="..\Rendering\DepthTexture\Vulkan\VulkanDepthTexture.cpp" />
-    <ClCompile Include="..\Rendering\Texture2D\Vulkan\VulkanTexture2D.cpp" />
+    <ClCompile Include="..\Rendering\Resource\Vulkan\VulkanResource.cpp" />
+    <ClCompile Include="..\Rendering\Texture\Vulkan\VulkanTexture.cpp" />
     <ClCompile Include="..\Utils\GameTimer\GameTimer.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -77,8 +78,10 @@
     <ClInclude Include="..\OSWindow\Win32\Win32OSWindow.h" />
     <ClInclude Include="..\Rendering\DepthTexture\DepthTexture.h" />
     <ClInclude Include="..\Rendering\DepthTexture\Vulkan\VulkanDepthTexture.h" />
-    <ClInclude Include="..\Rendering\Texture2D\Texture2D.h" />
-    <ClInclude Include="..\Rendering\Texture2D\Vulkan\VulkanTexture2D.h" />
+    <ClInclude Include="..\Rendering\Resource\Resource.h" />
+    <ClInclude Include="..\Rendering\Resource\Vulkan\VulkanResource.h" />
+    <ClInclude Include="..\Rendering\Texture\Texture.h" />
+    <ClInclude Include="..\Rendering\Texture\Vulkan\VulkanTexture.h" />
     <ClInclude Include="..\Utils\GameTimer\GameTimer.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

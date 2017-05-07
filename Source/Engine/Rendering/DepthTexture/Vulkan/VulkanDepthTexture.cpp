@@ -29,6 +29,8 @@ bool VulkanDepthTexture::InitVKDepthTexture(EngineAPI::Graphics::RenderDevice* r
 	//Depth buffer tiling mode - this is somewhat dependent of the depth format...
 	VkFormatProperties formatProps = {};
 	vkGetPhysicalDeviceFormatProperties(renderingDevice->GetVKPhysicalDevice(), depthTextureFormatVK, &formatProps);
+
+	VkImageTiling vkImageTilingMode;
 	if (formatProps.linearTilingFeatures & VK_FORMAT_FEATURE_DEPTH_STENCIL_ATTACHMENT_BIT)
 		vkImageTilingMode = VK_IMAGE_TILING_LINEAR;
 	else if (formatProps.optimalTilingFeatures & VK_FORMAT_FEATURE_DEPTH_STENCIL_ATTACHMENT_BIT)
@@ -65,7 +67,7 @@ bool VulkanDepthTexture::InitVKDepthTexture(EngineAPI::Graphics::RenderDevice* r
 	depthTextureCreateInfo.tiling = vkImageTilingMode;
 
 	//Init texture
-	if (!depthTextureObject.InitVKTexture2D(renderingDevice, &depthTextureCreateInfo))
+	if (!depthTextureObject.InitVKTexture(renderingDevice, &depthTextureCreateInfo))
 	{
 		EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanDepthTexture::Init() Error - Could not init Texture2D object\n");
 		return false;

@@ -13,6 +13,9 @@
 //Macro which will select the correct subclass to inherit from for graphics classes
 #define RENDERING_PLATFORM_IMPLEMENTATION(TYPE) Platform::##Vulkan##TYPE
 
+//Macro which picks API specific version of the class TYPE
+#define RENDERING_PLATFORM_CLASS(TYPE) Vulkan##TYPE
+
 //Macros to return Vulkan instance and device extention functions
 #define INSTANCE_FUNC_PTR(instance, entrypoint){ fp##entrypoint = (PFN_vk##entrypoint) vkGetInstanceProcAddr(instance, "vk"#entrypoint); if (fp##entrypoint == NULL){ exit(-1);} }
 #define DEVICE_FUNC_PTR(dev, entrypoint){ fp##entrypoint = (PFN_vk##entrypoint)vkGetDeviceProcAddr(dev, "vk"#entrypoint); if (fp##entrypoint == NULL){exit(-1);} }
