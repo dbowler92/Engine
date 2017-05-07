@@ -6,10 +6,12 @@
 
 #pragma once
 
-enum VulkanResourceType
+enum RenderingResourceType
 {
-	VULKAN_RESOURCE_TYPE_TEXTURE,
-	VULKAN_RESOURCE_TYPE_BUFFER
+	RENDERING_RESOURCE_TYPE_TEXTURE,
+	RENDERING_RESOURCR_TYPE_DEPTH_TEXTURE, 
+	RENDERING_RESOURCE_TYPE_RENDER_TARGET_TEXTURE,
+	RENDERING_RESOURCE_TYPE_BUFFER
 };
 
 namespace EngineAPI
@@ -21,7 +23,7 @@ namespace EngineAPI
 			class VulkanResource
 			{
 			public:
-				VulkanResource(VulkanResourceType type) { resourceType = type; };
+				VulkanResource(RenderingResourceType type) { resourceType = type; };
 				virtual ~VulkanResource() = 0 {};
 
 				//Each resource will have a shutdown function to implement
@@ -29,10 +31,10 @@ namespace EngineAPI
 
 			public:
 				//Returns the resource type
-				VulkanResourceType GetResourceType() { return resourceType; };
+				RenderingResourceType GetResourceType() { return resourceType; };
 
 			protected:
-				VulkanResourceType resourceType;
+				RenderingResourceType resourceType;
 			};
 		};
 	};

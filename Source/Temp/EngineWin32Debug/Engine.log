@@ -1,6 +1,7 @@
-﻿  Win32Application.cpp
+﻿  VulkanDeviceMemoryAllocator.cpp
   Generating Code...
   Compiling...
+  VulkanTexture.cpp
   VulkanDepthTexture.cpp
   EngineMain.cpp
   VulkanSwapchain.cpp
@@ -16,5 +17,25 @@ c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\man
 c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\manager\vulkan\vulkangraphicsmanager.cpp(27): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
   c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\stdio.h(1769): note: see declaration of 'sprintf'
   GraphicsManager.cpp
+  VulkanRenderDevice.cpp
+c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\device\vulkan\vulkanrenderdevice.cpp(279): warning C4018: '<': signed/unsigned mismatch
+c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\device\vulkan\vulkanrenderdevice.cpp(460): warning C4018: '<': signed/unsigned mismatch
+c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\device\vulkan\vulkanrenderdevice.cpp(496): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\stdio.h(1769): note: see declaration of 'sprintf'
+c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\device\vulkan\vulkanrenderdevice.cpp(503): warning C4477: 'sprintf' : format string '%u' requires an argument of type 'unsigned int', but variadic argument 1 has type 'uint64_t'
+  c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\device\vulkan\vulkanrenderdevice.cpp(503): note: consider using '%llu' in the format string
+  c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\device\vulkan\vulkanrenderdevice.cpp(503): note: consider using '%I64u' in the format string
+c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\device\vulkan\vulkanrenderdevice.cpp(503): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\stdio.h(1769): note: see declaration of 'sprintf'
+c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\device\vulkan\vulkanrenderdevice.cpp(509): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\stdio.h(1769): note: see declaration of 'sprintf'
+c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\device\vulkan\vulkanrenderdevice.cpp(516): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\stdio.h(1769): note: see declaration of 'sprintf'
+c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\device\vulkan\vulkanrenderdevice.cpp(522): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\stdio.h(1769): note: see declaration of 'sprintf'
+c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\device\vulkan\vulkanrenderdevice.cpp(540): warning C4018: '<': signed/unsigned mismatch
+c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\device\vulkan\vulkanrenderdevice.cpp(548): warning C4018: '<': signed/unsigned mismatch
+c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\device\vulkan\vulkanrenderdevice.cpp(576): warning C4018: '<': signed/unsigned mismatch
+  Win32Application.cpp
   Generating Code...
   Engine.vcxproj -> C:\Users\B1032464\Documents\Programming\Engine\Engine\Source\Engine\Msvs\..\..\Lib\Win32Debug\Engine.lib

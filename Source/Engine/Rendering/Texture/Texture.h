@@ -24,7 +24,7 @@ namespace EngineAPI
 			Texture() {};
 			virtual ~Texture() = 0 {};
 
-			//Each resource will have a shutdown function to implement
+			//Shutdown texture
 			virtual void Shutdown() { __super::Shutdown(); };
 		};
 	};

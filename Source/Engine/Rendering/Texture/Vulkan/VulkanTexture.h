@@ -34,9 +34,27 @@ namespace EngineAPI
 				//Shutdown the texture object - called manually by the subclasses. 
 				virtual void Shutdown() = 0;
 
+			public:
+				//Getters
+				VkImage GetVKImageHandle() { return vkImageHandle; };
+
+				//Image settings
+				VkExtent3D GetVkImageDimentions()		        { return vkTextureDimentions; };
+				VkFormat GetVkImageFormat()					    { return vkTextureFormat; };
+				VkImageType GetVKImageType()				    { return vkImageType; };
+				VkImageUsageFlags GetVKImageUsageFlags()	    { return vkImageUsageFlags; };
+				VkSampleCountFlags GetVKImageSamplesCountFlag() { return vkSamplesCountFlag; };
+				VkImageTiling GetVKImageTilingMode()			{ return vkImageTilingMode; };
+
+				//Memory requirements
+				VkMemoryRequirements GetVKImageMemoryRequirments() { return vkTextureMemoryRequirments; };
+
 			protected:
 				//Inits the Vulkan texture (aka, VkImage) - used by subclass
 				bool InitVKTexture(EngineAPI::Graphics::RenderDevice* renderingDevice, VkImageCreateInfo* imageCreateInfo);
+
+				//Creates a texture view - This is just a wrapper for now
+				bool CreateVKTextureView(VkImageViewCreateInfo* viewCreateInfo, VkImageView* imageViewHandleOut);
 
 			protected:
 				//Vulkan texture / image resource handle
@@ -44,6 +62,10 @@ namespace EngineAPI
 
 				//Cached logical device that owns the resource
 				VkDevice cachedVkDevice = VK_NULL_HANDLE;
+
+			protected:
+				//Texture memory requirements - inited when InitVKTexture() is called by subclass
+				VkMemoryRequirements vkTextureMemoryRequirments;
 
 			protected:
 				//Cached texture info

@@ -66,12 +66,24 @@ bool VulkanDepthTexture::InitVKDepthTexture(EngineAPI::Graphics::RenderDevice* r
 	depthTextureCreateInfo.usage = depthTextureVKImageUsageFlag;
 	depthTextureCreateInfo.tiling = vkImageTilingMode;
 
-	//Init texture
+	//Init texture/image (parent)
 	if (!InitVKTexture(renderingDevice, &depthTextureCreateInfo))
 	{
-		EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanDepthTexture::Init() Error - Could not init Texture2D object\n");
+		EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanDepthTexture::Init() Error - Could not init VkImage object\n");
 		return false;
 	}
+
+	//Once allocated, create image/texture views for this depth buffer
+	/*
+	VkImageViewCreateInfo viewCreateInfo = {};
+	viewCreateInfo.sType = STRUCTURE
+	VkImageView imageViewHandle = VK_NULL_HANDLE;
+	if (!CreateVKTextureView(&viewCreateInfo, &imageViewHandle))
+	{
+		EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanDepthTexture::Init() Error - Could not create VkImageView\n");
+		return false;
+	}
+	*/
 
 	//Done
 	return true;

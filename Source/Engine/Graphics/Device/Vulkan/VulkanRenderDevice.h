@@ -59,6 +59,10 @@ namespace EngineAPI
 				VkPhysicalDevice GetVKPhysicalDevice() { return vkPhysicalDevice; };
 				VkDevice GetVKLogicalDevice() { return vkLogicalDevice; };
 
+				//Stored info on physical and logical device
+				VkPhysicalDeviceProperties GetVKPhysicalDeviceProperties() { return vkDeviceProperties; };
+				VkPhysicalDeviceMemoryProperties GetVKPhysicalDeviceMemoryProperties() { return vkDeviceMemoryProperties; };
+
 			public:
 				//Returns the managers
 				EngineAPI::Graphics::DeviceMemoryAllocator* GetDeviceMemoryAllocator() { return deviceMemoryAllocator; };
