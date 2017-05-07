@@ -23,6 +23,9 @@ namespace EngineAPI
 		public:
 			Resource(VulkanResourceType type) : RENDERING_PLATFORM_CLASS(Resource)(type) {};
 			virtual ~Resource() = 0 {};
+
+			//Each resource will have a shutdown function to implement
+			virtual void Shutdown() = 0;
 		};
 	};
 };

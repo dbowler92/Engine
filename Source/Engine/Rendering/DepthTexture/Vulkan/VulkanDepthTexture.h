@@ -6,11 +6,11 @@
 
 #pragma once
 
+//Base class
+#include "../../Texture/Texture.h"
+
 //Does need to know about the device to create it
 #include "../../../Graphics/Device/RenderDevice.h"
-
-//Uses Texture to create the actual texture resource
-#include "../../Texture/Texture.h"
 
 //Depth formats
 enum DepthTextureFormat
@@ -34,7 +34,7 @@ namespace EngineAPI
 	{
 		namespace Platform
 		{
-			class VulkanDepthTexture
+			class VulkanDepthTexture : public EngineAPI::Rendering::Texture
 			{
 			public:
 				VulkanDepthTexture() {};
@@ -47,9 +47,6 @@ namespace EngineAPI
 				void Shutdown();
 
 			protected:
-				//Actual 2D texture for the depth buffer. 
-				EngineAPI::Rendering::Texture depthTextureObject;
-
 				//State of the depth texture
 				DepthTextureFormat depthTextureFormat;
 				DepthTextureUsageFlag depthTextureUsage;

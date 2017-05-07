@@ -2,7 +2,8 @@
 //Created 29/04/17
 //Created By Daniel Bowler
 //
-//Represents a vulkan texture2D
+//Represents a vulkan texture - base class for specific texture types (eg: Texture2D objects, 
+//render targets, depth buffers etc)
 
 #pragma once
 
@@ -30,11 +31,11 @@ namespace EngineAPI
 				VulkanTexture();
 				virtual ~VulkanTexture() = 0 {};
 
-				//Shutdown the texture2D object
-				void Shutdown();
+				//Shutdown the texture object - called manually by the subclasses. 
+				virtual void Shutdown() = 0;
 
-			public:
-				//Inits the Vulkan texture (aka, VkImage)
+			protected:
+				//Inits the Vulkan texture (aka, VkImage) - used by subclass
 				bool InitVKTexture(EngineAPI::Graphics::RenderDevice* renderingDevice, VkImageCreateInfo* imageCreateInfo);
 
 			protected:
@@ -47,7 +48,7 @@ namespace EngineAPI
 			protected:
 				//Cached texture info
 				//
-				//Dimentions
+				//Dimensions
 				VkExtent3D vkTextureDimentions;
 
 				//Image format & type

@@ -67,7 +67,7 @@ bool VulkanDepthTexture::InitVKDepthTexture(EngineAPI::Graphics::RenderDevice* r
 	depthTextureCreateInfo.tiling = vkImageTilingMode;
 
 	//Init texture
-	if (!depthTextureObject.InitVKTexture(renderingDevice, &depthTextureCreateInfo))
+	if (!InitVKTexture(renderingDevice, &depthTextureCreateInfo))
 	{
 		EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanDepthTexture::Init() Error - Could not init Texture2D object\n");
 		return false;
@@ -79,6 +79,6 @@ bool VulkanDepthTexture::InitVKDepthTexture(EngineAPI::Graphics::RenderDevice* r
 
 void VulkanDepthTexture::Shutdown()
 {
-	//Destroy texture
-	depthTextureObject.Shutdown();
+	//Destroy super
+	__super::Shutdown();
 }

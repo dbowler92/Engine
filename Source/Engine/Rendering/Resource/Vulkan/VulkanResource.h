@@ -24,6 +24,10 @@ namespace EngineAPI
 				VulkanResource(VulkanResourceType type) { resourceType = type; };
 				virtual ~VulkanResource() = 0 {};
 
+				//Each resource will have a shutdown function to implement
+				virtual void Shutdown() = 0;
+
+			public:
 				//Returns the resource type
 				VulkanResourceType GetResourceType() { return resourceType; };
 

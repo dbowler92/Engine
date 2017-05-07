@@ -46,9 +46,6 @@
     <Filter Include="Src\Rendering">
       <UniqueIdentifier>{de7b93c8-d802-4fc2-bc19-d73b467f2c47}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Src\Rendering\Shader">
-      <UniqueIdentifier>{7cb17b67-6878-4c9b-ad59-3eae43fc7276}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Src\Geometry">
       <UniqueIdentifier>{3b1b2047-d2f3-4272-88b1-33751e74ceea}</UniqueIdentifier>
     </Filter>
@@ -105,12 +102,6 @@
     </Filter>
     <Filter Include="Src\Graphics\Statics\Vulkan">
       <UniqueIdentifier>{829bf66c-2e89-4107-8df1-da2121b64c4f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Src\Rendering\Texture2DArray">
-      <UniqueIdentifier>{537e79eb-72ad-4a8b-9166-2dd83fdcefb5}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Src\Rendering\RenderTarget">
-      <UniqueIdentifier>{b150735f-7e34-4fa5-97f6-1e79f5fbb7d5}</UniqueIdentifier>
     </Filter>
     <Filter Include="Src\Rendering\DepthTexture">
       <UniqueIdentifier>{d42e626a-974b-4f93-981b-033fc6b1a3e4}</UniqueIdentifier>
