@@ -31,7 +31,7 @@
 
 //Should stop executing program on warning or error messages?
 #define ENGINE_CONFIG_STOP_EXECUTION_ON_ERROR_MSG 1
-#define ENGINE_CONFIG_STOP_EXECUTION_ON_WARNING_MSG 1
+#define ENGINE_CONFIG_STOP_EXECUTION_ON_WARNING_MSG 0
 
 //
 //PLATFORM

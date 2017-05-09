@@ -46,6 +46,15 @@ namespace EngineAPI
 	}
 }
 
+//Result returned from suballocations
+enum SuballocationResult
+{
+	ALLOCATION_RESULT_SUCCESS, 
+	ALLOCATION_RESULT_OUT_OF_MEMORY_FOR_STORE, 
+	ALLOCATION_RESULT_STORE_MEMORY_TYPE_DOESNT_SUPPORT_RESOURCE_MEMORY_PROPERTIES,
+	ALLOCATION_RESULT_BLOCK_INIT_FAILED
+};
+
 namespace EngineAPI
 {
 	namespace Graphics
@@ -78,6 +87,13 @@ namespace EngineAPI
 					VkPhysicalDeviceMemoryProperties* fullDeviceMemoryProperties,
 					uint32_t memoryTypeIndex,    //Index in to VkPhysicalDeviceMemoryProperties::memoryTypes[]
 					bool isPublicMemoryStore);
+
+			public:
+				//Ask the store if it supports this resource (as defined by its memory requirements)
+				bool DoesStoreSupportResource(const VkMemoryRequirements& resourceMemoryRequriments);
+
+				//Does this store manage this block
+				bool DoesStoreManageMemoryBlock(EngineAPI::Graphics::DeviceMemoryBlock* block);
 
 			public:
 				//Getters
@@ -141,6 +157,11 @@ namespace EngineAPI
 				bool isStoreActive = false;
 
 			private:
+				//Given an offset for a new block object and an alignment that needs to be
+				//required, this function will shift the memoryBlockOffset to the right
+				//in such a way that it will be correctly aligned
+				VkDeviceSize CalculateAlignedMemoryOffset(VkDeviceSize memoryBlockOffset, VkDeviceSize resourceAlignmentRequirment);
+
 				//Loops through the list of blocks and tries to find one
 				//which is a) free and b) large enough to hold our resource
 				EngineAPI::Graphics::DeviceMemoryBlock* SearchExistingBlocksListToUseToSuballocResource(
@@ -151,7 +172,7 @@ namespace EngineAPI
 				//Allocator can access these functions
 				//				
 				//Suballoc and free
-				bool Private_Suballoc(EngineAPI::Rendering::Resource* resource,
+				SuballocationResult Private_Suballoc(EngineAPI::Rendering::Resource* resource,
 					VkDeviceSize blockSize, VkDeviceSize resourceAlignment);
 				void Private_FreeBlock(EngineAPI::Graphics::DeviceMemoryBlock* block);
 			};

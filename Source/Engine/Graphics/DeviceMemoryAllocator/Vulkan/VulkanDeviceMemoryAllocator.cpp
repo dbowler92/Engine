@@ -45,27 +45,42 @@ EngineAPI::Graphics::DeviceMemoryStore* VulkanDeviceMemoryAllocator::CreateNewMe
 	return &(deviceMemoryStoresArray[deviceMemoryStoresCount - 1]);
 }
 
-bool VulkanDeviceMemoryAllocator::AllocateResourceToStore(EngineAPI::Graphics::RenderDevice* renderingDevice,
+SuballocationResult VulkanDeviceMemoryAllocator::AllocateResourceToStore(EngineAPI::Graphics::RenderDevice* renderingDevice,
 	EngineAPI::Graphics::DeviceMemoryStore* store,
 	const VkMemoryRequirements& resourceMemoryRequriments,
 	EngineAPI::Rendering::Resource* resource)
 {
-	//Allocate in to the given store
-	if (!store->Private_Suballoc(resource, resourceMemoryRequriments.size, resourceMemoryRequriments.alignment))
+	//Validate if the store can support this resource
+	bool storeDoesSupportResource = store->DoesStoreSupportResource(resourceMemoryRequriments);
+	if (!storeDoesSupportResource)
 	{
-		//Error
-		EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanDeviceMemoryAllocator::AllocateResourceToStore() - Error: Could not alloc in to passed store\n");
-		return false;
+		EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanDeviceMemoryAllocator::AllocateResourceToStore() - Store doesnt support this resource\n");
+		return ALLOCATION_RESULT_STORE_MEMORY_TYPE_DOESNT_SUPPORT_RESOURCE_MEMORY_PROPERTIES;
 	}
 
-	return true;
+	//Allocate in to the given store
+	SuballocationResult result = store->Private_Suballoc(resource, resourceMemoryRequriments.size, resourceMemoryRequriments.alignment);
+	if (result != ALLOCATION_RESULT_SUCCESS)
+	{
+		if (result == ALLOCATION_RESULT_OUT_OF_MEMORY_FOR_STORE)
+		{
+			//Warning
+			return result;
+		}
+
+		//Error
+		EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanDeviceMemoryAllocator::AllocateResourceToStore() - Error: Could not alloc in to passed store\n");
+		return result;
+	}
+
+	return result;
 }
 
-bool VulkanDeviceMemoryAllocator::AllocateResourceAuto(EngineAPI::Graphics::RenderDevice* renderingDevice,
+SuballocationResult VulkanDeviceMemoryAllocator::AllocateResourceAuto(EngineAPI::Graphics::RenderDevice* renderingDevice,
 	EngineAPI::Rendering::Resource* resource)
 {
 	//Success when allocing memory?
-	bool success = false;
+	SuballocationResult success;
 
 	//Alloc based on resource type
 	RenderingResourceType resourceType = resource->GetResourceType();
@@ -75,7 +90,7 @@ bool VulkanDeviceMemoryAllocator::AllocateResourceAuto(EngineAPI::Graphics::Rend
 		{
 			EngineAPI::Debug::DebugLog::PrintInfoMessage("VulkanDeviceMemoryAllocator::AllocateResourceAuto(): Allocating Texture\n");
 			
-			success = true;
+			success = ALLOCATION_RESULT_SUCCESS;
 			break;
 		}
 		case RENDERING_RESOURCR_TYPE_DEPTH_TEXTURE:
@@ -116,14 +131,14 @@ bool VulkanDeviceMemoryAllocator::AllocateResourceAuto(EngineAPI::Graphics::Rend
 		{
 			EngineAPI::Debug::DebugLog::PrintInfoMessage("VulkanDeviceMemoryAllocator::AllocateResourceAuto(): Allocating Render Target\n");
 			
-			success = true;
+			success = ALLOCATION_RESULT_SUCCESS;
 			break;
 		}
 		case RENDERING_RESOURCE_TYPE_BUFFER:
 		{
 			EngineAPI::Debug::DebugLog::PrintInfoMessage("VulkanDeviceMemoryAllocator::AllocateResourceAuto(): Allocating Buffer\n");
 			
-			success = true;
+			success = ALLOCATION_RESULT_SUCCESS;
 			break;
 		}
 		default:
@@ -131,7 +146,7 @@ bool VulkanDeviceMemoryAllocator::AllocateResourceAuto(EngineAPI::Graphics::Rend
 			//Error
 			EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanDeviceMemoryAllocator::AllocateResourceAuto(): Error - Unknown resource type\n");
 			
-			success = false;
+			success = ALLOCATION_RESULT_SUCCESS;
 			break;
 		}
 	}
@@ -140,7 +155,7 @@ bool VulkanDeviceMemoryAllocator::AllocateResourceAuto(EngineAPI::Graphics::Rend
 	return success;
 }
 
-bool VulkanDeviceMemoryAllocator::AllocTextureResourceAuto(EngineAPI::Graphics::RenderDevice* renderingDevice,
+SuballocationResult VulkanDeviceMemoryAllocator::AllocTextureResourceAuto(EngineAPI::Graphics::RenderDevice* renderingDevice,
 	EngineAPI::Rendering::Resource* resource,
 	RenderingResourceType resourceType,
 	VkMemoryPropertyFlags resourceMemoryPropertyOptimalFlags,
@@ -155,27 +170,31 @@ bool VulkanDeviceMemoryAllocator::AllocTextureResourceAuto(EngineAPI::Graphics::
 	//Get the memory store that we can use for this texture. If this returns
 	//NULL, no store could be found. As a result, we will have to create a brand
 	//new store
+	//
+	//TODO: Ensure that SearchExistingPublicMemoryStoresToUseForResource() takes in to account
+	//memory size + alignment when deciding if a store can be used. 
 	EngineAPI::Graphics::DeviceMemoryStore* memStore = nullptr;
 	memStore = SearchExistingPublicMemoryStoresToUseForResource(resourceMemoryPropertyOptimalFlags, resourceMemoryPropertyFallbackFlags,
 			resourceMemoryRequirments, physicalDeviceMemoryProperties);
 	if (memStore)
 	{
 		//Sub alloc in to this store.
-		if (!memStore->Private_Suballoc(resource, resourceMemoryRequirments.size, resourceMemoryRequirments.alignment))
+		SuballocationResult result = memStore->Private_Suballoc(resource, resourceMemoryRequirments.size, resourceMemoryRequirments.alignment);
+		if (result != ALLOCATION_RESULT_SUCCESS)
 		{
 			EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanDeviceMemoryAllocator::AllocTextureResourceAuto(): Could not alloc texture\n");
-			return false;
+			return result;
 		}
 	}
 	else
 	{
 		//Create new store for this memory
-		EngineAPI::Graphics::DeviceMemoryStore* newMemStore;
+		EngineAPI::Graphics::DeviceMemoryStore newMemStore;
 
 	}
 
 	//Done
-	return true;
+	return ALLOCATION_RESULT_SUCCESS;
 }
 
 
@@ -185,6 +204,10 @@ EngineAPI::Graphics::DeviceMemoryStore* VulkanDeviceMemoryAllocator::SearchExist
 	const VkMemoryRequirements& resourceMemoryRequirments,
 	const VkPhysicalDeviceMemoryProperties& physicalDeviceMemoryProperties)
 {
+	//
+	//TODO: Check if store can fit this resource before returning. If not, return OUT_OF_MEMORY error
+	//
+
 	//Memory type index we want for this resource?
 	uint32_t memoryTypeIndexForResource = 0;
 	bool didFind = FindMemoryTypeForProperties(resourceMemoryRequirments.memoryTypeBits,

@@ -65,11 +65,11 @@ namespace EngineAPI
 
 			public:
 				//Pass a rendering resource to be allocated automatically
-				bool AllocateResourceAuto(EngineAPI::Graphics::RenderDevice* renderingDevice, 
+				SuballocationResult AllocateResourceAuto(EngineAPI::Graphics::RenderDevice* renderingDevice,
 					EngineAPI::Rendering::Resource* resource);
 
 				//Allocates a resource in to a given store
-				bool AllocateResourceToStore(EngineAPI::Graphics::RenderDevice* renderingDevice,
+				SuballocationResult AllocateResourceToStore(EngineAPI::Graphics::RenderDevice* renderingDevice,
 					EngineAPI::Graphics::DeviceMemoryStore* store,
 					const VkMemoryRequirements& resourceMemoryRequriments,
 					EngineAPI::Rendering::Resource* resource);
@@ -82,7 +82,7 @@ namespace EngineAPI
 			private:
 				//Allocs a resource -> Will automatically find/create the store to use
 				//for us. 
-				bool AllocTextureResourceAuto(EngineAPI::Graphics::RenderDevice* renderingDevice,
+				SuballocationResult AllocTextureResourceAuto(EngineAPI::Graphics::RenderDevice* renderingDevice,
 					EngineAPI::Rendering::Resource* resource,
 					RenderingResourceType resourceType,
 					VkMemoryPropertyFlags resourceMemoryPropertyOptimalFlags, 

@@ -47,6 +47,9 @@ namespace EngineAPI
 				//Returns the resource type
 				RenderingResourceType GetResourceType() { return resourceType; };
 
+				//Returns the device memory block for this resource
+				EngineAPI::Graphics::DeviceMemoryBlock* GetDeviceMemoryBlock() { return resourceMemoryBlock; };
+
 			protected:
 				//Resource type -> Set by subclasses (constructor)
 				RenderingResourceType resourceType;

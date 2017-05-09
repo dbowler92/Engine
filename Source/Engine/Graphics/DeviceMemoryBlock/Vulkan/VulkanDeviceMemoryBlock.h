@@ -53,6 +53,7 @@ namespace EngineAPI
 				//Init block data
 				bool InitVKMemoryBlock(EngineAPI::Graphics::DeviceMemoryStore* parentStore, 
 					EngineAPI::Rendering::Resource* resource,
+					VkDeviceSize memoryAlignmentRequirments,
 					VkDeviceSize memoryBlockSize,
 					VkDeviceSize memoryBlockOffset, bool isBlockMappable);
 
@@ -67,6 +68,7 @@ namespace EngineAPI
 
 				VkDeviceSize GetBlockSizeBytes() { return blockSizeBytes; };
 				VkDeviceSize GetBlockOffsetInStoreBytes() { return blockOffsetInStoreBytes; };
+				VkDeviceSize GetBlockAlignedOffsetInStoreBytes() { return blockAlignedOffsetInStoreBytes; };
 
 				bool IsBlockFree() { return isFree; };
 				bool IsBlockMappable() { return isMappable; };
@@ -90,6 +92,10 @@ namespace EngineAPI
 
 				//Offset in to the memory store to the start of this block (bytes)
 				VkDeviceSize blockOffsetInStoreBytes = 0;
+
+				//Offset in to the memory store to the start of this block taking in to 
+				//acount memory alignment requirments
+				VkDeviceSize blockAlignedOffsetInStoreBytes = 0;
 
 				//TODO: Memory block state flags
 				bool isFree = true;               //Available to be used to store data (eg: Buffer data, texture data etc)

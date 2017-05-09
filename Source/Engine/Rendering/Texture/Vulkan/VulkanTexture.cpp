@@ -44,7 +44,8 @@ bool VulkanTexture::InitVKTexture(EngineAPI::Graphics::RenderDevice* renderingDe
 	if (optionalMemoryStore)
 	{
 		//Use passed in memory store
-		if (!memoryAllocator->AllocateResourceToStore(renderingDevice, optionalMemoryStore, vkTextureMemoryRequirments, this))
+		SuballocationResult result = memoryAllocator->AllocateResourceToStore(renderingDevice, optionalMemoryStore, vkTextureMemoryRequirments, this);
+		if (result != ALLOCATION_RESULT_SUCCESS)
 		{
 			EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanTexture::InitVKTexture(): Error allocating memory for this texture (Custom defined store)\n");
 			return false;
@@ -53,8 +54,9 @@ bool VulkanTexture::InitVKTexture(EngineAPI::Graphics::RenderDevice* renderingDe
 	else
 	{
 		//Let the allocator decide on a store to use -> A public store that already exists
-		//or will create a new one for us. 
-		if (!memoryAllocator->AllocateResourceAuto(renderingDevice, this))
+		//or will create a new one for us.
+		SuballocationResult result = memoryAllocator->AllocateResourceAuto(renderingDevice, this);
+		if (result != ALLOCATION_RESULT_SUCCESS)
 		{
 			EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanTexture::InitVKTexture(): Error allocating memory for this texture\n");
 			return false;

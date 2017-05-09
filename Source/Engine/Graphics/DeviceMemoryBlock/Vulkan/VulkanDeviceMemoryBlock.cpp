@@ -21,7 +21,8 @@ void VulkanDeviceMemoryBlock::Shutdown()
 bool VulkanDeviceMemoryBlock::InitVKMemoryBlock(
 	EngineAPI::Graphics::DeviceMemoryStore* parentStore, 
 	EngineAPI::Rendering::Resource* resource,
-	VkDeviceSize memoryBlockSize, VkDeviceSize memoryBlockOffset, bool isBlockMappable)
+	VkDeviceSize memoryAlignmentRequirments, VkDeviceSize memoryBlockSize, VkDeviceSize memoryBlockOffset,
+	bool isBlockMappable)
 {
 	//Cache data for this block
 	this->parentStore = parentStore;
@@ -33,6 +34,10 @@ bool VulkanDeviceMemoryBlock::InitVKMemoryBlock(
 
 	//Block is being used
 	this->isFree = false;
+
+	//Calculate aligned memory offset for this suballocation - shift to the right
+	VkDeviceSize bytesToShiftToMakeAligned = memoryAlignmentRequirments - (memoryBlockOffset % memoryAlignmentRequirments);
+	this->blockAlignedOffsetInStoreBytes = memoryBlockOffset + bytesToShiftToMakeAligned;
 
 	//Tell the resource that it now has a memory block
 	if (this->resourcePtr)

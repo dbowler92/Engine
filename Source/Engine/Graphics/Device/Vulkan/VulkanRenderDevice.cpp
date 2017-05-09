@@ -204,7 +204,10 @@ bool VulkanRenderDevice::InitVKMemoryAllocator(EngineAPI::OS::OSWindow* osWindow
 	}
 
 	//TEMP:
+	//
 	VkMemoryRequirements r;
+	//Alloc first block
+	/*
 	r.alignment = 1024;
 	r.size = 2457600;
 	r.memoryTypeBits = 264;
@@ -213,9 +216,39 @@ bool VulkanRenderDevice::InitVKMemoryAllocator(EngineAPI::OS::OSWindow* osWindow
 		EngineAPI::Debug::DebugLog::PrintErrorMessage("Error 2\n");
 		return false;
 	}
-	if (!deviceMemoryAllocator->AllocateResourceToStore((RenderDevice*)this, store, r, nullptr))
+	*/
+	
+	//Cant alloc in first bloc, create new block
+	r.alignment = 1024;
+	r.size = 2457605;
+	r.memoryTypeBits = 264;
+	SuballocationResult result = deviceMemoryAllocator->AllocateResourceToStore((RenderDevice*)this, store, r, nullptr);
+	if (result != ALLOCATION_RESULT_SUCCESS)
 	{
 		EngineAPI::Debug::DebugLog::PrintErrorMessage("Error 3\n");
+		return false;
+	}
+
+	/*
+	//Reuses first block
+	r.alignment = 1024;
+	r.size = 2456576;
+	r.memoryTypeBits = 264;
+	if (!deviceMemoryAllocator->AllocateResourceToStore((RenderDevice*)this, store, r, nullptr))
+	{
+		EngineAPI::Debug::DebugLog::PrintErrorMessage("Error 4\n");
+		return false;
+	}
+	*/
+
+	//Cant alloc anywhere, create new block
+	r.alignment = 1024;
+	r.size = 2458624; //2458624231231212;
+	r.memoryTypeBits = 264;
+	result = deviceMemoryAllocator->AllocateResourceToStore((RenderDevice*)this, store, r, nullptr);
+	if (result != ALLOCATION_RESULT_SUCCESS)
+	{
+		EngineAPI::Debug::DebugLog::PrintErrorMessage("Error 5\n");
 		return false;
 	}
 
