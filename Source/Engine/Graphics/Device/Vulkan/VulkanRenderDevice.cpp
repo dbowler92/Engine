@@ -195,8 +195,29 @@ bool VulkanRenderDevice::InitVKMemoryAllocator(EngineAPI::OS::OSWindow* osWindow
 		return false;
 
 	//TEMP: 
-	if (!deviceMemoryAllocator->CreateNewMemoryStore((RenderDevice*)this, MEB_TO_BYTES(256), 8, true))
+	EngineAPI::Graphics::DeviceMemoryStore* store = nullptr;
+	store = deviceMemoryAllocator->CreateNewMemoryStore((RenderDevice*)this, MEB_TO_BYTES(256), 8, true);
+	if (!store)
+	{
+		EngineAPI::Debug::DebugLog::PrintErrorMessage("Error 1\n");
 		return false;
+	}
+
+	//TEMP:
+	VkMemoryRequirements r;
+	r.alignment = 1024;
+	r.size = 2457600;
+	r.memoryTypeBits = 264;
+	if (!deviceMemoryAllocator->AllocateResourceToStore((RenderDevice*)this, store, r, nullptr))
+	{
+		EngineAPI::Debug::DebugLog::PrintErrorMessage("Error 2\n");
+		return false;
+	}
+	if (!deviceMemoryAllocator->AllocateResourceToStore((RenderDevice*)this, store, r, nullptr))
+	{
+		EngineAPI::Debug::DebugLog::PrintErrorMessage("Error 3\n");
+		return false;
+	}
 
 	//Done
 	return true;

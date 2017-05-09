@@ -1,22 +1,5 @@
-﻿  VulkanTexture.cpp
-  Generating Code...
-  Compiling...
-  VulkanDeviceMemoryStore.cpp
+﻿  VulkanDeviceMemoryStore.cpp
 c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\devicememorystore\vulkan\vulkandevicememorystore.cpp(61): warning C4309: 'argument': truncation of constant value
-c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\devicememorystore\vulkan\vulkandevicememorystore.cpp(80): warning C4018: '<': signed/unsigned mismatch
-c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\devicememorystore\vulkan\vulkandevicememorystore.cpp(107): warning C4800: 'VkBool32': forcing value to bool 'true' or 'false' (performance warning)
-  VulkanDeviceMemoryBlock.cpp
-  VulkanDeviceMemoryAllocator.cpp
-c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\devicememoryallocator\vulkan\vulkandevicememoryallocator.cpp(173): warning C4101: 'newMemStore': unreferenced local variable
-c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\devicememoryallocator\vulkan\vulkandevicememoryallocator.cpp(208): warning C4018: '<': signed/unsigned mismatch
-c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\devicememoryallocator\vulkan\vulkandevicememoryallocator.cpp(254): warning C4018: '<': signed/unsigned mismatch
-  Generating Code...
-  Skipping... (no relevant changes detected)
-  VulkanDepthTexture.cpp
-  EngineMain.cpp
-  VulkanSwapchain.cpp
-  VulkanGraphicsManager.cpp
-  GraphicsManager.cpp
-  VulkanRenderDevice.cpp
-  Win32Application.cpp
+c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\devicememorystore\vulkan\vulkandevicememorystore.cpp(158): warning C4800: 'VkBool32': forcing value to bool 'true' or 'false' (performance warning)
+c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\devicememorystore\vulkan\vulkandevicememorystore.cpp(178): warning C4800: 'VkBool32': forcing value to bool 'true' or 'false' (performance warning)
   Engine.vcxproj -> C:\Users\B1032464\Documents\Programming\Engine\Engine\Source\Engine\Msvs\..\..\Lib\Win32Debug\Engine.lib

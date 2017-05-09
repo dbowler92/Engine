@@ -76,8 +76,8 @@
 //does have an upper limit to the number of individual memory store allocs. 
 #define ENGINE_CONFIG_VULKAN_API_MAX_NUMBER_OF_MEMORY_STORES 4096
 
-//Maximum number of memory blocks in each store
-#define ENGINE_CONFIG_VULKAN_API_MAX_NUMBER_OF_MEMORY_BLOCKS_PER_STORE 2048
+//Maximum number of memory blocks in each store (Suballocations from each store)
+//#define ENGINE_CONFIG_VULKAN_API_MAX_NUMBER_OF_MEMORY_BLOCKS_PER_STORE 128
 
 //Size of the static block of memory used to hold data that remains throughout the
 //entire life of the application.

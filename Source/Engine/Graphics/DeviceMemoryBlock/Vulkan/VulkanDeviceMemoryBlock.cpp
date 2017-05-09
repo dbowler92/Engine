@@ -35,7 +35,8 @@ bool VulkanDeviceMemoryBlock::InitVKMemoryBlock(
 	this->isFree = false;
 
 	//Tell the resource that it now has a memory block
-	this->resourcePtr->Private_SetDeviceMemoryBlockPointer((DeviceMemoryBlock*)this);
+	if (this->resourcePtr)
+		this->resourcePtr->Private_SetDeviceMemoryBlockPointer((DeviceMemoryBlock*)this);
 
 	//Done
 	return true;
@@ -51,6 +52,7 @@ void VulkanDeviceMemoryBlock::FreeMemoryBlock()
 	//
 
 	//Not pointing to a resource anymore
-	this->resourcePtr->Private_SetDeviceMemoryBlockPointer(nullptr);
+	if (this->resourcePtr)
+		this->resourcePtr->Private_SetDeviceMemoryBlockPointer(nullptr);
 	this->resourcePtr = nullptr;
 }

@@ -24,6 +24,11 @@ namespace EngineAPI
 	namespace Graphics
 	{
 		class DeviceMemoryStore;
+
+		namespace Platform
+		{
+			class VulkanDeviceMemoryStore;
+		}
 	};
 };
 
@@ -35,6 +40,9 @@ namespace EngineAPI
 		{
 			class VulkanDeviceMemoryBlock
 			{
+				//Memory store can access + update private vars
+				friend EngineAPI::Graphics::Platform::VulkanDeviceMemoryStore;
+
 			public:
 				VulkanDeviceMemoryBlock() {};
 				virtual ~VulkanDeviceMemoryBlock() = 0 {};

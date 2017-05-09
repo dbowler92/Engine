@@ -20,7 +20,8 @@
 //Debug
 #include "../../../Debug/Log/DebugLog.h"
 
-//Uses std::vector
+//STL
+#include <list>
 #include <vector>
 
 //Manages a set of memory blocks within the store
@@ -91,8 +92,7 @@ namespace EngineAPI
 				bool IsPublicMemoryStore() { return isPublicStore; };
 				bool IsMemoryStoreActive() { return isStoreActive; };
 				
-				EngineAPI::Graphics::DeviceMemoryBlock* GetMemoryBlocksArray() { return &deviceMemoryBlocksArray[0]; };
-				uint32_t GetMemoryBlocksCount() { return deviceMemoryBlocksCount; };
+				std::list<EngineAPI::Graphics::DeviceMemoryBlock>* GetMemoryBlocksList() { return &deviceMemoryBlocksList; };
 
 			protected:
 				//Handle to the VK memory store
@@ -111,6 +111,19 @@ namespace EngineAPI
 				VkDevice cachedVkLogicalDevice = VK_NULL_HANDLE;
 
 			protected:
+				//Array of blocks - sub allocations from within this block. List and not
+				//a vector (though a vector of pointers would work...) since we don't want
+				//the objects within the array to be moved around in CPU memory => Blocks
+				//have a pointer to a resource and said resource has a pointer back to 
+				//the DeviceMemoryBlock -> The latter link is broken if the DeviceMemoryBlock
+				//is copied to a new location in memory after a vector resize.
+				std::list<EngineAPI::Graphics::DeviceMemoryBlock> deviceMemoryBlocksList;
+				//std::vector<EngineAPI::Graphics::DeviceMemoryBlock*> deviceMemoryBlocksArray;
+
+				//Pointer to the last suballoced block - Used to help quickly suballoc a new
+				//block after it
+				EngineAPI::Graphics::DeviceMemoryBlock* lastSuballocedBlock = nullptr;
+
 				//Parent allocator
 				EngineAPI::Graphics::DeviceMemoryAllocator* parentMemoryAllocator = nullptr;
 
@@ -127,9 +140,12 @@ namespace EngineAPI
 				//Is the store active -> Available to be suballoced in to. 
 				bool isStoreActive = false;
 
-				//Array of blocks - sub allocations from within this block.
-				EngineAPI::Graphics::DeviceMemoryBlock deviceMemoryBlocksArray[ENGINE_CONFIG_VULKAN_API_MAX_NUMBER_OF_MEMORY_BLOCKS_PER_STORE];
-				uint32_t deviceMemoryBlocksCount = 0;
+			private:
+				//Loops through the list of blocks and tries to find one
+				//which is a) free and b) large enough to hold our resource
+				EngineAPI::Graphics::DeviceMemoryBlock* SearchExistingBlocksListToUseToSuballocResource(
+					EngineAPI::Rendering::Resource* resource,
+					VkDeviceSize blockSizeNeeded, VkDeviceSize resourceAlignment);
 
 			private:
 				//Allocator can access these functions
@@ -138,8 +154,6 @@ namespace EngineAPI
 				bool Private_Suballoc(EngineAPI::Rendering::Resource* resource,
 					VkDeviceSize blockSize, VkDeviceSize resourceAlignment);
 				void Private_FreeBlock(EngineAPI::Graphics::DeviceMemoryBlock* block);
-
-				//Checks to see if 
 			};
 		};
 	};
