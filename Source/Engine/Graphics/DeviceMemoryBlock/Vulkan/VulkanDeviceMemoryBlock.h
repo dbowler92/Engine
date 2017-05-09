@@ -15,6 +15,9 @@
 //Debug
 #include "../../../Debug/Log/DebugLog.h"
 
+//Stores pointer to the actual VK resource
+#include "../../../Rendering/Resource/Resource.h"
+
 //Forward declarations
 namespace EngineAPI
 {
@@ -40,7 +43,9 @@ namespace EngineAPI
 				void Shutdown();
 
 				//Init block data
-				bool InitVKMemoryBlock(EngineAPI::Graphics::DeviceMemoryStore* parentStore, VkDeviceSize memoryBlockSize,
+				bool InitVKMemoryBlock(EngineAPI::Graphics::DeviceMemoryStore* parentStore, 
+					EngineAPI::Rendering::Resource* resource, 
+					VkDeviceSize memoryBlockSize,
 					VkDeviceSize memoryBlockOffset, bool isBlockMappable);
 
 			public:
@@ -59,7 +64,11 @@ namespace EngineAPI
 				VkDeviceMemory parentVKDeviceMemory = VK_NULL_HANDLE;
 
 			protected:
+				//Store that owns this block
 				EngineAPI::Graphics::DeviceMemoryStore* parentStore = nullptr;
+
+				//Pointer to the resource that this store represents
+				EngineAPI::Rendering::Resource* resourcePtr = nullptr;
 
 				//Block size in bytes
 				VkDeviceSize blockSizeBytes = 0;

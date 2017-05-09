@@ -102,12 +102,8 @@ namespace EngineAPI
 				//Caches info regarding the Vulkan device memory capabilities. 
 				void CacheVKDeviceMemoryInfo();
 
-				//From the cached memory info for the given device, these function
-				//finds the best memory types to be used when allocating resources
-				//
-				//Returns false if no valid memory type && heap can be found
-				bool FindVKMemoryTypeIndexForEfficientDeviceOnlyAllocations(uint32_t* memoryTypeIndexOut);
-				bool FindVKMemoryTypeIndexForMappableAllocations(uint32_t* memoryTypeIndexOut);
+				//Finds a memoryType index which supports a set of properties
+				bool FindVKMemoryTypeIndexForProperties(VkMemoryPropertyFlags properties, uint32_t* memoryTypeIndexOut);
 
 				//Finds the "best" Vulkan enabled physical device for us to use
 				//when creating the Vulkan physical device. Currently, it just picks the

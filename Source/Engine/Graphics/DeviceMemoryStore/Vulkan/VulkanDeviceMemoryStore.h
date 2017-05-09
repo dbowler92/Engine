@@ -26,6 +26,9 @@
 //Manages a set of memory blocks within the store
 #include "../../DeviceMemoryBlock/DeviceMemoryBlock.h"
 
+//Base class for resources
+#include "../../../Rendering/Resource/Resource.h"
+
 //Vulkan header
 #include <vulkan\vulkan.h>
 
@@ -50,11 +53,12 @@ namespace EngineAPI
 				bool InitVKDeviceMemoryStore(VkDevice* logicalDevice,
 					VkDeviceSize deviceMemorySizeInBytesToAlloc,
 					VkPhysicalDeviceMemoryProperties* fullDeviceMemoryProperties,
-					uint32_t memoryTypeIndex);   //Index in to VkPhysicalDeviceMemoryProperties::memoryTypes[]
-			
+					uint32_t memoryTypeIndex,    //Index in to VkPhysicalDeviceMemoryProperties::memoryTypes[]
+					bool isPublicMemoryStore);
 			public:
 				//Sub alloc and free
-				bool SubAllocMemoryBlock(VkDeviceSize blockSize, EngineAPI::Graphics::DeviceMemoryBlock& allocatedBlockOut);
+				bool SubAllocMemoryBlock(VkDeviceSize blockSize, VkDeviceSize resourceAlignment,
+					EngineAPI::Rendering::Resource* resource);
 				void FreeBlock(const EngineAPI::Graphics::DeviceMemoryBlock* block);
 
 			public:
@@ -64,7 +68,9 @@ namespace EngineAPI
 				uint32_t GetVKMemoryTypeIndex() { return vkMemoryTypeIndex; };
 				VkBool32 IsVKMemoryMappable() { return vkIsStoreMemoryMappable; };
 				VkDeviceSize GetMemoryStoreSizeBytes() { return memoryStoreSizeBytes; };
-				std::vector<EngineAPI::Graphics::DeviceMemoryBlock>* GetMemoryBlocksArray() { return &memoryBlocksArray; };
+				bool IsPublicMemoryStore() { return isPublicStore; };
+				
+				std::vector<EngineAPI::Graphics::DeviceMemoryBlock>* GetMemoryBlocksArray() { return &memoryBlocksArray; };	
 
 			protected:
 				//Handle to the VK memory store
@@ -86,8 +92,12 @@ namespace EngineAPI
 				//Size of the store in bytes
 				VkDeviceSize memoryStoreSizeBytes = 0;
 
-				//Pointer to the begining of the store if host visible memory
+				//Pointer to the beginning of the store if host visible memory
 				void* hostStorePtr = nullptr;
+
+				//Is this a 'public' store (Used during AllocResourceAuto() calls). If not, 
+				//you can only suballoc blocks in this store by calls to AllocResourceToStore()
+				bool isPublicStore;
 
 				//Array of blocks - sub allocations from within this block. TODO: Custom 
 				//resizing array. 

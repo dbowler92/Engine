@@ -179,12 +179,12 @@ bool VulkanRenderDevice::InitVKMemoryAllocator(EngineAPI::OS::OSWindow* osWindow
 	//in specific ways for this device (eg: Different memoryType index will be used
 	//during vkAlloc...() depending on if the memory should be mappable or not)
 	uint32_t vkMemoryTypeIndexForEfficientDeviceOnlyAllocations = 0;
-	if (!FindVKMemoryTypeIndexForEfficientDeviceOnlyAllocations(&vkMemoryTypeIndexForEfficientDeviceOnlyAllocations))
+	if (!FindVKMemoryTypeIndexForProperties(VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT, &vkMemoryTypeIndexForEfficientDeviceOnlyAllocations))
 		return false;
 
 	uint32_t vkMemoryTypeIndexForMappableAllocations = 0; //TODO
-	if (!FindVKMemoryTypeIndexForMappableAllocations(&vkMemoryTypeIndexForMappableAllocations)) //TODO
-		return false;
+	if (!FindVKMemoryTypeIndexForProperties(VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT, &vkMemoryTypeIndexForMappableAllocations)) //TODO
+	return false;
 
 	uint32_t gpuHeapIdx = vkDeviceMemoryProperties.memoryTypes[vkMemoryTypeIndexForEfficientDeviceOnlyAllocations].heapIndex;
 	VkDeviceSize maxVRAM = vkDeviceMemoryProperties.memoryHeaps[gpuHeapIdx].size;
@@ -192,7 +192,11 @@ bool VulkanRenderDevice::InitVKMemoryAllocator(EngineAPI::OS::OSWindow* osWindow
 	//Allocate the memory allocator/manager
 	deviceMemoryAllocator = GE_NEW DeviceMemoryAllocator();
 	if (!deviceMemoryAllocator->InitVKMemoryAllocator())
-		return false;
+	return false;
+
+	//Create a public store
+	if (!deviceMemoryAllocator->CreateNewMemoryStore((RenderDevice*)this, MEB_TO_BYTES(256), vkMemoryTypeIndexForEfficientDeviceOnlyAllocations, true))
+	return false;
 
 	//Done
 	return true;
@@ -273,38 +277,19 @@ void VulkanRenderDevice::CacheVKDeviceMemoryInfo()
 	vkGetPhysicalDeviceMemoryProperties(vkPhysicalDevice, &vkDeviceMemoryProperties);
 }
 
-bool VulkanRenderDevice::FindVKMemoryTypeIndexForEfficientDeviceOnlyAllocations(uint32_t* memoryTypeIndexOut)
+bool VulkanRenderDevice::FindVKMemoryTypeIndexForProperties(VkMemoryPropertyFlags properties, uint32_t* memoryTypeIndexOut)
 {
-	//Look for the memory types that have the flag VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT
 	for (int i = 0; i < vkDeviceMemoryProperties.memoryTypeCount; i++)
 	{
-		if (vkDeviceMemoryProperties.memoryTypes[i].propertyFlags & VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT)
+		if ((vkDeviceMemoryProperties.memoryTypes[i].propertyFlags & properties) == properties)
 		{
-			//This types heap index
-			uint32_t heapIndex = vkDeviceMemoryProperties.memoryTypes[i].heapIndex;
-
-			//Is this heap device local (Should always be - but just incase)
-			if (vkDeviceMemoryProperties.memoryHeaps[heapIndex].flags & VK_MEMORY_HEAP_DEVICE_LOCAL_BIT)
-			{
-				//Yes - this is the first (and thus best) memory 'type' to be using
-				*memoryTypeIndexOut = i;
-				return true;
-			}
+			*memoryTypeIndexOut = i;
+			return true;
 		}
 	}
 
 	//Failed
-	EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanRenderDevice: Error. Couldn't find a memory type to be used for GPU only allocations.\n");
-	return false;
-}
-
-bool VulkanRenderDevice::FindVKMemoryTypeIndexForMappableAllocations(uint32_t* memoryTypeIndexOut)
-{
-	//TODO
-	return true;
-
-	//Failed
-	EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanRenderDevice: Error. Couldn't find a memory type to be used for mappable only allocations.\n");
+	EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanRenderDevice::FindVKMemoryTypeIndexForProperties() Error. Couldn't find a memory type that supports the required properties\n");
 	return false;
 }
 

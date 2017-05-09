@@ -551,8 +551,11 @@ bool VulkanSwapchain::CreateDepthBuffer(EngineAPI::Graphics::RenderDevice* rende
 	//Usage
 	DepthTextureUsageFlag usageFlag = 0; //No need for shader input
 	
+	//Store -> Let the allocator decide for us for now. 
+	EngineAPI::Graphics::DeviceMemoryStore* memStoreToUse = nullptr;
+
 	//Init - 
-	if (!depthTexture->InitVKDepthTexture(renderingDevice, GRAPHICS_CONFIG_DEPTH_TEXTURE_FORMAT, depthTextureDimentions, usageFlag))
+	if (!depthTexture->InitVKDepthTexture(renderingDevice, GRAPHICS_CONFIG_DEPTH_TEXTURE_FORMAT, depthTextureDimentions, usageFlag, memStoreToUse))
 	{
 		EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanSwapchain::CreateDepthBuffer() - Error initing depth texture\n");
 		return false;

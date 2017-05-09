@@ -9,7 +9,8 @@ VulkanTexture::VulkanTexture()
 	: Resource(RENDERING_RESOURCR_TYPE_DEPTH_TEXTURE) //Init base. 
 {}
 
-bool VulkanTexture::InitVKTexture(EngineAPI::Graphics::RenderDevice* renderingDevice, VkImageCreateInfo* imageCreateInfo)
+bool VulkanTexture::InitVKTexture(EngineAPI::Graphics::RenderDevice* renderingDevice, VkImageCreateInfo* imageCreateInfo, 
+	EngineAPI::Graphics::DeviceMemoryStore* optionalMemoryStore)
 {
 	//Cache texture info for future use
 	vkImageTilingMode   = imageCreateInfo->tiling;
@@ -36,10 +37,24 @@ bool VulkanTexture::InitVKTexture(EngineAPI::Graphics::RenderDevice* renderingDe
 
 	//Alloc memory for the texture on the device
 	EngineAPI::Graphics::DeviceMemoryAllocator* memoryAllocator = renderingDevice->GetDeviceMemoryAllocator();
-	if (!memoryAllocator->AllocateResource(this, renderingDevice))
+	if (optionalMemoryStore)
 	{
-		EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanTexture::InitVKTexture(): Error allocating memory for this texture\n");
-		return false;
+		//Use passed in memory store
+		if (!memoryAllocator->AllocateResourceToStore(renderingDevice, optionalMemoryStore, vkTextureMemoryRequirments, this))
+		{
+			EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanTexture::InitVKTexture(): Error allocating memory for this texture (Custom defined store)\n");
+			return false;
+		}
+	}
+	else
+	{
+		//Let the allocator decide on a store to use -> A public store that already exists
+		//or will create a new one for us. 
+		if (!memoryAllocator->AllocateResourceAuto(renderingDevice, this))
+		{
+			EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanTexture::InitVKTexture(): Error allocating memory for this texture\n");
+			return false;
+		}
 	}
 
 	//Bind texture to device memory

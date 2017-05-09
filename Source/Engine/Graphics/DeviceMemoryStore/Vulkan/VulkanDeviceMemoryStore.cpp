@@ -5,7 +5,7 @@ using namespace EngineAPI::Graphics::Platform;
 bool VulkanDeviceMemoryStore::InitVKDeviceMemoryStore(VkDevice* logicalDevice,
 	VkDeviceSize deviceMemorySizeInBytesToAlloc,
 	VkPhysicalDeviceMemoryProperties* fullDeviceMemoryProperties,
-	uint32_t memoryTypeIndex)
+	uint32_t memoryTypeIndex, bool isPublicMemoryStore)
 {
 	//Cache the logical device
 	cachedVkLogicalDevice = *logicalDevice;
@@ -48,6 +48,7 @@ bool VulkanDeviceMemoryStore::InitVKDeviceMemoryStore(VkDevice* logicalDevice,
 	memoryStoreSizeBytes = allocInfo.allocationSize;
 	vkMemoryTypeIndex = memoryTypeIndex;
 	vkIsStoreMemoryMappable = isMemoryMappable;
+	isPublicStore = isPublicMemoryStore;
 
 	//Get the host memory pointer if available
 	if (isMemoryMappable)
@@ -79,8 +80,10 @@ void VulkanDeviceMemoryStore::Shutdown()
 	memoryStoreSizeBytes = 0;
 }
 
-bool VulkanDeviceMemoryStore::SubAllocMemoryBlock(VkDeviceSize blockSize, EngineAPI::Graphics::DeviceMemoryBlock& allocatedBlockOut)
+bool VulkanDeviceMemoryStore::SubAllocMemoryBlock(VkDeviceSize blockSize, VkDeviceSize resourceAlignment,
+	EngineAPI::Rendering::Resource* resource)
 {
+	//Sub alloc from within this store
 
 
 	//Done

@@ -16,6 +16,9 @@
 //Device used to create this...
 #include "../../../Graphics/Device/RenderDevice.h"
 
+//Stores
+#include "../../../Graphics/DeviceMemoryStore/DeviceMemoryStore.h"
+
 //Vulkan header
 #include <vulkan/vulkan.h>
 
@@ -51,7 +54,8 @@ namespace EngineAPI
 
 			protected:
 				//Inits the Vulkan texture (aka, VkImage) - used by subclass
-				bool InitVKTexture(EngineAPI::Graphics::RenderDevice* renderingDevice, VkImageCreateInfo* imageCreateInfo);
+				bool InitVKTexture(EngineAPI::Graphics::RenderDevice* renderingDevice, VkImageCreateInfo* imageCreateInfo, 
+					EngineAPI::Graphics::DeviceMemoryStore* optionalMemoryStore);
 
 				//Creates a texture view - This is just a wrapper for now
 				bool CreateVKTextureView(VkImageViewCreateInfo* viewCreateInfo, VkImageView* imageViewHandleOut);
