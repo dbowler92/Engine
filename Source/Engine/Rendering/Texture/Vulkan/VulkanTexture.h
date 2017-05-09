@@ -49,12 +49,16 @@ namespace EngineAPI
 				VkSampleCountFlags GetVKImageSamplesCountFlag() { return vkSamplesCountFlag; };
 				VkImageTiling GetVKImageTilingMode()			{ return vkImageTilingMode; };
 
+				//Is this a dynamic texture
+				bool IsTextureDynamic() { return isVkTextureDynamic; };
+
 				//Memory requirements
 				VkMemoryRequirements GetVKImageMemoryRequirments() { return vkTextureMemoryRequirments; };
 
 			protected:
 				//Inits the Vulkan texture (aka, VkImage) - used by subclass
-				bool InitVKTexture(EngineAPI::Graphics::RenderDevice* renderingDevice, VkImageCreateInfo* imageCreateInfo, 
+				bool InitVKTexture(EngineAPI::Graphics::RenderDevice* renderingDevice, 
+					VkImageCreateInfo* imageCreateInfo, bool isTextureDynamic,
 					EngineAPI::Graphics::DeviceMemoryStore* optionalMemoryStore);
 
 				//Creates a texture view - This is just a wrapper for now
@@ -89,6 +93,9 @@ namespace EngineAPI
 
 				//Vulkan tiling mode
 				VkImageTiling vkImageTilingMode;
+
+				//Is the texture dynamic - CPU read/writable?
+				bool isVkTextureDynamic;
 			};
 		}
 	};

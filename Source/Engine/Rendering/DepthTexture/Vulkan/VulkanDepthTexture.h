@@ -43,7 +43,7 @@ namespace EngineAPI
 				//Init and shutdown
 				bool InitVKDepthTexture(EngineAPI::Graphics::RenderDevice* renderingDevice,
 					DepthTextureFormat depthTextureFormat, ESize2D depthTextureDimentions,
-					DepthTextureUsageFlag depthTextureUsageFlags, 
+					DepthTextureUsageFlag depthTextureUsageFlags,
 					EngineAPI::Graphics::DeviceMemoryStore* optionalDeviceStore = nullptr);
 				void Shutdown();
 

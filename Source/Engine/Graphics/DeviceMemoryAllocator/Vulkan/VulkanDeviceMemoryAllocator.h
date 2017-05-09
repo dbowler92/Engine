@@ -40,7 +40,7 @@ namespace EngineAPI
 				VulkanDeviceMemoryAllocator() {};
 				virtual ~VulkanDeviceMemoryAllocator() = 0 {};
 
-				//Cleansup
+				//Cleansup at app shutdown time. 
 				void Shutdown();
 
 				//Inits the Vk Allocator
@@ -51,8 +51,6 @@ namespace EngineAPI
 				//create a store which holds GPU data that lasts throughout the entire life
 				//of the app etc
 				//
-				//returns a pointer to the store
-				//
 				//Note: bool isPublicStore => If true, this store can be used to alloc resources
 				//during calls to AllocResourceAuto(). If false, you must use AllocateResourceToStore() and
 				//pass this store as a param. 
@@ -62,6 +60,8 @@ namespace EngineAPI
 				//device memory etc
 				EngineAPI::Graphics::DeviceMemoryStore* CreateNewMemoryStore(EngineAPI::Graphics::RenderDevice* renderDevice,
 					VkDeviceSize deviceMemorySizeInBytesToAlloc, uint32_t memoryTypeIndex, bool isPublicStore);
+
+				//Destroys a store
 
 			public:
 				//Pass a rendering resource to be allocated automatically
@@ -76,15 +76,18 @@ namespace EngineAPI
 
 			protected:
 				//Array of stores
-				std::vector<EngineAPI::Graphics::DeviceMemoryStore> deviceStores;
+				EngineAPI::Graphics::DeviceMemoryStore deviceMemoryStoresArray[ENGINE_CONFIG_VULKAN_API_MAX_NUMBER_OF_MEMORY_STORES];
+				uint32_t deviceMemoryStoresCount = 0; //Number created
 
 			private:
 				//Allocs a resource -> Will automatically find/create the store to use
 				//for us. 
-				bool AllocTextureResourceAuto(EngineAPI::Rendering::Resource* resource,
+				bool AllocTextureResourceAuto(EngineAPI::Graphics::RenderDevice* renderingDevice,
+					EngineAPI::Rendering::Resource* resource,
 					RenderingResourceType resourceType,
+					VkMemoryPropertyFlags resourceMemoryPropertyOptimalFlags, 
+					VkMemoryPropertyFlags resourceMemoryPropertyFallbackFlags,
 					const VkMemoryRequirements& resourceMemoryRequirments,
-					EngineAPI::Graphics::RenderDevice* renderingDevice,
 					const VkPhysicalDeviceMemoryProperties& physicalDeviceMemoryProperties);
 
 				//Finds a store (if it already exists) to use when allocating a resource (AllocateResource()). 
@@ -92,17 +95,20 @@ namespace EngineAPI
 				//
 				//Won't look at private stores!
 				EngineAPI::Graphics::DeviceMemoryStore* SearchExistingPublicMemoryStoresToUseForResource(
-					const VkPhysicalDeviceMemoryProperties& physicalDeviceMemoryProperties,
-					const VkMemoryRequirements& resourceMemoryRequirments);
+					VkMemoryPropertyFlags resourceMemoryPropertyOptimalFlags,
+					VkMemoryPropertyFlags resourceMemoryPropertyFallbackFlags,
+					const VkMemoryRequirements& resourceMemoryRequirments,
+					const VkPhysicalDeviceMemoryProperties& physicalDeviceMemoryProperties);
 
 			private:
 				//Searches for a memory type in memoryTypeBits (VkMemoryRequirements)
 				//that includes all of the properties (requiredProperties)
 				//
-				//If thats not found, will search for a memory type index that supports
-				//the properties defined by fallbackProperties (note: These can be 0!)
+				//If thats not found, call again with a set of fallback flags (including 0)
+				//to search again for a memory type that works for said resource but isnt exactly
+				//optimal. If this fails, you have yourself an error!
 				bool FindMemoryTypeForProperties(uint32_t memoryTypeBits, 
-					VkMemoryPropertyFlags requiredProperties, VkMemoryPropertyFlags fallbackProperties, 
+					VkMemoryPropertyFlags properties, 
 					const VkPhysicalDeviceMemoryProperties& physicalDeviceMemoryProperties,
 					uint32_t* memTypeIndexOut);
 			};

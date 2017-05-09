@@ -183,8 +183,8 @@ bool VulkanRenderDevice::InitVKMemoryAllocator(EngineAPI::OS::OSWindow* osWindow
 		return false;
 
 	uint32_t vkMemoryTypeIndexForMappableAllocations = 0; //TODO
-	if (!FindVKMemoryTypeIndexForProperties(VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT, &vkMemoryTypeIndexForMappableAllocations)) //TODO
-	return false;
+	if (!FindVKMemoryTypeIndexForProperties(VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT | VK_MEMORY_PROPERTY_HOST_CACHED_BIT, &vkMemoryTypeIndexForMappableAllocations)) //TODO
+		return false;
 
 	uint32_t gpuHeapIdx = vkDeviceMemoryProperties.memoryTypes[vkMemoryTypeIndexForEfficientDeviceOnlyAllocations].heapIndex;
 	VkDeviceSize maxVRAM = vkDeviceMemoryProperties.memoryHeaps[gpuHeapIdx].size;
@@ -192,11 +192,11 @@ bool VulkanRenderDevice::InitVKMemoryAllocator(EngineAPI::OS::OSWindow* osWindow
 	//Allocate the memory allocator/manager
 	deviceMemoryAllocator = GE_NEW DeviceMemoryAllocator();
 	if (!deviceMemoryAllocator->InitVKMemoryAllocator())
-	return false;
+		return false;
 
-	//Create a public store
-	if (!deviceMemoryAllocator->CreateNewMemoryStore((RenderDevice*)this, MEB_TO_BYTES(256), vkMemoryTypeIndexForEfficientDeviceOnlyAllocations, true))
-	return false;
+	//TEMP: 
+	if (!deviceMemoryAllocator->CreateNewMemoryStore((RenderDevice*)this, MEB_TO_BYTES(256), 8, true))
+		return false;
 
 	//Done
 	return true;

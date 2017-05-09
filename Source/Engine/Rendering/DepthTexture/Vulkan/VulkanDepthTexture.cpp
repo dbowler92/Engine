@@ -4,7 +4,7 @@ using namespace EngineAPI::Rendering::Platform;
 
 bool VulkanDepthTexture::InitVKDepthTexture(EngineAPI::Graphics::RenderDevice* renderingDevice,
 	DepthTextureFormat depthTextureFormat, ESize2D depthTextureDimentions,
-	DepthTextureUsageFlag depthTextureUsageFlags, 
+	DepthTextureUsageFlag depthTextureUsageFlags,
 	EngineAPI::Graphics::DeviceMemoryStore* optionalDeviceStore)
 {
 	//Cache state
@@ -68,7 +68,7 @@ bool VulkanDepthTexture::InitVKDepthTexture(EngineAPI::Graphics::RenderDevice* r
 	depthTextureCreateInfo.tiling = vkImageTilingMode;
 
 	//Init texture/image (parent)
-	if (!InitVKTexture(renderingDevice, &depthTextureCreateInfo, optionalDeviceStore))
+	if (!InitVKTexture(renderingDevice, &depthTextureCreateInfo, false, optionalDeviceStore))
 	{
 		EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanDepthTexture::Init() Error - Could not init VkImage object\n");
 		return false;

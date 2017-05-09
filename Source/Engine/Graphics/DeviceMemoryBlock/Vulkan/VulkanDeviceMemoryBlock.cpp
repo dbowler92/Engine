@@ -6,7 +6,17 @@
 using namespace EngineAPI::Graphics::Platform;
 
 void VulkanDeviceMemoryBlock::Shutdown()
-{}
+{
+	//Block is free!
+	this->isFree = true;
+
+	//Free resource?
+	//
+	//
+
+	//Not pointing to a resource anymore
+	this->resourcePtr = nullptr;
+}
 
 bool VulkanDeviceMemoryBlock::InitVKMemoryBlock(
 	EngineAPI::Graphics::DeviceMemoryStore* parentStore, 
@@ -21,6 +31,26 @@ bool VulkanDeviceMemoryBlock::InitVKMemoryBlock(
 	this->blockOffsetInStoreBytes = memoryBlockOffset;
 	this->isMappable = isBlockMappable;
 
+	//Block is being used
+	this->isFree = false;
+
+	//Tell the resource that it now has a memory block
+	this->resourcePtr->Private_SetDeviceMemoryBlockPointer((DeviceMemoryBlock*)this);
+
 	//Done
 	return true;
+}
+
+void VulkanDeviceMemoryBlock::FreeMemoryBlock()
+{
+	//Block is free!
+	this->isFree = true;
+
+	//Free resource?
+	//
+	//
+
+	//Not pointing to a resource anymore
+	this->resourcePtr->Private_SetDeviceMemoryBlockPointer(nullptr);
+	this->resourcePtr = nullptr;
 }

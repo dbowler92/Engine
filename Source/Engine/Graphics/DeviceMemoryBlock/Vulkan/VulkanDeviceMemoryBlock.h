@@ -39,14 +39,19 @@ namespace EngineAPI
 				VulkanDeviceMemoryBlock() {};
 				virtual ~VulkanDeviceMemoryBlock() = 0 {};
 
-				//Cleansup this block
+				//Called when the app closes. 
 				void Shutdown();
 
 				//Init block data
 				bool InitVKMemoryBlock(EngineAPI::Graphics::DeviceMemoryStore* parentStore, 
-					EngineAPI::Rendering::Resource* resource, 
+					EngineAPI::Rendering::Resource* resource,
 					VkDeviceSize memoryBlockSize,
 					VkDeviceSize memoryBlockOffset, bool isBlockMappable);
+
+				//Frees the block -> Allowing it to be reused by other resources
+				//
+				//TODO: Delete the actual resource? 
+				void FreeMemoryBlock();
 
 			public:
 				//Getters

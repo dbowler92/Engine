@@ -9,7 +9,8 @@ VulkanTexture::VulkanTexture()
 	: Resource(RENDERING_RESOURCR_TYPE_DEPTH_TEXTURE) //Init base. 
 {}
 
-bool VulkanTexture::InitVKTexture(EngineAPI::Graphics::RenderDevice* renderingDevice, VkImageCreateInfo* imageCreateInfo, 
+bool VulkanTexture::InitVKTexture(EngineAPI::Graphics::RenderDevice* renderingDevice, 
+	VkImageCreateInfo* imageCreateInfo, bool isTextureDynamic,
 	EngineAPI::Graphics::DeviceMemoryStore* optionalMemoryStore)
 {
 	//Cache texture info for future use
@@ -20,6 +21,9 @@ bool VulkanTexture::InitVKTexture(EngineAPI::Graphics::RenderDevice* renderingDe
 	vkImageUsageFlags = imageCreateInfo->usage;
 	vkSamplesCountFlag = imageCreateInfo->samples;
 	//ETC
+
+	//Do we want a dynamic texture
+	isVkTextureDynamic = isTextureDynamic;
 
 	//Get the logical device used to create this texture. 
 	cachedVkDevice = renderingDevice->GetVKLogicalDevice();
