@@ -55,6 +55,8 @@ namespace EngineAPI
 
 			public:
 				//Getters
+				EngineAPI::Graphics::DeviceMemoryStore* GetParentStore() { return parentStore; };
+
 				VkDeviceSize GetBlockSizeBytes() { return blockSizeBytes; };
 				VkDeviceSize GetBlockOffsetInStoreBytes() { return blockOffsetInStoreBytes; };
 

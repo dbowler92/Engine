@@ -80,6 +80,8 @@ namespace EngineAPI
 
 			public:
 				//Getters
+				EngineAPI::Graphics::DeviceMemoryAllocator* GetParentAllocator() { return parentMemoryAllocator; };
+
 				VkDeviceMemory GetVKDeviceMemoryHandle() { return vkMemoryStoreHandle; };
 				VkDevice GetOwningVKLogicalDevice() { return cachedVkLogicalDevice; };
 				uint32_t GetVKMemoryTypeIndex() { return vkMemoryTypeIndex; };
