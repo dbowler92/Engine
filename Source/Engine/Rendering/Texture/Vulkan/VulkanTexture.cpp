@@ -64,8 +64,22 @@ bool VulkanTexture::InitVKTexture(EngineAPI::Graphics::RenderDevice* renderingDe
 	}
 
 	//Bind texture to device memory
-
-	//Create views
+	if (resourceMemoryBlock)
+	{
+		VkDeviceMemory memory = resourceMemoryBlock->GetParentStore()->GetVKDeviceMemoryHandle();
+		VkDeviceSize offsetAligned = resourceMemoryBlock->GetBlockAlignedOffsetInStoreBytes();
+		if (!vkBindImageMemory(cachedVkDevice, vkImageHandle, memory, offsetAligned))
+		{
+			EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanTexture::InitVKTexture(): Error - Coudl not bind memory to assigned memory block\n");
+			return false;
+		}
+	}
+	else
+	{
+		//No memory block available - unknown error 
+		EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanTexture::InitVKTexture() Error - No DeviceMemoryBlock assigned for this resource to bind memory with\n");
+		return false;
+	}
 
 	//Done
 	return true;

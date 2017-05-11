@@ -55,7 +55,9 @@ namespace EngineAPI
 					EngineAPI::Rendering::Resource* resource,
 					VkDeviceSize memoryAlignmentRequirments,
 					VkDeviceSize memoryBlockSize,
-					VkDeviceSize memoryBlockOffset, bool isBlockMappable);
+					VkDeviceSize memoryBlockOffset, 
+					VkDeviceSize resourceSize,
+					bool isBlockMappable);
 
 				//Frees the block -> Allowing it to be reused by other resources
 				//
@@ -75,6 +77,10 @@ namespace EngineAPI
 				bool IsBlockCurrentlyMapped() { return isMapped; };
 
 				void* GetBlockHostMemoryPointer() { return hostBlockPtr; };
+				EngineAPI::Rendering::Resource* GetResource() { return resourcePtr; };
+
+				VkDeviceSize GetResourceSize() { return resourceSizeBytes; };
+				VkDeviceSize GetResourceAlignment() { return resourceAlignment; };
 
 			protected:
 				//Vulkan handle of the device memory this block resides in
@@ -87,8 +93,14 @@ namespace EngineAPI
 				//Pointer to the resource that this store represents
 				EngineAPI::Rendering::Resource* resourcePtr = nullptr;
 
+				//Size of the resource as decided by the Vulkan API
+				VkDeviceSize resourceSizeBytes = 0;
+
 				//Block size in bytes
 				VkDeviceSize blockSizeBytes = 0;
+
+				//Resource alignment 
+				VkDeviceSize resourceAlignment = 0;
 
 				//Offset in to the memory store to the start of this block (bytes)
 				VkDeviceSize blockOffsetInStoreBytes = 0;

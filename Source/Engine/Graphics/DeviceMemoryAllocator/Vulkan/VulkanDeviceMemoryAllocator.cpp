@@ -1,5 +1,8 @@
 #include "VulkanDeviceMemoryAllocator.h"
 
+//For debug dump
+#include <fstream>
+
 //Resources
 #include "../../../Rendering/DepthTexture/DepthTexture.h"
 
@@ -12,9 +15,93 @@ void VulkanDeviceMemoryAllocator::Shutdown()
 		deviceMemoryStoresArray[i].Shutdown();
 }
 
-bool VulkanDeviceMemoryAllocator::InitVKMemoryAllocator()
+bool VulkanDeviceMemoryAllocator::VulkanDeviceMemoryAllocator::InitVKMemoryAllocator()
 {
 	return true;
+}
+
+void VulkanDeviceMemoryAllocator::Debug_LongDump(std::string filename)
+{
+	//Used to write to file
+	std::ofstream out;
+	out.open(filename + ".DUMP");
+	if (out.is_open())
+	{
+		out << "**************VulkanDeviceMemoryAllocator Dump****************" << "\n";
+		out << "\n";
+		out << "Allocator address: " << (void*)this << "\n";
+		out << "Number of memory stores: " << deviceMemoryStoresCount << "\n";
+		out << "\n";
+		out << "**************************************************************" << "\n";
+		out << "\n";
+
+		//For each store, print info
+		for (int i = 0; i < deviceMemoryStoresCount; i++)
+		{
+			EngineAPI::Graphics::DeviceMemoryStore& store = deviceMemoryStoresArray[i];
+			
+			out << "[Store: " << i << "]\n";
+
+			out << "Is Active Store: " << store.IsPublicMemoryStore() << "\n";
+			out << "Is Public Store: " << store.IsPublicMemoryStore() << "\n";
+
+			out << "Store Size: " << store.GetMemoryStoreSizeBytes() << "\n";
+			out << "Vulkan Device Memory Handle: " << store.GetVKDeviceMemoryHandle() << "\n";
+			out << "Vulkan Memory Type Index: " << store.GetVKMemoryTypeIndex() << "\n";
+			out << "Vulkan Memory Property Flags: " << store.GetStoreMemoryPropertyFlags() << "\n";
+			out << "Is Memory Mappable: " << store.IsVKMemoryMappable() << "\n";
+			
+			out << "Number of blocks: " << store.GetMemoryBlocksList()->size() << "\n";
+			out << "\n";
+
+			//For each block
+			std::list<EngineAPI::Graphics::DeviceMemoryBlock>* blocks = store.GetMemoryBlocksList();
+			std::list<EngineAPI::Graphics::DeviceMemoryBlock>::iterator it = blocks->begin();
+			int blockIDX = 0;
+			while (it != blocks->end())
+			{
+				EngineAPI::Graphics::DeviceMemoryBlock& block = *it;
+				out << "	[Block: " << blockIDX << "]\n";
+				out << "		Is Free: " << block.IsBlockFree() << "\n";
+				out << "		Is Mappable: " << block.IsBlockMappable() << "\n";
+				out << "		Is Mapped: " << block.IsBlockCurrentlyMapped() << "\n";
+				out << "		Resource Size: " << block.GetResourceSize() << "\n";
+				out << "		Resource Alignment: " << block.GetResourceAlignment() << "\n";
+
+				if (block.GetResource() != nullptr)
+				{
+					out << "		Resource Address: " << (void*)block.GetResource() << "\n";
+					out << "		Resource Type: " << block.GetResource()->GetResourceType() << "\n";
+				}
+				else
+				{
+					out << "		Resource Address: " << "nullptr" << "\n";
+					out << "		Resource Type: " << "NULL" << "\n";
+				}
+
+				out << "		Block Size: " << block.GetBlockSizeBytes() << "\n";
+				out << "		Block Offset: " << block.GetBlockOffsetInStoreBytes() << "\n";
+				out << "		Block Aligned Offset: " << block.GetBlockAlignedOffsetInStoreBytes() << "\n";
+				
+				if (block.GetBlockHostMemoryPointer()!= nullptr)
+					out << "		Block Host Pointer: " << (void*)block.GetBlockHostMemoryPointer() << "\n";
+				else
+					out << "		Block Host Pointer: " << "nullptr" << "\n";
+
+
+				//Next block
+				out << "\n";
+				++it;
+				++blockIDX;
+			}
+
+			out << "**************************************************************" << "\n";
+			out << "\n";
+		}
+
+		//Done
+		out.close();
+	}
 }
 
 EngineAPI::Graphics::DeviceMemoryStore* VulkanDeviceMemoryAllocator::CreateNewMemoryStore(EngineAPI::Graphics::RenderDevice* renderDevice,
@@ -59,7 +146,7 @@ SuballocationResult VulkanDeviceMemoryAllocator::AllocateResourceToStore(EngineA
 	}
 
 	//Allocate in to the given store
-	SuballocationResult result = store->Private_Suballoc(resource, resourceMemoryRequriments.size, resourceMemoryRequriments.alignment);
+	SuballocationResult result = store->Private_Suballoc(resource, resourceMemoryRequriments.size, resourceMemoryRequriments.alignment, resourceMemoryRequriments.size);
 	if (result != ALLOCATION_RESULT_SUCCESS)
 	{
 		if (result == ALLOCATION_RESULT_OUT_OF_MEMORY_FOR_STORE)
@@ -112,7 +199,7 @@ SuballocationResult VulkanDeviceMemoryAllocator::AllocateResourceAuto(EngineAPI:
 			//we want to use when allocing this depth texture
 			VkPhysicalDeviceMemoryProperties physicalDeviceMemoryProperties = renderingDevice->GetVKPhysicalDeviceMemoryProperties();
 
-			//Memory properties for this resource
+			//Memory properties for this resource type
 			VkMemoryPropertyFlags optimalFlags = VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT;
 			VkMemoryPropertyFlags fallbackFlags = 0;
 			if (depthResource->IsTextureDynamic())
@@ -179,7 +266,7 @@ SuballocationResult VulkanDeviceMemoryAllocator::AllocTextureResourceAuto(Engine
 	if (memStore)
 	{
 		//Sub alloc in to this store.
-		SuballocationResult result = memStore->Private_Suballoc(resource, resourceMemoryRequirments.size, resourceMemoryRequirments.alignment);
+		SuballocationResult result = memStore->Private_Suballoc(resource, resourceMemoryRequirments.size, resourceMemoryRequirments.alignment, resourceMemoryRequirments.size);
 		if (result != ALLOCATION_RESULT_SUCCESS)
 		{
 			EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanDeviceMemoryAllocator::AllocTextureResourceAuto(): Could not alloc texture\n");
@@ -246,15 +333,35 @@ EngineAPI::Graphics::DeviceMemoryStore* VulkanDeviceMemoryAllocator::SearchExist
 			{
 				//Yes! Is the stores max size > required bytes?
 				VkDeviceSize storeSizeBytes = deviceMemoryStoresArray[i].GetMemoryStoreSizeBytes();
-				if (storeSizeBytes > resourceMemoryRequirments.size) //TODO: Alignment?
+				if (storeSizeBytes >= resourceMemoryRequirments.size) //TODO: Alignment?
 				{
 					//Yes! Does this store have enough space for us to alloc 
 					//this resource in to? TODO: Take in to account alignment
-					VkDeviceSize storeSizeRemaining = 0;
-					bool doesStoreHaveEnoughSpace = false;
+					EngineAPI::Graphics::DeviceMemoryBlock* lastBlock = deviceMemoryStoresArray[i].Private_GetLastMemoryBlock();
+					
+					//Calculate the offset that would use for this resource + check if the
+					//full resource would still fit within this store
+					VkDeviceSize storeSizeRemaining = deviceMemoryStoresArray[i].GetMemoryStoreSizeBytes();
+					if (lastBlock) //Could be nullptr if the store has no blocks
+					{
+						VkDeviceSize lastBlockOffset = lastBlock->GetBlockOffsetInStoreBytes();
+						VkDeviceSize lastBlockSize = lastBlock->GetBlockSizeBytes();
+						VkDeviceSize potentialOffsetForThisResource = lastBlockOffset + lastBlockSize;
+						
+						//Make offset aligned
+						VkDeviceSize potentialOffsetForThisResourceAligned = CalculateAlignedMemoryOffset(potentialOffsetForThisResource, resourceMemoryRequirments.alignment);
+					
+						//Using the aligned offset for this resource, calculate the remaining amount
+						//of space this store has
+						storeSizeRemaining -= potentialOffsetForThisResourceAligned;
+					}
+
+					//Enough space to use this store? 
+					bool doesStoreHaveEnoughSpace = storeSizeRemaining >= resourceMemoryRequirments.size;
 					if (doesStoreHaveEnoughSpace)
 					{
-						//Can suballoc here. Return it
+						//Can suballoc here. Return it (we will later check if we can reuse
+						//an existing block. If not, we will just create a new one)
 						return &(deviceMemoryStoresArray[i]);
 					}
 				}
@@ -287,4 +394,22 @@ bool VulkanDeviceMemoryAllocator::FindMemoryTypeForProperties(uint32_t memoryTyp
 	//Failed.
 	*memTypeIndexOut = 0;
 	return false;
+}
+
+VkDeviceSize VulkanDeviceMemoryAllocator::CalculateAlignedMemoryOffset(VkDeviceSize memoryOffset, VkDeviceSize resourceAlignmentRequirment)
+{
+	VkDeviceSize alignedOffset = memoryOffset;
+
+	//How many bytes to shift this offset to the right?
+	VkDeviceSize bytesToShiftToMakeAligned = 0;
+	VkDeviceSize missAlignment = (alignedOffset % resourceAlignmentRequirment);
+
+	if (missAlignment != 0) //Could already be aligned
+		bytesToShiftToMakeAligned = resourceAlignmentRequirment - missAlignment;
+
+	//Shift to the right
+	alignedOffset += bytesToShiftToMakeAligned;
+
+	//Done
+	return alignedOffset;
 }

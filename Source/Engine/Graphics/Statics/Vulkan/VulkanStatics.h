@@ -33,6 +33,11 @@ namespace EngineAPI
 			static bool CommandBufferBeginRecording(VkCommandBuffer* cmdBuffer, VkCommandBufferBeginInfo* cmdBufferBeginInfo); 
 			static bool CommandBufferBeginRecordingDefault(VkCommandBuffer* cmdBuffer);
 			static bool CommandBufferEndRecording(VkCommandBuffer* cmdBuffer);
+
+			//Images
+			//
+			//Creates a VkImageView
+			static bool CreateVKTextureView(VkDevice* device, VkImageViewCreateInfo* viewCreateInfo, VkImageView* imageViewHandleOut);
 		};
 	}
 }

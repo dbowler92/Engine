@@ -111,8 +111,12 @@ VkDeviceSize VulkanDeviceMemoryStore::CalculateAlignedMemoryOffset(VkDeviceSize 
 {
 	VkDeviceSize alignedOffset = memoryBlockOffset;
 
-	//How many bytes to shift this offset to the right
-	VkDeviceSize bytesToShiftToMakeAligned = resourceAlignmentRequirment - (alignedOffset % resourceAlignmentRequirment);
+	//How many bytes to shift this offset to the right?
+	VkDeviceSize bytesToShiftToMakeAligned = 0;
+	VkDeviceSize missAlignment = (alignedOffset % resourceAlignmentRequirment);
+
+	if (missAlignment != 0) //Could already be aligned
+		bytesToShiftToMakeAligned = resourceAlignmentRequirment - missAlignment;
 
 	//Shift to the right
 	alignedOffset += bytesToShiftToMakeAligned;
@@ -159,7 +163,7 @@ EngineAPI::Graphics::DeviceMemoryBlock* VulkanDeviceMemoryStore::SearchExistingB
 }
 
 SuballocationResult VulkanDeviceMemoryStore::Private_Suballoc(EngineAPI::Rendering::Resource* resource,
-	VkDeviceSize blockSize, VkDeviceSize resourceAlignment)
+	VkDeviceSize blockSize, VkDeviceSize resourceAlignment, VkDeviceSize resourceSize)
 {
 	//Can we reuse an existing block that is now free?
 	EngineAPI::Graphics::DeviceMemoryBlock* existingBlock =
@@ -168,7 +172,7 @@ SuballocationResult VulkanDeviceMemoryStore::Private_Suballoc(EngineAPI::Renderi
 	{
 		//Found existing block to use. 
 		if (!existingBlock->InitVKMemoryBlock((DeviceMemoryStore*)this,
-			resource, resourceAlignment, existingBlock->GetBlockSizeBytes(), existingBlock->GetBlockOffsetInStoreBytes(), vkIsStoreMemoryMappable))
+			resource, resourceAlignment, existingBlock->GetBlockSizeBytes(), existingBlock->GetBlockOffsetInStoreBytes(), resourceSize, vkIsStoreMemoryMappable))
 		{
 			//Error
 			EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanDeviceMemoryStore::Private_Suballoc() - Error when reusing block for new suballocation\n");
@@ -181,17 +185,18 @@ SuballocationResult VulkanDeviceMemoryStore::Private_Suballoc(EngineAPI::Renderi
 		//
 		//Calculate offset within the VkDeviceBlock for the beginning of this resource
 		VkDeviceSize memoryBlockOffset = 0;
+		VkDeviceSize memoryBlockOffsetAligned = 0;
 		if (lastSuballocedBlock)
 		{
 			//Start offset (in to the entire store) for this new block
 			memoryBlockOffset = lastSuballocedBlock->GetBlockOffsetInStoreBytes() + lastSuballocedBlock->GetBlockSizeBytes();
 
-			// Align memory offset for the new block
-			memoryBlockOffset = CalculateAlignedMemoryOffset(memoryBlockOffset, resourceAlignment);
+			//Align memory offset for the new block
+			memoryBlockOffsetAligned = CalculateAlignedMemoryOffset(memoryBlockOffset, resourceAlignment);
 		}
 
 		//Check if we would overrun the memory store with this new block
-		VkDeviceSize endOfNewSuballoc = memoryBlockOffset + blockSize;
+		VkDeviceSize endOfNewSuballoc = memoryBlockOffsetAligned + blockSize;
 		if (endOfNewSuballoc > memoryStoreSizeBytes)
 		{
 			//Suballoc would go out of bounds - print message
@@ -199,10 +204,15 @@ SuballocationResult VulkanDeviceMemoryStore::Private_Suballoc(EngineAPI::Renderi
 			return ALLOCATION_RESULT_OUT_OF_MEMORY_FOR_STORE;
 		}
 
+		//Block size needs adjusting to factor in potential alignment issues. (thus, the block can fit
+		//the resource and padding (shift the offset to the right) as a result of memory
+		//alignment. 
+		VkDeviceSize blockSizeIncreasedForAlignment = (memoryBlockOffsetAligned - memoryBlockOffset) + blockSize;
+
 		//Suballoc a new block from within this store
 		EngineAPI::Graphics::DeviceMemoryBlock newBlock;
 		if (!newBlock.InitVKMemoryBlock((DeviceMemoryStore*)this,
-			resource, resourceAlignment, blockSize, memoryBlockOffset, vkIsStoreMemoryMappable))
+			resource, resourceAlignment, blockSizeIncreasedForAlignment, memoryBlockOffset, resourceSize, vkIsStoreMemoryMappable))
 		{
 			//Error
 			EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanDeviceMemoryStore::Private_Suballoc() - Error suballocing DeviceMemoryBlock\n");
@@ -215,6 +225,30 @@ SuballocationResult VulkanDeviceMemoryStore::Private_Suballoc(EngineAPI::Renderi
 		//Update last suballoced block pointer to point to the end of the 
 		//list
 		lastSuballocedBlock = &deviceMemoryBlocksList.back();
+	}
+
+	//Done
+	return ALLOCATION_RESULT_SUCCESS;
+}
+
+SuballocationResult VulkanDeviceMemoryStore::Private_SuballocExistingBlock(EngineAPI::Rendering::Resource* resource,
+	VkDeviceSize resourceAlignment, VkDeviceSize resourceSize,
+	EngineAPI::Graphics::DeviceMemoryBlock* block)
+{
+	//Check
+	if (!DoesStoreManageMemoryBlock(block))
+	{
+		EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanDeviceMemoryStore::Private_SuballocExistingBlock() - Store does not manage supplied block\n");
+		return ALLOCATION_RESULT_STORE_DOES_NOT_MANAGE_BLOCK;
+	}
+
+	//Use passed in block 
+	if (!block->InitVKMemoryBlock((DeviceMemoryStore*)this,
+		resource, resourceAlignment, block->GetBlockSizeBytes(), block->GetBlockOffsetInStoreBytes(), resourceSize, vkIsStoreMemoryMappable))
+	{
+		//Error
+		EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanDeviceMemoryStore::Private_SuballocExistingBlock() - Error when reusing block for new suballocation\n");
+		return ALLOCATION_RESULT_BLOCK_INIT_FAILED;
 	}
 
 	//Done

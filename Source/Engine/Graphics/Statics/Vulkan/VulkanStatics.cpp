@@ -77,3 +77,16 @@ bool VulkanStatics::CommandBufferEndRecording(VkCommandBuffer* cmdBuffer)
 	//Done
 	return true;
 }
+
+bool VulkanStatics::CreateVKTextureView(VkDevice* device, VkImageViewCreateInfo* viewCreateInfo, VkImageView* imageViewHandleOut)
+{
+	VkResult result = vkCreateImageView(*device, viewCreateInfo, nullptr, imageViewHandleOut);
+	if (result != VK_SUCCESS)
+	{
+		EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanTexture::CreateVKTextureView(): Could not create VkImageView object\n");
+		return false;
+	}
+
+	//Done
+	return true;
+}

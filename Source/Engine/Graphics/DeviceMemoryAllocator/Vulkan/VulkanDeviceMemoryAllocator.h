@@ -47,6 +47,12 @@ namespace EngineAPI
 				bool InitVKMemoryAllocator();
 
 			public:
+				//Debug: 
+				//
+				//Writes to a text file the full state of the memory allocator (File extention is .DUMP. It is, however, a txt file)
+				void Debug_LongDump(std::string filename);
+
+			public:
 				//Creates a new store manually - eg: At init time, we may want to 
 				//create a store which holds GPU data that lasts throughout the entire life
 				//of the app etc
@@ -111,6 +117,9 @@ namespace EngineAPI
 					VkMemoryPropertyFlags properties, 
 					const VkPhysicalDeviceMemoryProperties& physicalDeviceMemoryProperties,
 					uint32_t* memTypeIndexOut);
+
+				//Shifts an offset to the right such that it is memory aligned
+				VkDeviceSize CalculateAlignedMemoryOffset(VkDeviceSize memoryOffset, VkDeviceSize memoryAlignmentRequirment);
 			};
 		}
 	}

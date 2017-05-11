@@ -52,7 +52,9 @@ enum SuballocationResult
 	ALLOCATION_RESULT_SUCCESS, 
 	ALLOCATION_RESULT_OUT_OF_MEMORY_FOR_STORE, 
 	ALLOCATION_RESULT_STORE_MEMORY_TYPE_DOESNT_SUPPORT_RESOURCE_MEMORY_PROPERTIES,
-	ALLOCATION_RESULT_BLOCK_INIT_FAILED
+	ALLOCATION_RESULT_BLOCK_INIT_FAILED, 
+	ALLOCATION_RESULT_STORE_DOES_NOT_MANAGE_BLOCK,
+	ALLOCATION_RESULT_BAD_PARAMS_ERROR
 };
 
 namespace EngineAPI
@@ -104,7 +106,8 @@ namespace EngineAPI
 				uint32_t GetVKMemoryTypeIndex() { return vkMemoryTypeIndex; };
 				VkBool32 IsVKMemoryMappable() { return vkIsStoreMemoryMappable; };
 				VkDeviceSize GetMemoryStoreSizeBytes() { return memoryStoreSizeBytes; };
-				
+				VkMemoryPropertyFlags GetStoreMemoryPropertyFlags() { return vkMemoryPropertyFlags; };
+
 				bool IsPublicMemoryStore() { return isPublicStore; };
 				bool IsMemoryStoreActive() { return isStoreActive; };
 				
@@ -173,8 +176,15 @@ namespace EngineAPI
 				//				
 				//Suballoc and free
 				SuballocationResult Private_Suballoc(EngineAPI::Rendering::Resource* resource,
-					VkDeviceSize blockSize, VkDeviceSize resourceAlignment);
+					VkDeviceSize blockSize, VkDeviceSize resourceAlignment, VkDeviceSize resourceSize);
+				SuballocationResult Private_SuballocExistingBlock(EngineAPI::Rendering::Resource* resource,
+					VkDeviceSize resourceAlignment, VkDeviceSize resourceSize,
+					EngineAPI::Graphics::DeviceMemoryBlock* block);
+
 				void Private_FreeBlock(EngineAPI::Graphics::DeviceMemoryBlock* block);
+
+				//Returns the last block allocated
+				EngineAPI::Graphics::DeviceMemoryBlock* Private_GetLastMemoryBlock() { return lastSuballocedBlock; };
 			};
 		};
 	};
