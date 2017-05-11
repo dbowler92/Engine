@@ -80,18 +80,6 @@ namespace EngineAPI
 					const VkMemoryRequirements& resourceMemoryRequriments,
 					EngineAPI::Rendering::Resource* resource);
 
-			public:
-				//Searches for a memory type in memoryTypeBits (VkMemoryRequirements)
-				//that includes all of the properties (requiredProperties)
-				//
-				//If thats not found, call again with a set of fallback flags (including 0)
-				//to search again for a memory type that works for said resource but isnt exactly
-				//optimal. If this fails, you have yourself an error!
-				bool FindMemoryTypeForProperties(uint32_t memoryTypeBits,
-					VkMemoryPropertyFlags properties,
-					const VkPhysicalDeviceMemoryProperties& physicalDeviceMemoryProperties,
-					uint32_t* memTypeIndexOut);
-
 			protected:
 				//Array of stores
 				EngineAPI::Graphics::DeviceMemoryStore deviceMemoryStoresArray[ENGINE_CONFIG_VULKAN_API_MAX_NUMBER_OF_MEMORY_STORES];
@@ -117,10 +105,6 @@ namespace EngineAPI
 					VkMemoryPropertyFlags resourceMemoryPropertyFallbackFlags,
 					const VkMemoryRequirements& resourceMemoryRequirments,
 					const VkPhysicalDeviceMemoryProperties& physicalDeviceMemoryProperties);
-
-			private:
-				//Shifts an offset to the right such that it is memory aligned
-				VkDeviceSize CalculateAlignedMemoryOffset(VkDeviceSize memoryOffset, VkDeviceSize memoryAlignmentRequirment);
 			};
 		}
 	}

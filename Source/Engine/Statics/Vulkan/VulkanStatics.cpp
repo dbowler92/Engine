@@ -1,7 +1,7 @@
 #include "VulkanStatics.h"
 
 //May need debug logging
-#include "../../../Debug/Log/DebugLog.h"
+#include "../../Debug/Log/DebugLog.h"
 
 using namespace EngineAPI::Graphics;
 
@@ -76,6 +76,47 @@ bool VulkanStatics::CommandBufferEndRecording(VkCommandBuffer* cmdBuffer)
 
 	//Done
 	return true;
+}
+
+bool VulkanStatics::FindMemoryTypeForProperties(uint32_t memoryTypeBits, VkMemoryPropertyFlags properties,
+	const VkPhysicalDeviceMemoryProperties* physicalDeviceMemoryProperties,
+	uint32_t* memTypeIndexOut)
+{
+	//
+	//See official docs: https://www.khronos.org/registry/vulkan/specs/1.0/man/html/VkPhysicalDeviceMemoryProperties.html
+	//
+	//Required:
+	for (int32_t i = 0; i < physicalDeviceMemoryProperties->memoryTypeCount; ++i)
+	{
+		if ((memoryTypeBits & (1 << i)) &&
+			((physicalDeviceMemoryProperties->memoryTypes[i].propertyFlags & properties) == properties))
+		{
+			*memTypeIndexOut = i;
+			return true;
+		}
+	}
+
+	//Failed.
+	*memTypeIndexOut = 0;
+	return false;
+}
+
+VkDeviceSize VulkanStatics::CalculateAlignedMemoryOffsetShiftRight(VkDeviceSize memoryOffset, VkDeviceSize memoryAlignmentRequirment)
+{
+	VkDeviceSize alignedOffset = memoryOffset;
+
+	//How many bytes to shift this offset to the right?
+	VkDeviceSize bytesToShiftToMakeAligned = 0;
+	VkDeviceSize missAlignment = (alignedOffset % memoryAlignmentRequirment);
+
+	if (missAlignment != 0) //Could already be aligned
+		bytesToShiftToMakeAligned = memoryAlignmentRequirment - missAlignment;
+
+	//Shift to the right
+	alignedOffset += bytesToShiftToMakeAligned;
+
+	//Done
+	return alignedOffset;
 }
 
 bool VulkanStatics::CreateVKTextureView(VkDevice* device, VkImageViewCreateInfo* viewCreateInfo, VkImageView* imageViewHandleOut)

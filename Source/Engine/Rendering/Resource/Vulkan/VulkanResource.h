@@ -6,6 +6,9 @@
 
 #pragma once
 
+//Static helper
+#include "../../../Statics/Vulkan/VulkanStatics.h"
+
 enum RenderingResourceType
 {
 	RENDERING_RESOURCE_TYPE_TEXTURE,

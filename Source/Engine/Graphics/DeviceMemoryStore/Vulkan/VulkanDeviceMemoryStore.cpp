@@ -107,24 +107,6 @@ bool VulkanDeviceMemoryStore::DoesStoreManageMemoryBlock(EngineAPI::Graphics::De
 	return ((void*)this == (void*)block->GetParentStore());
 }
 
-VkDeviceSize VulkanDeviceMemoryStore::CalculateAlignedMemoryOffset(VkDeviceSize memoryBlockOffset, VkDeviceSize resourceAlignmentRequirment)
-{
-	VkDeviceSize alignedOffset = memoryBlockOffset;
-
-	//How many bytes to shift this offset to the right?
-	VkDeviceSize bytesToShiftToMakeAligned = 0;
-	VkDeviceSize missAlignment = (alignedOffset % resourceAlignmentRequirment);
-
-	if (missAlignment != 0) //Could already be aligned
-		bytesToShiftToMakeAligned = resourceAlignmentRequirment - missAlignment;
-
-	//Shift to the right
-	alignedOffset += bytesToShiftToMakeAligned;
-
-	//Done
-	return alignedOffset;
-}
-
 EngineAPI::Graphics::DeviceMemoryBlock* VulkanDeviceMemoryStore::SearchExistingBlocksListToUseToSuballocResource(
 	EngineAPI::Rendering::Resource* resource,
 	VkDeviceSize blockSizeNeeded, VkDeviceSize resourceAlignment)
@@ -192,7 +174,7 @@ SuballocationResult VulkanDeviceMemoryStore::Private_Suballoc(EngineAPI::Renderi
 			memoryBlockOffset = lastSuballocedBlock->GetBlockOffsetInStoreBytes() + lastSuballocedBlock->GetBlockSizeBytes();
 
 			//Align memory offset for the new block
-			memoryBlockOffsetAligned = CalculateAlignedMemoryOffset(memoryBlockOffset, resourceAlignment);
+			memoryBlockOffsetAligned = VulkanStatics::CalculateAlignedMemoryOffsetShiftRight(memoryBlockOffset, resourceAlignment);
 		}
 
 		//Check if we would overrun the memory store with this new block

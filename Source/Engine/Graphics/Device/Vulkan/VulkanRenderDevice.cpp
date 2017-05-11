@@ -291,7 +291,7 @@ bool VulkanRenderDevice::InitVKMemoryAllocator(EngineAPI::OS::OSWindow* osWindow
 		return false;
 	}
 
-	store->GetLastAllocatedBlock()->FreeMemoryBlock();
+	store->GetLastMemoryBlock()->FreeMemoryBlock();
 
 	r.alignment = 1024;
 	r.size = 245863;

@@ -7,7 +7,7 @@
 #pragma once
 
 //Globals 
-#include "../../../Main/EngineStd.h"
+#include "../../Main/EngineStd.h"
 
 //Vulkan
 #include <vulkan\vulkan.h>
@@ -34,10 +34,22 @@ namespace EngineAPI
 			static bool CommandBufferBeginRecordingDefault(VkCommandBuffer* cmdBuffer);
 			static bool CommandBufferEndRecording(VkCommandBuffer* cmdBuffer);
 
+			//Memory
+			//
+			//Finds the memoryTypeIndex for a given memoryTypeBits (Obtained as a result of
+			//a call to VkGet*MemoryRequirments) && properties (Eg: Device local vs CPU accessable)
+			static bool FindMemoryTypeForProperties(uint32_t memoryTypeBits, VkMemoryPropertyFlags properties,
+				const VkPhysicalDeviceMemoryProperties* physicalDeviceMemoryProperties,
+				uint32_t* memTypeIndexOut);
+
+			//Shifts an offset to the right such that it is memory aligned
+			static VkDeviceSize CalculateAlignedMemoryOffsetShiftRight(VkDeviceSize memoryOffset, VkDeviceSize memoryAlignmentRequirment);
+
 			//Images
 			//
 			//Creates a VkImageView
 			static bool CreateVKTextureView(VkDevice* device, VkImageViewCreateInfo* viewCreateInfo, VkImageView* imageViewHandleOut);
+		
 		};
 	}
 }

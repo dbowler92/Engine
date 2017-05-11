@@ -114,7 +114,7 @@ namespace EngineAPI
 				void* GetStoreHostPointer() { return hostStorePtr; };
 
 				std::list<EngineAPI::Graphics::DeviceMemoryBlock>* GetMemoryBlocksList() { return &deviceMemoryBlocksList; };
-				EngineAPI::Graphics::DeviceMemoryBlock* GetLastAllocatedBlock() { return lastSuballocedBlock; };
+				EngineAPI::Graphics::DeviceMemoryBlock* GetLastMemoryBlock() { return lastSuballocedBlock; };
 
 			protected:
 				//Handle to the VK memory store
@@ -163,11 +163,6 @@ namespace EngineAPI
 				bool isStoreActive = false;
 
 			private:
-				//Given an offset for a new block object and an alignment that needs to be
-				//required, this function will shift the memoryBlockOffset to the right
-				//in such a way that it will be correctly aligned
-				VkDeviceSize CalculateAlignedMemoryOffset(VkDeviceSize memoryBlockOffset, VkDeviceSize resourceAlignmentRequirment);
-
 				//Loops through the list of blocks and tries to find one
 				//which is a) free and b) large enough to hold our resource
 				EngineAPI::Graphics::DeviceMemoryBlock* SearchExistingBlocksListToUseToSuballocResource(
@@ -185,9 +180,6 @@ namespace EngineAPI
 					EngineAPI::Graphics::DeviceMemoryBlock* block);
 
 				void Private_FreeBlock(EngineAPI::Graphics::DeviceMemoryBlock* block);
-
-				//Returns the last block allocated
-				EngineAPI::Graphics::DeviceMemoryBlock* Private_GetLastMemoryBlock() { return lastSuballocedBlock; };
 			};
 		};
 	};

@@ -97,12 +97,6 @@
     <Filter Include="Src\Graphics\CommandQueueFamily\Vulkan">
       <UniqueIdentifier>{dd8e3959-023b-4db4-854c-3154cb452e0c}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Src\Graphics\Statics">
-      <UniqueIdentifier>{b8dd96a7-a335-4262-a738-d2f6278cdd39}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Src\Graphics\Statics\Vulkan">
-      <UniqueIdentifier>{829bf66c-2e89-4107-8df1-da2121b64c4f}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Src\Rendering\DepthTexture">
       <UniqueIdentifier>{d42e626a-974b-4f93-981b-033fc6b1a3e4}</UniqueIdentifier>
     </Filter>
@@ -138,6 +132,12 @@
     </Filter>
     <Filter Include="Src\Rendering\Texture\Vulkan">
       <UniqueIdentifier>{9ff536c0-5ae1-41d6-8699-dd8e68559be7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Statics">
+      <UniqueIdentifier>{48f0701c-46b4-43bd-a57b-83fa4f29cd75}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Statics\Vulkan">
+      <UniqueIdentifier>{e6bc3afb-9af4-45a5-b320-5cd7f82a1aed}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -180,9 +180,6 @@
     <ClCompile Include="..\Graphics\CommandQueue\Vulkan\VulkanCommandQueue.cpp">
       <Filter>Src\Graphics\CommandQueue\Vulkan</Filter>
     </ClCompile>
-    <ClCompile Include="..\Graphics\Statics\Vulkan\VulkanStatics.cpp">
-      <Filter>Src\Graphics\Statics\Vulkan</Filter>
-    </ClCompile>
     <ClCompile Include="..\Rendering\DepthTexture\Vulkan\VulkanDepthTexture.cpp">
       <Filter>Src\Rendering\DepthTexture\Vulkan</Filter>
     </ClCompile>
@@ -203,6 +200,9 @@
     </ClCompile>
     <ClCompile Include="..\Rendering\Texture\Vulkan\VulkanTexture.cpp">
       <Filter>Src\Rendering\Texture\Vulkan</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Statics\Vulkan\VulkanStatics.cpp">
+      <Filter>Src\Statics\Vulkan</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -284,9 +284,6 @@
     <ClInclude Include="..\Graphics\CommandQueue\Vulkan\VulkanCommandQueue.h">
       <Filter>Src\Graphics\CommandQueue\Vulkan</Filter>
     </ClInclude>
-    <ClInclude Include="..\Graphics\Statics\Vulkan\VulkanStatics.h">
-      <Filter>Src\Graphics\Statics\Vulkan</Filter>
-    </ClInclude>
     <ClInclude Include="..\Rendering\DepthTexture\Vulkan\VulkanDepthTexture.h">
       <Filter>Src\Rendering\DepthTexture\Vulkan</Filter>
     </ClInclude>
@@ -328,6 +325,9 @@
     </ClInclude>
     <ClInclude Include="..\Rendering\Resource\Resource.h">
       <Filter>Src\Rendering\Resource</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Statics\Vulkan\VulkanStatics.h">
+      <Filter>Src\Statics\Vulkan</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

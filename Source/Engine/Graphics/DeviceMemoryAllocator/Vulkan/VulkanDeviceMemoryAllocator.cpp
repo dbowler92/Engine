@@ -301,14 +301,14 @@ EngineAPI::Graphics::DeviceMemoryStore* VulkanDeviceMemoryAllocator::SearchExist
 
 	//Memory type index we want for this resource?
 	uint32_t memoryTypeIndexForResource = 0;
-	bool didFind = FindMemoryTypeForProperties(resourceMemoryRequirments.memoryTypeBits,
-		resourceMemoryPropertyOptimalFlags, physicalDeviceMemoryProperties, &memoryTypeIndexForResource);
+	bool didFind = VulkanStatics::FindMemoryTypeForProperties(resourceMemoryRequirments.memoryTypeBits,
+		resourceMemoryPropertyOptimalFlags, &physicalDeviceMemoryProperties, &memoryTypeIndexForResource);
 
 	if (!didFind)
 	{
 		//Fallback - TODO: Make better. 
-		bool didFindFallback = FindMemoryTypeForProperties(resourceMemoryRequirments.memoryTypeBits,
-			resourceMemoryPropertyFallbackFlags, physicalDeviceMemoryProperties, &memoryTypeIndexForResource);
+		bool didFindFallback = VulkanStatics::FindMemoryTypeForProperties(resourceMemoryRequirments.memoryTypeBits,
+			resourceMemoryPropertyFallbackFlags, &physicalDeviceMemoryProperties, &memoryTypeIndexForResource);
 
 		if (!didFindFallback)
 		{
@@ -341,7 +341,7 @@ EngineAPI::Graphics::DeviceMemoryStore* VulkanDeviceMemoryAllocator::SearchExist
 				{
 					//Yes! Does this store have enough space for us to alloc 
 					//this resource in to? TODO: Take in to account alignment
-					EngineAPI::Graphics::DeviceMemoryBlock* lastBlock = deviceMemoryStoresArray[i].Private_GetLastMemoryBlock();
+					EngineAPI::Graphics::DeviceMemoryBlock* lastBlock = deviceMemoryStoresArray[i].GetLastMemoryBlock();
 					
 					//Calculate the offset that would use for this resource + check if the
 					//full resource would still fit within this store
@@ -353,7 +353,7 @@ EngineAPI::Graphics::DeviceMemoryStore* VulkanDeviceMemoryAllocator::SearchExist
 						VkDeviceSize potentialOffsetForThisResource = lastBlockOffset + lastBlockSize;
 						
 						//Make offset aligned
-						VkDeviceSize potentialOffsetForThisResourceAligned = CalculateAlignedMemoryOffset(potentialOffsetForThisResource, resourceMemoryRequirments.alignment);
+						VkDeviceSize potentialOffsetForThisResourceAligned = VulkanStatics::CalculateAlignedMemoryOffsetShiftRight(potentialOffsetForThisResource, resourceMemoryRequirments.alignment);
 					
 						//Using the aligned offset for this resource, calculate the remaining amount
 						//of space this store has
@@ -374,46 +374,4 @@ EngineAPI::Graphics::DeviceMemoryStore* VulkanDeviceMemoryAllocator::SearchExist
 	}
 
 	return nullptr;
-}
-
-bool VulkanDeviceMemoryAllocator::FindMemoryTypeForProperties(uint32_t memoryTypeBits, 
-	VkMemoryPropertyFlags properties,
-	const VkPhysicalDeviceMemoryProperties& physicalDeviceMemoryProperties,
-	uint32_t* memTypeIndexOut)
-{
-	//
-	//See official docs: https://www.khronos.org/registry/vulkan/specs/1.0/man/html/VkPhysicalDeviceMemoryProperties.html
-	//
-	//Required:
-	for (int32_t i = 0; i < physicalDeviceMemoryProperties.memoryTypeCount; ++i)
-	{
-		if ((memoryTypeBits & (1 << i)) &&
-			((physicalDeviceMemoryProperties.memoryTypes[i].propertyFlags & properties) == properties))
-		{
-			*memTypeIndexOut = i;
-			return true;
-		}
-	}
-
-	//Failed.
-	*memTypeIndexOut = 0;
-	return false;
-}
-
-VkDeviceSize VulkanDeviceMemoryAllocator::CalculateAlignedMemoryOffset(VkDeviceSize memoryOffset, VkDeviceSize resourceAlignmentRequirment)
-{
-	VkDeviceSize alignedOffset = memoryOffset;
-
-	//How many bytes to shift this offset to the right?
-	VkDeviceSize bytesToShiftToMakeAligned = 0;
-	VkDeviceSize missAlignment = (alignedOffset % resourceAlignmentRequirment);
-
-	if (missAlignment != 0) //Could already be aligned
-		bytesToShiftToMakeAligned = resourceAlignmentRequirment - missAlignment;
-
-	//Shift to the right
-	alignedOffset += bytesToShiftToMakeAligned;
-
-	//Done
-	return alignedOffset;
 }
