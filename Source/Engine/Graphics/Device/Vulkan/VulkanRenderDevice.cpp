@@ -203,8 +203,11 @@ bool VulkanRenderDevice::InitVKMemoryAllocator(EngineAPI::OS::OSWindow* osWindow
 		return false;
 	}
 
+	
 	//TEMP:
 	//
+
+	/*
 	VkMemoryRequirements r;
 	//Alloc first block
 	r.alignment = 1024;
@@ -215,7 +218,7 @@ bool VulkanRenderDevice::InitVKMemoryAllocator(EngineAPI::OS::OSWindow* osWindow
 		EngineAPI::Debug::DebugLog::PrintErrorMessage("Error 2\n");
 		return false;
 	}
-		
+	
 	//Cant alloc in first bloc, create new block
 	r.alignment = 1024;
 	r.size = 2457600;
@@ -305,6 +308,7 @@ bool VulkanRenderDevice::InitVKMemoryAllocator(EngineAPI::OS::OSWindow* osWindow
 
 	deviceMemoryAllocator->Debug_LongDump("VulkanDeviceMemoryAllocator_RenderDevice");
 	exit(1);
+	*/
 
 	//Done
 	return true;

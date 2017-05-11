@@ -40,7 +40,7 @@ void VulkanDeviceMemoryAllocator::Debug_LongDump(std::string filename)
 		{
 			EngineAPI::Graphics::DeviceMemoryStore& store = deviceMemoryStoresArray[i];
 			
-			out << "[Store: " << i << "]\n";
+			out << "[Store: " << i << "]" << " " << (void*)&deviceMemoryStoresArray[i] << "\n";
 
 			out << "Is Active Store: " << store.IsPublicMemoryStore() << "\n";
 			out << "Is Public Store: " << store.IsPublicMemoryStore() << "\n";
@@ -64,6 +64,9 @@ void VulkanDeviceMemoryAllocator::Debug_LongDump(std::string filename)
 			int blockIDX = 0;
 			while (it != blocks->end())
 			{
+				std::list<EngineAPI::Graphics::DeviceMemoryBlock>::pointer p;
+				
+
 				EngineAPI::Graphics::DeviceMemoryBlock& block = *it;
 				out << "	[Block: " << blockIDX << "]\n";
 				out << "		Is Free: " << block.IsBlockFree() << "\n";
