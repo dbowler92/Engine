@@ -58,6 +58,10 @@ void VulkanDeviceMemoryBlock::FreeMemoryBlock()
 	//Block is free!
 	this->isFree = true;
 
+	this->resourceSizeBytes = 0;
+	this->resourceAlignment = 0;
+	this->blockAlignedOffsetInStoreBytes = 0; 
+
 	//Free resource?
 	//
 	//

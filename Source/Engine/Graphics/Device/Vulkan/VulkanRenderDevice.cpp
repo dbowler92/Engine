@@ -249,6 +249,60 @@ bool VulkanRenderDevice::InitVKMemoryAllocator(EngineAPI::OS::OSWindow* osWindow
 		return false;
 	}
 	
+	r.alignment = 1024;
+	r.size = 2458697;
+	r.memoryTypeBits = 264;
+	result = deviceMemoryAllocator->AllocateResourceToStore((RenderDevice*)this, store, r, nullptr);
+	if (result != ALLOCATION_RESULT_SUCCESS)
+	{
+		EngineAPI::Debug::DebugLog::PrintErrorMessage("Error 6\n");
+		return false;
+	}
+
+	r.alignment = 1024;
+	r.size = 2458694;
+	r.memoryTypeBits = 264;
+	result = deviceMemoryAllocator->AllocateResourceToStore((RenderDevice*)this, store, r, nullptr);
+	if (result != ALLOCATION_RESULT_SUCCESS)
+	{
+		EngineAPI::Debug::DebugLog::PrintErrorMessage("Error 7\n");
+		return false;
+	}
+
+	r.alignment = 1024;
+	r.size = 2458633;
+	r.memoryTypeBits = 264;
+	result = deviceMemoryAllocator->AllocateResourceToStore((RenderDevice*)this, store, r, nullptr);
+	if (result != ALLOCATION_RESULT_SUCCESS)
+	{
+		EngineAPI::Debug::DebugLog::PrintErrorMessage("Error 8\n");
+		return false;
+	}
+
+	//store->GetLastAllocatedBlock()->FreeMemoryBlock();
+
+	r.alignment = 1024;
+	r.size = 2458633;
+	r.memoryTypeBits = 264;
+	result = deviceMemoryAllocator->AllocateResourceToStore((RenderDevice*)this, store, r, nullptr);
+	if (result != ALLOCATION_RESULT_SUCCESS)
+	{
+		EngineAPI::Debug::DebugLog::PrintErrorMessage("Error 9\n");
+		return false;
+	}
+
+	store->GetLastAllocatedBlock()->FreeMemoryBlock();
+
+	r.alignment = 1024;
+	r.size = 245863;
+	r.memoryTypeBits = 264;
+	result = deviceMemoryAllocator->AllocateResourceToStore((RenderDevice*)this, store, r, nullptr);
+	if (result != ALLOCATION_RESULT_SUCCESS)
+	{
+		EngineAPI::Debug::DebugLog::PrintErrorMessage("Error 10\n");
+		return false;
+	}
+
 	deviceMemoryAllocator->Debug_LongDump("VulkanDeviceMemoryAllocator_RenderDevice");
 	exit(1);
 

@@ -111,7 +111,10 @@ namespace EngineAPI
 				bool IsPublicMemoryStore() { return isPublicStore; };
 				bool IsMemoryStoreActive() { return isStoreActive; };
 				
+				void* GetStoreHostPointer() { return hostStorePtr; };
+
 				std::list<EngineAPI::Graphics::DeviceMemoryBlock>* GetMemoryBlocksList() { return &deviceMemoryBlocksList; };
+				EngineAPI::Graphics::DeviceMemoryBlock* GetLastAllocatedBlock() { return lastSuballocedBlock; };
 
 			protected:
 				//Handle to the VK memory store
