@@ -1,7 +1,2 @@
-﻿  VulkanDeviceMemoryStore.cpp
-c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\devicememorystore\vulkan\vulkandevicememorystore.cpp(61): warning C4309: 'argument': truncation of constant value
-c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\devicememorystore\vulkan\vulkandevicememorystore.cpp(102): warning C4800: 'uint32_t': forcing value to bool 'true' or 'false' (performance warning)
-c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\devicememorystore\vulkan\vulkandevicememorystore.cpp(157): warning C4800: 'VkBool32': forcing value to bool 'true' or 'false' (performance warning)
-c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\devicememorystore\vulkan\vulkandevicememorystore.cpp(210): warning C4800: 'VkBool32': forcing value to bool 'true' or 'false' (performance warning)
-c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\devicememorystore\vulkan\vulkandevicememorystore.cpp(239): warning C4800: 'VkBool32': forcing value to bool 'true' or 'false' (performance warning)
+﻿  VulkanTexture.cpp
   Engine.vcxproj -> C:\Users\B1032464\Documents\Programming\Engine\Engine\Source\Engine\Msvs\..\..\Lib\Win32Debug\Engine.lib

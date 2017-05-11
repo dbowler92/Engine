@@ -65,7 +65,7 @@ void VulkanDeviceMemoryAllocator::Debug_LongDump(std::string filename)
 			while (it != blocks->end())
 			{
 				EngineAPI::Graphics::DeviceMemoryBlock& block = *it;
-				out << "	[Block: " << blockIDX << "]\n";
+				out << "	[Block: " << blockIDX << "] " << (void*)&block << "\n";
 				out << "		Is Free: " << block.IsBlockFree() << "\n";
 				out << "		Is Mappable: " << block.IsBlockMappable() << "\n";
 				out << "		Is Mapped: " << block.IsBlockCurrentlyMapped() << "\n";

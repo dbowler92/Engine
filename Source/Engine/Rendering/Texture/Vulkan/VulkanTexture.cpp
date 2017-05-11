@@ -66,22 +66,14 @@ bool VulkanTexture::InitVKTexture(EngineAPI::Graphics::RenderDevice* renderingDe
 	//Bind texture to device memory
 	if (resourceMemoryBlock)
 	{
-		EngineAPI::Graphics::DeviceMemoryStore* s0 = resourceMemoryBlock->GetParentStore();
-
 		VkDeviceMemory memory = resourceMemoryBlock->GetParentStore()->GetVKDeviceMemoryHandle();
 		VkDeviceSize offsetAligned = resourceMemoryBlock->GetBlockAlignedOffsetInStoreBytes();
 		VkResult result = vkBindImageMemory(cachedVkDevice, vkImageHandle, memory, offsetAligned);
-		//if (result != VK_SUCCESS)
-		//{
-		//	EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanTexture::InitVKTexture(): Error - Could not bind memory to assigned memory block\n");
-		//	return false;
-		//}
-
-		EngineAPI::Graphics::DeviceMemoryStore* s = resourceMemoryBlock->GetParentStore();
-		EngineAPI::Graphics::DeviceMemoryAllocator* a = renderingDevice->GetDeviceMemoryAllocator();
-		a->Debug_LongDump("VulkanMemoryDump");
-		//s->GetParentAllocator()->Debug_LongDump("MemoryLog_1");
-
+		if (result != VK_SUCCESS)
+		{
+			EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanTexture::InitVKTexture(): Error - Could not bind memory to assigned memory block\n");
+			return false;
+		}
 	}
 	else
 	{
@@ -89,9 +81,6 @@ bool VulkanTexture::InitVKTexture(EngineAPI::Graphics::RenderDevice* renderingDe
 		EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanTexture::InitVKTexture() Error - No DeviceMemoryBlock assigned for this resource to bind memory with\n");
 		return false;
 	}
-
-	EngineAPI::Graphics::DeviceMemoryStore* s = resourceMemoryBlock->GetParentStore();
-	//s->GetParentAllocator()->Debug_LongDump("MemoryLog_1");
 
 	//Done
 	return true;
