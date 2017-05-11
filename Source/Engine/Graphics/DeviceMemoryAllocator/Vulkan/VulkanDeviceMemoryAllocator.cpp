@@ -76,11 +76,16 @@ void VulkanDeviceMemoryAllocator::Debug_LongDump(std::string filename)
 				{
 					out << "		Resource Address: " << (void*)block.GetResource() << "\n";
 					out << "		Resource Type: " << block.GetResource()->GetResourceType() << "\n";
+					if (!block.GetResource()->GetResourceDebugName().empty())
+						out << "		Resource Debug Name: " << block.GetResource()->GetResourceDebugName().c_str() << "\n";
+					else
+						out << "		Resource Debug Name: " << "NULL" << "\n";
 				}
 				else
 				{
 					out << "		Resource Address: " << "nullptr" << "\n";
 					out << "		Resource Type: " << "NULL" << "\n";
+					out << "		Resource Debug Name: " << "NULL" << "\n";
 				}
 
 				out << "		Block Size: " << block.GetBlockSizeBytes() << "\n";

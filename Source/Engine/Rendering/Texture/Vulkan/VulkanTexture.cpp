@@ -82,6 +82,8 @@ bool VulkanTexture::InitVKTexture(EngineAPI::Graphics::RenderDevice* renderingDe
 		return false;
 	}
 
+	renderingDevice->GetDeviceMemoryAllocator()->Debug_LongDump("TestDump");
+
 	//Done
 	return true;
 }

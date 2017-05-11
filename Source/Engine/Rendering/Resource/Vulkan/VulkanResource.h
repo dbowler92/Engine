@@ -6,6 +6,9 @@
 
 #pragma once
 
+//String
+#include <string>
+
 //Static helper
 #include "../../../Statics/Vulkan/VulkanStatics.h"
 
@@ -53,6 +56,10 @@ namespace EngineAPI
 				//Returns the device memory block for this resource
 				EngineAPI::Graphics::DeviceMemoryBlock* GetDeviceMemoryBlock() { return resourceMemoryBlock; };
 
+			public:
+				void SetResourceDebugName(std::string name) { debugName = name; };
+				std::string GetResourceDebugName() { return debugName; };
+
 			protected:
 				//Resource type -> Set by subclasses (constructor)
 				RenderingResourceType resourceType;
@@ -61,6 +68,9 @@ namespace EngineAPI
 				//by the private Private_SetDeviceMemoryBlockPointer() function when allocated 
 				//by the block itself - Don't reset this pointer. 
 				EngineAPI::Graphics::DeviceMemoryBlock* resourceMemoryBlock = nullptr;
+
+				//Debug resource identifier (name)
+				std::string debugName;
 
 			private:
 				//Visible to DeviceMemoryBlock

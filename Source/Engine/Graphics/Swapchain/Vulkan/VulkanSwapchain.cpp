@@ -543,6 +543,9 @@ bool VulkanSwapchain::CreateDepthBuffer(EngineAPI::Graphics::RenderDevice* rende
 	//Alloc depth texture
 	depthTexture = GE_NEW EngineAPI::Rendering::DepthTexture();
 
+	//Debug name
+	depthTexture->SetResourceDebugName("Swapchain Depth Texture");
+
 	//Size - same as colour buffers. 
 	ESize2D depthTextureDimentions;
 	depthTextureDimentions.Width = (EUINT_32)vkSwapchainExtents.width;
