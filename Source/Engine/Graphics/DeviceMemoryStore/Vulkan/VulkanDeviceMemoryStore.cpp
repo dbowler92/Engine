@@ -191,21 +191,31 @@ SuballocationResult VulkanDeviceMemoryStore::Private_Suballoc(EngineAPI::Renderi
 		//alignment. 
 		VkDeviceSize blockSizeIncreasedForAlignment = (memoryBlockOffsetAligned - memoryBlockOffset) + blockSize;
 
-		//Suballoc a new block from within this store
-		EngineAPI::Graphics::DeviceMemoryBlock newBlock;
-		if (!newBlock.InitVKMemoryBlock((DeviceMemoryStore*)this,
+		//Add a new block to the list. NOTE: DONT create a new block on the stack, init said stack
+		//block and then call deviceMemoryBlocksList.push_back(newBlock). When the push_back(newBlock) function
+		//is called, a COPY of the data stored in this new block is used to init the block in the list. 
+		//
+		//Unfortunatly, within the InitVKMemoryBlock() function we go ahead and tell the resource what its
+		//memory block is - we do this by passing a pointer to the DeviceMemoryBlock: Private_SetDeviceMemoryBlockPointer((DeviceMemoryBlock*)this);
+		//Sadly, (DeviceMemoryBlock*)this returns a pointer to the stacked memory block and *NOT* the one in the 
+		//std::list. Said pointer was invalidated much later (specifically during a call to vkBindImageMemory()) when 
+		//the DeviceMemoryBlock object on the stack was overriden by new data!
+		//
+		//As a result, we add the element to the list and then update the element stored in the std::list
+		deviceMemoryBlocksList.push_back(EngineAPI::Graphics::DeviceMemoryBlock());
+		EngineAPI::Graphics::DeviceMemoryBlock* memoryBlockInTheList = &deviceMemoryBlocksList.back();
+
+		//Init this new block (one in the list)
+		if (!memoryBlockInTheList->InitVKMemoryBlock((DeviceMemoryStore*)this,
 			resource, resourceAlignment, blockSizeIncreasedForAlignment, memoryBlockOffset, resourceSize, vkIsStoreMemoryMappable))
 		{
 			//Error
 			EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanDeviceMemoryStore::Private_Suballoc() - Error suballocing DeviceMemoryBlock\n");
 			return ALLOCATION_RESULT_BLOCK_INIT_FAILED;
 		}
-		
-		//Add the newly created block to list
-		deviceMemoryBlocksList.push_back(newBlock);
 
 		//Update last suballoced block pointer to point to the end of the 
-		//list
+		//list -IE, our new block
 		lastSuballocedBlock = &deviceMemoryBlocksList.back();
 	}
 

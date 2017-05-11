@@ -1,11 +1,11 @@
 **************VulkanDeviceMemoryAllocator Dump****************
 
-Allocator address: 03F14430
+Allocator address: 03B3FE28
 Number of memory stores: 1
 
 **************************************************************
 
-[Store: 0] 03F14438
+[Store: 0] 03B3FE30
 Is Active Store: 1
 Is Public Store: 1
 Store Size: 268435456
@@ -22,7 +22,7 @@ Number of blocks: 1
 		Is Mapped: 0
 		Resource Size: 2457600
 		Resource Alignment: 1024
-		Resource Address: 033FD390
+		Resource Address: 03DBD118
 		Resource Type: 1
 		Block Size: 2457600
 		Block Offset: 0
