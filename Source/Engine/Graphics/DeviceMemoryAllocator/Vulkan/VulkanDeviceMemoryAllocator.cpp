@@ -286,11 +286,11 @@ SuballocationResult VulkanDeviceMemoryAllocator::AllocTextureResourceAuto(Engine
 	{
 		//Memory type index for this resource && new store
 		uint32_t memoryTypeIDX = 0;
-		if (!VulkanStatics::FindMemoryTypeForProperties(resourceMemoryRequirments.memoryTypeBits,
+		if (!EngineAPI::Statics::VulkanStatics::FindMemoryTypeForProperties(resourceMemoryRequirments.memoryTypeBits,
 			resourceMemoryPropertyOptimalFlags, &physicalDeviceMemoryProperties, &memoryTypeIDX))
 		{
 			//Use fallback properties
-			if (!VulkanStatics::FindMemoryTypeForProperties(resourceMemoryRequirments.memoryTypeBits,
+			if (!EngineAPI::Statics::VulkanStatics::FindMemoryTypeForProperties(resourceMemoryRequirments.memoryTypeBits,
 				resourceMemoryPropertyFallbackFlags, &physicalDeviceMemoryProperties, &memoryTypeIDX))
 			{
 				//Error
@@ -346,13 +346,13 @@ EngineAPI::Graphics::DeviceMemoryStore* VulkanDeviceMemoryAllocator::SearchExist
 
 	//Memory type index we want for this resource?
 	uint32_t memoryTypeIndexForResource = 0;
-	bool didFind = VulkanStatics::FindMemoryTypeForProperties(resourceMemoryRequirments.memoryTypeBits,
+	bool didFind = EngineAPI::Statics::VulkanStatics::FindMemoryTypeForProperties(resourceMemoryRequirments.memoryTypeBits,
 		resourceMemoryPropertyOptimalFlags, &physicalDeviceMemoryProperties, &memoryTypeIndexForResource);
 
 	if (!didFind)
 	{
 		//Fallback - TODO: Make better. 
-		bool didFindFallback = VulkanStatics::FindMemoryTypeForProperties(resourceMemoryRequirments.memoryTypeBits,
+		bool didFindFallback = EngineAPI::Statics::VulkanStatics::FindMemoryTypeForProperties(resourceMemoryRequirments.memoryTypeBits,
 			resourceMemoryPropertyFallbackFlags, &physicalDeviceMemoryProperties, &memoryTypeIndexForResource);
 
 		if (!didFindFallback)
@@ -398,7 +398,7 @@ EngineAPI::Graphics::DeviceMemoryStore* VulkanDeviceMemoryAllocator::SearchExist
 						VkDeviceSize potentialOffsetForThisResource = lastBlockOffset + lastBlockSize;
 						
 						//Make offset aligned
-						VkDeviceSize potentialOffsetForThisResourceAligned = VulkanStatics::CalculateAlignedMemoryOffsetShiftRight(potentialOffsetForThisResource, resourceMemoryRequirments.alignment);
+						VkDeviceSize potentialOffsetForThisResourceAligned = EngineAPI::Statics::VulkanStatics::CalculateAlignedMemoryOffsetShiftRight(potentialOffsetForThisResource, resourceMemoryRequirments.alignment);
 					
 						//Using the aligned offset for this resource, calculate the remaining amount
 						//of space this store has

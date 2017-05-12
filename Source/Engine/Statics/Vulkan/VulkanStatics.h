@@ -14,7 +14,7 @@
 
 namespace EngineAPI
 {
-	namespace Graphics
+	namespace Statics
 	{
 		class VulkanStatics
 		{
@@ -27,10 +27,10 @@ namespace EngineAPI
 			//Reset the command buffer. Note: The pool this command buffer comes from must
 			//support individual buffer resets. 
 			static bool CommandBufferReset(VkCommandBuffer* cmdBuffer, bool shouldReleaseMemoryToPool = false);
-			
+
 			//Begin / end VK command recording in to the cmdBuffer. Note: CommandBufferBeginRecordingDefault() will 
 			//generate a default VkCommandBufferBeginInfo struct for us. 
-			static bool CommandBufferBeginRecording(VkCommandBuffer* cmdBuffer, VkCommandBufferBeginInfo* cmdBufferBeginInfo); 
+			static bool CommandBufferBeginRecording(VkCommandBuffer* cmdBuffer, VkCommandBufferBeginInfo* cmdBufferBeginInfo);
 			static bool CommandBufferBeginRecordingDefault(VkCommandBuffer* cmdBuffer);
 			static bool CommandBufferEndRecording(VkCommandBuffer* cmdBuffer);
 
@@ -49,7 +49,7 @@ namespace EngineAPI
 			//
 			//Creates a VkImageView
 			static bool CreateVKTextureView(VkDevice* device, VkImageViewCreateInfo* viewCreateInfo, VkImageView* imageViewHandleOut);
-		
+			static void DestoryVKTextureView(VkDevice* device, VkImageView* imageView);
 		};
-	}
-}
+	};
+};

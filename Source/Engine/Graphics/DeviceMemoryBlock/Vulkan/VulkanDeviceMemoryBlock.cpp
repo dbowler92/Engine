@@ -39,7 +39,7 @@ bool VulkanDeviceMemoryBlock::InitVKMemoryBlock(
 	this->isFree = false;
 
 	//Calculate aligned memory offset for this suballocation - shift to the right
-	this->blockAlignedOffsetInStoreBytes = VulkanStatics::CalculateAlignedMemoryOffsetShiftRight(memoryBlockOffset, memoryAlignmentRequirments);
+	this->blockAlignedOffsetInStoreBytes = EngineAPI::Statics::VulkanStatics::CalculateAlignedMemoryOffsetShiftRight(memoryBlockOffset, memoryAlignmentRequirments);
 
 	//Tell the resource that it now has a memory block
 	if (this->resourcePtr)

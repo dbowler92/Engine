@@ -16,9 +16,10 @@
 enum DepthTextureFormat
 {
 	DEPTH_TEXTURE_FORMAT_D16,
-	//DEPTH_TEXTURE_FORMAT_D24,
 	DEPTH_TEXTURE_FORMAT_D32,
-	DEPTH_TEXTURE_FORMAT_D24_S8
+	DEPTH_TEXTURE_FORMAT_D16_S8,
+	DEPTH_TEXTURE_FORMAT_D24_S8,
+	DEPTH_TEXTURE_FORMAT_D32_S8
 };
 
 //Depth texture usage
@@ -43,16 +44,15 @@ namespace EngineAPI
 				//Init
 				bool InitVKDepthTexture(EngineAPI::Graphics::RenderDevice* renderingDevice,
 					DepthTextureFormat depthTextureFormat, ESize2D depthTextureDimentions,
-					DepthTextureUsageFlag depthTextureUsageFlags,
-					EngineAPI::Graphics::DeviceMemoryStore* optionalDeviceStore = nullptr);
+					DepthTextureUsageFlag depthTextureUsageFlags);
 
 				//Once the depth texture has been inited, we can allocate memory for it
 				bool AllocAndBindVKDepthTexture(EngineAPI::Graphics::RenderDevice* renderingDevice,
 					EngineAPI::Graphics::DeviceMemoryStore* optionalDeviceStore = nullptr);
 
 				//TODO:
-				bool InitVKDepthTextureLayout() { return true; };
-				bool InitVKDepthTextureViews() { return true; };
+				bool InitVKDepthTextureLayout(EngineAPI::Graphics::RenderDevice* renderingDevice);
+				bool InitVKDepthTextureViews(EngineAPI::Graphics::RenderDevice* renderingDevice);
 
 				//Shutsdown the depth texture. 
 				void Shutdown();
@@ -61,6 +61,10 @@ namespace EngineAPI
 				//State of the depth texture
 				DepthTextureFormat depthTextureFormat;
 				DepthTextureUsageFlag depthTextureUsage;
+
+			protected:
+				//Depth (stencil) image view
+				VkImageView vkDepthStencilView;
 			};
 		};
 	};

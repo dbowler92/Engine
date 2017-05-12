@@ -558,7 +558,7 @@ bool VulkanSwapchain::CreateDepthBuffer(EngineAPI::Graphics::RenderDevice* rende
 	EngineAPI::Graphics::DeviceMemoryStore* memStoreToUse = nullptr;
 
 	//Init depth texture
-	if (!depthTexture->InitVKDepthTexture(renderingDevice, GRAPHICS_CONFIG_DEPTH_TEXTURE_FORMAT, depthTextureDimentions, usageFlag, memStoreToUse))
+	if (!depthTexture->InitVKDepthTexture(renderingDevice, GRAPHICS_CONFIG_DEPTH_TEXTURE_FORMAT, depthTextureDimentions, usageFlag))
 	{
 		EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanSwapchain::CreateDepthBuffer() - Error initing depth texture\n");
 		return false;
@@ -575,9 +575,21 @@ bool VulkanSwapchain::CreateDepthBuffer(EngineAPI::Graphics::RenderDevice* rende
 		return false;
 	}
 
-	//TODO: Set layout
+	//Init initial image layout
+	if (!depthTexture->InitVKDepthTextureLayout(renderingDevice))
+	{
+		EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanSwapchain::CreateDepthBuffer() - Error initing depth texture layout\n");
+		return false;
+	}
 
-	//TODO: Create views
+	//Create views for the depth texture -> For us, this will be the depth/stencil view (allowing us to use the
+	//depth texture as a depth buffer in a framebuffer). Other depth textures (such as shadow maps) would 
+	//create a shader resource view as well.
+	if (!depthTexture->InitVKDepthTextureViews(renderingDevice))
+	{
+		EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanSwapchain::CreateDepthBuffer() - Error creating depth texture image views\n");
+		return false;
+	}
 
 	//Done
 	return true;

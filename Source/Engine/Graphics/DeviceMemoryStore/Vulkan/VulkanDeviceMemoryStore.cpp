@@ -174,7 +174,7 @@ SuballocationResult VulkanDeviceMemoryStore::Private_Suballoc(EngineAPI::Renderi
 			memoryBlockOffset = lastSuballocedBlock->GetBlockOffsetInStoreBytes() + lastSuballocedBlock->GetBlockSizeBytes();
 
 			//Align memory offset for the new block
-			memoryBlockOffsetAligned = VulkanStatics::CalculateAlignedMemoryOffsetShiftRight(memoryBlockOffset, resourceAlignment);
+			memoryBlockOffsetAligned = EngineAPI::Statics::VulkanStatics::CalculateAlignedMemoryOffsetShiftRight(memoryBlockOffset, resourceAlignment);
 		}
 
 		//Check if we would overrun the memory store with this new block

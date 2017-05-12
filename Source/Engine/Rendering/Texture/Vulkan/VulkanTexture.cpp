@@ -10,8 +10,7 @@ VulkanTexture::VulkanTexture()
 {}
 
 bool VulkanTexture::InitVKTexture(EngineAPI::Graphics::RenderDevice* renderingDevice, 
-	VkImageCreateInfo* imageCreateInfo, bool isTextureDynamic,
-	EngineAPI::Graphics::DeviceMemoryStore* optionalMemoryStore)
+	VkImageCreateInfo* imageCreateInfo, bool isTextureDynamic)
 {
 	//Cache texture info for future use
 	vkImageTilingMode   = imageCreateInfo->tiling;

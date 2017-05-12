@@ -60,8 +60,7 @@ namespace EngineAPI
 				//
 				//NOTE: Will also cache the memory requirements for this resource. 
 				bool InitVKTexture(EngineAPI::Graphics::RenderDevice* renderingDevice, 
-					VkImageCreateInfo* imageCreateInfo, bool isTextureDynamic,
-					EngineAPI::Graphics::DeviceMemoryStore* optionalMemoryStore);
+					VkImageCreateInfo* imageCreateInfo, bool isTextureDynamic);
 
 				//Allocs the texture on the device (or host if thats what we actually want)
 				bool AllocAndBindVKTextureMemory(EngineAPI::Graphics::RenderDevice* renderingDevice,

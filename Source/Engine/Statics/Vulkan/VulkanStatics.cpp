@@ -3,7 +3,7 @@
 //May need debug logging
 #include "../../Debug/Log/DebugLog.h"
 
-using namespace EngineAPI::Graphics;
+using namespace EngineAPI::Statics;
 
 bool VulkanStatics::CommandBufferReset(VkCommandBuffer* cmdBuffer, bool shouldReleaseMemoryToPool)
 {
@@ -130,4 +130,9 @@ bool VulkanStatics::CreateVKTextureView(VkDevice* device, VkImageViewCreateInfo*
 
 	//Done
 	return true;
+}
+
+void VulkanStatics::DestoryVKTextureView(VkDevice* device, VkImageView* imageView)
+{
+	vkDestroyImageView(*device, *imageView, nullptr);
 }
