@@ -62,6 +62,9 @@ namespace EngineAPI
 				DepthTextureFormat depthTextureFormat;
 				DepthTextureUsageFlag depthTextureUsage;
 
+				//Contains stencil buffer?
+				bool doesContainStencilComponent = false;
+
 			protected:
 				//Depth (stencil) image view
 				VkImageView vkDepthStencilView;

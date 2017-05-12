@@ -65,7 +65,16 @@ namespace EngineAPI
 
 			public:
 				//Returns the managers
+				//
+				//Allocator 
 				EngineAPI::Graphics::DeviceMemoryAllocator* GetDeviceMemoryAllocator() { return deviceMemoryAllocator; };
+
+				//Command buffer pools
+				EngineAPI::Graphics::CommandBufferPool* GetGraphicsCommandBufferPoolsArray() { return graphicsCommandBufferPoolsArray; };
+				uint32_t GetGraphicsCommandBufferPoolCount() { return ENGINE_CONFIG_VULKAN_API_GRAPHICS_COMMAND_BUFFER_POOLS_COUNT; };
+
+				//Command queue families
+				EngineAPI::Graphics::CommandQueueFamily* GetGraphicsCommandQueueFamily() { return graphicsQueueFamily; };
 
 			private:
 				//Vulkan data / handles
@@ -81,20 +90,23 @@ namespace EngineAPI
 				uint32_t vkQueueFamiliesCount; //Number of queue families exposed by our selected physical device
 
 			private:
-				//Function pointers to extensions (WSI in this case - helps us create swapchains etc).
-				//
-				//Can ask a queue family if it supports presentation work!
-				PFN_vkGetPhysicalDeviceSurfaceSupportKHR fpGetPhysicalDeviceSurfaceSupportKHR = VK_NULL_HANDLE;
-
-			protected:
 				//command buffer pool(s)
-				EngineAPI::Graphics::CommandBufferPool* commandBufferPoolsArray = nullptr;
+				//
+				//Graphics
+				EngineAPI::Graphics::CommandBufferPool* graphicsCommandBufferPoolsArray = nullptr;
 
 				//Graphics queue family and queues - general rendering
 				EngineAPI::Graphics::CommandQueueFamily* graphicsQueueFamily = nullptr;
 
 				//Device memory manager / allocator
 				EngineAPI::Graphics::DeviceMemoryAllocator* deviceMemoryAllocator = nullptr;
+
+				
+			private:
+				//Function pointers to extensions (WSI in this case - helps us create swapchains etc).
+				//
+				//Can ask a queue family if it supports presentation work!
+				PFN_vkGetPhysicalDeviceSurfaceSupportKHR fpGetPhysicalDeviceSurfaceSupportKHR = VK_NULL_HANDLE;
 
 			private:
 				//Vk allocation/init

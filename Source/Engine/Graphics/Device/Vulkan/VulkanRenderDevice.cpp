@@ -202,8 +202,8 @@ bool VulkanRenderDevice::InitVKCommandBufferPools(EngineAPI::OS::OSWindow* osWin
 	EngineAPI::Graphics::RenderInstance* renderingInstance)
 {
 	//Alloc
-	commandBufferPoolsArray = GE_NEW CommandBufferPool[ENGINE_CONFIG_VULKAN_API_GRAPHICS_COMMAND_BUFFER_POOLS_COUNT];
-	if (!commandBufferPoolsArray)
+	graphicsCommandBufferPoolsArray = GE_NEW CommandBufferPool[ENGINE_CONFIG_VULKAN_API_GRAPHICS_COMMAND_BUFFER_POOLS_COUNT];
+	if (!graphicsCommandBufferPoolsArray)
 	{
 		//Alloc error
 		EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanRenderDevice: Error allocating memory for (VK) Command Buffer Pools\n");
@@ -215,7 +215,7 @@ bool VulkanRenderDevice::InitVKCommandBufferPools(EngineAPI::OS::OSWindow* osWin
 
 	for (int i = 0; i < ENGINE_CONFIG_VULKAN_API_GRAPHICS_COMMAND_BUFFER_POOLS_COUNT; i++)
 	{
-		if (!commandBufferPoolsArray[i].InitVKCommandBufferPool(&vkLogicalDevice, cmdPoolSubmissionQueueFamilyIdxGraphics,
+		if (!graphicsCommandBufferPoolsArray[i].InitVKCommandBufferPool(&vkLogicalDevice, cmdPoolSubmissionQueueFamilyIdxGraphics,
 			ENGINE_CONFIG_VULKAN_API_GRAPHICS_COMMAND_BUFFER_POOLS_ALLOW_BUFFER_RESETS,
 			ENGINE_CONFIG_VULKAN_API_GRAPHICS_COMMAND_BUFFER_POOLS_IS_TRANSIENT))
 		{
@@ -242,11 +242,11 @@ void VulkanRenderDevice::Shutdown()
 	}
 
 	//Cleanup command buffer pools
-	if (commandBufferPoolsArray)
+	if (graphicsCommandBufferPoolsArray)
 	{
 		for (int i = 0; i < ENGINE_CONFIG_VULKAN_API_GRAPHICS_COMMAND_BUFFER_POOLS_COUNT; i++)
-			commandBufferPoolsArray[i].Shutdown();
-		delete[] commandBufferPoolsArray;
+			graphicsCommandBufferPoolsArray[i].Shutdown();
+		delete[] graphicsCommandBufferPoolsArray;
 	}
 
 	//Queue families that we use.

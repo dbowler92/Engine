@@ -27,6 +27,10 @@ bool VulkanDepthTexture::InitVKDepthTexture(EngineAPI::Graphics::RenderDevice* r
 	if (depthTextureFormat == DEPTH_TEXTURE_FORMAT_D32_S8)
 		depthTextureFormatVK = VK_FORMAT_D32_SFLOAT_S8_UINT;
 
+	//Does this depth texture contain a stencil component?
+	doesContainStencilComponent = false;
+	if (depthTextureFormat == DEPTH_TEXTURE_FORMAT_D16_S8 || depthTextureFormat == DEPTH_TEXTURE_FORMAT_D24_S8 || depthTextureFormat == DEPTH_TEXTURE_FORMAT_D32_S8)
+		doesContainStencilComponent = true;
 
 	//Usage of the VKImage based on desired input. 
 	VkImageUsageFlags depthTextureVKImageUsageFlag = VK_IMAGE_USAGE_DEPTH_STENCIL_ATTACHMENT_BIT; 
@@ -114,11 +118,6 @@ bool VulkanDepthTexture::InitVKDepthTextureViews(EngineAPI::Graphics::RenderDevi
 	//Should we create a depth stencil view?
 	if (vkImageUsageFlags & VK_IMAGE_USAGE_DEPTH_STENCIL_ATTACHMENT_BIT)
 	{
-		//Does this depth buffer have a stencil component?
-		bool doesContainStencilBuffer = false;
-		if (vkTextureFormat == VK_FORMAT_D16_UNORM_S8_UINT || vkTextureFormat == VK_FORMAT_D24_UNORM_S8_UINT || vkTextureFormat == VK_FORMAT_D32_SFLOAT_S8_UINT)
-			doesContainStencilBuffer = true;
-
 		//Depth(stencil) view
 		imageViewCreateInfo.sType = VK_STRUCTURE_TYPE_IMAGE_VIEW_CREATE_INFO;
 		imageViewCreateInfo.pNext = nullptr;
@@ -128,7 +127,7 @@ bool VulkanDepthTexture::InitVKDepthTextureViews(EngineAPI::Graphics::RenderDevi
 		imageViewCreateInfo.components = { VK_COMPONENT_SWIZZLE_IDENTITY };
 		imageViewCreateInfo.viewType = VK_IMAGE_VIEW_TYPE_2D;
 		imageViewCreateInfo.subresourceRange.aspectMask = VK_IMAGE_ASPECT_DEPTH_BIT;
-		if (doesContainStencilBuffer)
+		if (doesContainStencilComponent)
 			imageViewCreateInfo.subresourceRange.aspectMask |= VK_IMAGE_ASPECT_STENCIL_BIT;
 		imageViewCreateInfo.subresourceRange.baseMipLevel = 0;
 		imageViewCreateInfo.subresourceRange.levelCount = 1;
