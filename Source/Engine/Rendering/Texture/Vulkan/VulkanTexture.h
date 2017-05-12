@@ -56,13 +56,16 @@ namespace EngineAPI
 				VkMemoryRequirements GetVKImageMemoryRequirments() { return vkTextureMemoryRequirments; };
 
 			protected:
-				//Inits the Vulkan texture (aka, VkImage) - used by subclass
+				//Inits the Vulkan texture (aka, VkImage) - used by subclass.
+				//
+				//NOTE: Will also cache the memory requirements for this resource. 
 				bool InitVKTexture(EngineAPI::Graphics::RenderDevice* renderingDevice, 
 					VkImageCreateInfo* imageCreateInfo, bool isTextureDynamic,
 					EngineAPI::Graphics::DeviceMemoryStore* optionalMemoryStore);
 
-				//Creates a texture view - This is just a wrapper for now
-				bool CreateVKTextureView(VkImageViewCreateInfo* viewCreateInfo, VkImageView* imageViewHandleOut);
+				//Allocs the texture on the device (or host if thats what we actually want)
+				bool AllocAndBindVKTextureMemory(EngineAPI::Graphics::RenderDevice* renderingDevice,
+					EngineAPI::Graphics::DeviceMemoryStore* optionalMemoryStore = nullptr);
 
 			protected:
 				//Vulkan texture / image resource handle

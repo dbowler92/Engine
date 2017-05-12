@@ -120,7 +120,7 @@ EngineAPI::Graphics::DeviceMemoryStore* VulkanDeviceMemoryAllocator::CreateNewMe
 	if (deviceMemoryStoresCount >= ENGINE_CONFIG_VULKAN_API_MAX_NUMBER_OF_MEMORY_STORES)
 	{
 		EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanDeviceMemoryAllocator::CreateNewMemoryStore() Error - Too many active stores!\n");
-		return false;
+		return nullptr;
 	}
 
 	VkDevice logicalDevice = renderDevice->GetVKLogicalDevice();
@@ -284,9 +284,49 @@ SuballocationResult VulkanDeviceMemoryAllocator::AllocTextureResourceAuto(Engine
 	}
 	else
 	{
-		//Create new store for this memory
-		EngineAPI::Graphics::DeviceMemoryStore newMemStore;
+		//Memory type index for this resource && new store
+		uint32_t memoryTypeIDX = 0;
+		if (!VulkanStatics::FindMemoryTypeForProperties(resourceMemoryRequirments.memoryTypeBits,
+			resourceMemoryPropertyOptimalFlags, &physicalDeviceMemoryProperties, &memoryTypeIDX))
+		{
+			//Use fallback properties
+			if (!VulkanStatics::FindMemoryTypeForProperties(resourceMemoryRequirments.memoryTypeBits,
+				resourceMemoryPropertyFallbackFlags, &physicalDeviceMemoryProperties, &memoryTypeIDX))
+			{
+				//Error
+				EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanDeviceMemoryAllocator::AllocTextureResourceAuto() - Error: Could not find any suitable memory type for this resource\n");
+				return ALLOCATION_RESULT_COULD_NOT_CREATE_NEW_STORE;
+			}
+		}
 
+		//Host local store or GPU store?
+		bool isGPUOnlyStore = texture->IsTextureDynamic();
+
+		//Size of allocation for the store
+		VkDeviceSize storeSizeBytes = isGPUOnlyStore ? 
+			MEB_TO_BYTES(ENGINE_CONFIG_VULKAN_API_DEVICE_LOCAL_STORE_SIZE_MB) : MEB_TO_BYTES(ENGINE_CONFIG_VULKAN_API_DEVICE_LOCAL_STORE_SIZE_MB);
+
+		//Ensure we can fit this resource in the store - not an error, just go ahead and allow a larger store to fit this resource
+		if (resourceMemoryRequirments.size > storeSizeBytes)
+			storeSizeBytes = resourceMemoryRequirments.size;
+
+		//Create new store for this memory
+		EngineAPI::Graphics::DeviceMemoryStore* newStore = CreateNewMemoryStore(renderingDevice, storeSizeBytes, memoryTypeIDX, true);
+		if (!newStore)
+		{
+			//Error
+			EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanDeviceMemoryAllocator::AllocTextureResourceAuto(): Error - Could not create a new store for this resource\n");
+			return ALLOCATION_RESULT_COULD_NOT_CREATE_NEW_STORE;
+		}
+
+		//Suballoc a block for this resource out of this store. 
+		SuballocationResult result = newStore->Private_Suballoc(resource, resourceMemoryRequirments.size, resourceMemoryRequirments.alignment, resourceMemoryRequirments.size);
+		if (result != ALLOCATION_RESULT_SUCCESS)
+		{
+			//Error
+			EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanDeviceMemoryAllocator::AllocTextureResourceAuto(): Error - Could not suballocate a block for this resource\n");
+			return result;
+		}
 	}
 
 	//Done

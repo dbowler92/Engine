@@ -88,6 +88,8 @@
 //a bit outside the scope of this engine for now -> so i've reverted to a nice and simple #define!
 #define ENGINE_CONFIG_VULKAN_API_GLOBAL_STATIC_MEMORY_BLOCK_SIZE_MB 32
 
-//Size of each block of memory which will be used to hold static (GPU only) render targets, 
-//GBuffers, depth buffers etc
-#define ENGINE_CONFIG_VULKAN_API_STAITC_RENDER_TARGETS_MEMORY_BLOCK_SIZE_MB 256
+//Size of each memory store (created when we generate a new store through the AllocResourceAuto() calls) that is DEVICE_LOCAL only
+#define ENGINE_CONFIG_VULKAN_API_DEVICE_LOCAL_STORE_SIZE_MB 256
+
+//Size of each memory store (created when we generate a new store through the AllocResourceAuto() calls) that is HOST_LOCAL
+#define ENGINE_CONFIG_VULKAN_API_HOST_STORE_SIZE_MB 64

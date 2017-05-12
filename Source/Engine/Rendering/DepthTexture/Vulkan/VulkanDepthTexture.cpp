@@ -90,6 +90,20 @@ bool VulkanDepthTexture::InitVKDepthTexture(EngineAPI::Graphics::RenderDevice* r
 	return true;
 }
 
+bool VulkanDepthTexture::AllocAndBindVKDepthTexture(EngineAPI::Graphics::RenderDevice* renderingDevice,
+	EngineAPI::Graphics::DeviceMemoryStore* optionalDeviceStore)
+{
+	//Allocate the texture/image
+	if (!AllocAndBindVKTextureMemory(renderingDevice, optionalDeviceStore))
+	{
+		EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanDepthTexture::Init() Error - Could not Allocate texture\n");
+		return false;
+	}
+
+	//Done
+	return true;
+}
+
 void VulkanDepthTexture::Shutdown()
 {
 	//Destroy super

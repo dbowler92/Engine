@@ -40,11 +40,21 @@ namespace EngineAPI
 				VulkanDepthTexture() {};
 				virtual ~VulkanDepthTexture() = 0 {};
 
-				//Init and shutdown
+				//Init
 				bool InitVKDepthTexture(EngineAPI::Graphics::RenderDevice* renderingDevice,
 					DepthTextureFormat depthTextureFormat, ESize2D depthTextureDimentions,
 					DepthTextureUsageFlag depthTextureUsageFlags,
 					EngineAPI::Graphics::DeviceMemoryStore* optionalDeviceStore = nullptr);
+
+				//Once the depth texture has been inited, we can allocate memory for it
+				bool AllocAndBindVKDepthTexture(EngineAPI::Graphics::RenderDevice* renderingDevice,
+					EngineAPI::Graphics::DeviceMemoryStore* optionalDeviceStore = nullptr);
+
+				//TODO:
+				bool InitVKDepthTextureLayout() { return true; };
+				bool InitVKDepthTextureViews() { return true; };
+
+				//Shutsdown the depth texture. 
 				void Shutdown();
 
 			protected:

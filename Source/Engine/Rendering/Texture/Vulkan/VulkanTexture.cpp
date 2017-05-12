@@ -39,6 +39,13 @@ bool VulkanTexture::InitVKTexture(EngineAPI::Graphics::RenderDevice* renderingDe
 	//Cache memory requirements for this image
 	vkGetImageMemoryRequirements(cachedVkDevice, vkImageHandle, &vkTextureMemoryRequirments);
 
+	//Done
+	return true;
+}
+
+bool VulkanTexture::AllocAndBindVKTextureMemory(EngineAPI::Graphics::RenderDevice* renderingDevice,
+	EngineAPI::Graphics::DeviceMemoryStore* optionalMemoryStore)
+{
 	//Alloc memory for the texture on the device
 	EngineAPI::Graphics::DeviceMemoryAllocator* memoryAllocator = renderingDevice->GetDeviceMemoryAllocator();
 	if (optionalMemoryStore)
@@ -79,21 +86,6 @@ bool VulkanTexture::InitVKTexture(EngineAPI::Graphics::RenderDevice* renderingDe
 	{
 		//No memory block available - unknown error 
 		EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanTexture::InitVKTexture() Error - No DeviceMemoryBlock assigned for this resource to bind memory with\n");
-		return false;
-	}
-
-	renderingDevice->GetDeviceMemoryAllocator()->Debug_LongDump("TestDump");
-
-	//Done
-	return true;
-}
-
-bool VulkanTexture::CreateVKTextureView(VkImageViewCreateInfo* viewCreateInfo, VkImageView* imageViewHandleOut)
-{
-	VkResult result = vkCreateImageView(cachedVkDevice, viewCreateInfo, nullptr, imageViewHandleOut);
-	if (result != VK_SUCCESS)
-	{
-		EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanTexture::CreateVKTextureView(): Could not create VkImageView object\n");
 		return false;
 	}
 

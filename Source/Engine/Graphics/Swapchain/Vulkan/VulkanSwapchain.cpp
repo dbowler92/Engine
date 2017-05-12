@@ -557,12 +557,27 @@ bool VulkanSwapchain::CreateDepthBuffer(EngineAPI::Graphics::RenderDevice* rende
 	//Store -> Let the allocator decide for us for now. 
 	EngineAPI::Graphics::DeviceMemoryStore* memStoreToUse = nullptr;
 
-	//Init - 
+	//Init depth texture
 	if (!depthTexture->InitVKDepthTexture(renderingDevice, GRAPHICS_CONFIG_DEPTH_TEXTURE_FORMAT, depthTextureDimentions, usageFlag, memStoreToUse))
 	{
 		EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanSwapchain::CreateDepthBuffer() - Error initing depth texture\n");
 		return false;
 	}
+
+	//TODO: Use a custom store for this resource???
+	EngineAPI::Graphics::DeviceMemoryStore* swapchainDepthTextureStore = nullptr;
+	VkDeviceSize storeSize = depthTexture->GetVKImageMemoryRequirments().size;
+
+	//Alloc depth texture
+	if (!depthTexture->AllocAndBindVKDepthTexture(renderingDevice, swapchainDepthTextureStore))
+	{
+		EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanSwapchain::CreateDepthBuffer() - Error allocating depth texture\n");
+		return false;
+	}
+
+	//TODO: Set layout
+
+	//TODO: Create views
 
 	//Done
 	return true;
