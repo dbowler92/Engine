@@ -44,6 +44,10 @@ namespace EngineAPI
 				//Called when the engine is shutdown before closing the actual engine. 
 				virtual bool ShutdownApplication() = 0;
 
+				//Updates and renders the scene
+				virtual void UpdateScene(float dt) = 0;
+				virtual void RenderScene() = 0;
+
 			public:
 				//Engine
 				//

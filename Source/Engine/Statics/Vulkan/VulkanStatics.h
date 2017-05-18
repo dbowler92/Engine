@@ -53,3 +53,30 @@ namespace EngineAPI
 		};
 	};
 };
+
+//
+//Seperate vulkan commands from general statics.
+//
+
+namespace EngineAPI
+{
+	namespace Statics
+	{
+		class VulkanCommands
+		{
+			//Make staitcs only class (hide constructor, destructor etc)
+			MAKE_STATICS_CLASS_ONLY(VulkanCommands)
+
+		public:
+			//Writes the commands needed to set the image layout in to a command buffer
+			/*
+			static bool VKCMD_SetImageLayout(const VkImage& image,
+				VkImageAspectFlags aspectMask, VkImageLayout oldImageLayout, VkImageLayout newImageLayout, VkAccessFlagBits srcAccessMask,
+				const VkCommandBuffer& commandBuffer);
+			*/
+
+			static bool VKCMD_SetImageLayout(const VkCommandBuffer& commandBuffer, const VkImage& image,
+				VkImageAspectFlags aspectMask, VkImageLayout oldImageLayout, VkImageLayout newImageLayout);
+		};
+	};
+};

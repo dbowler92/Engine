@@ -50,10 +50,9 @@ namespace EngineAPI
 				bool AllocAndBindVKDepthTexture(EngineAPI::Graphics::RenderDevice* renderingDevice,
 					EngineAPI::Graphics::DeviceMemoryStore* optionalDeviceStore = nullptr);
 
-				//TODO:
-				bool InitVKDepthTextureLayout(EngineAPI::Graphics::RenderDevice* renderingDevice);
-				bool InitVKDepthTextureViews(EngineAPI::Graphics::RenderDevice* renderingDevice);
-
+				//Inits the depth texture views and layout. 
+				bool InitVKDepthTextureLayoutAndViews(EngineAPI::Graphics::RenderDevice* renderingDevice);
+				
 				//Shutsdown the depth texture. 
 				void Shutdown();
 
@@ -67,7 +66,19 @@ namespace EngineAPI
 
 			protected:
 				//Depth (stencil) image view
-				VkImageView vkDepthStencilView;
+				VkImageView vkDepthStencilView = VK_NULL_HANDLE;
+
+				//
+				//TODO: Shader input
+				//
+
+				//Command buffers
+				VkCommandBuffer vkDepthTextureImageLayoutCmdBuffer = VK_NULL_HANDLE;
+
+			protected:
+				//Internal init
+				bool InitVKDepthTextureLayout(EngineAPI::Graphics::RenderDevice* renderingDevice);
+				bool InitVKDepthTextureViews(EngineAPI::Graphics::RenderDevice* renderingDevice);
 			};
 		};
 	};

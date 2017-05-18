@@ -1,0 +1,33 @@
+**************VulkanDeviceMemoryAllocator Dump****************
+
+Allocator address: 04B94030
+Number of memory stores: 1
+
+**************************************************************
+
+[Store: 0] 04B94038
+Is Active Store: 1
+Is Public Store: 1
+Store Size: 268435456
+Vulkan Device Memory Handle: 2
+Vulkan Memory Type Index: 8
+Vulkan Memory Property Flags: 1
+Is Memory Mappable: 0
+Store Host Ptr: nullptr
+Number of blocks: 1
+
+	[Block: 0] 040AD8D8
+		Is Free: 0
+		Is Mappable: 0
+		Is Mapped: 0
+		Resource Size: 2457600
+		Resource Alignment: 1024
+		Resource Address: 04264CF0
+		Resource Type: 1
+		Block Size: 2457600
+		Block Offset: 0
+		Block Aligned Offset: 0
+		Block Host Pointer: nullptr
+
+**************************************************************
+

@@ -28,3 +28,13 @@ bool SandboxApplication::ShutdownApplication()
 	EngineAPI::Debug::DebugLog::PrintInfoMessage("SandboxApplication::ShutdownApplication()\n");
 	return true;
 }
+
+void SandboxApplication::UpdateScene(float dt)
+{
+	
+}
+
+void SandboxApplication::RenderScene()
+{
+	
+}

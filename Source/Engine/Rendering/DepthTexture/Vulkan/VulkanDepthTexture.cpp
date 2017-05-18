@@ -1,9 +1,24 @@
 #include "VulkanDepthTexture.h"
 
+//Need to interact with command buufer pools. A command buffer will then be
+//dispatched to the GPU to init the image layout
+#include "../../../Graphics/CommandBufferPool/CommandBufferPool.h"
+#include "../../../Graphics/CommandQueueFamily/CommandQueueFamily.h"
+
 //Statics 
 #include "../../../Statics/Vulkan/VulkanStatics.h"
 
 using namespace EngineAPI::Rendering::Platform;
+
+
+void VulkanDepthTexture::Shutdown()
+{
+	//Destroy image views
+	EngineAPI::Statics::VulkanStatics::DestoryVKTextureView(&cachedVkDevice, &vkDepthStencilView);
+
+	//Destroy super
+	__super::Shutdown();
+}
 
 bool VulkanDepthTexture::InitVKDepthTexture(EngineAPI::Graphics::RenderDevice* renderingDevice,
 	DepthTextureFormat depthTextureFormat, ESize2D depthTextureDimentions,
@@ -103,9 +118,64 @@ bool VulkanDepthTexture::AllocAndBindVKDepthTexture(EngineAPI::Graphics::RenderD
 	return true;
 }
 
+bool VulkanDepthTexture::InitVKDepthTextureLayoutAndViews(EngineAPI::Graphics::RenderDevice* renderingDevice)
+{
+	//Layout
+	if (!InitVKDepthTextureLayout(renderingDevice))
+		return false;
+
+	//Views
+	if (!InitVKDepthTextureViews(renderingDevice))
+		return false;
+
+	//Done
+	return true;
+}
+
 bool VulkanDepthTexture::InitVKDepthTextureLayout(EngineAPI::Graphics::RenderDevice* renderingDevice)
 {
-	//TODO
+	//Get a command buffer from the graphics command buffer pool (we will submit the command buffer
+	//to the graphics queue later)
+	EngineAPI::Graphics::CommandBufferPool& cmdPool = renderingDevice->GetGraphicsCommandBufferPoolsArray()[0];
+	if (!cmdPool.GetVKCommandBufferFromPool(true, &vkDepthTextureImageLayoutCmdBuffer))
+	{
+		//Error
+		EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanDepthTexture::InitVKDepthTextureLayout() - Could not get command buffer from pool\n");
+		return false;
+	}
+
+	//Begin reading commands to this buffer
+	if (EngineAPI::Statics::VulkanStatics::CommandBufferBeginRecordingDefault(&vkDepthTextureImageLayoutCmdBuffer))
+	{
+		//Inserts pipeline barrier at the top of the pipeline that setsup the
+		//images layout correctly - in our case, this will be to depth stencil optimal.
+		VkImageAspectFlags aspectMask = VK_IMAGE_ASPECT_DEPTH_BIT;
+		if (doesContainStencilComponent)
+			aspectMask |= VK_IMAGE_ASPECT_STENCIL_BIT;
+
+		EngineAPI::Statics::VulkanCommands::VKCMD_SetImageLayout(vkDepthTextureImageLayoutCmdBuffer, vkImageHandle,
+			aspectMask, VK_IMAGE_LAYOUT_UNDEFINED, VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL);
+	}
+	else
+	{
+		//Error
+		EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanDepthTexture::InitVKDepthTextureLayout() - Failed to begin reading to command buffer\n");
+		EngineAPI::Statics::VulkanStatics::CommandBufferEndRecording(&vkDepthTextureImageLayoutCmdBuffer);
+		return false;
+	}
+
+	//Stop reading commands in to the command buffer
+	EngineAPI::Statics::VulkanStatics::CommandBufferEndRecording(&vkDepthTextureImageLayoutCmdBuffer);
+	
+	//Submit the work -> Inits this images & its layout. 
+	EngineAPI::Graphics::CommandQueueFamily* graphicsQueueFamily = renderingDevice->GetGraphicsCommandQueueFamily();
+	
+	if (!graphicsQueueFamily->SubmitVKCommandBuffersToQueueDefault(0, &vkDepthTextureImageLayoutCmdBuffer, 1, VK_NULL_HANDLE, true))
+	{
+		//Error in submission
+		EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanDepthTexture::InitVKDepthTextureLayout() Error - Failed to submit layout command buffer to queue\n");
+		return false;
+	}
 
 	//Done
 	return true;
@@ -156,13 +226,4 @@ bool VulkanDepthTexture::InitVKDepthTextureViews(EngineAPI::Graphics::RenderDevi
 
 	//Done
 	return true;
-}
-
-void VulkanDepthTexture::Shutdown()
-{
-	//Destroy image views
-	EngineAPI::Statics::VulkanStatics::DestoryVKTextureView(&cachedVkDevice, &vkDepthStencilView);
-
-	//Destroy super
-	__super::Shutdown();
 }

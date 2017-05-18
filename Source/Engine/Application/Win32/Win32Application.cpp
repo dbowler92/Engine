@@ -290,7 +290,14 @@ void Win32Application::EnterGameLoop()
 		{
 			mainGameLoopTimer.Tick();
 			if (!appPaused)
+			{
 				CalculateFrameRateStats();
+
+				//Update and render (this calls the users Application subclasses 
+				//update and render functions). 
+				UpdateScene(mainGameLoopTimer.DeltaTime());
+				RenderScene();
+			}
 			else
 				Sleep(100);
 		}

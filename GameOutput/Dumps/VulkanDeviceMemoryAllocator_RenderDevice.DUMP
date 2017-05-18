@@ -1,0 +1,146 @@
+**************VulkanDeviceMemoryAllocator Dump****************
+
+Allocator address: 0382FE38
+Number of memory stores: 1
+
+**************************************************************
+
+[Store: 0] 0382FE40
+Is Active Store: 1
+Is Public Store: 1
+Store Size: 268435456
+Vulkan Device Memory Handle: 2
+Vulkan Memory Type Index: 8
+Vulkan Memory Property Flags: 1
+Is Memory Mappable: 0
+Store Host Ptr: nullptr
+Number of blocks: 9
+
+	[Block: 0] 03A2AE08
+		Is Free: 0
+		Is Mappable: 0
+		Is Mapped: 0
+		Resource Size: 2457605
+		Resource Alignment: 1024
+		Resource Address: nullptr
+		Resource Type: NULL
+		Resource Debug Name: NULL
+		Block Size: 2457605
+		Block Offset: 0
+		Block Aligned Offset: 0
+		Block Host Pointer: nullptr
+
+	[Block: 1] 03A2AE88
+		Is Free: 0
+		Is Mappable: 0
+		Is Mapped: 0
+		Resource Size: 2457600
+		Resource Alignment: 1024
+		Resource Address: nullptr
+		Resource Type: NULL
+		Resource Debug Name: NULL
+		Block Size: 2458619
+		Block Offset: 2457605
+		Block Aligned Offset: 2458624
+		Block Host Pointer: nullptr
+
+	[Block: 2] 03A2A308
+		Is Free: 0
+		Is Mappable: 0
+		Is Mapped: 0
+		Resource Size: 2456576
+		Resource Alignment: 1024
+		Resource Address: nullptr
+		Resource Type: NULL
+		Resource Debug Name: NULL
+		Block Size: 2456576
+		Block Offset: 4916224
+		Block Aligned Offset: 4916224
+		Block Host Pointer: nullptr
+
+	[Block: 3] 03A2A388
+		Is Free: 0
+		Is Mappable: 0
+		Is Mapped: 0
+		Resource Size: 2458624
+		Resource Alignment: 1024
+		Resource Address: nullptr
+		Resource Type: NULL
+		Resource Debug Name: NULL
+		Block Size: 2458624
+		Block Offset: 7372800
+		Block Aligned Offset: 7372800
+		Block Host Pointer: nullptr
+
+	[Block: 4] 03A2C188
+		Is Free: 0
+		Is Mappable: 0
+		Is Mapped: 0
+		Resource Size: 2458697
+		Resource Alignment: 1024
+		Resource Address: nullptr
+		Resource Type: NULL
+		Resource Debug Name: NULL
+		Block Size: 2458697
+		Block Offset: 9831424
+		Block Aligned Offset: 9831424
+		Block Host Pointer: nullptr
+
+	[Block: 5] 03A2B608
+		Is Free: 0
+		Is Mappable: 0
+		Is Mapped: 0
+		Resource Size: 2458694
+		Resource Alignment: 1024
+		Resource Address: nullptr
+		Resource Type: NULL
+		Resource Debug Name: NULL
+		Block Size: 2459645
+		Block Offset: 12290121
+		Block Aligned Offset: 12291072
+		Block Host Pointer: nullptr
+
+	[Block: 6] 03A2BF88
+		Is Free: 0
+		Is Mappable: 0
+		Is Mapped: 0
+		Resource Size: 2458633
+		Resource Alignment: 1024
+		Resource Address: nullptr
+		Resource Type: NULL
+		Resource Debug Name: NULL
+		Block Size: 2459587
+		Block Offset: 14749766
+		Block Aligned Offset: 14750720
+		Block Host Pointer: nullptr
+
+	[Block: 7] 03A2B288
+		Is Free: 0
+		Is Mappable: 0
+		Is Mapped: 0
+		Resource Size: 2458633
+		Resource Alignment: 1024
+		Resource Address: nullptr
+		Resource Type: NULL
+		Resource Debug Name: NULL
+		Block Size: 2459648
+		Block Offset: 17209353
+		Block Aligned Offset: 17210368
+		Block Host Pointer: nullptr
+
+	[Block: 8] 03A2B908
+		Is Free: 0
+		Is Mappable: 0
+		Is Mapped: 0
+		Resource Size: 245863
+		Resource Alignment: 1024
+		Resource Address: nullptr
+		Resource Type: NULL
+		Resource Debug Name: NULL
+		Block Size: 246878
+		Block Offset: 19669001
+		Block Aligned Offset: 19670016
+		Block Host Pointer: nullptr
+
+**************************************************************
+

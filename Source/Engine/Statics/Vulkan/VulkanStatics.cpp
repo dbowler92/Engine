@@ -136,3 +136,188 @@ void VulkanStatics::DestoryVKTextureView(VkDevice* device, VkImageView* imageVie
 {
 	vkDestroyImageView(*device, *imageView, nullptr);
 }
+
+
+//
+//Commands
+//
+
+/*
+bool VulkanCommands::VKCMD_SetImageLayout(const VkImage& image,
+	VkImageAspectFlags aspectMask, VkImageLayout oldImageLayout, VkImageLayout newImageLayout, VkAccessFlagBits srcAccessMask,
+	const VkCommandBuffer& commandBuffer)
+{
+	//Ensure a valid command buffer
+	if (commandBuffer == VK_NULL_HANDLE)
+	{
+		//Error
+		EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanCommands::VKCMD_SetImageLayout() Error - Command buffer is NULL\n");
+		return false;
+	}
+
+	//Ensure valid image
+	if (image == VK_NULL_HANDLE)
+	{
+		//Error
+		EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanCommands::VKCMD_SetImageLayout() Error - Image is NULL\n");
+		return false;
+	}
+
+	//Image memory barrier description
+	VkImageMemoryBarrier imageMemoryBarrier = {};
+	imageMemoryBarrier.sType = VK_STRUCTURE_TYPE_IMAGE_MEMORY_BARRIER;
+	imageMemoryBarrier.pNext = nullptr;
+	imageMemoryBarrier.srcAccessMask = srcAccessMask;
+	imageMemoryBarrier.dstAccessMask = 0;
+	imageMemoryBarrier.oldLayout = oldImageLayout;
+	imageMemoryBarrier.newLayout = newImageLayout;
+	imageMemoryBarrier.image = image;
+	imageMemoryBarrier.subresourceRange.aspectMask = aspectMask;
+	imageMemoryBarrier.subresourceRange.baseMipLevel = 0;
+	imageMemoryBarrier.subresourceRange.levelCount = 1;
+	imageMemoryBarrier.subresourceRange.layerCount = 1;
+
+	if (oldImageLayout == VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL)
+		imageMemoryBarrier.srcAccessMask = VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT;
+
+	switch (newImageLayout)
+	{
+		case VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL:
+		case  VK_IMAGE_LAYOUT_PRESENT_SRC_KHR:
+		{
+			imageMemoryBarrier.dstAccessMask = VK_ACCESS_MEMORY_READ_BIT;
+			break;
+		}
+
+		//TODO
+	}
+
+	//Insert at top
+	VkPipelineStageFlags srcStages = VK_PIPELINE_STAGE_TOP_OF_PIPE_BIT;
+	VkPipelineStageFlags destStages = VK_PIPELINE_STAGE_TOP_OF_PIPE_BIT;
+
+	//Insert image memory barrier command. 
+	vkCmdPipelineBarrier(commandBuffer, 
+		srcStages, destStages, 0, 
+		0, nullptr, 
+		0, nullptr, 
+		1, &imageMemoryBarrier);
+
+	//Done
+	return true;
+}
+*/
+
+bool VulkanCommands::VKCMD_SetImageLayout(const VkCommandBuffer& commandBuffer, const VkImage& image,
+	VkImageAspectFlags aspectMask, VkImageLayout oldImageLayout, VkImageLayout newImageLayout)
+{
+	//
+	//See: https://harrylovescode.gitbooks.io/vulkan-api/content/chap07/chap07.html
+	//
+
+	//Ensure a valid command buffer
+	if (commandBuffer == VK_NULL_HANDLE)
+	{
+		//Error
+		EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanCommands::VKCMD_SetImageLayout() Error - Command buffer is NULL\n");
+		return false;
+	}
+
+	//Ensure valid image
+	if (image == VK_NULL_HANDLE)
+	{
+		//Error
+		EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanCommands::VKCMD_SetImageLayout() Error - Image is NULL\n");
+		return false;
+	}
+
+	//Image memory barrier description
+	VkImageMemoryBarrier imageMemoryBarrier = {};
+	imageMemoryBarrier.sType = VK_STRUCTURE_TYPE_IMAGE_MEMORY_BARRIER;
+	imageMemoryBarrier.pNext = nullptr;
+	imageMemoryBarrier.oldLayout = oldImageLayout;
+	imageMemoryBarrier.newLayout = newImageLayout;
+	imageMemoryBarrier.image = image;
+	imageMemoryBarrier.subresourceRange.aspectMask = aspectMask;
+	imageMemoryBarrier.subresourceRange.baseMipLevel = 0;
+	imageMemoryBarrier.subresourceRange.levelCount = 1;
+	imageMemoryBarrier.subresourceRange.layerCount = 1;
+
+	//srcAccessMask  && dstAccessMask depends on the values of the old and new image 
+	//layout. 
+	switch (oldImageLayout)
+	{
+		case VK_IMAGE_LAYOUT_PREINITIALIZED:
+		{
+			imageMemoryBarrier.srcAccessMask = VK_ACCESS_HOST_WRITE_BIT | VK_ACCESS_TRANSFER_WRITE_BIT;
+			break;
+		}
+		case VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL:
+		{
+			imageMemoryBarrier.srcAccessMask = VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT;
+			break;
+		}
+		case VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL:
+		{
+			imageMemoryBarrier.srcAccessMask = VK_ACCESS_DEPTH_STENCIL_ATTACHMENT_WRITE_BIT;
+			break;
+		}
+		case VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL:
+		{
+			imageMemoryBarrier.srcAccessMask = VK_ACCESS_TRANSFER_READ_BIT;
+			break;
+		}
+		case VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL:
+		{
+			imageMemoryBarrier.srcAccessMask = VK_ACCESS_SHADER_READ_BIT;
+			break;
+		}
+	}
+
+	switch (newImageLayout)
+	{
+		case VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL:
+		{
+			imageMemoryBarrier.dstAccessMask = VK_ACCESS_TRANSFER_WRITE_BIT;
+			break;
+		}
+		case VK_IMAGE_LAYOUT_TRANSFER_SRC_OPTIMAL:
+		{
+			imageMemoryBarrier.srcAccessMask |= VK_ACCESS_TRANSFER_READ_BIT;
+			imageMemoryBarrier.dstAccessMask = VK_ACCESS_TRANSFER_READ_BIT;
+			break;
+		}
+		case VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL:
+		{
+			imageMemoryBarrier.dstAccessMask = VK_ACCESS_COLOR_ATTACHMENT_WRITE_BIT;
+			imageMemoryBarrier.srcAccessMask = VK_ACCESS_TRANSFER_READ_BIT;
+			break;
+		}
+		case VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL:
+		{
+			imageMemoryBarrier.dstAccessMask |= VK_ACCESS_DEPTH_STENCIL_ATTACHMENT_WRITE_BIT;
+			break;
+		}
+		case VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL:
+		{
+			imageMemoryBarrier.srcAccessMask = VK_ACCESS_HOST_WRITE_BIT | VK_ACCESS_TRANSFER_WRITE_BIT;
+			imageMemoryBarrier.dstAccessMask = VK_ACCESS_SHADER_READ_BIT;
+			break;
+		}
+	}
+
+
+	//Insert at top
+	VkPipelineStageFlags srcStages = VK_PIPELINE_STAGE_TOP_OF_PIPE_BIT;
+	VkPipelineStageFlags destStages = VK_PIPELINE_STAGE_TOP_OF_PIPE_BIT;
+
+	//Insert image memory barrier command. 
+	vkCmdPipelineBarrier(commandBuffer,
+		srcStages, destStages, 0,
+		0, nullptr,
+		0, nullptr,
+		1, &imageMemoryBarrier);
+
+	//Done
+	return true;
+}

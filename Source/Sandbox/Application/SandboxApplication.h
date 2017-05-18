@@ -26,4 +26,8 @@ public:
 
 	//Closes the sandbox game
 	virtual bool ShutdownApplication();
+
+	//Updates and renders the scene
+	virtual void UpdateScene(float dt);
+	virtual void RenderScene();
 }; 
