@@ -139,6 +139,12 @@
     <Filter Include="Src\Statics\Vulkan">
       <UniqueIdentifier>{e6bc3afb-9af4-45a5-b320-5cd7f82a1aed}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Src\Rendering\Buffer">
+      <UniqueIdentifier>{02e05e44-7cae-4d0f-bf55-293b94e6e43f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Rendering\Buffer\Vulkan">
+      <UniqueIdentifier>{9bae62ab-831b-4f21-a70c-7384f22a33dd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Main\EngineMain.cpp">
@@ -203,6 +209,9 @@
     </ClCompile>
     <ClCompile Include="..\Statics\Vulkan\VulkanStatics.cpp">
       <Filter>Src\Statics\Vulkan</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Rendering\Buffer\Vulkan\VulkanBuffer.cpp">
+      <Filter>Src\Rendering\Buffer\Vulkan</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -328,6 +337,12 @@
     </ClInclude>
     <ClInclude Include="..\Statics\Vulkan\VulkanStatics.h">
       <Filter>Src\Statics\Vulkan</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Rendering\Buffer\Vulkan\VulkanBuffer.h">
+      <Filter>Src\Rendering\Buffer\Vulkan</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Rendering\Buffer\Buffer.h">
+      <Filter>Src\Rendering\Buffer</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

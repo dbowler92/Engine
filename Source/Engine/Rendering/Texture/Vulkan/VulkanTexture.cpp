@@ -5,10 +5,6 @@
 
 using namespace EngineAPI::Rendering::Platform;
 
-VulkanTexture::VulkanTexture()
-	: Resource(RENDERING_RESOURCR_TYPE_DEPTH_TEXTURE) //Init base. 
-{}
-
 bool VulkanTexture::InitVKTexture(EngineAPI::Graphics::RenderDevice* renderingDevice, 
 	VkImageCreateInfo* imageCreateInfo, bool isTextureDynamic)
 {

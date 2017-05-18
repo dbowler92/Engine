@@ -22,7 +22,7 @@ namespace EngineAPI
 		class DepthTexture : public RENDERING_PLATFORM_IMPLEMENTATION(DepthTexture)
 		{
 		public:
-			DepthTexture() {};
+			DepthTexture() : RENDERING_PLATFORM_CLASS(DepthTexture)(RENDERING_RESOURCR_TYPE_DEPTH_TEXTURE) {};
 			~DepthTexture() {};
 		};
 	};

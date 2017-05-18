@@ -31,7 +31,7 @@ namespace EngineAPI
 			class VulkanTexture : public EngineAPI::Rendering::Resource
 			{
 			public:
-				VulkanTexture();
+				VulkanTexture(RenderingResourceType type) : Resource::Resource(type) {};
 				virtual ~VulkanTexture() = 0 {};
 
 				//Shutdown the texture object - called manually by the subclasses. 

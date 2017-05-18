@@ -1,8 +1,8 @@
-//Texture2D.h
+//Texture.h
 //Created 29/04/17
 //Created By Daniel Bowler
 //
-//Represents a texture2D object usable in game
+//Represents a texture object usable in game
 
 #pragma once
 
@@ -21,7 +21,7 @@ namespace EngineAPI
 		class Texture : public RENDERING_PLATFORM_IMPLEMENTATION(Texture)
 		{
 		public:
-			Texture() {};
+			Texture(RenderingResourceType type) : RENDERING_PLATFORM_CLASS(Texture)(type) {};
 			virtual ~Texture() = 0 {};
 
 			//Shutdown texture

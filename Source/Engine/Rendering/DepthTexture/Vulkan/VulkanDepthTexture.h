@@ -38,7 +38,7 @@ namespace EngineAPI
 			class VulkanDepthTexture : public EngineAPI::Rendering::Texture
 			{
 			public:
-				VulkanDepthTexture() {};
+				VulkanDepthTexture(RenderingResourceType type) : Texture(type) {};
 				virtual ~VulkanDepthTexture() = 0 {};
 
 				//Init

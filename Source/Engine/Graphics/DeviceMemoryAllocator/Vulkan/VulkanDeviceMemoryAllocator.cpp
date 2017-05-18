@@ -182,9 +182,13 @@ SuballocationResult VulkanDeviceMemoryAllocator::AllocateResourceAuto(EngineAPI:
 	RenderingResourceType resourceType = resource->GetResourceType();
 	switch (resourceType)
 	{
-		case RENDERING_RESOURCE_TYPE_TEXTURE:
+		//
+		//Textures
+		//
+
+		case RENDERING_RESOURCE_TYPE_BITMAP_TEXTURE:
 		{
-			EngineAPI::Debug::DebugLog::PrintInfoMessage("VulkanDeviceMemoryAllocator::AllocateResourceAuto(): Allocating Texture\n");
+			EngineAPI::Debug::DebugLog::PrintInfoMessage("VulkanDeviceMemoryAllocator::AllocateResourceAuto(): Allocating Bitmap Texture\n");
 			
 			success = ALLOCATION_RESULT_SUCCESS;
 			break;
@@ -230,13 +234,37 @@ SuballocationResult VulkanDeviceMemoryAllocator::AllocateResourceAuto(EngineAPI:
 			success = ALLOCATION_RESULT_SUCCESS;
 			break;
 		}
-		case RENDERING_RESOURCE_TYPE_BUFFER:
+
+		//
+		//Buffers
+		//
+
+		case RENDERING_RESOURCE_TYPE_VERTEX_BUFFER:
 		{
-			EngineAPI::Debug::DebugLog::PrintInfoMessage("VulkanDeviceMemoryAllocator::AllocateResourceAuto(): Allocating Buffer\n");
+			EngineAPI::Debug::DebugLog::PrintInfoMessage("VulkanDeviceMemoryAllocator::AllocateResourceAuto(): Allocating Vertex Buffer\n");
 			
 			success = ALLOCATION_RESULT_SUCCESS;
 			break;
 		}
+		case RENDERING_RESOURCE_TYPE_INDEX_BUFFER:
+		{
+			EngineAPI::Debug::DebugLog::PrintInfoMessage("VulkanDeviceMemoryAllocator::AllocateResourceAuto(): Allocating Index Buffer\n");
+
+			success = ALLOCATION_RESULT_SUCCESS;
+			break;
+		}
+		case RENDERING_RESOURCE_TYPE_CONSTANT_BUFFER:
+		{
+			EngineAPI::Debug::DebugLog::PrintInfoMessage("VulkanDeviceMemoryAllocator::AllocateResourceAuto(): Allocating Constant Buffer\n");
+
+			success = ALLOCATION_RESULT_SUCCESS;
+			break;
+		}
+
+		//
+		//Default
+		//
+
 		default:
 		{	
 			//Error
