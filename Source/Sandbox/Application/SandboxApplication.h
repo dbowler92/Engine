@@ -9,6 +9,9 @@
 
 #include "../../Engine/Application/Application.h" //Base class
 
+//Rendering objects
+#include "../../Engine/Includes/RenderingIncludes.h"
+
 class SandboxApplication : public EngineAPI::Core::Application
 { 
 	HIDE_COPY_ASSIGNMENT(SandboxApplication)
@@ -30,4 +33,8 @@ public:
 	//Updates and renders the scene
 	virtual void UpdateScene(float dt);
 	virtual void RenderScene();
+
+protected:
+	//Objects
+	EngineAPI::Rendering::VertexBuffer vb;
 }; 

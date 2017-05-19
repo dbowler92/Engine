@@ -39,6 +39,7 @@
     <ClCompile Include="..\Rendering\DepthTexture\Vulkan\VulkanDepthTexture.cpp" />
     <ClCompile Include="..\Rendering\Resource\Vulkan\VulkanResource.cpp" />
     <ClCompile Include="..\Rendering\Texture\Vulkan\VulkanTexture.cpp" />
+    <ClCompile Include="..\Rendering\VertexBuffer\Vulkan\VulkanVertexBuffer.cpp" />
     <ClCompile Include="..\Statics\Vulkan\VulkanStatics.cpp" />
     <ClCompile Include="..\Utils\GameTimer\GameTimer.cpp" />
   </ItemGroup>
@@ -73,6 +74,7 @@
     <ClInclude Include="..\Graphics\Swapchain\Swapchain.h" />
     <ClInclude Include="..\Graphics\Swapchain\Vulkan\VulkanSwapchain.h" />
     <ClInclude Include="..\Includes\GraphicsIncludes.h" />
+    <ClInclude Include="..\Includes\RenderingIncludes.h" />
     <ClInclude Include="..\Main\EngineStd.h" />
     <ClInclude Include="..\OSWindow\OSWindow.h" />
     <ClInclude Include="..\OSWindow\Win32\Win32OSWindow.h" />
@@ -84,6 +86,8 @@
     <ClInclude Include="..\Rendering\Resource\Vulkan\VulkanResource.h" />
     <ClInclude Include="..\Rendering\Texture\Texture.h" />
     <ClInclude Include="..\Rendering\Texture\Vulkan\VulkanTexture.h" />
+    <ClInclude Include="..\Rendering\VertexBuffer\VertexBuffer.h" />
+    <ClInclude Include="..\Rendering\VertexBuffer\Vulkan\VulkanVertexBuffer.h" />
     <ClInclude Include="..\Statics\Vulkan\VulkanStatics.h" />
     <ClInclude Include="..\Utils\GameTimer\GameTimer.h" />
   </ItemGroup>

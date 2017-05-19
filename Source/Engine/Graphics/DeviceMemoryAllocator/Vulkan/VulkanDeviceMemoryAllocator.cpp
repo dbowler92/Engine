@@ -190,7 +190,7 @@ SuballocationResult VulkanDeviceMemoryAllocator::AllocateResourceAuto(EngineAPI:
 		{
 			EngineAPI::Debug::DebugLog::PrintInfoMessage("VulkanDeviceMemoryAllocator::AllocateResourceAuto(): Allocating Bitmap Texture\n");
 			
-			success = ALLOCATION_RESULT_SUCCESS;
+			success = ALLOCATION_RESULT_NOT_IMPLEMENTED;
 			break;
 		}
 		case RENDERING_RESOURCR_TYPE_DEPTH_TEXTURE:
@@ -231,7 +231,7 @@ SuballocationResult VulkanDeviceMemoryAllocator::AllocateResourceAuto(EngineAPI:
 		{
 			EngineAPI::Debug::DebugLog::PrintInfoMessage("VulkanDeviceMemoryAllocator::AllocateResourceAuto(): Allocating Render Target\n");
 			
-			success = ALLOCATION_RESULT_SUCCESS;
+			success = ALLOCATION_RESULT_NOT_IMPLEMENTED;
 			break;
 		}
 
@@ -243,21 +243,21 @@ SuballocationResult VulkanDeviceMemoryAllocator::AllocateResourceAuto(EngineAPI:
 		{
 			EngineAPI::Debug::DebugLog::PrintInfoMessage("VulkanDeviceMemoryAllocator::AllocateResourceAuto(): Allocating Vertex Buffer\n");
 			
-			success = ALLOCATION_RESULT_SUCCESS;
+			success = ALLOCATION_RESULT_NOT_IMPLEMENTED;
 			break;
 		}
 		case RENDERING_RESOURCE_TYPE_INDEX_BUFFER:
 		{
 			EngineAPI::Debug::DebugLog::PrintInfoMessage("VulkanDeviceMemoryAllocator::AllocateResourceAuto(): Allocating Index Buffer\n");
 
-			success = ALLOCATION_RESULT_SUCCESS;
+			success = ALLOCATION_RESULT_NOT_IMPLEMENTED;
 			break;
 		}
 		case RENDERING_RESOURCE_TYPE_CONSTANT_BUFFER:
 		{
 			EngineAPI::Debug::DebugLog::PrintInfoMessage("VulkanDeviceMemoryAllocator::AllocateResourceAuto(): Allocating Constant Buffer\n");
 
-			success = ALLOCATION_RESULT_SUCCESS;
+			success = ALLOCATION_RESULT_NOT_IMPLEMENTED;
 			break;
 		}
 
@@ -270,9 +270,16 @@ SuballocationResult VulkanDeviceMemoryAllocator::AllocateResourceAuto(EngineAPI:
 			//Error
 			EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanDeviceMemoryAllocator::AllocateResourceAuto(): Error - Unknown resource type\n");
 			
-			success = ALLOCATION_RESULT_SUCCESS;
+			success = ALLOCATION_RESULT_NOT_IMPLEMENTED;
 			break;
 		}
+	}
+
+	//TEMP
+	if (success == ALLOCATION_RESULT_NOT_IMPLEMENTED)
+	{
+		EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanDeviceMemoryAllocator::AllocateResourceAuto() Error: Auto allocation not yet implemented for resource\n");
+		return success;
 	}
 
 	//Done

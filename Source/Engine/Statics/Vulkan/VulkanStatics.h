@@ -50,6 +50,12 @@ namespace EngineAPI
 			//Creates a VkImageView
 			static bool CreateVKTextureView(VkDevice* device, VkImageViewCreateInfo* viewCreateInfo, VkImageView* imageViewHandleOut);
 			static void DestoryVKTextureView(VkDevice* device, VkImageView* imageView);
+
+			//Buffers
+			//
+			//Creates a VkBufferView
+			static bool CreateVKBufferView(VkDevice* device, VkBufferViewCreateInfo* viewCreateInfo, VkBufferView* bufferViewHandleOut);
+			static void DestroyVKBufferView(VkDevice* device, VkBufferView* bufferView);
 		};
 	};
 };

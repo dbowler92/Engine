@@ -14,7 +14,8 @@ using namespace EngineAPI::Rendering::Platform;
 void VulkanDepthTexture::Shutdown()
 {
 	//Destroy image views
-	EngineAPI::Statics::VulkanStatics::DestoryVKTextureView(&cachedVkDevice, &vkDepthStencilView);
+	if (vkDepthStencilView != VK_NULL_HANDLE)
+		EngineAPI::Statics::VulkanStatics::DestoryVKTextureView(&cachedVkDevice, &vkDepthStencilView);
 
 	//Destroy super
 	__super::Shutdown();

@@ -41,6 +41,9 @@ namespace EngineAPI
 				VulkanDepthTexture(RenderingResourceType type) : Texture(type) {};
 				virtual ~VulkanDepthTexture() = 0 {};
 
+				//Shutsdown the depth texture. 
+				void Shutdown();
+
 				//Init
 				bool InitVKDepthTexture(EngineAPI::Graphics::RenderDevice* renderingDevice,
 					DepthTextureFormat depthTextureFormat, ESize2D depthTextureDimentions,
@@ -53,9 +56,6 @@ namespace EngineAPI
 				//Inits the depth texture views and layout. 
 				bool InitVKDepthTextureLayoutAndViews(EngineAPI::Graphics::RenderDevice* renderingDevice);
 				
-				//Shutsdown the depth texture. 
-				void Shutdown();
-
 			protected:
 				//State of the depth texture
 				DepthTextureFormat depthTextureFormat;

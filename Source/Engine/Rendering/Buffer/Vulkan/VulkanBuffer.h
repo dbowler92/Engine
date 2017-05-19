@@ -36,6 +36,24 @@ namespace EngineAPI
 				//Shutodwn the buffer object - called manually by the subclasses. 
 				virtual void Shutdown() = 0;
 
+			protected:
+				//Inits the buffer
+				bool InitVKBuffer(EngineAPI::Graphics::RenderDevice* renderingDevice,
+					VkBufferCreateInfo* bufferCreateInfo, bool isDynamicBuffer);
+
+			protected:
+				//Cache the device used to create the buffer
+				VkDevice cachedVKLogicalDevice = VK_NULL_HANDLE;
+
+			protected:
+				//Vulkan buffer handle
+				VkBuffer vkBufferHandle = VK_NULL_HANDLE;
+
+				//Buffer size (bytes)
+				VkDeviceSize bufferSizeBytes = 0;
+
+				//Is this buffer dynamic?
+				bool isDynamicBufferFlag = false;
 			};
 		};
 	};

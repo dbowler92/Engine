@@ -124,7 +124,7 @@ bool VulkanStatics::CreateVKTextureView(VkDevice* device, VkImageViewCreateInfo*
 	VkResult result = vkCreateImageView(*device, viewCreateInfo, nullptr, imageViewHandleOut);
 	if (result != VK_SUCCESS)
 	{
-		EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanTexture::CreateVKTextureView(): Could not create VkImageView object\n");
+		EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanStatics::CreateVKTextureView(): Could not create VkImageView object\n");
 		return false;
 	}
 
@@ -135,6 +135,24 @@ bool VulkanStatics::CreateVKTextureView(VkDevice* device, VkImageViewCreateInfo*
 void VulkanStatics::DestoryVKTextureView(VkDevice* device, VkImageView* imageView)
 {
 	vkDestroyImageView(*device, *imageView, nullptr);
+}
+
+bool VulkanStatics::CreateVKBufferView(VkDevice* device, VkBufferViewCreateInfo* viewCreateInfo, VkBufferView* bufferViewHandleOut)
+{
+	VkResult result = vkCreateBufferView(*device, viewCreateInfo, nullptr, bufferViewHandleOut);
+	if (result != VK_SUCCESS)
+	{
+		EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanStatics::CreateVKBufferView() Error: Failed to create buffer view\n");
+		return false;
+	}
+
+	//Done
+	return true;
+}
+
+void VulkanStatics::DestroyVKBufferView(VkDevice* device, VkBufferView* bufferView)
+{
+	vkDestroyBufferView(*device, *bufferView, nullptr);
 }
 
 
