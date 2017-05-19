@@ -23,22 +23,24 @@ bool SandboxApplication::InitApplication()
 	//Device -> Used when creating rendering resources
 	EngineAPI::Graphics::RenderDevice* device = EngineAPI::Graphics::GraphicsManager::GetInstance()->GetRenderingDevice();
 
-	struct VertexWithColor
+	//Test Vertex buffer object:
+	struct VertexWithColour
 	{
 		float x, y, z, w; // Vertex Position
-		float r, g, b, a; // Color format Red, Green, Blue, Alpha
+		float r, g, b, a; // Colour format Red, Green, Blue, Alpha
 	};
 
-	VertexWithColor triangleData[] =
+	VertexWithColour triangleData[] =
 	{
-		{ 0.0f, 1.0f, 0.0f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0 },
-		{ 1.0f, -1.0f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0 },
-		{ -1.0f, -1.0f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f, 1.0 },
+		{ 0.0f, 1.0f, 0.0f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0f },
+		{ 1.0f, -1.0f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0f },
+		{ -1.0f, -1.0f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f, 1.0f },
 	};
-
-	//Vertex buffer object:
-	assert(vb.InitVKVertexBuffer(device, sizeof(triangleData), triangleData, false));
 	
+	assert(vb.InitVKVertexBuffer(device, sizeof(triangleData), sizeof(VertexWithColour), false));
+	assert(vb.AllocAndBindVKVertexBuffer(device, &triangleData[0]));
+	assert(vb.InitVKVertexBufferViews(device));
+
 	return true;
 }
 

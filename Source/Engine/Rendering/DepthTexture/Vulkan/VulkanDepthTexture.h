@@ -44,16 +44,16 @@ namespace EngineAPI
 				//Shutsdown the depth texture. 
 				void Shutdown();
 
-				//Init
+				//1) Inits the VkTexture
 				bool InitVKDepthTexture(EngineAPI::Graphics::RenderDevice* renderingDevice,
 					DepthTextureFormat depthTextureFormat, ESize2D depthTextureDimentions,
 					DepthTextureUsageFlag depthTextureUsageFlags);
 
-				//Once the depth texture has been inited, we can allocate memory for it
+				//2) Once the depth texture has been inited, we can allocate memory for it
 				bool AllocAndBindVKDepthTexture(EngineAPI::Graphics::RenderDevice* renderingDevice,
 					EngineAPI::Graphics::DeviceMemoryStore* optionalDeviceStore = nullptr);
 
-				//Inits the depth texture views and layout. 
+				//3) Inits the depth texture views and layout. 
 				bool InitVKDepthTextureLayoutAndViews(EngineAPI::Graphics::RenderDevice* renderingDevice);
 				
 			protected:

@@ -11,8 +11,7 @@ void VulkanVertexBuffer::Shutdown()
 }
 
 bool VulkanVertexBuffer::InitVKVertexBuffer(EngineAPI::Graphics::RenderDevice* renderingDevice,
-	VkDeviceSize vertexBufferSizeBytes, void* vertexBufferData,
-	bool isDynamicVertexBuffer)
+	VkDeviceSize vertexBufferSizeBytes, VkDeviceSize vertexBufferStrideBytes, bool isDynamicVertexBuffer)
 {
 	//Creation info
 	VkBufferCreateInfo vbCreateInfo = {};
@@ -31,6 +30,19 @@ bool VulkanVertexBuffer::InitVKVertexBuffer(EngineAPI::Graphics::RenderDevice* r
 		return false;
 	}
 
+	//Done
+	return true;
+}
+
+bool VulkanVertexBuffer::AllocAndBindVKVertexBuffer(EngineAPI::Graphics::RenderDevice* renderingDevice, 
+	void* vertexBufferData)
+{
+	//Done
+	return true;
+}
+
+bool VulkanVertexBuffer::InitVKVertexBufferViews(EngineAPI::Graphics::RenderDevice* renderingDevice)
+{
 	//Done
 	return true;
 }
