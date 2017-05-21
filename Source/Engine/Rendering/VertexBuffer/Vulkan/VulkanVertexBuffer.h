@@ -2,7 +2,8 @@
 //Created 19/05/17
 //Cretaed By Daniel Bowler
 //
-//VkBuffer which holds per vertex data
+//VkBuffer which holds per vertex data (Designed to be an interleaved
+//VB)
 
 #pragma once
 
@@ -12,12 +13,29 @@
 //Does need to know about the device to create it
 #include "../../../Graphics/Device/RenderDevice.h"
 
-struct PerVertexLayoutDescription
+enum VertexBufferUsageFlag
 {
-	uint32_t BindingIndex;
-	VkFormat Format;
-	uint32_t Location;
-	uint32_t Offset;
+	VERTEX_BUFFER_USAGE_PER_VERTEX_DATA,
+	VERTEX_BUFFER_USAGE_PER_INSTANCE_DATA
+};
+
+//Describes one input in the vertex buffer. Eg: One for the
+//local space positions, another from texcoords[0] and another
+//for texcoords[1]
+struct VertexStreamDescription
+{
+	uint32_t Binding;				 //Binding number from which this attribute takes its data			
+	VkFormat Format;			     //Format of the data
+	uint32_t ShaderBindingLocation;  //Shader binding location
+	uint32_t Offset;				 //Offset in bytes of this attribute/stream relative to the start of an element
+};
+
+//Tells us the make up of the vertex buffer.
+struct VertexBufferLayout
+{
+	VertexBufferUsageFlag Usage;				//VB Filled with per vertex or per instance data?
+	VertexStreamDescription* VertexStreams;     //Describes the layout of the VB. Eg: Order of data, size etc
+	uint32_t VertexStreamsCount;				//Number of pieces of input data
 };
 
 namespace EngineAPI
@@ -39,11 +57,20 @@ namespace EngineAPI
 				bool InitVKVertexBuffer(EngineAPI::Graphics::RenderDevice* renderingDevice, 
 					VkDeviceSize vertexBufferSizeBytes, VkDeviceSize vertexBufferStrideBytes, bool isDynamicVertexBuffer);
 
-				//2) Allocates the vertex buffer.
-				bool AllocAndBindVKVertexBuffer(EngineAPI::Graphics::RenderDevice* renderingDevice, void* vertexBufferData);
+				//2) Allocates the vertex buffer on the device.
+				bool AllocAndBindVKVertexBuffer(EngineAPI::Graphics::RenderDevice* renderingDevice,
+					VertexBufferLayout* vertexBufferLayout, void* vertexBufferData, 
+					EngineAPI::Graphics::DeviceMemoryStore* optionalDeviceStore = nullptr);
 
-				//3) Init vertex buffer views
-				bool InitVKVertexBufferViews(EngineAPI::Graphics::RenderDevice* renderingDevice);
+			protected:
+				//VK info
+				VkVertexInputBindingDescription inputRate; //Per buffer info (TBC)
+				std::vector<VkVertexInputAttributeDescription> inputAttributes; //Per stream info
+
+			protected:
+				//Cached info on the VB
+				VkDeviceSize vertexBufferStride = 0;
+
 			};
 		};
 	};

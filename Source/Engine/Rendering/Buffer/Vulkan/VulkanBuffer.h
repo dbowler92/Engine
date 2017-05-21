@@ -41,6 +41,16 @@ namespace EngineAPI
 				bool InitVKBuffer(EngineAPI::Graphics::RenderDevice* renderingDevice,
 					VkBufferCreateInfo* bufferCreateInfo, bool isDynamicBuffer);
 
+				//Allocates a DeviceMemoryBlock for this resource
+				bool AllocVKBufferMemoryBlock(EngineAPI::Graphics::RenderDevice* renderingDevice,
+					EngineAPI::Graphics::DeviceMemoryStore* optionalMemoryStore = nullptr);
+
+				//Staging
+
+
+				//Bind device memory
+				bool BindVKBufferMemory(EngineAPI::Graphics::RenderDevice* renderingDevice);
+
 			protected:
 				//Cache the device used to create the buffer
 				VkDevice cachedVKLogicalDevice = VK_NULL_HANDLE;
@@ -49,6 +59,10 @@ namespace EngineAPI
 				//Vulkan buffer handle
 				VkBuffer vkBufferHandle = VK_NULL_HANDLE;
 
+				//Memory requirments 
+				VkMemoryRequirements vkBufferMemoryRequirments;
+
+			protected:
 				//Buffer size (bytes)
 				VkDeviceSize bufferSizeBytes = 0;
 

@@ -49,7 +49,7 @@ bool VulkanTexture::AllocAndBindVKTextureMemory(EngineAPI::Graphics::RenderDevic
 		SuballocationResult result = memoryAllocator->AllocateResourceToStore(renderingDevice, optionalMemoryStore, vkTextureMemoryRequirments, this);
 		if (result != ALLOCATION_RESULT_SUCCESS)
 		{
-			EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanTexture::InitVKTexture(): Error allocating memory for this texture (Custom defined store)\n");
+			EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanTexture::AllocAndBindVKTextureMemory(): Error allocating memory for this texture (Custom defined store)\n");
 			return false;
 		}
 	}
@@ -60,7 +60,7 @@ bool VulkanTexture::AllocAndBindVKTextureMemory(EngineAPI::Graphics::RenderDevic
 		SuballocationResult result = memoryAllocator->AllocateResourceAuto(renderingDevice, this);
 		if (result != ALLOCATION_RESULT_SUCCESS)
 		{
-			EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanTexture::InitVKTexture(): Error allocating memory for this texture\n");
+			EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanTexture::AllocAndBindVKTextureMemory(): Error allocating memory for this texture\n");
 			return false;
 		}
 	}
@@ -73,14 +73,14 @@ bool VulkanTexture::AllocAndBindVKTextureMemory(EngineAPI::Graphics::RenderDevic
 		VkResult result = vkBindImageMemory(cachedVkDevice, vkImageHandle, memory, offsetAligned);
 		if (result != VK_SUCCESS)
 		{
-			EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanTexture::InitVKTexture(): Error - Could not bind memory to assigned memory block\n");
+			EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanTexture::AllocAndBindVKTextureMemory(): Error - Could not bind memory to assigned memory block\n");
 			return false;
 		}
 	}
 	else
 	{
 		//No memory block available - unknown error 
-		EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanTexture::InitVKTexture() Error - No DeviceMemoryBlock assigned for this resource to bind memory with\n");
+		EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanTexture::AllocAndBindVKTextureMemory() Error - No DeviceMemoryBlock assigned for this resource to bind memory with\n");
 		return false;
 	}
 

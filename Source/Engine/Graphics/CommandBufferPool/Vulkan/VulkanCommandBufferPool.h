@@ -2,7 +2,7 @@
 //Created 24/04/17
 //Created by Daniel Bowler
 //
-//Vulkan inplementation for command buffer pools - VkCommandPool
+//Vulkan implementation for command buffer pools - VkCommandPool
 
 #pragma once
 
