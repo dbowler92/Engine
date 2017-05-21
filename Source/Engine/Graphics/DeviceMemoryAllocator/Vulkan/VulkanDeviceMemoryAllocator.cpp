@@ -6,6 +6,8 @@
 //Resources
 #include "../../../Rendering/DepthTexture/DepthTexture.h"
 
+#include "../../../Rendering/VertexBuffer/VertexBuffer.h"
+
 using namespace EngineAPI::Graphics::Platform;
 
 void VulkanDeviceMemoryAllocator::Shutdown()
@@ -17,6 +19,7 @@ void VulkanDeviceMemoryAllocator::Shutdown()
 
 bool VulkanDeviceMemoryAllocator::VulkanDeviceMemoryAllocator::InitVKMemoryAllocator()
 {
+	//Done....
 	return true;
 }
 
@@ -221,9 +224,12 @@ SuballocationResult VulkanDeviceMemoryAllocator::AllocateResourceAuto(EngineAPI:
 				fallbackFlags = VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT;
 			}
 
+			//Is dynamic resource or can we store it in GPU?
+			bool gpuOnlyStore = !(depthResource->IsTextureDynamic());
+
 			//Allocate on the device
-			success = AllocTextureResourceAuto(renderingDevice, resource, resourceType, 
-				optimalFlags, fallbackFlags,
+			success = AllocResourceAuto(renderingDevice, resource, resourceType, 
+				optimalFlags, fallbackFlags, gpuOnlyStore,
 				textureMemoryRequirments, physicalDeviceMemoryProperties);
 			break;
 		}
@@ -243,7 +249,33 @@ SuballocationResult VulkanDeviceMemoryAllocator::AllocateResourceAuto(EngineAPI:
 		{
 			EngineAPI::Debug::DebugLog::PrintInfoMessage("VulkanDeviceMemoryAllocator::AllocateResourceAuto(): Allocating Vertex Buffer\n");
 			
-			success = ALLOCATION_RESULT_NOT_IMPLEMENTED;
+			//Cast to vertex buffer
+			EngineAPI::Rendering::VertexBuffer* vb = static_cast<EngineAPI::Rendering::VertexBuffer*>(resource);
+
+			//Vulkan memory requirements for this buffer -> Helps us find the correct store
+			//for this resource. 
+			VkMemoryRequirements memoryRequirments = vb->GetVKBufferMemoryRequirments();
+
+			//Device memory properties. Used with VkMemoryRequirments to work out what memory type
+			//we want to use when allocing this depth texture
+			VkPhysicalDeviceMemoryProperties physicalDeviceMemoryProperties = renderingDevice->GetVKPhysicalDeviceMemoryProperties();
+
+			//Memory properties for this resource type
+			VkMemoryPropertyFlags optimalFlags = VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT;
+			VkMemoryPropertyFlags fallbackFlags = 0;
+			if (vb->IsDynamicBuffer())
+			{
+				optimalFlags = VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT | VK_MEMORY_PROPERTY_HOST_CACHED_BIT;
+				fallbackFlags = VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT;
+			}
+
+			//Is dynamic resource or can we store it in GPU?
+			bool gpuOnlyStore = !(vb->IsDynamicBuffer());
+
+			//Allocate on the device
+			success = AllocResourceAuto(renderingDevice, resource, resourceType,
+				optimalFlags, fallbackFlags, gpuOnlyStore,
+				memoryRequirments, physicalDeviceMemoryProperties);
 			break;
 		}
 		case RENDERING_RESOURCE_TYPE_INDEX_BUFFER:
@@ -286,18 +318,15 @@ SuballocationResult VulkanDeviceMemoryAllocator::AllocateResourceAuto(EngineAPI:
 	return success;
 }
 
-SuballocationResult VulkanDeviceMemoryAllocator::AllocTextureResourceAuto(EngineAPI::Graphics::RenderDevice* renderingDevice,
+SuballocationResult VulkanDeviceMemoryAllocator::AllocResourceAuto(EngineAPI::Graphics::RenderDevice* renderingDevice,
 	EngineAPI::Rendering::Resource* resource,
 	RenderingResourceType resourceType,
 	VkMemoryPropertyFlags resourceMemoryPropertyOptimalFlags,
 	VkMemoryPropertyFlags resourceMemoryPropertyFallbackFlags,
+	bool isGPUOnlyStorage,
 	const VkMemoryRequirements& resourceMemoryRequirments,
 	const VkPhysicalDeviceMemoryProperties& physicalDeviceMemoryProperties)
 {
-	//Cast from resource to Texture (base class for depth texture, Texture2D etc etc etc)
-	EngineAPI::Rendering::Texture* texture = static_cast<EngineAPI::Rendering::Texture*>(resource);
-	//VkImageUsageFlags textureUsage = texture->GetVKImageUsageFlags();
-
 	//Get the memory store that we can use for this texture. If this returns
 	//NULL, no store could be found. As a result, we will have to create a brand
 	//new store
@@ -334,12 +363,9 @@ SuballocationResult VulkanDeviceMemoryAllocator::AllocTextureResourceAuto(Engine
 			}
 		}
 
-		//Host local store or GPU store?
-		bool isGPUOnlyStore = texture->IsTextureDynamic();
-
 		//Size of allocation for the store
-		VkDeviceSize storeSizeBytes = isGPUOnlyStore ? 
-			MEB_TO_BYTES(ENGINE_CONFIG_VULKAN_API_DEVICE_LOCAL_STORE_SIZE_MB) : MEB_TO_BYTES(ENGINE_CONFIG_VULKAN_API_DEVICE_LOCAL_STORE_SIZE_MB);
+		VkDeviceSize storeSizeBytes = isGPUOnlyStorage ?
+			MEB_TO_BYTES(ENGINE_CONFIG_VULKAN_API_DEVICE_LOCAL_STORE_SIZE_MB) : MEB_TO_BYTES(ENGINE_CONFIG_VULKAN_API_HOST_STORE_SIZE_MB);
 
 		//Ensure we can fit this resource in the store - not an error, just go ahead and allow a larger store to fit this resource
 		if (resourceMemoryRequirments.size > storeSizeBytes)

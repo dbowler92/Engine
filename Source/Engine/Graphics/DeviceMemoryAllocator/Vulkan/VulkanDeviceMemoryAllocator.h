@@ -88,14 +88,17 @@ namespace EngineAPI
 			private:
 				//Allocs a resource -> Will automatically find/create the store to use
 				//for us. 
-				SuballocationResult AllocTextureResourceAuto(EngineAPI::Graphics::RenderDevice* renderingDevice,
+				SuballocationResult AllocResourceAuto(EngineAPI::Graphics::RenderDevice* renderingDevice,
 					EngineAPI::Rendering::Resource* resource,
 					RenderingResourceType resourceType,
 					VkMemoryPropertyFlags resourceMemoryPropertyOptimalFlags, 
 					VkMemoryPropertyFlags resourceMemoryPropertyFallbackFlags,
+					bool isGPUOnlyStorage,
 					const VkMemoryRequirements& resourceMemoryRequirments,
 					const VkPhysicalDeviceMemoryProperties& physicalDeviceMemoryProperties);
 
+				
+			private:
 				//Finds a store (if it already exists) to use when allocating a resource (AllocateResource()). 
 				//Returns NULL if nothing could be found
 				//

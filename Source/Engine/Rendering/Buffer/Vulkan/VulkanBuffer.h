@@ -33,8 +33,15 @@ namespace EngineAPI
 				VulkanBuffer(RenderingResourceType type) : Resource(type) {};
 				virtual ~VulkanBuffer() = 0 {};
 
-				//Shutodwn the buffer object - called manually by the subclasses. 
+				//Shutdown the buffer object - called manually by the subclasses. 
 				virtual void Shutdown() = 0;
+
+			public:
+				//Dynamic buffer?
+				bool IsDynamicBuffer() { return isDynamicBufferFlag; };
+
+				//Memory requirements
+				VkMemoryRequirements GetVKBufferMemoryRequirments() { return vkBufferMemoryRequirments; };
 
 			protected:
 				//Inits the buffer

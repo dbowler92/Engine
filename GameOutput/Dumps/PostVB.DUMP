@@ -1,11 +1,11 @@
 **************VulkanDeviceMemoryAllocator Dump****************
 
-Allocator address: 05D3E898
+Allocator address: 05AC4D70
 Number of memory stores: 1
 
 **************************************************************
 
-[Store: 0] 05D3E8A0
+[Store: 0] 05AC4D78
 Is Active Store: 1
 Is Public Store: 1
 Store Size: 268435456
@@ -14,20 +14,34 @@ Vulkan Memory Type Index: 7
 Vulkan Memory Property Flags: 1
 Is Memory Mappable: 0
 Store Host Ptr: nullptr
-Number of blocks: 1
+Number of blocks: 2
 
-	[Block: 0] 05E39740
+	[Block: 0] 068F2F78
 		Is Free: 0
 		Is Mappable: 0
 		Is Mapped: 0
 		Resource Size: 2457600
 		Resource Alignment: 1024
-		Resource Address: 05B2B950
+		Resource Address: 0584FBD8
 		Resource Type: 1
 		Resource Debug Name: Swapchain Depth Texture
 		Block Size: 2457600
 		Block Offset: 0
 		Block Aligned Offset: 0
+		Block Host Pointer: nullptr
+
+	[Block: 1] 068F30F8
+		Is Free: 0
+		Is Mappable: 0
+		Is Mapped: 0
+		Resource Size: 256
+		Resource Alignment: 256
+		Resource Address: 003E2190
+		Resource Type: 3
+		Resource Debug Name: Test Vertex Buffer
+		Block Size: 256
+		Block Offset: 2457600
+		Block Aligned Offset: 2457600
 		Block Host Pointer: nullptr
 
 **************************************************************

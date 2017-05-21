@@ -1,2 +1,12 @@
-﻿  VulkanBuffer.cpp
+﻿  VulkanDeviceMemoryAllocator.cpp
+c:\users\dan\documents\programming\3dgameengine\game_engine\engine\source\engine\graphics\devicememoryallocator\vulkan\vulkandevicememoryallocator.cpp(42): warning C4018: '<': signed/unsigned mismatch
+c:\users\dan\documents\programming\3dgameengine\game_engine\engine\source\engine\graphics\devicememoryallocator\vulkan\vulkandevicememoryallocator.cpp(428): warning C4018: '<': signed/unsigned mismatch
+  Generating Code...
+  Compiling...
+  VulkanVertexBuffer.cpp
+c:\users\dan\documents\programming\3dgameengine\game_engine\engine\source\engine\rendering\vertexbuffer\vulkan\vulkanvertexbuffer.cpp(49): warning C4244: '=': conversion from 'VkDeviceSize' to 'uint32_t', possible loss of data
+c:\users\dan\documents\programming\3dgameengine\game_engine\engine\source\engine\rendering\vertexbuffer\vulkan\vulkanvertexbuffer.cpp(56): warning C4018: '<': signed/unsigned mismatch
+  VulkanBuffer.cpp
+  Generating Code...
+VulkanResource.obj : warning LNK4221: This object file does not define any previously undefined public symbols, so it will not be used by any link operation that consumes this library
   Engine.vcxproj -> C:\Users\Dan\Documents\Programming\3DGameEngine\Game_Engine\Engine\Source\Engine\Msvs\..\..\Lib\Win32Debug\Engine.lib

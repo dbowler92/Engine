@@ -62,7 +62,7 @@ bool SandboxApplication::InitApplication()
 	assert(vb.AllocAndBindVKVertexBuffer(device, &vbLayout, &triangleData[0], nullptr));
 
 	//TEMP
-	device->GetDeviceMemoryAllocator()->Debug_LongDump("Dumps/PostVB");
+	//device->GetDeviceMemoryAllocator()->Debug_LongDump("Dumps/PostVB");
 
 	return true;
 }

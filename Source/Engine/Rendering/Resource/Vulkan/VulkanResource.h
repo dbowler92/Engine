@@ -27,6 +27,7 @@ namespace EngineAPI
 {
 	namespace Graphics
 	{
+		class RenderDevice;
 		class DeviceMemoryBlock;
 		namespace Platform
 		{
@@ -60,6 +61,7 @@ namespace EngineAPI
 				EngineAPI::Graphics::DeviceMemoryBlock* GetDeviceMemoryBlock() { return resourceMemoryBlock; };
 
 			public:
+				//Debug name -> Used when dumping info (Eg: State of the allocator)
 				void SetResourceDebugName(std::string name) { debugName = name; };
 				std::string GetResourceDebugName() { return debugName; };
 
