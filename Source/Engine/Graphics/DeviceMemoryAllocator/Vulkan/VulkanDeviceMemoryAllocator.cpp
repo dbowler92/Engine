@@ -72,8 +72,15 @@ void VulkanDeviceMemoryAllocator::Debug_LongDump(std::string filename)
 				out << "		Is Free: " << block.IsBlockFree() << "\n";
 				out << "		Is Mappable: " << block.IsBlockMappable() << "\n";
 				out << "		Is Mapped: " << block.IsBlockCurrentlyMapped() << "\n";
-				out << "		Resource Size: " << block.GetResourceSize() << "\n";
+				out << "		Resource Size (Vulkan Defined): " << block.GetResourceSize() << "\n";
 				out << "		Resource Alignment: " << block.GetResourceAlignment() << "\n";
+
+				if (block.GetResource()->GetResourceType() > RENDERING_RESOURCE_TYPE_ENUM_BUFFERS_BEGIN)
+				{
+					//Print actual size of buffer
+					EngineAPI::Rendering::Buffer* b = (EngineAPI::Rendering::Buffer*)block.GetResource();
+					out << "		Buffer Contents Size: " << b->GetBufferContentsSize() << "\n";
+				}
 
 				if (block.GetResource() != nullptr)
 				{
@@ -209,7 +216,7 @@ SuballocationResult VulkanDeviceMemoryAllocator::AllocateResourceAuto(EngineAPI:
 			
 			//Vulkan memory requirements for this texture -> Helps us find the correct store
 			//for this resource. 
-			VkMemoryRequirements textureMemoryRequirments = depthResource->GetVKImageMemoryRequirments();
+			VkMemoryRequirements textureMemoryRequirments = depthResource->GetResourceVKMemoryRequirments();
 			
 			//Device memory properties. Used with VkMemoryRequirments to work out what memory type
 			//we want to use when allocing this depth texture
@@ -218,14 +225,14 @@ SuballocationResult VulkanDeviceMemoryAllocator::AllocateResourceAuto(EngineAPI:
 			//Memory properties for this resource type
 			VkMemoryPropertyFlags optimalFlags = VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT;
 			VkMemoryPropertyFlags fallbackFlags = 0;
-			if (depthResource->IsTextureDynamic())
+			if (depthResource->IsDynamicResource())
 			{
 				optimalFlags = VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT | VK_MEMORY_PROPERTY_HOST_CACHED_BIT;
 				fallbackFlags = VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT;
 			}
 
 			//Is dynamic resource or can we store it in GPU?
-			bool gpuOnlyStore = !(depthResource->IsTextureDynamic());
+			bool gpuOnlyStore = !(depthResource->IsDynamicResource());
 
 			//Allocate on the device
 			success = AllocResourceAuto(renderingDevice, resource, resourceType, 
@@ -254,7 +261,7 @@ SuballocationResult VulkanDeviceMemoryAllocator::AllocateResourceAuto(EngineAPI:
 
 			//Vulkan memory requirements for this buffer -> Helps us find the correct store
 			//for this resource. 
-			VkMemoryRequirements memoryRequirments = vb->GetVKBufferMemoryRequirments();
+			VkMemoryRequirements memoryRequirments = vb->GetResourceVKMemoryRequirments();
 
 			//Device memory properties. Used with VkMemoryRequirments to work out what memory type
 			//we want to use when allocing this depth texture
@@ -263,14 +270,14 @@ SuballocationResult VulkanDeviceMemoryAllocator::AllocateResourceAuto(EngineAPI:
 			//Memory properties for this resource type
 			VkMemoryPropertyFlags optimalFlags = VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT;
 			VkMemoryPropertyFlags fallbackFlags = 0;
-			if (vb->IsDynamicBuffer())
+			if (vb->IsDynamicResource())
 			{
 				optimalFlags = VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT | VK_MEMORY_PROPERTY_HOST_CACHED_BIT;
 				fallbackFlags = VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT;
 			}
 
 			//Is dynamic resource or can we store it in GPU?
-			bool gpuOnlyStore = !(vb->IsDynamicBuffer());
+			bool gpuOnlyStore = !(vb->IsDynamicResource());
 
 			//Allocate on the device
 			success = AllocResourceAuto(renderingDevice, resource, resourceType,

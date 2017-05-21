@@ -41,24 +41,26 @@ bool SandboxApplication::InitApplication()
 
 	//Streams
 	VertexStreamDescription streams[2];
-	streams[0].Binding = 0;
+	streams[0].BufferBinding = 0;
 	streams[0].Format = VK_FORMAT_R32G32B32A32_SFLOAT;
-	streams[0].ShaderBindingLocation = 0;
+	streams[0].ShaderBinding = 0;
 	streams[0].Offset = 0;
 
-	streams[1].Binding = 0;
+	streams[1].BufferBinding = 0;
 	streams[1].Format = VK_FORMAT_R32G32B32A32_SFLOAT;
-	streams[1].ShaderBindingLocation = 1;
+	streams[1].ShaderBinding = 1;
 	streams[1].Offset = sizeof(float) * 4;
 
 	//VB Description
 	VertexBufferLayout vbLayout = {};
 	vbLayout.Usage = VERTEX_BUFFER_USAGE_PER_VERTEX_DATA;
+	vbLayout.BufferBinding = 0;
+	vbLayout.VertexStride = sizeof(VertexWithColour);
 	vbLayout.VertexStreamsCount = 2;
 	vbLayout.VertexStreams = streams;
 
 	vb.SetResourceDebugName("Test Vertex Buffer");
-	assert(vb.InitVKVertexBuffer(device, sizeof(triangleData), sizeof(VertexWithColour), false));
+	assert(vb.InitVKVertexBuffer(device, sizeof(triangleData), false));
 	assert(vb.AllocAndBindVKVertexBuffer(device, &vbLayout, &triangleData[0], nullptr));
 
 	//TEMP
@@ -79,7 +81,7 @@ bool SandboxApplication::ShutdownApplication()
 
 void SandboxApplication::UpdateScene(float dt)
 {
-	
+
 }
 
 void SandboxApplication::RenderScene()

@@ -12,11 +12,19 @@
 //Static helper
 #include "../../../Statics/Vulkan/VulkanStatics.h"
 
+//Can work out if a resource is a:
+//	Texture if resource->GetType() < RENDERING_RESOURCE_TYPE_ENUM_BUFFERS_BEGIN
+//	Buffer if resource->GetType() > RENDERING_RESOURCE_TYPE_ENUM_BUFFERS_BEGIN
+
 enum RenderingResourceType
 {
+	RENDERING_RESOURCE_TYPE_ENUM_TEXTURES_BEGIN,  //*
+
 	RENDERING_RESOURCE_TYPE_BITMAP_TEXTURE,
 	RENDERING_RESOURCR_TYPE_DEPTH_TEXTURE, 
 	RENDERING_RESOURCE_TYPE_RENDER_TARGET_TEXTURE,
+
+	RENDERING_RESOURCE_TYPE_ENUM_BUFFERS_BEGIN,  //*
 
 	RENDERING_RESOURCE_TYPE_VERTEX_BUFFER,
 	RENDERING_RESOURCE_TYPE_INDEX_BUFFER,
@@ -61,11 +69,19 @@ namespace EngineAPI
 				EngineAPI::Graphics::DeviceMemoryBlock* GetDeviceMemoryBlock() { return resourceMemoryBlock; };
 
 			public:
+				//Resource info getters
+				VkMemoryRequirements GetResourceVKMemoryRequirments() { return vkResourceMemoryRequirments; };
+				bool IsDynamicResource() { return isDynamicResourceFlag; };
+
+			public:
 				//Debug name -> Used when dumping info (Eg: State of the allocator)
 				void SetResourceDebugName(std::string name) { debugName = name; };
 				std::string GetResourceDebugName() { return debugName; };
 
 			protected:
+				//Debug resource identifier (name)
+				std::string debugName;
+
 				//Resource type -> Set by subclasses (constructor)
 				RenderingResourceType resourceType;
 
@@ -74,8 +90,12 @@ namespace EngineAPI
 				//by the block itself - Don't reset this pointer. 
 				EngineAPI::Graphics::DeviceMemoryBlock* resourceMemoryBlock = nullptr;
 
-				//Debug resource identifier (name)
-				std::string debugName;
+			protected:
+				//Is this resource dynamic?
+				bool isDynamicResourceFlag = false;
+
+				//Vulkan memory requirments for the resource
+				VkMemoryRequirements vkResourceMemoryRequirments;
 
 			private:
 				//Visible to DeviceMemoryBlock

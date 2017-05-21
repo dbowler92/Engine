@@ -12,11 +12,8 @@ void VulkanVertexBuffer::Shutdown()
 }
 
 bool VulkanVertexBuffer::InitVKVertexBuffer(EngineAPI::Graphics::RenderDevice* renderingDevice,
-	VkDeviceSize vertexBufferSizeBytes, VkDeviceSize vertexBufferStrideBytes, bool isDynamicVertexBuffer)
+	VkDeviceSize vertexBufferSizeBytes, bool isDynamicVertexBuffer)
 {
-	//Cache info
-	this->vertexBufferStride = vertexBufferStrideBytes;
-
 	//Creation info
 	VkBufferCreateInfo vbCreateInfo = {};
 	vbCreateInfo.sType = VK_STRUCTURE_TYPE_BUFFER_CREATE_INFO;
@@ -44,20 +41,29 @@ bool VulkanVertexBuffer::AllocAndBindVKVertexBuffer(EngineAPI::Graphics::RenderD
 {
 	assert(vkBufferHandle != VK_NULL_HANDLE);
 
-	//Fill VK structs
-	inputRate.binding = 0;
-	inputRate.stride = vertexBufferStride;
-	if (vertexBufferLayout->Usage == VERTEX_BUFFER_USAGE_PER_VERTEX_DATA)
-		inputRate.inputRate = VK_VERTEX_INPUT_RATE_VERTEX;
-	else
-		inputRate.inputRate = VK_VERTEX_INPUT_RATE_INSTANCE;
+	//Cache some data
+	this->vertexBufferStride = vertexBufferLayout->VertexStride;
 
+	//Calculate number of elements in the VB
+	vertexBufferElementsCount = bufferSizeBytes / vertexBufferStride;
+
+	//Fill VK structs
+	//
+	//VkVertexInputBindingDescription
+	bufferBinding.binding = vertexBufferLayout->BufferBinding;
+	bufferBinding.stride = vertexBufferStride;
+	if (vertexBufferLayout->Usage == VERTEX_BUFFER_USAGE_PER_VERTEX_DATA)
+		bufferBinding.inputRate = VK_VERTEX_INPUT_RATE_VERTEX;
+	else
+		bufferBinding.inputRate = VK_VERTEX_INPUT_RATE_INSTANCE;
+
+	//VkVertexInputAttributeDescription[]
 	inputAttributes.resize(vertexBufferLayout->VertexStreamsCount);
 	for (int i = 0; i < vertexBufferLayout->VertexStreamsCount; i++)
 	{
-		inputAttributes[i].binding  = vertexBufferLayout->VertexStreams[i].Binding;
+		inputAttributes[i].binding  = vertexBufferLayout->VertexStreams[i].BufferBinding;
 		inputAttributes[i].format   = vertexBufferLayout->VertexStreams[i].Format;
-		inputAttributes[i].location = vertexBufferLayout->VertexStreams[i].ShaderBindingLocation;
+		inputAttributes[i].location = vertexBufferLayout->VertexStreams[i].ShaderBinding;
 		inputAttributes[i].offset	= vertexBufferLayout->VertexStreams[i].Offset;
 	}
 
@@ -70,7 +76,15 @@ bool VulkanVertexBuffer::AllocAndBindVKVertexBuffer(EngineAPI::Graphics::RenderD
 	}
 
 	//Staging -> Write data to the buffer
-
+	if (vertexBufferData)
+	{
+		if (!WriteDataToVKBuffer(renderingDevice, vertexBufferData))
+		{
+			//Error
+			EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanVertexBuffer::AllocAndBindVKVertexBuffer() Error - Could not write data to memory(Staging)\n");
+			return false;
+		}
+	}
 
 	//Bind device memory
 	if (!BindVKBufferMemory(renderingDevice))

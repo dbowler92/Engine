@@ -24,16 +24,24 @@ enum VertexBufferUsageFlag
 //for texcoords[1]
 struct VertexStreamDescription
 {
-	uint32_t Binding;				 //Binding number from which this attribute takes its data			
+	uint32_t BufferBinding;			 //Binding number (buffer) from which this attribute takes its data			
 	VkFormat Format;			     //Format of the data
-	uint32_t ShaderBindingLocation;  //Shader binding location
+	uint32_t ShaderBinding;		     //Shader binding location
 	uint32_t Offset;				 //Offset in bytes of this attribute/stream relative to the start of an element
 };
 
 //Tells us the make up of the vertex buffer.
 struct VertexBufferLayout
 {
+	VertexBufferLayout() 
+	{ 
+		VertexStreams = nullptr;  
+		VertexStreamsCount = 0; 
+	};
+
 	VertexBufferUsageFlag Usage;				//VB Filled with per vertex or per instance data?
+	uint32_t BufferBinding;						//Buffer binding point (Could have multiple bound buffers)
+	VkDeviceSize VertexStride;					//Bytes between each individual element (vertex)
 	VertexStreamDescription* VertexStreams;     //Describes the layout of the VB. Eg: Order of data, size etc
 	uint32_t VertexStreamsCount;				//Number of pieces of input data
 };
@@ -55,22 +63,23 @@ namespace EngineAPI
 
 				//1) Inits the vertex buffer
 				bool InitVKVertexBuffer(EngineAPI::Graphics::RenderDevice* renderingDevice, 
-					VkDeviceSize vertexBufferSizeBytes, VkDeviceSize vertexBufferStrideBytes, bool isDynamicVertexBuffer);
+					VkDeviceSize vertexBufferSizeBytes, bool isDynamicVertexBuffer);
 
-				//2) Allocates the vertex buffer on the device.
+				//2) Allocates the vertex buffer on the device -> This includes writing
+				//data to the buffer (staging) & binding the device memory
 				bool AllocAndBindVKVertexBuffer(EngineAPI::Graphics::RenderDevice* renderingDevice,
 					VertexBufferLayout* vertexBufferLayout, void* vertexBufferData, 
 					EngineAPI::Graphics::DeviceMemoryStore* optionalDeviceStore = nullptr);
 
 			protected:
-				//VK info
-				VkVertexInputBindingDescription inputRate; //Per buffer info (TBC)
+				//Vulkan info
+				VkVertexInputBindingDescription bufferBinding; //Per buffer info (TBC)
 				std::vector<VkVertexInputAttributeDescription> inputAttributes; //Per stream info
 
 			protected:
-				//Cached info on the VB
+				//Vertex Buffer info
 				VkDeviceSize vertexBufferStride = 0;
-
+				uint32_t vertexBufferElementsCount = 0;
 			};
 		};
 	};

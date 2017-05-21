@@ -18,7 +18,7 @@ bool VulkanTexture::InitVKTexture(EngineAPI::Graphics::RenderDevice* renderingDe
 	//ETC
 
 	//Do we want a dynamic texture
-	isVkTextureDynamic = isTextureDynamic;
+	isDynamicResourceFlag = isTextureDynamic;
 
 	//Get the logical device used to create this texture. 
 	cachedVkDevice = renderingDevice->GetVKLogicalDevice();
@@ -32,7 +32,7 @@ bool VulkanTexture::InitVKTexture(EngineAPI::Graphics::RenderDevice* renderingDe
 	}
 
 	//Cache memory requirements for this image
-	vkGetImageMemoryRequirements(cachedVkDevice, vkImageHandle, &vkTextureMemoryRequirments);
+	vkGetImageMemoryRequirements(cachedVkDevice, vkImageHandle, &vkResourceMemoryRequirments);
 
 	//Done
 	return true;
@@ -46,7 +46,7 @@ bool VulkanTexture::AllocAndBindVKTextureMemory(EngineAPI::Graphics::RenderDevic
 	if (optionalMemoryStore)
 	{
 		//Use passed in memory store
-		SuballocationResult result = memoryAllocator->AllocateResourceToStore(renderingDevice, optionalMemoryStore, vkTextureMemoryRequirments, this);
+		SuballocationResult result = memoryAllocator->AllocateResourceToStore(renderingDevice, optionalMemoryStore, vkResourceMemoryRequirments, this);
 		if (result != ALLOCATION_RESULT_SUCCESS)
 		{
 			EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanTexture::AllocAndBindVKTextureMemory(): Error allocating memory for this texture (Custom defined store)\n");

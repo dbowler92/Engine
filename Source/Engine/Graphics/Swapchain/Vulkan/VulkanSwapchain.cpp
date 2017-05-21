@@ -566,7 +566,7 @@ bool VulkanSwapchain::CreateDepthBuffer(EngineAPI::Graphics::RenderDevice* rende
 
 	//TODO: Use a custom store for this resource???
 	EngineAPI::Graphics::DeviceMemoryStore* swapchainDepthTextureStore = nullptr;
-	VkDeviceSize storeSize = depthTexture->GetVKImageMemoryRequirments().size;
+	VkDeviceSize storeSize = depthTexture->GetResourceVKMemoryRequirments().size;
 
 	//Alloc depth texture
 	if (!depthTexture->AllocAndBindVKDepthTexture(renderingDevice, swapchainDepthTextureStore))

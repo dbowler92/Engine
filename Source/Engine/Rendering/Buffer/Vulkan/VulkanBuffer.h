@@ -37,11 +37,8 @@ namespace EngineAPI
 				virtual void Shutdown() = 0;
 
 			public:
-				//Dynamic buffer?
-				bool IsDynamicBuffer() { return isDynamicBufferFlag; };
-
-				//Memory requirements
-				VkMemoryRequirements GetVKBufferMemoryRequirments() { return vkBufferMemoryRequirments; };
+				//Getters
+				VkDeviceSize GetBufferContentsSize() { return bufferSizeBytes; };
 
 			protected:
 				//Inits the buffer
@@ -52,8 +49,8 @@ namespace EngineAPI
 				bool AllocVKBufferMemoryBlock(EngineAPI::Graphics::RenderDevice* renderingDevice,
 					EngineAPI::Graphics::DeviceMemoryStore* optionalMemoryStore = nullptr);
 
-				//Staging
-
+				//Staging - writes the data to the buffer
+				bool WriteDataToVKBuffer(EngineAPI::Graphics::RenderDevice* renderingDevice, void* data);
 
 				//Bind device memory
 				bool BindVKBufferMemory(EngineAPI::Graphics::RenderDevice* renderingDevice);
@@ -66,15 +63,9 @@ namespace EngineAPI
 				//Vulkan buffer handle
 				VkBuffer vkBufferHandle = VK_NULL_HANDLE;
 
-				//Memory requirments 
-				VkMemoryRequirements vkBufferMemoryRequirments;
-
 			protected:
 				//Buffer size (bytes)
 				VkDeviceSize bufferSizeBytes = 0;
-
-				//Is this buffer dynamic?
-				bool isDynamicBufferFlag = false;
 			};
 		};
 	};

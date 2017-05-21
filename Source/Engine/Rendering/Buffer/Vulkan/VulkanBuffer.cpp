@@ -16,7 +16,7 @@ bool VulkanBuffer::InitVKBuffer(EngineAPI::Graphics::RenderDevice* renderingDevi
 {
 	//Cache info
 	this->cachedVKLogicalDevice = renderingDevice->GetVKLogicalDevice();
-	this->isDynamicBufferFlag = isDynamicBuffer;
+	this->isDynamicResourceFlag = isDynamicBuffer;
 	this->bufferSizeBytes = bufferCreateInfo->size;
 
 	//Create the buffer object
@@ -28,7 +28,7 @@ bool VulkanBuffer::InitVKBuffer(EngineAPI::Graphics::RenderDevice* renderingDevi
 	}
 
 	//Get memory requirements for the buffer once available.
-	vkGetBufferMemoryRequirements(cachedVKLogicalDevice, vkBufferHandle, &vkBufferMemoryRequirments);
+	vkGetBufferMemoryRequirements(cachedVKLogicalDevice, vkBufferHandle, &vkResourceMemoryRequirments);
 
 	//Done
 	return true;
@@ -39,13 +39,12 @@ bool VulkanBuffer::AllocVKBufferMemoryBlock(EngineAPI::Graphics::RenderDevice* r
 {
 	//Get allocator
 	EngineAPI::Graphics::DeviceMemoryAllocator* memoryAllocator = renderingDevice->GetDeviceMemoryAllocator();
-	VkPhysicalDeviceMemoryProperties p = renderingDevice->GetVKPhysicalDeviceMemoryProperties();
-
+	
 	//Alloc
 	if (optionalMemoryStore != nullptr)
 	{
 		//Use existing store if provided
-		SuballocationResult result = memoryAllocator->AllocateResourceToStore(renderingDevice, optionalMemoryStore, vkBufferMemoryRequirments, this);
+		SuballocationResult result = memoryAllocator->AllocateResourceToStore(renderingDevice, optionalMemoryStore, vkResourceMemoryRequirments, this);
 		if (result != ALLOCATION_RESULT_SUCCESS)
 		{
 			EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanBuffer::AllocAndBindVKBufferMemory(): Error allocating memory for this texture (Custom defined store)\n");
@@ -63,6 +62,12 @@ bool VulkanBuffer::AllocVKBufferMemoryBlock(EngineAPI::Graphics::RenderDevice* r
 		}
 	}
 
+	//Done
+	return true;
+}
+
+bool VulkanBuffer::WriteDataToVKBuffer(EngineAPI::Graphics::RenderDevice* renderingDevice, void* data)
+{
 	//Done
 	return true;
 }
