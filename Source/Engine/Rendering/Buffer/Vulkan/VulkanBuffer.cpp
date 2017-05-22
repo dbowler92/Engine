@@ -17,7 +17,7 @@ bool VulkanBuffer::InitVKBuffer(EngineAPI::Graphics::RenderDevice* renderingDevi
 	//Cache info
 	this->cachedVKLogicalDevice = renderingDevice->GetVKLogicalDevice();
 	this->isDynamicResourceFlag = isDynamicBuffer;
-	this->bufferSizeBytes = bufferCreateInfo->size;
+	this->bufferContentsSizeBytes = bufferCreateInfo->size; //Contents size, not the actual size of the buffer (which maybe larger for alignment purposes)! 
 
 	//Create the buffer object
 	VkResult result = vkCreateBuffer(cachedVKLogicalDevice, bufferCreateInfo, nullptr, &vkBufferHandle);
@@ -73,25 +73,42 @@ bool VulkanBuffer::AllocVKBufferMemoryBlock(EngineAPI::Graphics::RenderDevice* r
 
 bool VulkanBuffer::WriteDataToVKBuffer(EngineAPI::Graphics::RenderDevice* renderingDevice, void* data)
 {
+	//
+	//TODO: Staging buffers for non directly mappable resources (eg: GPU only buffers)
+	//
+
 	//Map the resource
 	void* mappedResource = MapResource();
 	if (mappedResource)
 	{
-		//Write data...
+		//Success! Write data
+		memcpy(mappedResource, data, bufferContentsSizeBytes);
+
+		//Unmap
+		UnmapResource();
+		return true;
 	}
 	else
 	{
+		//Failed for some reason. Unmap resource just incase and return
 		UnmapResource();
 		return false;
 	}
-
-
-	//Done
-	return true;
 }
 
 bool VulkanBuffer::BindVKBufferMemory(EngineAPI::Graphics::RenderDevice* renderingDevice)
 {
+	//Bind allocated buffer resource to device memory
+	VkDevice device = renderingDevice->GetVKLogicalDevice();
+	VkDeviceMemory memory = resourceMemoryBlock->GetParentStore()->GetVKDeviceMemoryHandle();
+	VkDeviceSize offset = resourceMemoryBlock->GetBlockAlignedOffsetInStoreBytes();
+	VkResult result = vkBindBufferMemory(device, vkBufferHandle, memory, offset);
+	if (result != VK_SUCCESS)
+	{
+		EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanBuffer::BindVKBufferMemory() Error: Could not bind memory to device\n");
+		return false;
+	}
+
 	//Done
 	return true;
 }

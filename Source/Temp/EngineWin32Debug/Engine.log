@@ -1,4 +1,3 @@
-﻿  VulkanDeviceMemoryAllocator.cpp
-c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\devicememoryallocator\vulkan\vulkandevicememoryallocator.cpp(46): warning C4018: '<': signed/unsigned mismatch
-c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\devicememoryallocator\vulkan\vulkandevicememoryallocator.cpp(428): warning C4018: '<': signed/unsigned mismatch
+﻿  VulkanBuffer.cpp
+c:\users\b1032464\documents\programming\engine\engine\source\engine\rendering\buffer\vulkan\vulkanbuffer.cpp(85): warning C4244: 'argument': conversion from 'VkDeviceSize' to 'std::size_t', possible loss of data
   Engine.vcxproj -> C:\Users\B1032464\Documents\Programming\Engine\Engine\Source\Engine\Msvs\..\..\Lib\Win32Debug\Engine.lib

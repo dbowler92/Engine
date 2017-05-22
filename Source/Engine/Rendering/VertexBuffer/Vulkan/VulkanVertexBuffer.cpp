@@ -45,7 +45,7 @@ bool VulkanVertexBuffer::AllocAndBindVKVertexBuffer(EngineAPI::Graphics::RenderD
 	this->vertexBufferStride = vertexBufferLayout->VertexStride;
 
 	//Calculate number of elements in the VB
-	vertexBufferElementsCount = bufferSizeBytes / vertexBufferStride;
+	vertexBufferElementsCount = bufferContentsSizeBytes / vertexBufferStride;
 
 	//Fill VK structs
 	//

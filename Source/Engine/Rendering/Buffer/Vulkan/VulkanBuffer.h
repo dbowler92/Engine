@@ -38,7 +38,7 @@ namespace EngineAPI
 
 			public:
 				//Getters
-				VkDeviceSize GetBufferContentsSize() { return bufferSizeBytes; };
+				VkDeviceSize GetBufferContentsSize() { return bufferContentsSizeBytes; };
 
 			protected:
 				//Inits the buffer
@@ -68,7 +68,7 @@ namespace EngineAPI
 
 			protected:
 				//Buffer size (bytes)
-				VkDeviceSize bufferSizeBytes = 0;
+				VkDeviceSize bufferContentsSizeBytes = 0;
 			};
 		};
 	};
