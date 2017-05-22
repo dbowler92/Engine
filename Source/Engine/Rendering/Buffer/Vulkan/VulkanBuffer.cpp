@@ -30,6 +30,11 @@ bool VulkanBuffer::InitVKBuffer(EngineAPI::Graphics::RenderDevice* renderingDevi
 	//Get memory requirements for the buffer once available.
 	vkGetBufferMemoryRequirements(cachedVKLogicalDevice, vkBufferHandle, &vkResourceMemoryRequirments);
 
+	//Fill VK buffer description
+	vkBufferInfo.buffer = vkBufferHandle;
+	vkBufferInfo.range = vkResourceMemoryRequirments.size;
+	vkBufferInfo.offset = 0; //VERIFY
+
 	//Done
 	return true;
 }
@@ -68,6 +73,19 @@ bool VulkanBuffer::AllocVKBufferMemoryBlock(EngineAPI::Graphics::RenderDevice* r
 
 bool VulkanBuffer::WriteDataToVKBuffer(EngineAPI::Graphics::RenderDevice* renderingDevice, void* data)
 {
+	//Map the resource
+	void* mappedResource = MapResource();
+	if (mappedResource)
+	{
+		//Write data...
+	}
+	else
+	{
+		UnmapResource();
+		return false;
+	}
+
+
 	//Done
 	return true;
 }

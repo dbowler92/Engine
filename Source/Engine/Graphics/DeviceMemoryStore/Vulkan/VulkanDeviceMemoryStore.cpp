@@ -58,13 +58,16 @@ bool VulkanDeviceMemoryStore::InitVKDeviceMemoryStore(EngineAPI::Graphics::Devic
 	//Get the host memory pointer if available
 	if (isMemoryMappable)
 	{
-		VkResult result = vkMapMemory(cachedVkLogicalDevice, vkMemoryStoreHandle, 0, memoryStoreSizeBytes, VK_WHOLE_SIZE, &hostStorePtr);
+		VkResult result = vkMapMemory(cachedVkLogicalDevice, vkMemoryStoreHandle, 0, memoryStoreSizeBytes, 0, &hostStorePtr);
 		if ((result != VK_SUCCESS) || (hostStorePtr == nullptr))
 		{
 			//Error?
 			EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanDeviceMemoryBlock::InitVKDeviceMemoryBlock() - Could not map memory to obtain host store pointer.\n");
 			return false;
 		}
+
+		//Unmap
+		vkUnmapMemory(cachedVkLogicalDevice, vkMemoryStoreHandle);
 	}
 
 	//Store is now active

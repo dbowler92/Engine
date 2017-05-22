@@ -73,7 +73,7 @@ namespace EngineAPI
 
 			protected:
 				//Vulkan info
-				VkVertexInputBindingDescription bufferBinding; //Per buffer info (TBC)
+				VkVertexInputBindingDescription bufferBindingInfo; //Per buffer info (Rate at which this buffers info will be injected for vertex input)
 				std::vector<VkVertexInputAttributeDescription> inputAttributes; //Per stream info
 
 			protected:

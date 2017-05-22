@@ -63,6 +63,9 @@ namespace EngineAPI
 				//Vulkan buffer handle
 				VkBuffer vkBufferHandle = VK_NULL_HANDLE;
 
+				//Buffer description
+				VkDescriptorBufferInfo vkBufferInfo;
+
 			protected:
 				//Buffer size (bytes)
 				VkDeviceSize bufferSizeBytes = 0;

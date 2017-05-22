@@ -25,6 +25,10 @@ bool VulkanDeviceMemoryAllocator::VulkanDeviceMemoryAllocator::InitVKMemoryAlloc
 
 void VulkanDeviceMemoryAllocator::Debug_LongDump(std::string filename)
 {
+	EngineAPI::Debug::DebugLog::PrintInfoMessage("VulkanDeviceMemoryAllocator::Debug_LongDump() - Writing to file: ");
+	EngineAPI::Debug::DebugLog::PrintMessage(filename.c_str());
+	EngineAPI::Debug::DebugLog::PrintMessage("\n");
+
 	//Used to write to file
 	std::ofstream out;
 	out.open(filename + ".DUMP");

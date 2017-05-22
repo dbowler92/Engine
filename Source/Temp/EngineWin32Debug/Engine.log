@@ -1,6 +1,6 @@
-﻿  VulkanVertexBuffer.cpp
-c:\users\dan\documents\programming\3dgameengine\game_engine\engine\source\engine\rendering\vertexbuffer\vulkan\vulkanvertexbuffer.cpp(48): warning C4244: '=': conversion from 'VkDeviceSize' to 'uint32_t', possible loss of data
-c:\users\dan\documents\programming\3dgameengine\game_engine\engine\source\engine\rendering\vertexbuffer\vulkan\vulkanvertexbuffer.cpp(54): warning C4244: '=': conversion from 'VkDeviceSize' to 'uint32_t', possible loss of data
-c:\users\dan\documents\programming\3dgameengine\game_engine\engine\source\engine\rendering\vertexbuffer\vulkan\vulkanvertexbuffer.cpp(62): warning C4018: '<': signed/unsigned mismatch
-VulkanResource.obj : warning LNK4221: This object file does not define any previously undefined public symbols, so it will not be used by any link operation that consumes this library
-  Engine.vcxproj -> C:\Users\Dan\Documents\Programming\3DGameEngine\Game_Engine\Engine\Source\Engine\Msvs\..\..\Lib\Win32Debug\Engine.lib
+﻿  VulkanDeviceMemoryStore.cpp
+c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\devicememorystore\vulkan\vulkandevicememorystore.cpp(105): warning C4800: 'uint32_t': forcing value to bool 'true' or 'false' (performance warning)
+c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\devicememorystore\vulkan\vulkandevicememorystore.cpp(160): warning C4800: 'VkBool32': forcing value to bool 'true' or 'false' (performance warning)
+c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\devicememorystore\vulkan\vulkandevicememorystore.cpp(213): warning C4800: 'VkBool32': forcing value to bool 'true' or 'false' (performance warning)
+c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\devicememorystore\vulkan\vulkandevicememorystore.cpp(242): warning C4800: 'VkBool32': forcing value to bool 'true' or 'false' (performance warning)
+  Engine.vcxproj -> C:\Users\B1032464\Documents\Programming\Engine\Engine\Source\Engine\Msvs\..\..\Lib\Win32Debug\Engine.lib

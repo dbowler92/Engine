@@ -50,12 +50,12 @@ bool VulkanVertexBuffer::AllocAndBindVKVertexBuffer(EngineAPI::Graphics::RenderD
 	//Fill VK structs
 	//
 	//VkVertexInputBindingDescription
-	bufferBinding.binding = vertexBufferLayout->BufferBinding;
-	bufferBinding.stride = vertexBufferStride;
+	bufferBindingInfo.binding = vertexBufferLayout->BufferBinding;
+	bufferBindingInfo.stride = vertexBufferStride;
 	if (vertexBufferLayout->Usage == VERTEX_BUFFER_USAGE_PER_VERTEX_DATA)
-		bufferBinding.inputRate = VK_VERTEX_INPUT_RATE_VERTEX;
+		bufferBindingInfo.inputRate = VK_VERTEX_INPUT_RATE_VERTEX;
 	else
-		bufferBinding.inputRate = VK_VERTEX_INPUT_RATE_INSTANCE;
+		bufferBindingInfo.inputRate = VK_VERTEX_INPUT_RATE_INSTANCE;
 
 	//VkVertexInputAttributeDescription[]
 	inputAttributes.resize(vertexBufferLayout->VertexStreamsCount);

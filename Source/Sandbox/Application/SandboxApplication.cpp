@@ -59,12 +59,14 @@ bool SandboxApplication::InitApplication()
 	vbLayout.VertexStreamsCount = 2;
 	vbLayout.VertexStreams = streams;
 
+	bool isDynamicVB = true; //TEMP: For VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT memory rather than GPU only. 
+
 	vb.SetResourceDebugName("Test Vertex Buffer");
-	assert(vb.InitVKVertexBuffer(device, sizeof(triangleData), false));
+	assert(vb.InitVKVertexBuffer(device, sizeof(triangleData), isDynamicVB));
 	assert(vb.AllocAndBindVKVertexBuffer(device, &vbLayout, &triangleData[0], nullptr));
 
 	//TEMP
-	//device->GetDeviceMemoryAllocator()->Debug_LongDump("Dumps/PostVB");
+	device->GetDeviceMemoryAllocator()->Debug_LongDump("Dumps/PostVB_LabPC_DynamicVB");
 
 	return true;
 }

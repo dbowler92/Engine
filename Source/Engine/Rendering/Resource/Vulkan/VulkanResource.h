@@ -9,6 +9,9 @@
 //String
 #include <string>
 
+//Debug
+#include "../../../Debug/Log/DebugLog.h"
+
 //Static helper
 #include "../../../Statics/Vulkan/VulkanStatics.h"
 
@@ -60,6 +63,11 @@ namespace EngineAPI
 
 				//Each resource will have a shutdown function to implement
 				virtual void Shutdown() = 0;
+
+			public:
+				//Maps the resource for CPU read(?)- write
+				void* MapResource();
+				void UnmapResource();
 
 			public:
 				//Returns the resource type
