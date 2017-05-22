@@ -57,11 +57,6 @@ void VulkanDeviceMemoryAllocator::Debug_LongDump(std::string filename)
 			out << "Vulkan Memory Type Index: " << store.GetVKMemoryTypeIndex() << "\n";
 			out << "Vulkan Memory Property Flags: " << store.GetStoreMemoryPropertyFlags() << "\n";
 			out << "Is Memory Mappable: " << store.IsVKMemoryMappable() << "\n";
-			if ((void*)store.GetStoreHostPointer() == nullptr)
-				out << "Store Host Ptr: " << "nullptr" << "\n";
-			else
-				out << "Store Host Ptr: " << (void*)store.GetStoreHostPointer() << "\n";
-
 			out << "Number of blocks: " << store.GetMemoryBlocksList()->size() << "\n";
 			out << "\n";
 
@@ -105,13 +100,7 @@ void VulkanDeviceMemoryAllocator::Debug_LongDump(std::string filename)
 				out << "		Block Size: " << block.GetBlockSizeBytes() << "\n";
 				out << "		Block Offset: " << block.GetBlockOffsetInStoreBytes() << "\n";
 				out << "		Block Aligned Offset: " << block.GetBlockAlignedOffsetInStoreBytes() << "\n";
-				
-				if (block.GetBlockHostMemoryPointer()!= nullptr)
-					out << "		Block Host Pointer: " << (void*)block.GetBlockHostMemoryPointer() << "\n";
-				else
-					out << "		Block Host Pointer: " << "nullptr" << "\n";
-
-
+			
 				//Next block
 				out << "\n";
 				++it;

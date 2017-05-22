@@ -76,7 +76,6 @@ namespace EngineAPI
 				bool IsBlockMappable() { return isMappable; };
 				bool IsBlockCurrentlyMapped() { return isMapped; };
 
-				void* GetBlockHostMemoryPointer() { return hostBlockPtr; };
 				EngineAPI::Rendering::Resource* GetResource() { return resourcePtr; };
 
 				VkDeviceSize GetResourceSize() { return resourceSizeBytes; };
@@ -113,10 +112,6 @@ namespace EngineAPI
 				bool isFree = true;               //Available to be used to store data (eg: Buffer data, texture data etc)
 				bool isMappable = false;		  //Can we map the memory and write/read from it? Depends on the parent store or flags set when allocated in D3D11
 				bool isMapped = false;			  //True when we are writing to this block from the CPU
-
-				//If the block is mappable, this pointer can be used
-				//to update the memory block
-				void* hostBlockPtr = nullptr;
 			};
 		};
 	};

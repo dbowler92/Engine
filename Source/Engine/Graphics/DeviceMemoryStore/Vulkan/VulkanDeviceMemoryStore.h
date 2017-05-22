@@ -113,8 +113,6 @@ namespace EngineAPI
 				bool IsPublicMemoryStore() { return isPublicStore; };
 				bool IsMemoryStoreActive() { return isStoreActive; };
 				
-				void* GetStoreHostPointer() { return hostStorePtr; };
-
 				std::list<EngineAPI::Graphics::DeviceMemoryBlock>* GetMemoryBlocksList() { return &deviceMemoryBlocksList; };
 				EngineAPI::Graphics::DeviceMemoryBlock* GetLastMemoryBlock() { return lastSuballocedBlock; };
 
@@ -153,9 +151,6 @@ namespace EngineAPI
 
 				//Size of the store in bytes
 				VkDeviceSize memoryStoreSizeBytes = 0;
-
-				//Pointer to the beginning of the store if host visible memory
-				void* hostStorePtr = nullptr;
 
 				//Is this a 'public' store (Used during AllocResourceAuto() calls). If not, 
 				//you can only suballoc blocks in this store by calls to AllocResourceToStore()
