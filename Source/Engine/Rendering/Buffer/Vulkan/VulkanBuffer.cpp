@@ -17,7 +17,12 @@ bool VulkanBuffer::InitVKBuffer(EngineAPI::Graphics::RenderDevice* renderingDevi
 	//Cache info
 	this->cachedVKLogicalDevice = renderingDevice->GetVKLogicalDevice();
 	this->isDynamicResourceFlag = isDynamicBuffer;
-	this->bufferContentsSizeBytes = bufferCreateInfo->size; //Contents size, not the actual size of the buffer (which maybe larger for alignment purposes)! 
+
+	//Contents size, not the actual size of the buffer (which maybe larger for alignment purposes)! 
+	//
+	//Cache this value *not* vkResourceMemoryRequirments.size since that size represents the
+	//full (aligned) buffer size. 
+	this->bufferContentsSizeBytes = bufferCreateInfo->size; 
 
 	//Create the buffer object
 	VkResult result = vkCreateBuffer(cachedVKLogicalDevice, bufferCreateInfo, nullptr, &vkBufferHandle);
@@ -29,11 +34,6 @@ bool VulkanBuffer::InitVKBuffer(EngineAPI::Graphics::RenderDevice* renderingDevi
 
 	//Get memory requirements for the buffer once available.
 	vkGetBufferMemoryRequirements(cachedVKLogicalDevice, vkBufferHandle, &vkResourceMemoryRequirments);
-
-	//Fill VK buffer description
-	vkBufferInfo.buffer = vkBufferHandle;
-	vkBufferInfo.range = vkResourceMemoryRequirments.size;
-	vkBufferInfo.offset = 0; //VERIFY
 
 	//Done
 	return true;
@@ -66,6 +66,11 @@ bool VulkanBuffer::AllocVKBufferMemoryBlock(EngineAPI::Graphics::RenderDevice* r
 			return false;
 		}
 	}
+
+	//Fill VK buffer description
+	vkBufferInfo.buffer = vkBufferHandle;
+	vkBufferInfo.range = vkResourceMemoryRequirments.size; //Full range of the buffer allocated - not just resource size??? VERIFY
+	vkBufferInfo.offset = 0; //VERIFY - Should this take in to account alignment???
 
 	//Done
 	return true;

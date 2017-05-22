@@ -21,6 +21,8 @@ bool VulkanVertexBuffer::InitVKVertexBuffer(EngineAPI::Graphics::RenderDevice* r
 	vbCreateInfo.flags = 0; //TODO
 	vbCreateInfo.size  = vertexBufferSizeBytes;
 	vbCreateInfo.usage = VK_BUFFER_USAGE_VERTEX_BUFFER_BIT; //VERIFY
+	vbCreateInfo.pQueueFamilyIndices = nullptr;
+	vbCreateInfo.queueFamilyIndexCount = 0;
 	vbCreateInfo.sharingMode = VK_SHARING_MODE_EXCLUSIVE;
 
 	//Init buffer
