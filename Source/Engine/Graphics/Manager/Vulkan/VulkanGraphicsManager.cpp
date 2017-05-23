@@ -8,22 +8,17 @@ bool VulkanGraphicsManager::ShutdownSubsystem()
 {
 	EngineAPI::Debug::DebugLog::PrintInfoMessage("VulkanGraphicsManager::ShutdownSubsystem()\n");
 
-	//Cleanup render pass
-	vkDestroyRenderPass(renderingDevice->GetVKLogicalDevice(), vkRenderPass, nullptr);
-	vkRenderPass = VK_NULL_HANDLE;
+	//Cleanup framebuffers & render pass
+	for (int i = 0; i < swapchainFramebuffers.size(); i++)
+		swapchainFramebuffers[i].Shutdown();
+	swapchainFramebuffers.clear();
+
+	swapchainRenderPass.Shutdown();
 
 	//Cleanup vulkan (reverse order to creation)
-	renderingSwapchain->Shutdown();
-	renderingDevice->Shutdown();
-	renderingInstance->Shutdown();
-
-	//Cleanup memory
-	if (renderingSwapchain)
-		delete renderingSwapchain;
-	if (renderingDevice)
-		delete renderingDevice;
-	if (renderingInstance)
-		delete renderingInstance;
+	renderingSwapchain.Shutdown();
+	renderingDevice.Shutdown();
+	renderingInstance.Shutdown();
 
 	//Done
 	return true;
@@ -54,27 +49,22 @@ bool VulkanGraphicsManager::InitSubsystem(EngineAPI::OS::OSWindow* osWindow,
 	EngineAPI::Debug::DebugLog::PrintInfoMessage(vkInfoMsg);
 #endif
 
-	//Alloc
-	renderingInstance = GE_NEW EngineAPI::Graphics::RenderInstance();
-	renderingDevice = GE_NEW EngineAPI::Graphics::RenderDevice();
-	renderingSwapchain = GE_NEW EngineAPI::Graphics::Swapchain();
-
 	//
 	//Init vulkan API
 	//
-	if (!renderingInstance->InitVKInstance(osWindow, appTitle, appVersionMajor, appVersionMinor, appVersionPatch))
+	if (!renderingInstance.InitVKInstance(osWindow, appTitle, appVersionMajor, appVersionMinor, appVersionPatch))
 		return false;
-	if (!renderingDevice->InitVKPhysicalDevice(osWindow, renderingInstance))
+	if (!renderingDevice.InitVKPhysicalDevice(osWindow, &renderingInstance))
 		return false;
-	if (!renderingSwapchain->InitVKLogicalSurface(osWindow, renderingInstance))
+	if (!renderingSwapchain.InitVKLogicalSurface(osWindow, &renderingInstance))
 		return false;
-	if (!renderingDevice->InitVKLogicalDeviceAndQueues(osWindow, renderingInstance, renderingSwapchain->GetVKLogicalSurfaceKHR()))
+	if (!renderingDevice.InitVKLogicalDeviceAndQueues(osWindow, &renderingInstance, renderingSwapchain.GetVKLogicalSurfaceKHR()))
 		return false;
-	if (!renderingDevice->InitVKMemoryAllocator(osWindow, renderingInstance))
+	if (!renderingDevice.InitVKMemoryAllocator(osWindow, &renderingInstance))
 		return false;
-	if (!renderingDevice->InitVKCommandBufferPools(osWindow, renderingInstance))
+	if (!renderingDevice.InitVKCommandBufferPools(osWindow, &renderingInstance))
 		return false;
-	if (!renderingSwapchain->InitVKSwapchain(osWindow, renderingInstance, renderingDevice))
+	if (!renderingSwapchain.InitVKSwapchain(osWindow, &renderingInstance, &renderingDevice))
 		return false;
 
 	//Init render pass
@@ -84,8 +74,23 @@ bool VulkanGraphicsManager::InitSubsystem(EngineAPI::OS::OSWindow* osWindow,
 		return false;
 	}
 
+	//Init the framebuffers
+	if (!InitVKSwapchainFramebuffers(screenWidth, screenHeight))
+	{
+		EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanGraphicsManager::InitSubsystem() Error: Could not init the swapchain framebuffers\n");
+		return false;
+	}
+
 	//Done
 	return true;
+}
+
+void VulkanGraphicsManager::OnResize(uint32_t newScreenWidth, uint32_t newScreenHeight)
+{
+	//
+	//TODO: Pass message to things that need to know about the resize event
+	//eg: The swapchain. 
+	//
 }
 
 bool VulkanGraphicsManager::InitVKRenderPass()
@@ -102,7 +107,7 @@ bool VulkanGraphicsManager::InitVKRenderPass()
 
 	//Colour buffer
 	attachments[0].flags = 0;
-	attachments[0].format = renderingSwapchain->GetSwpachainFormat();
+	attachments[0].format = renderingSwapchain.GetSwpachainImageFormat();
 	attachments[0].samples = (VkSampleCountFlagBits)msaaSamples;
 	attachments[0].loadOp = VK_ATTACHMENT_LOAD_OP_CLEAR;
 	attachments[0].storeOp = VK_ATTACHMENT_STORE_OP_STORE;
@@ -113,12 +118,12 @@ bool VulkanGraphicsManager::InitVKRenderPass()
 
 	//Depth buffer. 
 	attachments[1].flags = 0;
-	attachments[1].format = renderingSwapchain->GetDepthTexture()->GetVkImageFormat();
+	attachments[1].format = renderingSwapchain.GetDepthTexture()->GetVkImageFormat();
 	attachments[1].samples = (VkSampleCountFlagBits)msaaSamples;
 	attachments[1].loadOp = VK_ATTACHMENT_LOAD_OP_CLEAR;
 	attachments[1].storeOp = VK_ATTACHMENT_STORE_OP_STORE;
 
-	if (renderingSwapchain->GetDepthTexture()->DoesContainStencilComponent())
+	if (renderingSwapchain.GetDepthTexture()->DoesContainStencilComponent())
 	{
 		attachments[1].stencilLoadOp = VK_ATTACHMENT_LOAD_OP_CLEAR; //VK_ATTACHMENT_LOAD_OP_LOAD;
 		attachments[1].stencilStoreOp = VK_ATTACHMENT_STORE_OP_STORE;
@@ -167,11 +172,50 @@ bool VulkanGraphicsManager::InitVKRenderPass()
 	renderPassCreateInfo.pDependencies = nullptr;
 
 	//Create it
-	VkResult result = vkCreateRenderPass(renderingDevice->GetVKLogicalDevice(), &renderPassCreateInfo, nullptr, &vkRenderPass);
-	if (result != VK_SUCCESS)
+	if (!swapchainRenderPass.InitVKRenderPass(&renderingDevice, &renderPassCreateInfo))
 	{
-		EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanGraphicsManager::InitVKRenderPass() Error: vkCreateRenderPass() failed\n");
+		EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanGraphicsManager::InitVKRenderPass() Error: Could not create the render pass\n");
 		return false;
+	}
+
+	//Done
+	return true;
+}
+
+bool VulkanGraphicsManager::InitVKSwapchainFramebuffers(unsigned screenWidth, unsigned screenHeight)
+{
+	//One framebuffer per swapchain colour buffer
+	swapchainFramebuffers.resize(renderingSwapchain.GetSwapchainColourBufferCount());
+
+	//Colour + depth (Depth buffer is shared between both colour buffers -> The front and
+	//back buffer)
+	VkImageView attachments[2];
+	attachments[1] = renderingSwapchain.GetDepthTexture()->GetVKDepthStencilImageView();
+
+	//Init each framebuffer
+	for (int i = 0; i < swapchainFramebuffers.size(); i++)
+	{
+		//Colour buffer
+		attachments[0] = renderingSwapchain.GetVKImageViewForColourBuffer(i);
+
+		//Description
+		VkFramebufferCreateInfo framebufferCreateInfo = {};
+		framebufferCreateInfo.sType = VK_STRUCTURE_TYPE_FRAMEBUFFER_CREATE_INFO;
+		framebufferCreateInfo.pNext = NULL;
+		framebufferCreateInfo.renderPass = swapchainRenderPass.GetRenderPassHandle();
+		framebufferCreateInfo.attachmentCount = 2; //Colour + depth
+		framebufferCreateInfo.pAttachments = attachments;
+		framebufferCreateInfo.width = screenWidth;
+		framebufferCreateInfo.height = screenHeight;
+		framebufferCreateInfo.layers = 1;
+
+		//Init
+		if (!swapchainFramebuffers[i].InitVKFramebuffer(&renderingDevice, &framebufferCreateInfo))
+		{
+			//Error
+			EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanGraphicsManager::InitVKSwapchainFramebuffers() Error: Could not init framebuffer\n");
+			return false;
+		}
 	}
 
 	//Done

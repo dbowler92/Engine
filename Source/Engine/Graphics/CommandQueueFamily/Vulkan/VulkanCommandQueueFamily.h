@@ -62,8 +62,8 @@ namespace EngineAPI
 				VkQueueFlags GetVKCommandQueueSupportFlags() { return vkQueueFamilySupportFlags; };
 
 				//Command buffer pools
-				std::vector<CommandBufferPool*>& GetCommandBufferPoolsArray() { return commandBufferPoolsArray; };
-				CommandBufferPool* GetCommandBufferPool(uint32_t index = 0) { return commandBufferPoolsArray[index]; };
+				std::vector<CommandBufferPool>& GetCommandBufferPoolsArray() { return commandBufferPoolsArray; };
+				CommandBufferPool& GetCommandBufferPool(uint32_t index = 0) { return commandBufferPoolsArray[index]; };
 				uint32_t GetCommandBufferPoolsCount() { return commandBufferPoolsArray.size(); };
 
 			public:
@@ -94,7 +94,7 @@ namespace EngineAPI
 				uint32_t commandQueuesCount = 0;
 
 				//Command buffer pools for this queue family. 
-				std::vector<CommandBufferPool*> commandBufferPoolsArray;
+				std::vector<CommandBufferPool> commandBufferPoolsArray;
 			};
 		};
 	};

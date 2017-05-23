@@ -111,11 +111,7 @@ void VulkanSwapchain::Shutdown()
 	delete[] presentationModesArray;
 
 	//Destroy depth texture
-	if (depthTexture)
-	{
-		depthTexture->Shutdown();
-		delete depthTexture;
-	}
+	depthTexture.Shutdown();
 
 	//Delete image views - we own these not the WSI extention (unlike the underlying image)
 	for (int i = 0; i < vkSwapchainColourImagesCount; i++)
@@ -540,11 +536,8 @@ bool VulkanSwapchain::CreateVKSwapchainColourImageViews()
 
 bool VulkanSwapchain::CreateDepthBuffer(EngineAPI::Graphics::RenderDevice* renderingDevice)
 {
-	//Alloc depth texture
-	depthTexture = GE_NEW EngineAPI::Rendering::DepthTexture();
-
 	//Debug name
-	depthTexture->SetResourceDebugName("Swapchain Depth Texture");
+	depthTexture.SetResourceDebugName("Swapchain Depth Texture");
 
 	//Size - same as colour buffers. 
 	ESize2D depthTextureDimentions;
@@ -563,7 +556,7 @@ bool VulkanSwapchain::CreateDepthBuffer(EngineAPI::Graphics::RenderDevice* rende
 #else
 	uint32_t msaaSamples = 1;
 #endif
-	if (!depthTexture->InitVKDepthTexture(renderingDevice, GRAPHICS_CONFIG_DEPTH_TEXTURE_FORMAT, depthTextureDimentions, usageFlag, msaaSamples))
+	if (!depthTexture.InitVKDepthTexture(renderingDevice, GRAPHICS_CONFIG_DEPTH_TEXTURE_FORMAT, depthTextureDimentions, usageFlag, msaaSamples))
 	{
 		EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanSwapchain::CreateDepthBuffer() - Error initing depth texture\n");
 		return false;
@@ -571,17 +564,17 @@ bool VulkanSwapchain::CreateDepthBuffer(EngineAPI::Graphics::RenderDevice* rende
 
 	//TODO: Use a custom store for this resource???
 	EngineAPI::Graphics::DeviceMemoryStore* swapchainDepthTextureStore = nullptr;
-	VkDeviceSize storeSize = depthTexture->GetResourceVKMemoryRequirments().size;
+	VkDeviceSize storeSize = depthTexture.GetResourceVKMemoryRequirments().size;
 
 	//Alloc depth texture
-	if (!depthTexture->AllocAndBindVKDepthTexture(renderingDevice, swapchainDepthTextureStore))
+	if (!depthTexture.AllocAndBindVKDepthTexture(renderingDevice, swapchainDepthTextureStore))
 	{
 		EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanSwapchain::CreateDepthBuffer() - Error allocating depth texture\n");
 		return false;
 	}
 
 	//Init layout and views
-	if (!depthTexture->InitVKDepthTextureLayoutAndViews(renderingDevice))
+	if (!depthTexture.InitVKDepthTextureLayoutAndViews(renderingDevice))
 	{
 		EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanSwapchain::CreateDepthBuffer() - Error creating layout and views\n");
 		return false;

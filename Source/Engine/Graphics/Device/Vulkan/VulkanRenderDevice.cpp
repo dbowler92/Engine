@@ -121,13 +121,11 @@ bool VulkanRenderDevice::InitVKLogicalDeviceAndQueues(EngineAPI::OS::OSWindow* o
 	//Graphics queue creation - returns the struct needed when creating the 
 	//logical device. Note: Until we need a queue with support
 	//for compute, we don't need to change VkDeviceQueueCreateInfo::pNext!
-	graphicsQueueFamily = GE_NEW CommandQueueFamily();
-
 	VkQueueFlags queueFlag = vkQueueFamiliesArray[graphicsQueueFamilyIdx].queueFlags;
 
 	VkDeviceQueueCreateInfo graphicsQueueCreateInfo = {};
 	float queuePriorities[1] = { 0.0 };
-	graphicsQueueFamily->InitVKQueueFamily(&vkLogicalDevice,
+	graphicsQueueFamily.InitVKQueueFamily(&vkLogicalDevice,
 		graphicsQueueFamilyIdx, queueFlag,
 		ENGINE_CONFIG_VULKAN_API_GRAPHICS_QUEUE_COUNT, queuePriorities,
 		&graphicsQueueCreateInfo);
@@ -162,7 +160,7 @@ bool VulkanRenderDevice::InitVKLogicalDeviceAndQueues(EngineAPI::OS::OSWindow* o
 	}
 
 	//Cache queue handle object(s) once logical device has been created
-	if (!graphicsQueueFamily->InitVKQueues(&vkLogicalDevice))
+	if (!graphicsQueueFamily.InitVKQueues(&vkLogicalDevice))
 		return false;
 
 	//Done
@@ -190,8 +188,7 @@ bool VulkanRenderDevice::InitVKMemoryAllocator(EngineAPI::OS::OSWindow* osWindow
 	VkDeviceSize maxVRAM = vkDeviceMemoryProperties.memoryHeaps[gpuHeapIdx].size;
 
 	//Allocate the memory allocator/manager
-	deviceMemoryAllocator = GE_NEW DeviceMemoryAllocator();
-	if (!deviceMemoryAllocator->InitVKMemoryAllocator())
+	if (!deviceMemoryAllocator.InitVKMemoryAllocator())
 		return false;
 
 	//Done
@@ -204,7 +201,7 @@ bool VulkanRenderDevice::InitVKCommandBufferPools(EngineAPI::OS::OSWindow* osWin
 	//Create command pools for the graphics queue family
 	for (int i = 0; i < ENGINE_CONFIG_VULKAN_API_GRAPHICS_COMMAND_BUFFER_POOLS_COUNT; i++)
 	{
-		if (!graphicsQueueFamily->CreateVKCommandBufferPool(&vkLogicalDevice,
+		if (!graphicsQueueFamily.CreateVKCommandBufferPool(&vkLogicalDevice,
 			ENGINE_CONFIG_VULKAN_API_GRAPHICS_COMMAND_BUFFER_POOLS_ALLOW_BUFFER_RESETS,
 			ENGINE_CONFIG_VULKAN_API_GRAPHICS_COMMAND_BUFFER_POOLS_IS_TRANSIENT))
 		{
@@ -224,18 +221,10 @@ void VulkanRenderDevice::Shutdown()
 	//will now be - you may want to comment out the Shutdown() function call if you want
 	//to find VK* objects that have not been correctly cleaned up by the application (your application 
 	//*does* cleanup its resources... doesnt it!?). 
-	if (deviceMemoryAllocator)
-	{
-		deviceMemoryAllocator->Shutdown();
-		delete deviceMemoryAllocator;
-	}
+	deviceMemoryAllocator.Shutdown();
 
 	//Queue families that we use.
-	if (graphicsQueueFamily)
-	{
-		graphicsQueueFamily->Shutdown();
-		delete[] graphicsQueueFamily;
-	}
+	graphicsQueueFamily.Shutdown();
 
 	//Queue families info
 	if (vkQueueFamiliesArray)

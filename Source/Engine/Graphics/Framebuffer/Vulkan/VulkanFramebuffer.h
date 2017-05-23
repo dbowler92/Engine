@@ -12,6 +12,9 @@
 //Debug
 #include "../../../Debug/Log/DebugLog.h"
 
+//Device
+#include "../../Device/RenderDevice.h"
+
 //Vulkan static functions
 #include "../../../Statics/Vulkan/VulkanStatics.h"
 
@@ -32,6 +35,18 @@ namespace EngineAPI
 
 				//Cleansup
 				void Shutdown();
+
+			public:
+				//Inits the framebuffer object
+				bool InitVKFramebuffer(EngineAPI::Graphics::RenderDevice* renderingDevice,
+					VkFramebufferCreateInfo* framebufferCreateInfo);
+
+			protected:
+				//Cached device that owns the framebuffer
+				VkDevice cachedVkDevice = VK_NULL_HANDLE;
+
+				//Framebuffer handle
+				VkFramebuffer vkFramebufferHandle = VK_NULL_HANDLE;
 			};
 		};
 	};

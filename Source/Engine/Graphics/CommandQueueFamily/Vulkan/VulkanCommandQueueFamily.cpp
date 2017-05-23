@@ -6,10 +6,8 @@ void VulkanCommandQueueFamily::Shutdown()
 {
 	//Cleanup command pools
 	for (int i = 0; i < commandBufferPoolsArray.size(); i++)
-	{
-		commandBufferPoolsArray[i]->Shutdown();
-		delete commandBufferPoolsArray[i];
-	}
+		commandBufferPoolsArray[i].Shutdown();
+
 	commandBufferPoolsArray.clear();
 
 	if (queuesPrioritiesArray)
@@ -73,8 +71,8 @@ bool VulkanCommandQueueFamily::CreateVKCommandBufferPool(VkDevice* logicalDevice
 	bool doAllowManualBufferResets, bool isTransientBufferPool)
 {
 	//Alloc command pools and init
-	EngineAPI::Graphics::CommandBufferPool* newPool = GE_NEW EngineAPI::Graphics::CommandBufferPool();
-	if (!newPool->InitVKCommandBufferPool(logicalDevice, vkQueueFamilyIndex,
+	EngineAPI::Graphics::CommandBufferPool newPool;
+	if (!newPool.InitVKCommandBufferPool(logicalDevice, vkQueueFamilyIndex,
 		doAllowManualBufferResets, isTransientBufferPool))
 	{
 		//Failed

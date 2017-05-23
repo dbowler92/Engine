@@ -132,8 +132,8 @@ bool VulkanDepthTexture::InitVKDepthTextureLayout(EngineAPI::Graphics::RenderDev
 {
 	//Get a command buffer from the graphics command buffer pool (we will submit the command buffer
 	//to the graphics queue later)
-	EngineAPI::Graphics::CommandBufferPool* cmdPool = renderingDevice->GetGraphicsCommandQueueFamily()->GetCommandBufferPool(0);
-	if (!cmdPool->GetVKCommandBufferFromPool(true, &vkDepthTextureImageLayoutCmdBuffer))
+	EngineAPI::Graphics::CommandBufferPool& cmdPool = renderingDevice->GetGraphicsCommandQueueFamily()->GetCommandBufferPool(0);
+	if (!cmdPool.GetVKCommandBufferFromPool(true, &vkDepthTextureImageLayoutCmdBuffer))
 	{
 		//Error
 		EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanDepthTexture::InitVKDepthTextureLayout() - Could not get command buffer from pool\n");

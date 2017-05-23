@@ -12,6 +12,9 @@
 //Debug
 #include "../../../Debug/Log/DebugLog.h"
 
+//Device
+#include "../../Device/RenderDevice.h"
+
 //Vulkan static functions
 #include "../../../Statics/Vulkan/VulkanStatics.h"
 
@@ -32,6 +35,22 @@ namespace EngineAPI
 
 				//Cleansup
 				void Shutdown();
+
+			public:
+				//Inits the render pass object
+				bool InitVKRenderPass(EngineAPI::Graphics::RenderDevice* renderingDevice, 
+					VkRenderPassCreateInfo* renderPassCreateInfo);
+
+			public:
+				//Getters
+				VkRenderPass GetRenderPassHandle() { return vkRenderPassHandle; };
+			
+			protected:
+				//Device used to create the render pass
+				VkDevice cachedVkDevice = VK_NULL_HANDLE;
+
+				//Render pass object
+				VkRenderPass vkRenderPassHandle = VK_NULL_HANDLE;
 			};
 		};
 	};

@@ -61,7 +61,7 @@ LRESULT Win32Application::WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lPa
 			appPaused = false;
 			minimized = false;
 			maximized = true;
-			OnResize();
+			OnResize(LOWORD(lParam), HIWORD(lParam));
 		}
 		else if (wParam == SIZE_RESTORED)
 		{
@@ -71,7 +71,7 @@ LRESULT Win32Application::WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lPa
 			{
 				appPaused = false;
 				minimized = false;
-				OnResize();
+				OnResize(LOWORD(lParam), HIWORD(lParam));
 			}
 
 			// Restoring from maximized state?
@@ -79,7 +79,7 @@ LRESULT Win32Application::WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lPa
 			{
 				appPaused = false;
 				maximized = false;
-				OnResize();
+				OnResize(LOWORD(lParam), HIWORD(lParam));
 			}
 			else if (resizing)
 			{
@@ -94,7 +94,7 @@ LRESULT Win32Application::WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lPa
 			}
 			else // API call such as SetWindowPos or mSwapChain->SetFullscreenState.
 			{
-				OnResize();
+				OnResize(LOWORD(lParam), HIWORD(lParam));
 			}
 		}
 		return 0;
@@ -112,7 +112,7 @@ LRESULT Win32Application::WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lPa
 		appPaused = false;
 		resizing = false;
 		mainGameLoopTimer.Start();
-		OnResize();
+		//OnResize(LOWORD(lParam), HIWORD(lParam));
 		return 0;
 
 		// WM_DESTROY is sent when the window is being destroyed.
@@ -267,9 +267,10 @@ bool Win32Application::InitEngineSubsystems()
 	return true;
 }
 
-void Win32Application::OnResize()
+void Win32Application::OnResize(uint32_t newWidth, uint32_t newHeight)
 {
 	//TODO: Resize render targets, etc
+	graphicsSubsystem->OnResize(newWidth, newHeight);
 }
 
 void Win32Application::EnterGameLoop()

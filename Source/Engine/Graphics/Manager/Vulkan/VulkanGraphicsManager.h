@@ -25,6 +25,10 @@
 #include "../../Device/RenderDevice.h"
 #include "../../Swapchain/Swapchain.h"
 
+//Manages a render pass and framebuffer
+#include "../../RenderPass/RenderPass.h"
+#include "../../Framebuffer/Framebuffer.h"
+
 //Vector
 #include <vector>
 
@@ -52,11 +56,14 @@ namespace EngineAPI
 				bool ShutdownSubsystem();
 
 				//Returns the instance, device and swapchains (pointer)
-				RenderInstance* GetRenderingInstance() { return renderingInstance; };
-				RenderDevice* GetRenderingDevice() { return renderingDevice; };
-				Swapchain* GetRenderingSwapchain() { return renderingSwapchain; };
+				RenderInstance* GetRenderingInstance() { return &renderingInstance; };
+				RenderDevice* GetRenderingDevice() { return &renderingDevice; };
+				Swapchain* GetRenderingSwapchain() { return &renderingSwapchain; };
 
 			public:
+				//Called when the window is resized
+				void OnResize(uint32_t newScreenWidth, uint32_t newScreenHeight);
+
 				//Called when we start rendering
 				void BeginFrame();
 
@@ -65,17 +72,24 @@ namespace EngineAPI
 
 			protected:
 				//Instance, device and swapchain handlers
-				RenderInstance* renderingInstance = nullptr;
-				RenderDevice* renderingDevice = nullptr;
-				Swapchain* renderingSwapchain = nullptr;
+				RenderInstance renderingInstance;
+				RenderDevice renderingDevice;
+				Swapchain renderingSwapchain;
 
 			protected:
 				//Render pass
-				VkRenderPass vkRenderPass = VK_NULL_HANDLE;
+				RenderPass swapchainRenderPass;
+
+				//Framebuffers - one for each swapchain colour buffer. Depenedent on 
+				//swapchainRenderPass.
+				std::vector<Framebuffer> swapchainFramebuffers;
 
 			private:
 				//Inits the render pass for this engine
 				bool InitVKRenderPass();
+
+				//Inits the swapchain frame buffers
+				bool InitVKSwapchainFramebuffers(unsigned screenWidth, unsigned screenHeight);
 			};
 		};
 	};

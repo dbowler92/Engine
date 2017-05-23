@@ -58,6 +58,8 @@ namespace EngineAPI
 				
 			public:
 				//Getters.
+				VkImageView GetVKDepthStencilImageView() { return vkDepthStencilView; };
+
 				bool DoesContainStencilComponent() { return doesContainStencilComponent; };
 
 			protected:

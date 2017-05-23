@@ -74,7 +74,7 @@ namespace EngineAPI
 				bool InitEngineSubsystems();
 
 				//Called when the window is resized
-				void OnResize();
+				void OnResize(uint32_t newWidth, uint32_t newHeight);
 
 			private:
 				//Outputs FPS

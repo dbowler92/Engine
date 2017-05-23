@@ -13,6 +13,10 @@
 //May need the rendering instance to create the device
 #include "../../Instance/RenderInstance.h"
 
+//Manages queue family and allocator
+#include "../../CommandQueueFamily/CommandQueueFamily.h"
+#include "../../DeviceMemoryAllocator/DeviceMemoryAllocator.h"
+
 //Vulkan header
 #include <vulkan\vulkan.h>
 
@@ -67,12 +71,12 @@ namespace EngineAPI
 				//Returns the managers
 				//
 				//Allocator 
-				EngineAPI::Graphics::DeviceMemoryAllocator* GetDeviceMemoryAllocator() { return deviceMemoryAllocator; };
+				EngineAPI::Graphics::DeviceMemoryAllocator* GetDeviceMemoryAllocator() { return &deviceMemoryAllocator; };
 
 				//Command queue families
 				//
 				//For graphics work
-				EngineAPI::Graphics::CommandQueueFamily* GetGraphicsCommandQueueFamily() { return graphicsQueueFamily; };
+				EngineAPI::Graphics::CommandQueueFamily* GetGraphicsCommandQueueFamily() { return &graphicsQueueFamily; };
 
 			private:
 				//Vulkan data / handles
@@ -83,16 +87,16 @@ namespace EngineAPI
 				VkPhysicalDeviceProperties vkDeviceProperties;			   //General info
 				VkPhysicalDeviceMemoryProperties vkDeviceMemoryProperties; //Device memory info
 
-				 //*ALL* Device families queues
+				 //*ALL* Device families queues supported by this physical device
 				VkQueueFamilyProperties* vkQueueFamiliesArray = nullptr;
 				uint32_t vkQueueFamiliesCount; //Number of queue families exposed by our selected physical device
 
 			private:
 				//Device memory manager / allocator
-				EngineAPI::Graphics::DeviceMemoryAllocator* deviceMemoryAllocator = nullptr;
+				EngineAPI::Graphics::DeviceMemoryAllocator deviceMemoryAllocator;
 
 				//Graphics queue family and queues - general rendering
-				EngineAPI::Graphics::CommandQueueFamily* graphicsQueueFamily = nullptr;
+				EngineAPI::Graphics::CommandQueueFamily graphicsQueueFamily;
 								
 			private:
 				//Function pointers to extensions (WSI in this case - helps us create swapchains etc).
