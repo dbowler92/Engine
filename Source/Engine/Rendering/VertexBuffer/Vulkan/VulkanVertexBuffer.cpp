@@ -99,3 +99,11 @@ bool VulkanVertexBuffer::AllocAndBindVKVertexBuffer(EngineAPI::Graphics::RenderD
 	//Done
 	return true;
 }
+
+bool VulkanVertexBuffer::InitVKBufferViews(EngineAPI::Graphics::RenderDevice* renderingDevice)
+{
+	//TODO
+
+	//Done
+	return true;
+}

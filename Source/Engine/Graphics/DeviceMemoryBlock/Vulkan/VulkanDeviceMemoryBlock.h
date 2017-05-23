@@ -28,7 +28,16 @@ namespace EngineAPI
 		namespace Platform
 		{
 			class VulkanDeviceMemoryStore;
-		}
+		};
+	};
+
+	namespace Rendering
+	{
+		class Resource;
+		namespace Platform
+		{
+			class VulkanResource;
+		};
 	};
 };
 
@@ -42,6 +51,9 @@ namespace EngineAPI
 			{
 				//Memory store can access + update private vars
 				friend EngineAPI::Graphics::Platform::VulkanDeviceMemoryStore;
+
+				//Resource will update the isMapped flag
+				friend EngineAPI::Rendering::Platform::VulkanResource;
 
 			public:
 				VulkanDeviceMemoryBlock() {};

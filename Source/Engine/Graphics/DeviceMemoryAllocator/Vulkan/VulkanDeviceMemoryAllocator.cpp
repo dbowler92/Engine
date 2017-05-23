@@ -49,7 +49,7 @@ void VulkanDeviceMemoryAllocator::Debug_LongDump(std::string filename)
 			
 			out << "[Store: " << i << "]" << " " << (void*)&deviceMemoryStoresArray[i] << "\n";
 
-			out << "Is Active Store: " << store.IsPublicMemoryStore() << "\n";
+			out << "Is Active Store: " << store.IsMemoryStoreActive() << "\n";
 			out << "Is Public Store: " << store.IsPublicMemoryStore() << "\n";
 
 			out << "Store Size: " << store.GetMemoryStoreSizeBytes() << "\n";

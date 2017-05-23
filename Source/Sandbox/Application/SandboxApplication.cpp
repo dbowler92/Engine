@@ -1,9 +1,12 @@
 #include "SandboxApplication.h"
 
+#include "../App Config/AppConfig.h"
+
 //Memory allocator
 #include "../../Engine/Graphics/DeviceMemoryAllocator/DeviceMemoryAllocator.h"
 
-#include "../App Config/AppConfig.h"
+//Statics 
+#include "../../Engine/Statics/Vulkan/VulkanStatics.h"
 
 SandboxApplication::SandboxApplication()
 {}
@@ -60,14 +63,30 @@ bool SandboxApplication::InitApplication()
 	vbLayout.VertexStreams = streams;
 
 	bool isDynamicVB = true; //TEMP: For VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT memory rather than GPU only. 
-	EngineAPI::Graphics::DeviceMemoryStore* customStoreForVB = nullptr;
-
+	
+	//Init the VB
 	vb.SetResourceDebugName("Test Vertex Buffer");
 	assert(vb.InitVKVertexBuffer(device, sizeof(triangleData), isDynamicVB));
+
+	VkPhysicalDeviceMemoryProperties p = device->GetVKPhysicalDeviceMemoryProperties();
+
+	//TEMP: Custom store for this resource.
+	uint32_t memoryIndex = 0;
+	assert(EngineAPI::Statics::VulkanStatics::FindMemoryTypeForProperties(vb.GetResourceVKMemoryRequirments().memoryTypeBits, 
+		VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT,
+		&device->GetVKPhysicalDeviceMemoryProperties(), &memoryIndex));
+
+	EngineAPI::Graphics::DeviceMemoryStore* customStoreForVB = nullptr;
+	customStoreForVB = device->GetDeviceMemoryAllocator()->CreateNewMemoryStore(device,
+			vb.GetResourceVKMemoryRequirments().size,
+			memoryIndex,
+			false);
+	
+	//Alloc VB
 	assert(vb.AllocAndBindVKVertexBuffer(device, &vbLayout, &triangleData[0], customStoreForVB));
 
 	//TEMP
-	device->GetDeviceMemoryAllocator()->Debug_LongDump("Dumps/PostVB_LabPC_DynamicVB");
+	device->GetDeviceMemoryAllocator()->Debug_LongDump("Dumps/PostVB_LabPC_DynamicVB_OwnStore");
 
 	return true;
 }

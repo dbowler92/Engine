@@ -71,6 +71,10 @@ namespace EngineAPI
 					VertexBufferLayout* vertexBufferLayout, void* vertexBufferData, 
 					EngineAPI::Graphics::DeviceMemoryStore* optionalDeviceStore = nullptr);
 
+				//3) (Optional) Creates the buffer views - if the buffer is to be utilised by 
+				//shaders, we may need to create some buffer views
+				bool InitVKBufferViews(EngineAPI::Graphics::RenderDevice* renderingDevice);
+
 			protected:
 				//Vulkan info
 				VkVertexInputBindingDescription bufferBindingInfo; //Per buffer info (Rate at which this buffers info will be injected for vertex input)

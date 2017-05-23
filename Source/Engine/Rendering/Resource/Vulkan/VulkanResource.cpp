@@ -26,6 +26,9 @@ void* VulkanResource::MapResource()
 		return nullptr;
 	}
 
+	//Data is mapped
+	resourceMemoryBlock->isMapped = true;
+
 	//Done
 	return mappedData;
 }
@@ -38,4 +41,7 @@ void VulkanResource::UnmapResource()
 	VkDevice device = resourceMemoryBlock->GetParentStore()->GetOwningVKLogicalDevice();
 	VkDeviceMemory memory = resourceMemoryBlock->GetParentStore()->GetVKDeviceMemoryHandle();
 	vkUnmapMemory(device, memory);
+
+	//Block is now unmapped
+	resourceMemoryBlock->isMapped = false;
 }

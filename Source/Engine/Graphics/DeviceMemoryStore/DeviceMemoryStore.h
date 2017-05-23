@@ -20,7 +20,7 @@
 
 //API being used?
 #ifdef ENGINE_CONFIG_GRAPHICS_API_VULKAN
-#include "Vulkan\VulkanDeviceMemoryStore.h"
+#include "Vulkan/VulkanDeviceMemoryStore.h"
 #endif
 
 namespace EngineAPI
