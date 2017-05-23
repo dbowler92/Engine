@@ -27,6 +27,9 @@ Win32Application::Win32Application()
 
 LRESULT Win32Application::WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 {
+	unsigned newWidth = LOWORD(lParam);
+	unsigned newHeight = HIWORD(lParam);
+
 	switch (msg)
 	{
 		// WM_ACTIVATE is sent when the window is activated or deactivated.  
@@ -47,9 +50,6 @@ LRESULT Win32Application::WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lPa
 
 		// WM_SIZE is sent when the user resizes the window.  
 	case WM_SIZE:
-		// Save the new client area dimensions.
-		osWindow.UpdateWindowWidth(LOWORD(lParam));
-		osWindow.UpdateWindowHeight(HIWORD(lParam));
 		if (wParam == SIZE_MINIMIZED)
 		{
 			appPaused = true;
@@ -61,7 +61,7 @@ LRESULT Win32Application::WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lPa
 			appPaused = false;
 			minimized = false;
 			maximized = true;
-			OnResize(LOWORD(lParam), HIWORD(lParam));
+			//OnResize(newWidth, newHeight);
 		}
 		else if (wParam == SIZE_RESTORED)
 		{
@@ -71,7 +71,7 @@ LRESULT Win32Application::WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lPa
 			{
 				appPaused = false;
 				minimized = false;
-				OnResize(LOWORD(lParam), HIWORD(lParam));
+				//OnResize(newWidth, newHeight);
 			}
 
 			// Restoring from maximized state?
@@ -79,7 +79,7 @@ LRESULT Win32Application::WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lPa
 			{
 				appPaused = false;
 				maximized = false;
-				OnResize(LOWORD(lParam), HIWORD(lParam));
+				//OnResize(newWidth, newHeight);
 			}
 			else if (resizing)
 			{
@@ -94,7 +94,7 @@ LRESULT Win32Application::WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lPa
 			}
 			else // API call such as SetWindowPos or mSwapChain->SetFullscreenState.
 			{
-				OnResize(LOWORD(lParam), HIWORD(lParam));
+				//OnResize(newWidth, newHeight);
 			}
 		}
 		return 0;
@@ -112,7 +112,7 @@ LRESULT Win32Application::WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lPa
 		appPaused = false;
 		resizing = false;
 		mainGameLoopTimer.Start();
-		//OnResize(LOWORD(lParam), HIWORD(lParam));
+		OnResize(newWidth, newHeight);
 		return 0;
 
 		// WM_DESTROY is sent when the window is being destroyed.
@@ -137,9 +137,6 @@ LRESULT Win32Application::WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lPa
 		//out in release build. 
 		if (wParam == VK_ESCAPE)
 		{
-			//TODO: D3D doesnt like to exit in FS mode. Thus, we need to
-			//exit FS mode before quiting. 
-
 			//Post the quit message. 
 			PostQuitMessage(0);
 			return 0;
@@ -267,10 +264,24 @@ bool Win32Application::InitEngineSubsystems()
 	return true;
 }
 
-void Win32Application::OnResize(uint32_t newWidth, uint32_t newHeight)
+void Win32Application::OnResize(unsigned newWidth, unsigned newHeight)
 {
+	EngineAPI::Debug::DebugLog::PrintInfoMessage("OnResize()\n");
+
+	//Is the current window size the same as the new one? If so, skip resizing 
+	//since its not needed
+	if (osWindow.GetWindowWidth() == newWidth && osWindow.GetWindowHeight() == newHeight)
+	{
+		EngineAPI::Debug::DebugLog::PrintInfoMessage("Fail\n");
+		return;
+	}
+
+	//Update OS window size
+	osWindow.UpdateWindowWidth((unsigned)newWidth);
+	osWindow.UpdateWindowHeight((unsigned)newHeight);
+
 	//TODO: Resize render targets, etc
-	graphicsSubsystem->OnResize(newWidth, newHeight);
+	graphicsSubsystem->OnResize((unsigned)newWidth, (unsigned)newHeight);
 }
 
 void Win32Application::EnterGameLoop()
