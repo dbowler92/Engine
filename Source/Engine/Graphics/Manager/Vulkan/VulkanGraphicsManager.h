@@ -56,11 +56,26 @@ namespace EngineAPI
 				RenderDevice* GetRenderingDevice() { return renderingDevice; };
 				Swapchain* GetRenderingSwapchain() { return renderingSwapchain; };
 
+			public:
+				//Called when we start rendering
+				void BeginFrame();
+
+				//Called when we have finished rendering for this frame. 
+				void EndFrame();
+
 			protected:
 				//Instance, device and swapchain handlers
 				RenderInstance* renderingInstance = nullptr;
 				RenderDevice* renderingDevice = nullptr;
 				Swapchain* renderingSwapchain = nullptr;
+
+			protected:
+				//Render pass
+				VkRenderPass vkRenderPass = VK_NULL_HANDLE;
+
+			private:
+				//Inits the render pass for this engine
+				bool InitVKRenderPass();
 			};
 		};
 	};

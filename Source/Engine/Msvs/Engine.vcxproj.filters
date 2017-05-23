@@ -151,6 +151,18 @@
     <Filter Include="Src\Rendering\VertexBuffer\Vulkan">
       <UniqueIdentifier>{a39eaa15-8827-4307-b0db-0b0eb026b5b6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Src\Graphics\RenderPass">
+      <UniqueIdentifier>{fff8b7e4-b395-437b-9256-7a99091ed895}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Graphics\Framebuffer">
+      <UniqueIdentifier>{cb536b60-b52e-49e2-b72a-e7a8e22861b6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Graphics\RenderPass\Vulkan">
+      <UniqueIdentifier>{d760af0a-3b3a-419a-9f6b-21e2fd905af0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Graphics\Framebuffer\Vulkan">
+      <UniqueIdentifier>{8477e42a-7840-4eb7-a04a-f2dab05d7f61}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Main\EngineMain.cpp">
@@ -221,6 +233,12 @@
     </ClCompile>
     <ClCompile Include="..\Rendering\VertexBuffer\Vulkan\VulkanVertexBuffer.cpp">
       <Filter>Src\Rendering\VertexBuffer\Vulkan</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Graphics\RenderPass\Vulkan\VulkanRenderPass.cpp">
+      <Filter>Src\Graphics\RenderPass\Vulkan</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Graphics\Framebuffer\Vulkan\VulkanFramebuffer.cpp">
+      <Filter>Src\Graphics\Framebuffer\Vulkan</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -361,6 +379,18 @@
     </ClInclude>
     <ClInclude Include="..\Includes\RenderingIncludes.h">
       <Filter>Includes</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Graphics\RenderPass\Vulkan\VulkanRenderPass.h">
+      <Filter>Src\Graphics\RenderPass\Vulkan</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Graphics\RenderPass\RenderPass.h">
+      <Filter>Src\Graphics\RenderPass</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Graphics\Framebuffer\Vulkan\VulkanFramebuffer.h">
+      <Filter>Src\Graphics\Framebuffer\Vulkan</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Graphics\Framebuffer\Framebuffer.h">
+      <Filter>Src\Graphics\Framebuffer</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

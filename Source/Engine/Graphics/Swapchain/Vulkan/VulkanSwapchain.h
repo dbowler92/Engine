@@ -44,6 +44,13 @@ namespace EngineAPI
 				//Returns the logical surface - needed when creating device queues
 				VkSurfaceKHR GetVKLogicalSurfaceKHR() { return vkSurfaceHandle; };
 
+				//Swpachain info
+				VkFormat GetSwpachainFormat() { return vkSwapchainSurfaceFormat; };
+
+
+				//Returns the depth buffer
+				EngineAPI::Rendering::DepthTexture* GetDepthTexture() { return depthTexture; };
+
 			private:
 				//WSI created logical surface
 				VkSurfaceKHR vkSurfaceHandle = VK_NULL_HANDLE;

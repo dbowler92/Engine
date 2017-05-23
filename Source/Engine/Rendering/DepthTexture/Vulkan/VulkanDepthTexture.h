@@ -47,7 +47,7 @@ namespace EngineAPI
 				//1) Inits the VkTexture
 				bool InitVKDepthTexture(EngineAPI::Graphics::RenderDevice* renderingDevice,
 					DepthTextureFormat depthTextureFormat, ESize2D depthTextureDimentions,
-					DepthTextureUsageFlag depthTextureUsageFlags);
+					DepthTextureUsageFlag depthTextureUsageFlags, uint32_t samples);
 
 				//2) Once the depth texture has been inited, we can allocate memory for it
 				bool AllocAndBindVKDepthTexture(EngineAPI::Graphics::RenderDevice* renderingDevice,
@@ -56,6 +56,10 @@ namespace EngineAPI
 				//3) Inits the depth texture views and layout. 
 				bool InitVKDepthTextureLayoutAndViews(EngineAPI::Graphics::RenderDevice* renderingDevice);
 				
+			public:
+				//Getters.
+				bool DoesContainStencilComponent() { return doesContainStencilComponent; };
+
 			protected:
 				//State of the depth texture
 				DepthTextureFormat depthTextureFormat;

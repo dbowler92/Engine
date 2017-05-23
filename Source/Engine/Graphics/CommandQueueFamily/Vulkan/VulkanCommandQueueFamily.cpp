@@ -69,12 +69,13 @@ bool VulkanCommandQueueFamily::InitVKQueues(VkDevice* logicalDevice)
 	return true;
 }
 
-bool VulkanCommandQueueFamily::CreateVKCommandBufferPool(VkDevice* logicalDevice, bool doAllowManualBufferResets, bool isTransient)
+bool VulkanCommandQueueFamily::CreateVKCommandBufferPool(VkDevice* logicalDevice,
+	bool doAllowManualBufferResets, bool isTransientBufferPool)
 {
 	//Alloc command pools and init
 	EngineAPI::Graphics::CommandBufferPool* newPool = GE_NEW EngineAPI::Graphics::CommandBufferPool();
 	if (!newPool->InitVKCommandBufferPool(logicalDevice, vkQueueFamilyIndex,
-		doAllowManualBufferResets, isTransient))
+		doAllowManualBufferResets, isTransientBufferPool))
 	{
 		//Failed
 		EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanCommandQueueFamily::CreateVKCommandBufferPools() Error creating a new command buffer pool\n");

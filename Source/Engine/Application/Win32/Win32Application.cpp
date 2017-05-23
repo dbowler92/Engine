@@ -296,7 +296,10 @@ void Win32Application::EnterGameLoop()
 				//Update and render (this calls the users Application subclasses 
 				//update and render functions). 
 				UpdateScene(mainGameLoopTimer.DeltaTime());
+
+				graphicsSubsystem->BeginFrame();
 				RenderScene();
+				graphicsSubsystem->EndFrame();
 			}
 			else
 				Sleep(100);

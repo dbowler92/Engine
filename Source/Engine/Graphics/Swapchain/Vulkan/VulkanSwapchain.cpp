@@ -558,7 +558,12 @@ bool VulkanSwapchain::CreateDepthBuffer(EngineAPI::Graphics::RenderDevice* rende
 	EngineAPI::Graphics::DeviceMemoryStore* memStoreToUse = nullptr;
 
 	//Init depth texture
-	if (!depthTexture->InitVKDepthTexture(renderingDevice, GRAPHICS_CONFIG_DEPTH_TEXTURE_FORMAT, depthTextureDimentions, usageFlag))
+#if GRAPHICS_CONFIG_ENABLE_MSAA
+	uint32_t msaaSamples = GRAPHICS_CONFIG_MSAA_SAMPLE_COUNT;
+#else
+	uint32_t msaaSamples = 1;
+#endif
+	if (!depthTexture->InitVKDepthTexture(renderingDevice, GRAPHICS_CONFIG_DEPTH_TEXTURE_FORMAT, depthTextureDimentions, usageFlag, msaaSamples))
 	{
 		EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanSwapchain::CreateDepthBuffer() - Error initing depth texture\n");
 		return false;

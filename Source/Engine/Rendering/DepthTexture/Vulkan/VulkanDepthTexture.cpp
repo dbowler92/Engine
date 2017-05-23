@@ -23,7 +23,7 @@ void VulkanDepthTexture::Shutdown()
 
 bool VulkanDepthTexture::InitVKDepthTexture(EngineAPI::Graphics::RenderDevice* renderingDevice,
 	DepthTextureFormat depthTextureFormat, ESize2D depthTextureDimentions,
-	DepthTextureUsageFlag depthTextureUsageFlags)
+	DepthTextureUsageFlag depthTextureUsageFlags, uint32_t samples)
 {
 	//Cache state
 	this->depthTextureFormat = depthTextureFormat;
@@ -81,12 +81,7 @@ bool VulkanDepthTexture::InitVKDepthTexture(EngineAPI::Graphics::RenderDevice* r
 	depthTextureCreateInfo.extent.depth = 1;
 	depthTextureCreateInfo.mipLevels = 1;
 	depthTextureCreateInfo.arrayLayers = 1;
-#if GRAPHICS_CONFIG_ENABLE_MSAA
-	//TODO
-	//depthTextureCreateInfo.samples = VK_SAMEPLE_COUNT_;
-#else
-	depthTextureCreateInfo.samples = VK_SAMPLE_COUNT_1_BIT;
-#endif
+	depthTextureCreateInfo.samples = (VkSampleCountFlagBits)samples;
 	depthTextureCreateInfo.pQueueFamilyIndices = nullptr;
 	depthTextureCreateInfo.queueFamilyIndexCount = 0;
 	depthTextureCreateInfo.sharingMode = VK_SHARING_MODE_EXCLUSIVE;

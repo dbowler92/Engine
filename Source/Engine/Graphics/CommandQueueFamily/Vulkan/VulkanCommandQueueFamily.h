@@ -51,7 +51,7 @@ namespace EngineAPI
 				
 				//Creates a new command buffer pool for this queue family
 				bool CreateVKCommandBufferPool(VkDevice* logicalDevice, 
-					bool doAllowManualBufferResets, bool isTransient);
+					bool doAllowManualBufferResets, bool isTransientBufferPool);
 
 			public:
 				//Returns the queues & number of them
