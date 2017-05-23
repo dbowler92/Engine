@@ -9,8 +9,15 @@
 //Vulkan header
 #include <vulkan\vulkan.h>
 
+//Vector
+#include <vector>
+
 //Manages specific command queues
 #include "../../CommandQueue/CommandQueue.h"
+
+//Manages an array of command buffer pools - they are tied to 
+//queue family indicies.
+#include "../../CommandBufferPool/CommandBufferPool.h"
 
 //Debug
 #include "../../../Debug/Log/DebugLog.h"
@@ -42,6 +49,10 @@ namespace EngineAPI
 				//family. 
 				bool InitVKQueues(VkDevice* logicalDevice);
 				
+				//Creates a new command buffer pool for this queue family
+				bool CreateVKCommandBufferPool(VkDevice* logicalDevice, 
+					bool doAllowManualBufferResets, bool isTransient);
+
 			public:
 				//Returns the queues & number of them
 				CommandQueue* GetCommandQueues() { return commandQueuesArray; };
@@ -49,6 +60,11 @@ namespace EngineAPI
 
 				//Command queue family support flag
 				VkQueueFlags GetVKCommandQueueSupportFlags() { return vkQueueFamilySupportFlags; };
+
+				//Command buffer pools
+				std::vector<CommandBufferPool*>& GetCommandBufferPoolsArray() { return commandBufferPoolsArray; };
+				CommandBufferPool* GetCommandBufferPool(uint32_t index = 0) { return commandBufferPoolsArray[index]; };
+				uint32_t GetCommandBufferPoolsCount() { return commandBufferPoolsArray.size(); };
 
 			public:
 				//Submits VKCommandBuffer(s) to this queue family (and then queue by index) for processing
@@ -73,11 +89,12 @@ namespace EngineAPI
 				VkQueueFlags vkQueueFamilySupportFlags;
 				
 			protected:
-				//Will contain and manage a set of command queues
+				//Set of individual queues
 				CommandQueue* commandQueuesArray = nullptr;
+				uint32_t commandQueuesCount = 0;
 
-				//Info on this queue family
-				unsigned commandQueuesCount = 0;
+				//Command buffer pools for this queue family. 
+				std::vector<CommandBufferPool*> commandBufferPoolsArray;
 			};
 		};
 	};

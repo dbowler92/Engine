@@ -4,6 +4,14 @@ using namespace EngineAPI::Graphics::Platform;
 
 void VulkanCommandQueueFamily::Shutdown()
 {
+	//Cleanup command pools
+	for (int i = 0; i < commandBufferPoolsArray.size(); i++)
+	{
+		commandBufferPoolsArray[i]->Shutdown();
+		delete commandBufferPoolsArray[i];
+	}
+	commandBufferPoolsArray.clear();
+
 	if (queuesPrioritiesArray)
 		delete[] queuesPrioritiesArray;
 
@@ -56,6 +64,25 @@ bool VulkanCommandQueueFamily::InitVKQueues(VkDevice* logicalDevice)
 		if (!commandQueuesArray[i].InitVKQueue(logicalDevice, vkQueueFamilyIndex, i))
 			return false;
 	}
+
+	//Done
+	return true;
+}
+
+bool VulkanCommandQueueFamily::CreateVKCommandBufferPool(VkDevice* logicalDevice, bool doAllowManualBufferResets, bool isTransient)
+{
+	//Alloc command pools and init
+	EngineAPI::Graphics::CommandBufferPool* newPool = GE_NEW EngineAPI::Graphics::CommandBufferPool();
+	if (!newPool->InitVKCommandBufferPool(logicalDevice, vkQueueFamilyIndex,
+		doAllowManualBufferResets, isTransient))
+	{
+		//Failed
+		EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanCommandQueueFamily::CreateVKCommandBufferPools() Error creating a new command buffer pool\n");
+		return false;
+	}
+
+	//Add to vector
+	commandBufferPoolsArray.push_back(newPool);
 
 	//Done
 	return true;

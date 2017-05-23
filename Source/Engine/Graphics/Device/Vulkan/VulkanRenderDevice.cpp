@@ -201,6 +201,19 @@ bool VulkanRenderDevice::InitVKMemoryAllocator(EngineAPI::OS::OSWindow* osWindow
 bool VulkanRenderDevice::InitVKCommandBufferPools(EngineAPI::OS::OSWindow* osWindow,
 	EngineAPI::Graphics::RenderInstance* renderingInstance)
 {
+	//Create command pools for the graphics queue family
+	for (int i = 0; i < ENGINE_CONFIG_VULKAN_API_GRAPHICS_COMMAND_BUFFER_POOLS_COUNT; i++)
+	{
+		if (!graphicsQueueFamily->CreateVKCommandBufferPool(&vkLogicalDevice,
+			ENGINE_CONFIG_VULKAN_API_GRAPHICS_COMMAND_BUFFER_POOLS_ALLOW_BUFFER_RESETS,
+			ENGINE_CONFIG_VULKAN_API_GRAPHICS_COMMAND_BUFFER_POOLS_IS_TRANSIENT))
+		{
+			//Error
+			EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanRenderDevice::InitVKCommandBufferPools() Error: Could not create Command Buffer Pool\n");
+			return false;
+		}
+	}
+
 	//Alloc
 	graphicsCommandBufferPoolsArray = GE_NEW CommandBufferPool[ENGINE_CONFIG_VULKAN_API_GRAPHICS_COMMAND_BUFFER_POOLS_COUNT];
 	if (!graphicsCommandBufferPoolsArray)
