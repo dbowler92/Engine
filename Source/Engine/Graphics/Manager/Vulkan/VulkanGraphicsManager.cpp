@@ -4,15 +4,20 @@
 
 using namespace EngineAPI::Graphics::Platform;
 
+VulkanGraphicsManager::VulkanGraphicsManager()
+{
+	//Default clear colour
+	swpachainClearColour.R = 0.0f;
+	swpachainClearColour.G = 0.0f;
+	swpachainClearColour.B = 0.0f;
+	swpachainClearColour.A = 0.0f;
+}
+
 bool VulkanGraphicsManager::ShutdownSubsystem()
 {
 	EngineAPI::Debug::DebugLog::PrintInfoMessage("VulkanGraphicsManager::ShutdownSubsystem()\n");
 
-	//Cleanup framebuffers & render pass
-	for (int i = 0; i < swapchainFramebuffers.size(); i++)
-		swapchainFramebuffers[i].Shutdown();
-	swapchainFramebuffers.clear();
-
+	//Shutdown render pass
 	swapchainRenderPass.Shutdown();
 
 	//Cleanup vulkan (reverse order to creation)
@@ -75,11 +80,12 @@ bool VulkanGraphicsManager::InitSubsystem(EngineAPI::OS::OSWindow* osWindow,
 	}
 
 	//Init the framebuffers
-	if (!InitVKSwapchainFramebuffers(screenWidth, screenHeight))
-	{
-		EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanGraphicsManager::InitSubsystem() Error: Could not init the swapchain framebuffers\n");
+	if (!renderingSwapchain.InitVKFramebuffers(&renderingDevice, &swapchainRenderPass))
 		return false;
-	}
+
+	//Init command buffers for each swapchain image
+	if (!renderingSwapchain.InitVKSwapchainRenderPassInstanceCommandBuffers(&renderingDevice, &swapchainRenderPass, swpachainClearColour, swapchainDepthClearValue, swapchainStencilClearValue))
+		return false;
 
 	//Done
 	return true;
@@ -91,6 +97,26 @@ void VulkanGraphicsManager::OnResize(uint32_t newScreenWidth, uint32_t newScreen
 	//TODO: Pass message to things that need to know about the resize event
 	//eg: The swapchain. 
 	//
+}
+
+bool VulkanGraphicsManager::SetSwapchainClearValues(UNorm32Colour colourBufferClear, float depthClear, uint32_t stencilClear)
+{
+	//Store new values
+	swpachainClearColour = colourBufferClear;
+	swapchainDepthClearValue = depthClear;
+	swapchainStencilClearValue = stencilClear;
+
+	//TODO: Recreate the swpachain command buffers with new clear
+	//colours
+	if (!renderingSwapchain.InitVKSwapchainRenderPassInstanceCommandBuffers(&renderingDevice, &swapchainRenderPass,
+		swpachainClearColour, swapchainDepthClearValue, swapchainStencilClearValue))
+	{
+		EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanGraphicsManager::SetSwapchainClearValues(): Could not rebuild the swapcahin render pass instance command buffers for new clear values\n");
+		return false;
+	}
+
+	//Done
+	return true;
 }
 
 bool VulkanGraphicsManager::InitVKRenderPass()
@@ -182,52 +208,8 @@ bool VulkanGraphicsManager::InitVKRenderPass()
 	return true;
 }
 
-bool VulkanGraphicsManager::InitVKSwapchainFramebuffers(unsigned screenWidth, unsigned screenHeight)
-{
-	//One framebuffer per swapchain colour buffer
-	swapchainFramebuffers.resize(renderingSwapchain.GetSwapchainColourBufferCount());
-
-	//Colour + depth (Depth buffer is shared between both colour buffers -> The front and
-	//back buffer)
-	VkImageView attachments[2];
-	attachments[1] = renderingSwapchain.GetDepthTexture()->GetVKDepthStencilImageView();
-
-	//Init each framebuffer
-	for (int i = 0; i < swapchainFramebuffers.size(); i++)
-	{
-		//Colour buffer
-		attachments[0] = renderingSwapchain.GetVKImageViewForColourBuffer(i);
-
-		//Description
-		VkFramebufferCreateInfo framebufferCreateInfo = {};
-		framebufferCreateInfo.sType = VK_STRUCTURE_TYPE_FRAMEBUFFER_CREATE_INFO;
-		framebufferCreateInfo.pNext = NULL;
-		framebufferCreateInfo.renderPass = swapchainRenderPass.GetRenderPassHandle();
-		framebufferCreateInfo.attachmentCount = 2; //Colour + depth
-		framebufferCreateInfo.pAttachments = attachments;
-		framebufferCreateInfo.width = screenWidth;
-		framebufferCreateInfo.height = screenHeight;
-		framebufferCreateInfo.layers = 1;
-
-		//Init
-		if (!swapchainFramebuffers[i].InitVKFramebuffer(&renderingDevice, &framebufferCreateInfo))
-		{
-			//Error
-			EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanGraphicsManager::InitVKSwapchainFramebuffers() Error: Could not init framebuffer\n");
-			return false;
-		}
-	}
-
-	//Done
-	return true;
-}
-
 void VulkanGraphicsManager::BeginFrame()
-{
-
-}
+{}
 
 void VulkanGraphicsManager::EndFrame()
-{
-
-}
+{}

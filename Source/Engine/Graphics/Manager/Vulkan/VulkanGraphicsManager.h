@@ -35,6 +35,18 @@
 //Vulkan header. 
 #include <vulkan\vulkan.h>
 
+//Forward declarations
+namespace EngineAPI
+{
+	namespace Core
+	{
+		namespace Platform
+		{
+			class Win32Application;
+		};
+	};
+};
+
 namespace EngineAPI
 {
 	namespace Graphics
@@ -43,8 +55,12 @@ namespace EngineAPI
 		{
 			class VulkanGraphicsManager
 			{
-			public:
-				VulkanGraphicsManager() {};
+				//Only application should be able to create/destroy this
+				//subsystem + pass events. 
+				friend EngineAPI::Core::Platform::Win32Application;
+
+			protected:
+				VulkanGraphicsManager();
 				virtual ~VulkanGraphicsManager() = 0 {};
 
 				//Inits the graphics subsystem / manager (VK)
@@ -55,12 +71,6 @@ namespace EngineAPI
 				//Shutsdown the graphics manager (VK)
 				bool ShutdownSubsystem();
 
-				//Returns the instance, device and swapchains (pointer)
-				RenderInstance* GetRenderingInstance() { return &renderingInstance; };
-				RenderDevice* GetRenderingDevice() { return &renderingDevice; };
-				Swapchain* GetRenderingSwapchain() { return &renderingSwapchain; };
-
-			public:
 				//Called when the window is resized
 				void OnResize(uint32_t newScreenWidth, uint32_t newScreenHeight);
 
@@ -69,6 +79,16 @@ namespace EngineAPI
 
 				//Called when we have finished rendering for this frame. 
 				void EndFrame();
+
+			public:
+				//Returns the instance, device and swapchains (pointer)
+				RenderInstance* GetRenderingInstance() { return &renderingInstance; };
+				RenderDevice* GetRenderingDevice() { return &renderingDevice; };
+				Swapchain* GetRenderingSwapchain() { return &renderingSwapchain; };
+
+			public:
+				//Sets the clear values
+				bool SetSwapchainClearValues(UNorm32Colour colourBufferClear, float depthClear, uint32_t stencilClear);
 
 			protected:
 				//Instance, device and swapchain handlers
@@ -80,16 +100,15 @@ namespace EngineAPI
 				//Render pass
 				RenderPass swapchainRenderPass;
 
-				//Framebuffers - one for each swapchain colour buffer. Depenedent on 
-				//swapchainRenderPass.
-				std::vector<Framebuffer> swapchainFramebuffers;
+			protected:
+				//Clear colour
+				UNorm32Colour swpachainClearColour;
+				float swapchainDepthClearValue = 1.0f;
+				uint32_t swapchainStencilClearValue = 0;
 
 			private:
 				//Inits the render pass for this engine
 				bool InitVKRenderPass();
-
-				//Inits the swapchain frame buffers
-				bool InitVKSwapchainFramebuffers(unsigned screenWidth, unsigned screenHeight);
 			};
 		};
 	};

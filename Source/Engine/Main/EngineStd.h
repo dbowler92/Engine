@@ -53,6 +53,43 @@ public:
 	EUINT_32 Height;
 };
 
+//Struct representing a colour
+struct Uint8Colour
+{
+	Uint8Colour() {};
+	Uint8Colour(uint8_t r, uint8_t g, uint8_t b, uint8_t a)
+	{
+		R = r;
+		G = g;
+		B = b;
+		A = a;
+	};
+
+	uint8_t R;
+	uint8_t G;
+	uint8_t B;
+	uint8_t A;
+};
+
+struct UNorm32Colour
+{
+	UNorm32Colour() {};
+	UNorm32Colour(float r, float g, float b, float a)
+	{
+		R = r;
+		G = g;
+		B = b;
+		A = a;
+	};
+
+	float R;
+	float G;
+	float B;
+	float A;
+};
+
+
+//Allows us to pass 0 for EFlags if we want
 typedef EUINT_32 EFlag;
 
 //Global macros

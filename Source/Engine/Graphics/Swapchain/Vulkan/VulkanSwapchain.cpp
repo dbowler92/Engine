@@ -106,6 +106,12 @@ bool VulkanSwapchain::InitVKSwapchain(EngineAPI::OS::OSWindow* osWindow,
 
 void VulkanSwapchain::Shutdown()
 {
+	//Cleanup framebuffers & render instance command buffers
+	for (int i = 0; i < swapchainFramebuffers.size(); i++)
+		swapchainFramebuffers[i].Shutdown();
+	swapchainFramebuffers.clear();
+	swapchainImageCommandBuffers.clear(); //Reset them???
+
 	//Cleanup array data
 	delete[] surfaceFormatsArray;
 	delete[] presentationModesArray;
@@ -580,6 +586,129 @@ bool VulkanSwapchain::CreateDepthBuffer(EngineAPI::Graphics::RenderDevice* rende
 		return false;
 	}
 
+	//Done
+	return true;
+}
+
+bool VulkanSwapchain::InitVKFramebuffers(EngineAPI::Graphics::RenderDevice* renderingDevice,
+	EngineAPI::Graphics::RenderPass* renderPass)
+{
+	//One framebuffer per swapchain colour buffer
+	swapchainFramebuffers.resize(GetSwapchainColourBufferCount());
+
+	//Colour + depth (Depth buffer is shared between all colour buffers -> The front and
+	//back buffer (and maybe the tripple buffer))
+	VkImageView attachments[2];
+	attachments[1] = depthTexture.GetVKDepthStencilImageView();
+
+	//Init each framebuffer
+	for (int i = 0; i < swapchainFramebuffers.size(); i++)
+	{
+		//Colour buffer
+		attachments[0] = GetVKImageViewForColourBuffer(i);
+
+		//Description
+		VkFramebufferCreateInfo framebufferCreateInfo = {};
+		framebufferCreateInfo.sType = VK_STRUCTURE_TYPE_FRAMEBUFFER_CREATE_INFO;
+		framebufferCreateInfo.pNext = NULL;
+		framebufferCreateInfo.renderPass = renderPass->GetVKRenderPassHandle();
+		framebufferCreateInfo.attachmentCount = 2; //Colour + depth
+		framebufferCreateInfo.pAttachments = attachments;
+		framebufferCreateInfo.width = GetSwapchainDimentions().width;
+		framebufferCreateInfo.height = GetSwapchainDimentions().height;
+		framebufferCreateInfo.layers = 1;
+
+		//Init
+		if (!swapchainFramebuffers[i].InitVKFramebuffer(renderingDevice, &framebufferCreateInfo))
+		{
+			//Error
+			EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanSwapchain::InitVKFramebuffers() Error: Could not init framebuffer\n");
+			return false;
+		}
+	}
+
+
+	//Done
+	return true;
+}
+
+bool VulkanSwapchain::InitVKSwapchainRenderPassInstanceCommandBuffers(EngineAPI::Graphics::RenderDevice* renderingDevice,
+	EngineAPI::Graphics::RenderPass* renderPass, 
+	UNorm32Colour swpachainClearColour, float swapchainDepthClearValue, uint32_t swapchainStencilClearValue)
+{
+	//if recalling (Eg: Due to changes to the clear colour info, we need to delete the old command
+	//buffers)
+	if (swapchainImageCommandBuffers.size() != 0)
+	{
+		for (int i = 0; i < swapchainImageCommandBuffers.size(); i++)
+		{
+			if (!EngineAPI::Statics::VulkanStatics::CommandBufferReset(&swapchainImageCommandBuffers[i], true))
+			{
+				EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanSwapchain::InitVKSwapchainRenderPassInstanceCommandBuffers() - Could not reset command buffers\n");
+				return false;
+			}
+		}
+
+		//Clear vector
+		swapchainImageCommandBuffers.clear();
+	}
+
+	//1 per swapchain colour image
+	swapchainImageCommandBuffers.resize(GetSwapchainColourBufferCount());
+	for (int i = 0; i < swapchainImageCommandBuffers.size(); i++)
+	{
+		//Get command buffer
+		if (!renderingDevice->GetGraphicsCommandQueueFamily()->GetCommandBufferPool(0).GetVKCommandBufferFromPool(true, &swapchainImageCommandBuffers[i]))
+		{
+			EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanSwapchain::InitVKSwapchainRenderPassInstanceCommandBuffers() - Could not get command buffer\n");
+			return false;
+		}
+
+		//Bind command buffer
+		assert(EngineAPI::Statics::VulkanStatics::CommandBufferBeginRecordingDefault(&swapchainImageCommandBuffers[i]));
+
+		//Clear values
+		VkClearValue clearValues[2];
+
+		//Colour buffer
+		clearValues[0].color.float32[0] = swpachainClearColour.R;
+		clearValues[0].color.float32[1] = swpachainClearColour.G;
+		clearValues[0].color.float32[2] = swpachainClearColour.B;
+		clearValues[0].color.float32[3] = swpachainClearColour.A;
+
+		//Depth stencil buffer
+		clearValues[1].depthStencil.depth = swapchainDepthClearValue;
+		clearValues[1].depthStencil.stencil = swapchainStencilClearValue;
+
+		//Create render pass instance -> This will be used to record a 
+		//begin render pass command in to this buffer
+		VkRenderPassBeginInfo renderPassInfo = {};
+		renderPassInfo.sType = VK_STRUCTURE_TYPE_RENDER_PASS_BEGIN_INFO;
+		renderPassInfo.pNext = nullptr;
+		renderPassInfo.renderPass = renderPass->GetVKRenderPassHandle();
+		renderPassInfo.framebuffer = swapchainFramebuffers[i].GetVKFramebufferHandle();
+		renderPassInfo.renderArea.extent.width = GetSwapchainDimentions().width;
+		renderPassInfo.renderArea.extent.height = GetSwapchainDimentions().height;
+		renderPassInfo.clearValueCount = 2;
+		renderPassInfo.pClearValues = clearValues;
+
+		//Start recording the render pass instance
+		vkCmdBeginRenderPass(swapchainImageCommandBuffers[i], &renderPassInfo, VK_SUBPASS_CONTENTS_INLINE);
+
+		//End of render pass instance recording
+		vkCmdEndRenderPass(swapchainImageCommandBuffers[i]);
+
+		//End reading in to this command buffer
+		assert(EngineAPI::Statics::VulkanStatics::CommandBufferEndRecording(&swapchainImageCommandBuffers[i]));
+	}
+
+
+	//Done
+	return true;
+}
+
+bool VulkanSwapchain::BindAndClearSwapchainBuffers()
+{
 	//Done
 	return true;
 }

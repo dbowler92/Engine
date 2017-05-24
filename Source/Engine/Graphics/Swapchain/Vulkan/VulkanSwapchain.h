@@ -15,6 +15,10 @@
 //Will need to manage a depth buffer
 #include "../../../Rendering/DepthTexture/DepthTexture.h"
 
+//Manages a render pass and framebuffers
+#include "../../RenderPass/RenderPass.h"
+#include "../../Framebuffer/Framebuffer.h"
+
 namespace EngineAPI
 {
 	namespace Graphics
@@ -40,16 +44,30 @@ namespace EngineAPI
 					EngineAPI::Graphics::RenderInstance* renderingInstance,
 					EngineAPI::Graphics::RenderDevice* renderingDevice);
 
+				//Inits the VK framebuffers and render pass instance command buffers - This
+				//should be called after a Render pass has been inited by the graphics manager
+				bool InitVKFramebuffers(EngineAPI::Graphics::RenderDevice* renderingDevice,
+					EngineAPI::Graphics::RenderPass* renderPass);
+				bool InitVKSwapchainRenderPassInstanceCommandBuffers(EngineAPI::Graphics::RenderDevice* renderingDevice,
+					EngineAPI::Graphics::RenderPass* renderPass, 
+					UNorm32Colour swpachainClearColour, float swapchainDepthClearValue, uint32_t swapchainStencilClearValue);
+
+			public:
+				//Called when we want to bind and clear the swapchain images for rendering in to.
+				//In a forward rendering system, this could be at the frame start (assuming no render to texture).
+				//In a deferred rendeirng system, this could be after the geometry pass but before the light pass
+				bool BindAndClearSwapchainBuffers();
+
 			public:
 				//Returns the logical surface - needed when creating device queues
 				VkSurfaceKHR GetVKLogicalSurfaceKHR() { return vkSurfaceHandle; };
 
 				//Swpachain getters
 				VkFormat GetSwpachainImageFormat() { return vkSwapchainSurfaceFormat; };
-				
+				VkExtent2D GetSwapchainDimentions() { return vkSwapchainExtents; };
+
 				VkImageView GetVKImageViewForColourBuffer(uint32_t index) { return vkSwapchainColourImageViews[index]; };
 				uint32_t GetSwapchainColourBufferCount() { return vkSwapchainColourImagesCount; };
-
 
 				//Returns the depth buffer
 				EngineAPI::Rendering::DepthTexture* GetDepthTexture() { return &depthTexture; };
@@ -96,6 +114,12 @@ namespace EngineAPI
 				//Creates and manages a depth buffer to be used alongside the
 				//swapchain
 				EngineAPI::Rendering::DepthTexture depthTexture;
+
+				//Framebuffer objects - one per colour buffer
+				std::vector<EngineAPI::Graphics::Framebuffer> swapchainFramebuffers;
+
+				//Command buffer per swapchain image
+				std::vector<VkCommandBuffer> swapchainImageCommandBuffers;
 
 			private:
 				//WSI Extension

@@ -43,7 +43,7 @@ namespace EngineAPI
 
 			public:
 				//Getters
-				VkRenderPass GetRenderPassHandle() { return vkRenderPassHandle; };
+				VkRenderPass GetVKRenderPassHandle() { return vkRenderPassHandle; };
 			
 			protected:
 				//Device used to create the render pass

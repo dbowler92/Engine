@@ -25,6 +25,9 @@ bool SandboxApplication::InitApplication()
 {
 	EngineAPI::Debug::DebugLog::PrintInfoMessage("SandboxApplication::InitApplication()\n");
 
+	//Set clear info
+	graphicsSubsystem->SetSwapchainClearValues(UNorm32Colour(0.0f, 0.0f, 0.0f, 1.0f), 1.0f, 0);
+
 	//Device -> Used when creating rendering resources
 	EngineAPI::Graphics::RenderDevice* device = EngineAPI::Graphics::GraphicsManager::GetInstance()->GetRenderingDevice();
 
@@ -108,5 +111,6 @@ void SandboxApplication::UpdateScene(float dt)
 
 void SandboxApplication::RenderScene()
 {
-	
+	//Bind the swapchain for rendering
+	assert(graphicsSubsystem->GetRenderingSwapchain()->BindAndClearSwapchainBuffers());
 }

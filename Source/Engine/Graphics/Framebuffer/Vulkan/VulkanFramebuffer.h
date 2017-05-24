@@ -40,6 +40,10 @@ namespace EngineAPI
 				//Inits the framebuffer object
 				bool InitVKFramebuffer(EngineAPI::Graphics::RenderDevice* renderingDevice,
 					VkFramebufferCreateInfo* framebufferCreateInfo);
+				
+			public:
+				//Getters 
+				VkFramebuffer GetVKFramebufferHandle() { return vkFramebufferHandle; };
 
 			protected:
 				//Cached device that owns the framebuffer
