@@ -74,7 +74,7 @@ namespace EngineAPI
 				bool InitEngineSubsystems();
 
 				//Called when the window is resized
-				void OnResize(unsigned newWidth, unsigned newHeight);
+				void OnResize();
 
 			private:
 				//Outputs FPS
@@ -92,6 +92,9 @@ namespace EngineAPI
 				//Shared data
 				EngineAPI::OS::OSWindow osWindow;
 				int appVersionMajor, appVersionMinor, appVersionPatch; //Application version
+
+				uint32_t windowWidth;  //Window width && height -> Updated during WM_SIZE event
+				uint32_t windowHeight; //When user stops dragging, we can then resize the render targets
 			};
 		};
 	};
