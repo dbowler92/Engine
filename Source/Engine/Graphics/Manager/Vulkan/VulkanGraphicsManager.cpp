@@ -94,7 +94,7 @@ bool VulkanGraphicsManager::InitSubsystem(EngineAPI::OS::OSWindow* osWindow,
 bool VulkanGraphicsManager::OnResize(EngineAPI::OS::OSWindow* osWindow)
 {
 	//TEMP
-	renderingDevice.GetDeviceMemoryAllocator()->Debug_LongDump(DEBUG_DUMPS_FOLDER"PreOnResize");
+	//renderingDevice.GetDeviceMemoryAllocator()->Debug_LongDump(DEBUG_DUMPS_FOLDER"PreOnResize");
 
 	EngineAPI::Debug::DebugLog::PrintInfoMessage("VulkanGraphicsManager::OnResize()\n");
 
@@ -135,7 +135,7 @@ bool VulkanGraphicsManager::OnResize(EngineAPI::OS::OSWindow* osWindow)
 	}
 
 	//TEMP
-	renderingDevice.GetDeviceMemoryAllocator()->Debug_LongDump(DEBUG_DUMPS_FOLDER"PostOnResize");
+	//renderingDevice.GetDeviceMemoryAllocator()->Debug_LongDump(DEBUG_DUMPS_FOLDER"PostOnResize");
 }
 
 bool VulkanGraphicsManager::SetSwapchainClearValues(UNorm32Colour colourBufferClear, float depthClear, uint32_t stencilClear)

@@ -7,8 +7,11 @@ using namespace EngineAPI::Rendering::Platform;
 
 void VulkanBuffer::Shutdown()
 {
-	vkDestroyBuffer(cachedVKLogicalDevice, vkBufferHandle, nullptr);
-	vkBufferHandle = VK_NULL_HANDLE;
+	if (vkBufferHandle != VK_NULL_HANDLE)
+	{
+		vkDestroyBuffer(cachedVKLogicalDevice, vkBufferHandle, nullptr);
+		vkBufferHandle = VK_NULL_HANDLE;
+	}
 
 	//Shutdown resource
 	__super::Shutdown();

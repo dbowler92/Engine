@@ -28,7 +28,6 @@ bool SandboxApplication::InitApplication()
 	//Set clear info
 	graphicsSubsystem->SetSwapchainClearValues(UNorm32Colour(0.0f, 0.0f, 1.0f, 1.0f), 1.0f, 0);
 
-	/*
 	//Device -> Used when creating rendering resources
 	EngineAPI::Graphics::RenderDevice* device = EngineAPI::Graphics::GraphicsManager::GetInstance()->GetRenderingDevice();
 
@@ -91,8 +90,7 @@ bool SandboxApplication::InitApplication()
 
 	//TEMP
 	//device->GetDeviceMemoryAllocator()->Debug_LongDump("Dumps/PostVB_LabPC_DynamicVB_OwnStore");
-	*/
-
+	
 	return true;
 }
 

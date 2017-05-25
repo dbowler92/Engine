@@ -90,8 +90,11 @@ bool VulkanTexture::AllocAndBindVKTextureMemory(EngineAPI::Graphics::RenderDevic
 
 void VulkanTexture::Shutdown()
 {
-	vkDestroyImage(cachedVkDevice, vkImageHandle, nullptr);
-	vkImageHandle = VK_NULL_HANDLE;
+	if (vkImageHandle != VK_NULL_HANDLE)
+	{
+		vkDestroyImage(cachedVkDevice, vkImageHandle, nullptr);
+		vkImageHandle = VK_NULL_HANDLE;
+	}
 
 	//Shutdown resource
 	__super::Shutdown();
