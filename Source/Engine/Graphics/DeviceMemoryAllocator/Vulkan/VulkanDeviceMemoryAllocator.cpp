@@ -74,15 +74,15 @@ void VulkanDeviceMemoryAllocator::Debug_LongDump(std::string filename)
 				out << "		Resource Size (Vulkan Defined): " << block.GetResourceSize() << "\n";
 				out << "		Resource Alignment: " << block.GetResourceAlignment() << "\n";
 
-				if (block.GetResource()->GetResourceType() > RENDERING_RESOURCE_TYPE_ENUM_BUFFERS_BEGIN)
-				{
-					//Print actual size of buffer
-					EngineAPI::Rendering::Buffer* b = (EngineAPI::Rendering::Buffer*)block.GetResource();
-					out << "		Buffer Contents Size: " << b->GetBufferContentsSize() << "\n";
-				}
-
 				if (block.GetResource() != nullptr)
 				{
+					if (block.GetResource()->GetResourceType() > RENDERING_RESOURCE_TYPE_ENUM_BUFFERS_BEGIN)
+					{
+						//Print actual size of buffer
+						EngineAPI::Rendering::Buffer* b = (EngineAPI::Rendering::Buffer*)block.GetResource();
+						out << "		Buffer Contents Size: " << b->GetBufferContentsSize() << "\n";
+					}
+
 					out << "		Resource Address: " << (void*)block.GetResource() << "\n";
 					out << "		Resource Type: " << block.GetResource()->GetResourceType() << "\n";
 					if (!block.GetResource()->GetResourceDebugName().empty())
