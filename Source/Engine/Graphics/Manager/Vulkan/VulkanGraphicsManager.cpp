@@ -91,12 +91,45 @@ bool VulkanGraphicsManager::InitSubsystem(EngineAPI::OS::OSWindow* osWindow,
 	return true;
 }
 
-void VulkanGraphicsManager::OnResize(uint32_t newScreenWidth, uint32_t newScreenHeight)
+bool VulkanGraphicsManager::OnResize(EngineAPI::OS::OSWindow* osWindow)
 {
+	EngineAPI::Debug::DebugLog::PrintInfoMessage("VulkanGraphicsManager::OnResize()\n");
+
+	ESize2D newSize;
+	newSize.Width = osWindow->GetWindowWidth();
+	newSize.Height = osWindow->GetWindowHeight();
+
+	//Pass along resize event to those that care
+	if (!renderingDevice.OnResize(newSize))
+	{
+		EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanGraphicsManager::OnResize() Error: Device failed during resize event\n");
+		return false;
+	}
+	if (!renderingSwapchain.OnResize(osWindow, &renderingInstance, &renderingDevice))
+	{
+		EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanGraphicsManager::OnResize() Error: Swapcahin failed during resize event\n");
+		return false;
+	}
+
+	//Recreate render pass
+	swapchainRenderPass.Shutdown();
+	InitVKRenderPass();
+
+	//Reinit swpachain framebuffers and swapchain render pass instance cmd buffers
 	//
-	//TODO: Pass message to things that need to know about the resize event
-	//eg: The swapchain. 
-	//
+	//Init the framebuffers
+	if (!renderingSwapchain.InitVKFramebuffers(&renderingDevice, &swapchainRenderPass))
+	{
+		EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanGraphicsManager::OnResize() Error: Could not reinit swapchain framebuffers during resize event\n");
+		return false;
+	}
+
+	//Init command buffers for each swapchain image
+	if (!renderingSwapchain.InitVKSwapchainRenderPassInstanceCommandBuffers(&renderingDevice, &swapchainRenderPass, swpachainClearColour, swapchainDepthClearValue, swapchainStencilClearValue))
+	{
+		EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanGraphicsManager::OnResize() Error: Could not reinit swapchain render pass instance (cmd buffers) during resize event\n");
+		return false;
+	}
 }
 
 bool VulkanGraphicsManager::SetSwapchainClearValues(UNorm32Colour colourBufferClear, float depthClear, uint32_t stencilClear)

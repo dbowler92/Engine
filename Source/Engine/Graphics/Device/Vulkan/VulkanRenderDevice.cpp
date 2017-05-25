@@ -23,6 +23,12 @@ std::vector<const char *> deviceExtensionNames =
 	//"VK_EXT_debug_report"
 };
 
+bool VulkanRenderDevice::OnResize(ESize2D newSize)
+{
+	//Done
+	return true;
+}
+
 bool VulkanRenderDevice::InitVKPhysicalDevice(EngineAPI::OS::OSWindow* osWindow,
 	EngineAPI::Graphics::RenderInstance* renderingInstance)
 {

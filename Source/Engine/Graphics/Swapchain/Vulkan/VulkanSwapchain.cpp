@@ -115,7 +115,7 @@ bool VulkanSwapchain::InitVKSwapchain(EngineAPI::OS::OSWindow* osWindow,
 	return true;
 }
 
-void VulkanSwapchain::Shutdown()
+void VulkanSwapchain::Shutdown(bool doShutdownLogicalSurface, bool doShutdownSwapchainObject)
 {
 	//Cleanup fence
 	if (vkGetNextImageFence)
@@ -149,17 +149,34 @@ void VulkanSwapchain::Shutdown()
 	delete[] vkSwapchainColourImages;
 
 	//Destroy swapchain
-	fpDestroySwapchainKHR(cachedVKDevice, vkSwapchainHandle, nullptr);
-	vkSwapchainHandle = VK_NULL_HANDLE;
+	if (doShutdownSwapchainObject)
+	{
+		fpDestroySwapchainKHR(cachedVKDevice, vkSwapchainHandle, nullptr);
+		vkSwapchainHandle = VK_NULL_HANDLE;
+	}
 
-	//vkDestroySurfaceKHR(cachedVKInstance, vkSurfaceHandle, nullptr);
-	fpDestroySurfaceKHR(cachedVKInstance, vkSurfaceHandle, nullptr);
-	vkSurfaceHandle = VK_NULL_HANDLE;
+	//logical surface - only when fully shutting down the swapchain. On OnResize() events,
+	//we don't need to delete this since the OSwindow (windows handle etc) remains the same!
+	if (doShutdownLogicalSurface)
+	{
+		//vkDestroySurfaceKHR(cachedVKInstance, vkSurfaceHandle, nullptr);
+		fpDestroySurfaceKHR(cachedVKInstance, vkSurfaceHandle, nullptr);
+		vkSurfaceHandle = VK_NULL_HANDLE;
+	}
 }
 
-bool VulkanSwapchain::OnResize(ESize2D newWindowSize)
+bool VulkanSwapchain::OnResize(EngineAPI::OS::OSWindow* osWindow,
+	EngineAPI::Graphics::RenderInstance* renderingInstance,
+	EngineAPI::Graphics::RenderDevice* renderingDevice)
 {
-	//TODO
+	EngineAPI::Debug::DebugLog::PrintInfoMessage("VulkanSwapchain::OnResize()\n");
+
+	this->Shutdown(false, true);
+	if (!this->InitVKSwapchain(osWindow, renderingInstance, renderingDevice))
+	{
+		EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanSwapchain::OnResize() Error: Failed to re-init swapchain with new size\n");
+		return false;
+	}
 
 	//Done
 	return true;

@@ -32,10 +32,12 @@ namespace EngineAPI
 				virtual ~VulkanSwapchain() = 0 {};
 
 				//Shutdown at the end of the app
-				void Shutdown();
+				void Shutdown(bool doShutdownLogicalSurface = true, bool doShutdownSwapchainObject = true);
 
 				//OnResize event - TODO
-				bool OnResize(ESize2D newWindowSize);
+				bool OnResize(EngineAPI::OS::OSWindow* osWindow,
+					EngineAPI::Graphics::RenderInstance* renderingInstance, 
+					EngineAPI::Graphics::RenderDevice* renderingDevice);
 
 				//Inits the VK swapchain
 				bool InitVKLogicalSurface(EngineAPI::OS::OSWindow* osWindow,

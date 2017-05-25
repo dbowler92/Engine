@@ -63,7 +63,7 @@ LRESULT Win32Application::WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lPa
 			appPaused = false;
 			minimized = false;
 			maximized = true;
-			OnResize();
+			assert(OnResize() == true);
 		}
 		else if (wParam == SIZE_RESTORED)
 		{
@@ -73,7 +73,7 @@ LRESULT Win32Application::WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lPa
 			{
 				appPaused = false;
 				minimized = false;
-				OnResize();
+				assert(OnResize() == true);
 			}
 
 			// Restoring from maximized state?
@@ -81,7 +81,7 @@ LRESULT Win32Application::WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lPa
 			{
 				appPaused = false;
 				maximized = false;
-				OnResize();
+				assert(OnResize() == true);
 			}
 			else if (resizing)
 			{
@@ -96,7 +96,7 @@ LRESULT Win32Application::WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lPa
 			}
 			else // API call such as SetWindowPos or mSwapChain->SetFullscreenState.
 			{
-				OnResize();
+				assert(OnResize() == true);
 			}
 		}
 		return 0;
@@ -114,7 +114,7 @@ LRESULT Win32Application::WndProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lPa
 		appPaused = false;
 		resizing = false;
 		mainGameLoopTimer.Start();
-		OnResize();
+		assert(OnResize() == true);
 		return 0;
 
 		// WM_DESTROY is sent when the window is being destroyed.
@@ -266,7 +266,7 @@ bool Win32Application::InitEngineSubsystems()
 	return true;
 }
 
-void Win32Application::OnResize()
+bool Win32Application::OnResize()
 {
 	/*
 	std::stringstream ss;
@@ -282,19 +282,22 @@ void Win32Application::OnResize()
 	*/
 
 	//Is the current window size the same as the new one? If so, skip resizing 
-	//since its not needed
+	//since its not needed (this occurs if the user drags the screen around, for example)
 	if (osWindow.GetWindowWidth() == windowWidth && osWindow.GetWindowHeight() == windowHeight)
 	{
-		//EngineAPI::Debug::DebugLog::PrintInfoMessage("Fail\n");
-		return;
+		return true; //Didn't need to resize anything. However, this isnt an error. 
 	}
 
-	//Update OS window size
+	//Update OS window size with new info
 	osWindow.UpdateWindowWidth((unsigned)windowWidth);
 	osWindow.UpdateWindowHeight((unsigned)windowHeight);
 
-	//TODO: Resize render targets, etc
-	graphicsSubsystem->OnResize((unsigned)windowWidth, (unsigned)windowHeight);
+	//Resize render targets, etc
+	if (!graphicsSubsystem->OnResize(&osWindow))
+	{
+		EngineAPI::Debug::DebugLog::PrintErrorMessage("Win32Application::OnResize() Erorr: Graphics subsystem failed on resize event\n");
+		return false;
+	}
 }
 
 void Win32Application::EnterGameLoop()

@@ -56,6 +56,10 @@ namespace EngineAPI
 				bool InitVKCommandBufferPools(EngineAPI::OS::OSWindow* osWindow,
 					EngineAPI::Graphics::RenderInstance* renderingInstance);
 
+				//Called when resize the window. Currently, this just returns true. However, in the
+				//future, we may wish to delete some memory stores and resize them as a result of this. 
+				bool OnResize(ESize2D newSize);
+
 			public:
 				//Vulkan getters:
 				//

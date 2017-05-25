@@ -72,7 +72,7 @@ namespace EngineAPI
 				bool ShutdownSubsystem();
 
 				//Called when the window is resized
-				void OnResize(uint32_t newScreenWidth, uint32_t newScreenHeight);
+				bool OnResize(EngineAPI::OS::OSWindow* osWindow);
 
 			public:
 				//Returns the instance, device and swapchains (pointer)
