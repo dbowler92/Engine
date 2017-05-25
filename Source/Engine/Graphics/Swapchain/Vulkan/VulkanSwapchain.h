@@ -113,6 +113,11 @@ namespace EngineAPI
 				uint32_t vkSwapchainDesiredBuffersCount; 
 				VkSurfaceTransformFlagBitsKHR vkSwapchainSurfacePreTransformFlags; //Transform relative to the presentation engines natural orientation
 
+				//Syncronisation
+				//
+				//Bind and clear fence -> Used to wait on vkGetNextSwapchainImageKHR()
+				VkFence vkGetNextImageFence = VK_NULL_HANDLE;
+
 			private:
 				//Creates and manages a depth buffer to be used alongside the
 				//swapchain

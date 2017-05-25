@@ -100,12 +100,31 @@ bool VulkanSwapchain::InitVKSwapchain(EngineAPI::OS::OSWindow* osWindow,
 		return false;
 #endif
 
+	//10) Create fence used to wait for vkGetNextSwapchainImageKHR()
+	VkFenceCreateInfo fenceCreateInfo = {};
+	fenceCreateInfo.sType = VK_STRUCTURE_TYPE_FENCE_CREATE_INFO;
+	fenceCreateInfo.pNext = nullptr;
+	fenceCreateInfo.flags = 0; //Created in unsignalled state
+	if (vkCreateFence(renderingDevice->GetVKLogicalDevice(), &fenceCreateInfo, nullptr, &vkGetNextImageFence) != VK_SUCCESS)
+	{
+		EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanSwapchain::InitVKSwapchain(): Error creating vkGetNextImageFence\n");
+		return false;
+	}
+
 	//Done
 	return true;
 }
 
 void VulkanSwapchain::Shutdown()
 {
+	//Cleanup fence
+	if (vkGetNextImageFence)
+	{
+		vkGetFenceStatus(cachedVKDevice, vkGetNextImageFence) != VK_SUCCESS;
+		vkDestroyFence(cachedVKDevice, vkGetNextImageFence, nullptr);
+		vkGetNextImageFence = VK_NULL_HANDLE;
+	}
+
 	//Cleanup framebuffers & render instance command buffers
 	for (int i = 0; i < swapchainFramebuffers.size(); i++)
 		swapchainFramebuffers[i].Shutdown();
@@ -711,24 +730,20 @@ bool VulkanSwapchain::InitVKSwapchainRenderPassInstanceCommandBuffers(EngineAPI:
 
 bool VulkanSwapchain::BindAndClearSwapchainBuffers(EngineAPI::Graphics::RenderDevice* renderingDevice)
 {
-	//Semaphore or fence required for AcquireNextImageKHR
-	VkSemaphore getNextSwpachainImageSemaphore;
-	VkSemaphoreCreateInfo getNextSwpachainImageSemaphoreInfo;
-	getNextSwpachainImageSemaphoreInfo.sType = VK_STRUCTURE_TYPE_SEMAPHORE_CREATE_INFO;
-	getNextSwpachainImageSemaphoreInfo.pNext = nullptr;
-	getNextSwpachainImageSemaphoreInfo.flags = 0;
-	vkCreateSemaphore(renderingDevice->GetVKLogicalDevice(), &getNextSwpachainImageSemaphoreInfo, nullptr, &getNextSwpachainImageSemaphore);
-	
-	//Get front buffer to render in to.
+	//Get frontbuffer to render in to.
 	VkResult result = fpAcquireNextImageKHR(renderingDevice->GetVKLogicalDevice(), vkSwapchainHandle, UINT64_MAX, 
-		getNextSwpachainImageSemaphore, VK_NULL_HANDLE, &currentColourBufferIndex);
+		VK_NULL_HANDLE, vkGetNextImageFence, &currentColourBufferIndex);
+
+	//Wait on fence
+	if (vkGetNextImageFence)
+		vkGetFenceStatus(renderingDevice->GetVKLogicalDevice(), vkGetNextImageFence) != VK_SUCCESS;
 
 	//Bind and clear
 	renderingDevice->GetGraphicsCommandQueueFamily()->SubmitVKCommandBuffersToQueueDefault(0,
 		&swapchainImageCommandBuffers[currentColourBufferIndex], 1, VK_NULL_HANDLE, true);
 
-	//Destroy semaphore when not needed. 
-	vkDestroySemaphore(renderingDevice->GetVKLogicalDevice(), getNextSwpachainImageSemaphore, nullptr);
+	//Reset fence
+	assert(vkResetFences(renderingDevice->GetVKLogicalDevice(), 1, &vkGetNextImageFence) == VK_SUCCESS);
 
 	//Done
 	return true;

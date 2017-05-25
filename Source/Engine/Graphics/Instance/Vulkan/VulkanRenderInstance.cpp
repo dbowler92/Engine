@@ -344,6 +344,7 @@ VKAPI_ATTR VkBool32 VKAPI_CALL VulkanRenderInstance::DebugReportPrintFunction(Vk
 	}
 	else if (msgFlags & VK_DEBUG_REPORT_INFORMATION_BIT_EXT)
 	{
+#if ENGINE_CONFIG_VULKAN_API_DO_PRINT_DEBUG_INFO
 		std::string s;
 		std::stringstream ss;
 		ss << msgCode;
@@ -352,7 +353,8 @@ VKAPI_ATTR VkBool32 VKAPI_CALL VulkanRenderInstance::DebugReportPrintFunction(Vk
 			std::string("Code ") + ss.str() +
 			std::string(": ") + std::string(msg) + std::string("\n");
 		EngineAPI::Debug::DebugLog::PrintInfoMessage(s.c_str());
-
+#endif
+	
 		//std::cout << "[VK_DEBUG_REPORT] INFORMATION: [" << layerPrefix << "] Code" << msgCode << ":" << msg << std::endl;
 	}
 	else if (msgFlags & VK_DEBUG_REPORT_PERFORMANCE_WARNING_BIT_EXT) 
