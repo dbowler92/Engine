@@ -12,7 +12,7 @@ bool VulkanSwapchain::InitVKLogicalSurface(EngineAPI::OS::OSWindow* osWindow,
 	if (!CacheInstanceExtentionFunctions(cachedVKInstance))
 		return false;
 
-	//Create logical surface
+	//Create logical surface (Win32)
 	VkWin32SurfaceCreateInfoKHR logicalSurfaceCreateInfo = {};
 	logicalSurfaceCreateInfo.sType = VK_STRUCTURE_TYPE_WIN32_SURFACE_CREATE_INFO_KHR;
 	logicalSurfaceCreateInfo.pNext = nullptr;
@@ -23,7 +23,7 @@ bool VulkanSwapchain::InitVKLogicalSurface(EngineAPI::OS::OSWindow* osWindow,
 	VkResult result = vkCreateWin32SurfaceKHR(cachedVKInstance, &logicalSurfaceCreateInfo, nullptr, &vkSurfaceHandle);
 	if (result != VK_SUCCESS)
 	{
-		EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanSwapchain::InitWin32(): vkCreateWin32SurfaceKHR failed!\n");
+		EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanSwapchain::InitVKLogicalSurface(): vkCreateWin32SurfaceKHR failed!\n");
 		return false;
 	}
 
@@ -483,7 +483,7 @@ bool VulkanSwapchain::CacheSwapchainColourImages()
 	//
 	//Driver presumably can overrule us and provide more images if it decides (im thinking of
 	//nvidia inspector and forcing tripple buffering)
-	if (vkSwapchainColourImagesCount != vkSwapchainDesiredBuffersCount)
+	if (vkSwapchainColourImagesCount != vkSwapchainDesiredBuffersCount) 
 	{
 		//Keep this as a warning for now...
 		EngineAPI::Debug::DebugLog::PrintWarningMessage("VulkanSwapchain::CacheSwapchainImages() - Swapchain buffer count && images returned does not match\n");
@@ -693,7 +693,7 @@ bool VulkanSwapchain::InitVKSwapchainRenderPassInstanceCommandBuffers(EngineAPI:
 		renderPassInfo.renderArea.extent.height = GetSwapchainDimentions().height;
 		renderPassInfo.clearValueCount = 2;
 		renderPassInfo.pClearValues = clearValues;
-
+	
 		//Start recording the render pass instance
 		vkCmdBeginRenderPass(swapchainImageCommandBuffers[i], &renderPassInfo, VK_SUBPASS_CONTENTS_INLINE);
 

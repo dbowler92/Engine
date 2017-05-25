@@ -132,18 +132,17 @@ bool VulkanGraphicsManager::InitVKRenderPass()
 	VkAttachmentDescription attachments[2];
 
 	//Colour buffer
-	attachments[0].flags = 0;
 	attachments[0].format = renderingSwapchain.GetSwpachainImageFormat();
 	attachments[0].samples = (VkSampleCountFlagBits)msaaSamples;
 	attachments[0].loadOp = VK_ATTACHMENT_LOAD_OP_CLEAR;
 	attachments[0].storeOp = VK_ATTACHMENT_STORE_OP_STORE;
-	attachments[0].stencilLoadOp = VK_ATTACHMENT_LOAD_OP_DONT_CARE;
-	attachments[0].stencilStoreOp = VK_ATTACHMENT_STORE_OP_DONT_CARE;
-	attachments[0].initialLayout = VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL;
-	attachments[0].finalLayout = VK_IMAGE_LAYOUT_COLOR_ATTACHMENT_OPTIMAL;
+	attachments[0].stencilLoadOp = VK_ATTACHMENT_LOAD_OP_DONT_CARE;   //Not depth/stencil attachment
+	attachments[0].stencilStoreOp = VK_ATTACHMENT_STORE_OP_DONT_CARE; 
+	attachments[0].initialLayout = VK_IMAGE_LAYOUT_UNDEFINED;
+	attachments[0].finalLayout = VK_IMAGE_LAYOUT_PRESENT_SRC_KHR;		
+	attachments[0].flags = VK_ATTACHMENT_DESCRIPTION_MAY_ALIAS_BIT;
 
 	//Depth buffer. 
-	attachments[1].flags = 0;
 	attachments[1].format = renderingSwapchain.GetDepthTexture()->GetVkImageFormat();
 	attachments[1].samples = (VkSampleCountFlagBits)msaaSamples;
 	attachments[1].loadOp = VK_ATTACHMENT_LOAD_OP_CLEAR;
@@ -160,8 +159,9 @@ bool VulkanGraphicsManager::InitVKRenderPass()
 		attachments[1].stencilStoreOp = VK_ATTACHMENT_STORE_OP_DONT_CARE;
 	}
 
-	attachments[1].initialLayout = VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL;
+	attachments[1].initialLayout = VK_IMAGE_LAYOUT_UNDEFINED;
 	attachments[1].finalLayout = VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL;
+	attachments[1].flags = VK_ATTACHMENT_DESCRIPTION_MAY_ALIAS_BIT;
 
 	//Define the colour buffer attachment binding point. 
 	VkAttachmentReference colourReference = {};
