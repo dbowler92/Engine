@@ -92,4 +92,7 @@ void VulkanTexture::Shutdown()
 {
 	vkDestroyImage(cachedVkDevice, vkImageHandle, nullptr);
 	vkImageHandle = VK_NULL_HANDLE;
+
+	//Shutdown resource
+	__super::Shutdown();
 }

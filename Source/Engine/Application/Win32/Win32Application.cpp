@@ -298,6 +298,9 @@ bool Win32Application::OnResize()
 		EngineAPI::Debug::DebugLog::PrintErrorMessage("Win32Application::OnResize() Erorr: Graphics subsystem failed on resize event\n");
 		return false;
 	}
+
+	//Done
+	return true;
 }
 
 void Win32Application::EnterGameLoop()

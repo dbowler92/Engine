@@ -54,3 +54,6 @@
 #include "VulkanConfig.h"
 
 #endif
+
+//Folder for debug dumps
+#define DEBUG_DUMPS_FOLDER "Dumps/"

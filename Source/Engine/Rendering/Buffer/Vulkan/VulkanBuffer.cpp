@@ -9,6 +9,9 @@ void VulkanBuffer::Shutdown()
 {
 	vkDestroyBuffer(cachedVKLogicalDevice, vkBufferHandle, nullptr);
 	vkBufferHandle = VK_NULL_HANDLE;
+
+	//Shutdown resource
+	__super::Shutdown();
 }
 
 bool VulkanBuffer::InitVKBuffer(EngineAPI::Graphics::RenderDevice* renderingDevice,

@@ -93,6 +93,9 @@ bool VulkanGraphicsManager::InitSubsystem(EngineAPI::OS::OSWindow* osWindow,
 
 bool VulkanGraphicsManager::OnResize(EngineAPI::OS::OSWindow* osWindow)
 {
+	//TEMP
+	renderingDevice.GetDeviceMemoryAllocator()->Debug_LongDump(DEBUG_DUMPS_FOLDER"PreOnResize");
+
 	EngineAPI::Debug::DebugLog::PrintInfoMessage("VulkanGraphicsManager::OnResize()\n");
 
 	ESize2D newSize;
@@ -130,6 +133,9 @@ bool VulkanGraphicsManager::OnResize(EngineAPI::OS::OSWindow* osWindow)
 		EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanGraphicsManager::OnResize() Error: Could not reinit swapchain render pass instance (cmd buffers) during resize event\n");
 		return false;
 	}
+
+	//TEMP
+	renderingDevice.GetDeviceMemoryAllocator()->Debug_LongDump(DEBUG_DUMPS_FOLDER"PostOnResize");
 }
 
 bool VulkanGraphicsManager::SetSwapchainClearValues(UNorm32Colour colourBufferClear, float depthClear, uint32_t stencilClear)

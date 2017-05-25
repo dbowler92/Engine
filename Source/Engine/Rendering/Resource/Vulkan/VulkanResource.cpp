@@ -5,6 +5,14 @@
 
 using namespace EngineAPI::Rendering::Platform;
 
+void VulkanResource::Shutdown()
+{
+	//Free memory block data
+	if (resourceMemoryBlock)
+		resourceMemoryBlock->FreeMemoryBlock();
+	
+}
+
 void* VulkanResource::MapResource()
 {
 	//Ensure we have a valid memory block before mapping

@@ -25,7 +25,7 @@ namespace EngineAPI
 			virtual ~Resource() = 0 {};
 
 			//Each resource will have a shutdown function to implement
-			virtual void Shutdown() = 0;
+			virtual void Shutdown() = 0 { __super::Shutdown(); };
 		};
 	};
 };
