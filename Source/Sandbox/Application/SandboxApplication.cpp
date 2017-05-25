@@ -119,5 +119,5 @@ void SandboxApplication::RenderScene()
 	//
 
 	//Present
-	//assert(graphicsSubsystem->GetRenderingSwapchain()->Present(graphicsSubsystem->GetRenderingDevice()));
+	assert(graphicsSubsystem->GetRenderingSwapchain()->Present(graphicsSubsystem->GetRenderingDevice()));
 }

@@ -747,6 +747,7 @@ bool VulkanSwapchain::Present(EngineAPI::Graphics::RenderDevice* renderingDevice
 	presentInfo.swapchainCount = 1;
 	presentInfo.pSwapchains = &vkSwapchainHandle;
 	presentInfo.pImageIndices = &currentColourBufferIndex;
+	presentInfo.pResults = nullptr;
 
 	//Queue image for presentation
 	VkResult result = fpQueuePresentKHR(presentQueue, &presentInfo);
