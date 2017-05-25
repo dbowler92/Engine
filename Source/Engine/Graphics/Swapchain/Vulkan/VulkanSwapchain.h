@@ -56,7 +56,10 @@ namespace EngineAPI
 				//Called when we want to bind and clear the swapchain images for rendering in to.
 				//In a forward rendering system, this could be at the frame start (assuming no render to texture).
 				//In a deferred rendeirng system, this could be after the geometry pass but before the light pass
-				bool BindAndClearSwapchainBuffers();
+				bool BindAndClearSwapchainBuffers(EngineAPI::Graphics::RenderDevice* renderingDevice);
+
+				//Called when we want to present the swapchain to the monitor
+				bool Present(EngineAPI::Graphics::RenderDevice* renderingDevice);
 
 			public:
 				//Returns the logical surface - needed when creating device queues

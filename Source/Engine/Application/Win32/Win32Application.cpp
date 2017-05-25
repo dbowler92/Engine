@@ -320,11 +320,12 @@ void Win32Application::EnterGameLoop()
 
 				//Update and render (this calls the users Application subclasses 
 				//update and render functions). 
+				//
+				//In terms of the rendering, it is the applications responsibility
+				//to ensure they bind the swapchain at the correct time && to call
+				//present when they are finished (for now, anyway). 
 				UpdateScene(mainGameLoopTimer.DeltaTime());
-
-				graphicsSubsystem->BeginFrame();
 				RenderScene();
-				graphicsSubsystem->EndFrame();
 			}
 			else
 				Sleep(100);

@@ -687,6 +687,8 @@ bool VulkanSwapchain::InitVKSwapchainRenderPassInstanceCommandBuffers(EngineAPI:
 		renderPassInfo.pNext = nullptr;
 		renderPassInfo.renderPass = renderPass->GetVKRenderPassHandle();
 		renderPassInfo.framebuffer = swapchainFramebuffers[i].GetVKFramebufferHandle();
+		renderPassInfo.renderArea.offset.x = 0;
+		renderPassInfo.renderArea.offset.y = 0;
 		renderPassInfo.renderArea.extent.width = GetSwapchainDimentions().width;
 		renderPassInfo.renderArea.extent.height = GetSwapchainDimentions().height;
 		renderPassInfo.clearValueCount = 2;
@@ -707,8 +709,53 @@ bool VulkanSwapchain::InitVKSwapchainRenderPassInstanceCommandBuffers(EngineAPI:
 	return true;
 }
 
-bool VulkanSwapchain::BindAndClearSwapchainBuffers()
+bool VulkanSwapchain::BindAndClearSwapchainBuffers(EngineAPI::Graphics::RenderDevice* renderingDevice)
 {
+	//Semaphore or fence required for AcquireNextImageKHR
+	VkSemaphore getNextSwpachainImageSemaphore;
+	VkSemaphoreCreateInfo getNextSwpachainImageSemaphoreInfo;
+	getNextSwpachainImageSemaphoreInfo.sType = VK_STRUCTURE_TYPE_SEMAPHORE_CREATE_INFO;
+	getNextSwpachainImageSemaphoreInfo.pNext = nullptr;
+	getNextSwpachainImageSemaphoreInfo.flags = 0;
+	vkCreateSemaphore(renderingDevice->GetVKLogicalDevice(), &getNextSwpachainImageSemaphoreInfo, nullptr, &getNextSwpachainImageSemaphore);
+	
+	//Get front buffer to render in to.
+	VkResult result = fpAcquireNextImageKHR(renderingDevice->GetVKLogicalDevice(), vkSwapchainHandle, UINT64_MAX, 
+		getNextSwpachainImageSemaphore, VK_NULL_HANDLE, &currentColourBufferIndex);
+
+	//Bind and clear
+	renderingDevice->GetGraphicsCommandQueueFamily()->SubmitVKCommandBuffersToQueueDefault(0,
+		&swapchainImageCommandBuffers[currentColourBufferIndex], 1, VK_NULL_HANDLE, true);
+
+	//Destroy semaphore when not needed. 
+	vkDestroySemaphore(renderingDevice->GetVKLogicalDevice(), getNextSwpachainImageSemaphore, nullptr);
+
+	//Done
+	return true;
+}
+
+bool VulkanSwapchain::Present(EngineAPI::Graphics::RenderDevice* renderingDevice)
+{
+	//Presentation queue
+	EngineAPI::Graphics::CommandQueue& cmdQueue = renderingDevice->GetPresentCommandQueueFamily()->GetCommandQueues()[0];
+	VkQueue presentQueue = cmdQueue.GetVKQueueHandle();
+	
+	//Presentation engine description
+	VkPresentInfoKHR presentInfo = {};
+	presentInfo.sType = VK_STRUCTURE_TYPE_PRESENT_INFO_KHR;
+	presentInfo.pNext = nullptr;
+	presentInfo.swapchainCount = 1;
+	presentInfo.pSwapchains = &vkSwapchainHandle;
+	presentInfo.pImageIndices = &currentColourBufferIndex;
+
+	//Queue image for presentation
+	VkResult result = fpQueuePresentKHR(presentQueue, &presentInfo);
+	if (result != VK_SUCCESS)
+	{
+		EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanSwapchain::Present() Error: Could not present swapchain\n");
+		return false;
+	}
+
 	//Done
 	return true;
 }

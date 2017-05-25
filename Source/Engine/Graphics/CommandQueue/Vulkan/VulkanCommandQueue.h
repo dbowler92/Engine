@@ -29,6 +29,10 @@ namespace EngineAPI
 					uint32_t queueFamilyIndex, uint32_t queueIndex);
 
 			public:
+				//Getters
+				VkQueue GetVKQueueHandle() { return vkQueueHandle; };
+
+			public:
 				//Submits VkCommandBuffer(s) to the queue.
 				bool SubmitVKCommandBuffers(VkSubmitInfo* submitInfos, uint32_t submitInfosCount,
 					const VkFence& optionalFence = VK_NULL_HANDLE, bool doWaitOnQueueIdle = true);

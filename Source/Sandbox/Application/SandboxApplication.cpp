@@ -26,7 +26,7 @@ bool SandboxApplication::InitApplication()
 	EngineAPI::Debug::DebugLog::PrintInfoMessage("SandboxApplication::InitApplication()\n");
 
 	//Set clear info
-	graphicsSubsystem->SetSwapchainClearValues(UNorm32Colour(0.0f, 0.0f, 0.0f, 1.0f), 1.0f, 0);
+	//graphicsSubsystem->SetSwapchainClearValues(UNorm32Colour(0.0f, 0.0f, 0.0f, 1.0f), 1.0f, 0);
 
 	//Device -> Used when creating rendering resources
 	EngineAPI::Graphics::RenderDevice* device = EngineAPI::Graphics::GraphicsManager::GetInstance()->GetRenderingDevice();
@@ -89,7 +89,7 @@ bool SandboxApplication::InitApplication()
 	assert(vb.AllocAndBindVKVertexBuffer(device, &vbLayout, &triangleData[0], customStoreForVB));
 
 	//TEMP
-	device->GetDeviceMemoryAllocator()->Debug_LongDump("Dumps/PostVB_LabPC_DynamicVB_OwnStore");
+	//device->GetDeviceMemoryAllocator()->Debug_LongDump("Dumps/PostVB_LabPC_DynamicVB_OwnStore");
 
 	return true;
 }
@@ -112,5 +112,12 @@ void SandboxApplication::UpdateScene(float dt)
 void SandboxApplication::RenderScene()
 {
 	//Bind the swapchain for rendering
-	assert(graphicsSubsystem->GetRenderingSwapchain()->BindAndClearSwapchainBuffers());
+	assert(graphicsSubsystem->GetRenderingSwapchain()->BindAndClearSwapchainBuffers(graphicsSubsystem->GetRenderingDevice()));
+
+	//
+	//Render stuff here
+	//
+
+	//Present
+	//assert(graphicsSubsystem->GetRenderingSwapchain()->Present(graphicsSubsystem->GetRenderingDevice()));
 }

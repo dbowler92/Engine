@@ -74,9 +74,8 @@ namespace EngineAPI
 				EngineAPI::Graphics::DeviceMemoryAllocator* GetDeviceMemoryAllocator() { return &deviceMemoryAllocator; };
 
 				//Command queue families
-				//
-				//For graphics work
 				EngineAPI::Graphics::CommandQueueFamily* GetGraphicsCommandQueueFamily() { return &graphicsQueueFamily; };
+				EngineAPI::Graphics::CommandQueueFamily* GetPresentCommandQueueFamily() { return &graphicsQueueFamily; }; //Currently queue handles graphics *AND* present work
 
 			private:
 				//Vulkan data / handles

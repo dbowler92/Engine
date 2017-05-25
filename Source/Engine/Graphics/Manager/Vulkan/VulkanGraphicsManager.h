@@ -74,12 +74,6 @@ namespace EngineAPI
 				//Called when the window is resized
 				void OnResize(uint32_t newScreenWidth, uint32_t newScreenHeight);
 
-				//Called when we start rendering
-				void BeginFrame();
-
-				//Called when we have finished rendering for this frame. 
-				void EndFrame();
-
 			public:
 				//Returns the instance, device and swapchains (pointer)
 				RenderInstance* GetRenderingInstance() { return &renderingInstance; };
