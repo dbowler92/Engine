@@ -41,12 +41,33 @@ namespace EngineAPI
 				void Shutdown();
 
 				//Inits the shader from file. 
-				void InitVKShader(const char* shaderFile, ShaderStage shaderStage, bool isPrecompiledSPIR);
+				bool InitVKShader(EngineAPI::Graphics::RenderDevice* renderingDevice,
+					const char* shaderFile, ShaderStage shaderStage, bool isPrecompiledSPIR);
+
+			public:
+				//Recompiles shader at runtime (If not a precompiled shader)
+				bool RecompileShader();
 
 			protected:
 				//Info on this shader.
+				std::string shaderFile;
 				ShaderStage stage;
 				bool isPrecompiledShader;
+
+				//Vk assigned shader module handle
+				VkShaderModule vkShaderModuleHandle = VK_NULL_HANDLE;
+
+				//Cached device used to create the shader
+				VkDevice cachedVKLogicalDevice = VK_NULL_HANDLE;
+
+			private:
+				//Converts from GLSL to SPIR-V format. Called if the shader is not precompiled
+				//during init
+				bool ConvertShaderFromGLSLToSPIRVFormat(const char* glslCode, uint32_t glslCodeSize, std::vector<char>* spirvCodeOut);
+
+			private:
+				//Simple function that reads a file
+				bool ReadFile(const char* filename, std::vector<char>* fileOut);
 			};
 		};
 	};

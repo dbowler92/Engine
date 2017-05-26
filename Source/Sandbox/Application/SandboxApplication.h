@@ -37,4 +37,10 @@ public:
 protected:
 	//Objects
 	EngineAPI::Rendering::VertexBuffer vb;
+
+	EngineAPI::Graphics::Shader testShaderVS;
+	EngineAPI::Graphics::Shader testShaderFS;
+
+	EngineAPI::Graphics::Shader testShaderSPIRVVS;
+	EngineAPI::Graphics::Shader testShaderSPIRVFS;
 }; 

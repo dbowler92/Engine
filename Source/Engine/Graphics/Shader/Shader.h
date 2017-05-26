@@ -23,7 +23,7 @@ namespace EngineAPI
 		{
 		public:
 			Shader() {};
-			virtual ~Shader() = 0 {};
+			virtual ~Shader(){};
 
 		};
 	};

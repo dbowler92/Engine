@@ -14,6 +14,13 @@
 #define ENGINE_VERSION_MINOR 2
 #define ENGINE_VERSION_PATCH 0
 
+//Folder for debug dumps
+#define DEBUG_DUMPS_FOLDER "Dumps/"
+
+//Assets folders 
+#define ASSETS_FOLDER "../Assets/"
+#define SHADER_ASSETS_FOLDER ASSETS_FOLDER"Shaders/"
+
 //Platform - not really used for now?
 #define PLATFORM_IDX_WIN32 0
 
@@ -54,6 +61,3 @@
 #include "VulkanConfig.h"
 
 #endif
-
-//Folder for debug dumps
-#define DEBUG_DUMPS_FOLDER "Dumps/"

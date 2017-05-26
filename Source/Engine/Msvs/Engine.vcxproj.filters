@@ -169,6 +169,9 @@
     <Filter Include="Src\Graphics\Shader\Vulkan">
       <UniqueIdentifier>{cb482f13-6b04-402f-a42f-ed6bd6ec918a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Src\Graphics\Program">
+      <UniqueIdentifier>{91065eb9-f4fc-4860-9d61-fcf38356a7ae}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Main\EngineMain.cpp">

@@ -90,7 +90,17 @@ bool SandboxApplication::InitApplication()
 
 	//TEMP
 	//device->GetDeviceMemoryAllocator()->Debug_LongDump("Dumps/PostVB_LabPC_DynamicVB_OwnStore");
-	
+
+	//
+	//Shader
+	//
+	//assert(testShaderVS.InitVKShader(device, SHADER_ASSETS_FOLDER"TestShaders/Draw.vert", SHADER_STAGE_VERTEX_SHADER, false));
+	//assert(testShaderFS.InitVKShader(device, SHADER_ASSETS_FOLDER"TestShaders/Draw.frag", SHADER_STAGE_FRAGMENT_SHADER, false));
+
+	assert(testShaderSPIRVVS.InitVKShader(device, SHADER_ASSETS_FOLDER"TestShaders/Draw-vert.spv", SHADER_STAGE_VERTEX_SHADER, true));
+	assert(testShaderSPIRVFS.InitVKShader(device, SHADER_ASSETS_FOLDER"TestShaders/Draw-frag.spv", SHADER_STAGE_FRAGMENT_SHADER, true));
+
+
 	return true;
 }
 
@@ -100,6 +110,12 @@ bool SandboxApplication::ShutdownApplication()
 	
 	//Shutdown rendering data
 	vb.Shutdown();
+
+	//Shutdown shaders
+	testShaderVS.Shutdown();
+	testShaderFS.Shutdown();
+	testShaderSPIRVVS.Shutdown();
+	testShaderSPIRVFS.Shutdown();
 
 	return true;
 }

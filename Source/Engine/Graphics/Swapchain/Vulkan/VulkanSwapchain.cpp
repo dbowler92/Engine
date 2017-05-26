@@ -120,7 +120,6 @@ void VulkanSwapchain::Shutdown(bool doShutdownLogicalSurface, bool doShutdownSwa
 	//Cleanup fence
 	if (vkGetNextImageFence)
 	{
-		vkGetFenceStatus(cachedVKDevice, vkGetNextImageFence) != VK_SUCCESS;
 		vkDestroyFence(cachedVKDevice, vkGetNextImageFence, nullptr);
 		vkGetNextImageFence = VK_NULL_HANDLE;
 	}
