@@ -22,6 +22,24 @@
 //Link libs
 #ifdef ENGINE_CONFIG_GRAPHICS_API_VULKAN
 #pragma comment (lib, "vulkan-1.lib") //Vulkan loader
+
+//Online shader compilation
+#if defined(DEBUG) | defined(_DEBUG)
+
+//Debug:
+#pragma comment (lib, "SPIRVd.lib")
+#pragma comment (lib, "glslangd.lib")
+#pragma comment (lib, "OGLCompilerd.lib")
+#pragma comment (lib, "OSDependentd.lib")
+#pragma comment (lib, "HLSLd.lib")
+#else
+//Release
+#pragma comment (lib, "SPIRV.lib")
+#pragma comment (lib, "glslang.lib")
+#pragma comment (lib, "OGLCompiler.lib")
+#pragma comment (lib, "OSDependent.lib")
+#pragma comment (lib, "HLSL.lib")
+#endif
 #endif
 
 #ifdef ENGINE_CONFIG_PLATFORM_WIN32

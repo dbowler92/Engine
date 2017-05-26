@@ -12,3 +12,6 @@
 
 //Buffer objects
 #include "../Rendering/VertexBuffer/VertexBuffer.h"
+
+//Shaders && programs/materials
+#include "../Graphics/Shader/Shader.h"

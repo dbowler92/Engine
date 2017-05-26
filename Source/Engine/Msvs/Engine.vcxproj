@@ -34,6 +34,7 @@
     <ClCompile Include="..\Graphics\Manager\Vulkan\VulkanGraphicsManager.cpp" />
     <ClCompile Include="..\Graphics\RenderCommandBuffer\Vulkan\VulkanRenderCommandBuffer.cpp" />
     <ClCompile Include="..\Graphics\RenderPass\Vulkan\VulkanRenderPass.cpp" />
+    <ClCompile Include="..\Graphics\Shader\Vulkan\VulkanShader.cpp" />
     <ClCompile Include="..\Graphics\Swapchain\Vulkan\VulkanSwapchain.cpp" />
     <ClCompile Include="..\Main\EngineMain.cpp" />
     <ClCompile Include="..\OSWindow\Win32\Win32OSWindow.cpp" />
@@ -77,6 +78,8 @@
     <ClInclude Include="..\Graphics\RenderCommandBuffer\Vulkan\VulkanRenderCommandBuffer.h" />
     <ClInclude Include="..\Graphics\RenderPass\RenderPass.h" />
     <ClInclude Include="..\Graphics\RenderPass\Vulkan\VulkanRenderPass.h" />
+    <ClInclude Include="..\Graphics\Shader\Shader.h" />
+    <ClInclude Include="..\Graphics\Shader\Vulkan\VulkanShader.h" />
     <ClInclude Include="..\Graphics\Swapchain\Swapchain.h" />
     <ClInclude Include="..\Graphics\Swapchain\Vulkan\VulkanSwapchain.h" />
     <ClInclude Include="..\Includes\GraphicsIncludes.h" />
@@ -153,7 +156,7 @@
     <OutDir>$(SolutionDir)..\..\Lib\$(PlatformName)$(Configuration)\</OutDir>
     <TargetExt>.lib</TargetExt>
     <IncludePath>C:\Users\Dan\Documents\Programming\3DGameEngine\Game_Engine\3DGCCEngine\Source\Engine\3rdParty\DXUT\Optional;C:\Users\Dan\Documents\Programming\3DGameEngine\Game_Engine\3DGCCEngine\Source\Engine\3rdParty\DXUT\Core;$(DXSDK_DIR)Include;C:\VulkanSDK\1.0.46.0\Include;$(IncludePath)</IncludePath>
-    <LibraryPath>$(DXSDK_DIR)Lib\x86;C:\VulkanSDK\1.0.46.0\Lib32;$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(DXSDK_DIR)Lib\x86;C:\VulkanSDK\1.0.46.0\Lib32;$(SolutionDir)..\..\Lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <TargetExt>.lib</TargetExt>
@@ -169,7 +172,7 @@
     <OutDir>$(SolutionDir)..\..\Lib\$(PlatformName)$(Configuration)\</OutDir>
     <TargetExt>.lib</TargetExt>
     <IncludePath>C:\Users\Dan\Documents\Programming\3DGameEngine\Game_Engine\3DGCCEngine\Source\Engine\3rdParty\DXUT\Optional;C:\Users\Dan\Documents\Programming\3DGameEngine\Game_Engine\3DGCCEngine\Source\Engine\3rdParty\DXUT\Core;$(DXSDK_DIR)Include;C:\VulkanSDK\1.0.46.0\Include;$(IncludePath)</IncludePath>
-    <LibraryPath>$(DXSDK_DIR)Lib\x86;C:\VulkanSDK\1.0.46.0\Lib32;$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(DXSDK_DIR)Lib\x86;C:\VulkanSDK\1.0.46.0\Lib32;$(SolutionDir)..\..\Lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <TargetExt>.lib</TargetExt>
