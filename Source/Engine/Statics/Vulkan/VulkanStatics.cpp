@@ -3,6 +3,9 @@
 //May need debug logging
 #include "../../Debug/Log/DebugLog.h"
 
+//Complete forward declarations
+#include "../../Graphics/GraphicsPipelineCache/GraphicsPipelineCache.h"
+
 using namespace EngineAPI::Statics;
 
 bool VulkanStatics::CommandBufferReset(VkCommandBuffer* cmdBuffer, bool shouldReleaseMemoryToPool)
@@ -117,6 +120,49 @@ VkDeviceSize VulkanStatics::CalculateAlignedMemoryOffsetShiftRight(VkDeviceSize 
 
 	//Done
 	return alignedOffset;
+}
+
+bool VulkanStatics::MergeGraphicsPipelineCaches(VkDevice* device,
+	EngineAPI::Graphics::GraphicsPipelineCache* destinationPCO,
+	EngineAPI::Graphics::GraphicsPipelineCache* sourcePipelineCachesArray, uint32_t sourcePipelinesCount)
+{
+	//
+	//TODO: Validate this
+	//
+
+	//Quick and dirty check
+	assert(destinationPCO != nullptr);
+	assert(sourcePipelineCachesArray != nullptr);
+	assert(sourcePipelinesCount > 0);
+
+	//Source array of PCOs
+	std::vector<VkPipelineCache> srcCaches(sourcePipelinesCount);
+	for (int i = 0; i < sourcePipelinesCount; i++)
+		srcCaches[i] = sourcePipelineCachesArray[i].GetVKPipelineCacheHandle();
+
+	//Do merge
+	VkResult result = vkMergePipelineCaches(*device, destinationPCO->GetVKPipelineCacheHandle(),
+		sourcePipelinesCount, srcCaches.data());
+
+	//Check for error
+	if (result != VK_SUCCESS)
+	{
+		EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanStatics::MergeGraphicsPipelineCaches() Error. Could not merge pipeline caches\n");
+		return false;
+	}
+
+	//Inform the destination PCO is has had other PCOs merged in to it
+	destinationPCO->OnPCOMergeEvent(true);
+
+	//Inform the source PCOs that it has been merged
+	for (int i = 0; i < sourcePipelinesCount; i++)
+		sourcePipelineCachesArray[i].OnPCOMergeEvent(false);
+	
+	//Cleanup
+	srcCaches.clear();
+
+	//Done
+	return true;
 }
 
 bool VulkanStatics::CreateVKTextureView(VkDevice* device, VkImageViewCreateInfo* viewCreateInfo, VkImageView* imageViewHandleOut)

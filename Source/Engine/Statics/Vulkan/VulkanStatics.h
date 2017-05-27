@@ -12,6 +12,15 @@
 //Vulkan
 #include <vulkan\vulkan.h>
 
+//Forward declarations
+namespace EngineAPI
+{
+	namespace Graphics
+	{
+		class GraphicsPipelineCache;
+	};
+};
+
 namespace EngineAPI
 {
 	namespace Statics
@@ -44,6 +53,13 @@ namespace EngineAPI
 
 			//Shifts an offset to the right such that it is memory aligned
 			static VkDeviceSize CalculateAlignedMemoryOffsetShiftRight(VkDeviceSize memoryOffset, VkDeviceSize memoryAlignmentRequirment);
+
+			//Graphics Pipeline
+			//
+			//Merges two Pipeline caches together. 
+			static bool MergeGraphicsPipelineCaches(VkDevice* device,
+				EngineAPI::Graphics::GraphicsPipelineCache* destinationPCO,
+				EngineAPI::Graphics::GraphicsPipelineCache* sourcePipelineCachesArray, uint32_t sourcePipelinesCount);
 
 			//Images
 			//

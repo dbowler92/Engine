@@ -29,6 +29,8 @@
     <ClCompile Include="..\Graphics\DeviceMemoryStore\Vulkan\VulkanDeviceMemoryStore.cpp" />
     <ClCompile Include="..\Graphics\Device\Vulkan\VulkanRenderDevice.cpp" />
     <ClCompile Include="..\Graphics\Framebuffer\Vulkan\VulkanFramebuffer.cpp" />
+    <ClCompile Include="..\Graphics\GraphicsPipelineCache\Vulkan\VulkanGraphicsPipelineCache.cpp" />
+    <ClCompile Include="..\Graphics\GraphicsPipelineState\Vulkan\VulkanGraphicsPipelineState.cpp" />
     <ClCompile Include="..\Graphics\Instance\Vulkan\VulkanRenderInstance.cpp" />
     <ClCompile Include="..\Graphics\Manager\GraphicsManager.cpp" />
     <ClCompile Include="..\Graphics\Manager\Vulkan\VulkanGraphicsManager.cpp" />
@@ -70,6 +72,10 @@
     <ClInclude Include="..\Graphics\Device\Vulkan\VulkanRenderDevice.h" />
     <ClInclude Include="..\Graphics\Framebuffer\Framebuffer.h" />
     <ClInclude Include="..\Graphics\Framebuffer\Vulkan\VulkanFramebuffer.h" />
+    <ClInclude Include="..\Graphics\GraphicsPipelineCache\GraphicsPipelineCache.h" />
+    <ClInclude Include="..\Graphics\GraphicsPipelineCache\Vulkan\VulkanGraphicsPipelineCache.h" />
+    <ClInclude Include="..\Graphics\GraphicsPipelineState\GraphicsPipelineState.h" />
+    <ClInclude Include="..\Graphics\GraphicsPipelineState\Vulkan\VulkanGraphicsPipelineState.h" />
     <ClInclude Include="..\Graphics\Instance\RenderInstance.h" />
     <ClInclude Include="..\Graphics\Instance\Vulkan\VulkanRenderInstance.h" />
     <ClInclude Include="..\Graphics\Manager\GraphicsManager.h" />
@@ -155,7 +161,7 @@
     <IntDir>$(SolutionDir)..\..\Temp\$(ProjectName)$(PlatformName)$(Configuration)\</IntDir>
     <OutDir>$(SolutionDir)..\..\Lib\$(PlatformName)$(Configuration)\</OutDir>
     <TargetExt>.lib</TargetExt>
-    <IncludePath>C:\Users\Dan\Documents\Programming\3DGameEngine\Game_Engine\3DGCCEngine\Source\Engine\3rdParty\DXUT\Optional;C:\Users\Dan\Documents\Programming\3DGameEngine\Game_Engine\3DGCCEngine\Source\Engine\3rdParty\DXUT\Core;$(DXSDK_DIR)Include;C:\VulkanSDK\1.0.46.0\Include;$(IncludePath)</IncludePath>
+    <IncludePath>C:\Users\Dan\Documents\Programming\3DGameEngine\Game_Engine\3DGCCEngine\Source\Engine\3rdParty\DXUT\Optional;C:\Users\Dan\Documents\Programming\3DGameEngine\Game_Engine\3DGCCEngine\Source\Engine\3rdParty\DXUT\Core;$(DXSDK_DIR)Include;C:\VulkanSDK\1.0.46.0\Include;C:\VulkanSDK\1.0.46.0\glslang;$(IncludePath)</IncludePath>
     <LibraryPath>$(DXSDK_DIR)Lib\x86;C:\VulkanSDK\1.0.46.0\Lib32;$(SolutionDir)..\..\Lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -171,7 +177,7 @@
     <IntDir>$(SolutionDir)..\..\Temp\$(ProjectName)$(PlatformName)$(Configuration)\</IntDir>
     <OutDir>$(SolutionDir)..\..\Lib\$(PlatformName)$(Configuration)\</OutDir>
     <TargetExt>.lib</TargetExt>
-    <IncludePath>C:\Users\Dan\Documents\Programming\3DGameEngine\Game_Engine\3DGCCEngine\Source\Engine\3rdParty\DXUT\Optional;C:\Users\Dan\Documents\Programming\3DGameEngine\Game_Engine\3DGCCEngine\Source\Engine\3rdParty\DXUT\Core;$(DXSDK_DIR)Include;C:\VulkanSDK\1.0.46.0\Include;$(IncludePath)</IncludePath>
+    <IncludePath>C:\Users\Dan\Documents\Programming\3DGameEngine\Game_Engine\3DGCCEngine\Source\Engine\3rdParty\DXUT\Optional;C:\Users\Dan\Documents\Programming\3DGameEngine\Game_Engine\3DGCCEngine\Source\Engine\3rdParty\DXUT\Core;$(DXSDK_DIR)Include;C:\VulkanSDK\1.0.46.0\Include;C:\VulkanSDK\1.0.46.0\glslang;$(IncludePath)</IncludePath>
     <LibraryPath>$(DXSDK_DIR)Lib\x86;C:\VulkanSDK\1.0.46.0\Lib32;$(SolutionDir)..\..\Lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">

@@ -1,5 +1,8 @@
 #include "VulkanShader.h"
 
+//Reading GLSL -to- SPIR-V format. 
+#include "SPIRV/GlslangToSpv.h"
+
 #include <fstream> //File reading -> Currently, we do not have any custom fle IO system. :(
 
 using namespace EngineAPI::Graphics::Platform;
@@ -14,13 +17,14 @@ void VulkanShader::Shutdown()
 }
 
 bool VulkanShader::InitVKShader(EngineAPI::Graphics::RenderDevice* renderingDevice,
-	const char* shaderFile, ShaderStage shaderStage, bool isPrecompiledSPIR)
+	const char* shaderFile, ShaderStage shaderStage, const char* shaderEntryPointNameString, bool isPrecompiledSPIR)
 {
 	//Cache info
 	shaderFile = shaderFile;
 	stage = shaderStage;
 	isPrecompiledShader = isPrecompiledSPIR;
 	cachedVKLogicalDevice = renderingDevice->GetVKLogicalDevice();
+	shaderEntryPointName = shaderEntryPointNameString;
 
 	//Print info on what we are doing
 	EngineAPI::Debug::DebugLog::PrintInfoMessage("VulkanShader::InitVKShader(): Loading shader: ");
@@ -78,7 +82,7 @@ bool VulkanShader::InitVKShader(EngineAPI::Graphics::RenderDevice* renderingDevi
 		EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanShader::InitVKShader() Error: Failed to create shader module\n");
 		return false;
 	}
-
+	
 	//Done
 	return true;
 }
@@ -93,13 +97,33 @@ bool VulkanShader::RecompileShader()
 		return false;
 	}
 
+	//TODO
+	EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanShader::RecompileShader() Error: Not yet implemented");
+	return false;
+
 	//Done
 	return true;
 }
 
+void VulkanShader::FillVKPipelineShaderStageDescriptionStruct(VkPipelineShaderStageCreateInfo* createInfoOut)
+{
+	//Pipeline description for this shader module
+	*createInfoOut = {};
+	createInfoOut->sType = VK_STRUCTURE_TYPE_PIPELINE_SHADER_STAGE_CREATE_INFO;
+	createInfoOut->pNext = nullptr;
+	createInfoOut->flags = 0;
+	createInfoOut->stage = (VkShaderStageFlagBits)stage;
+	createInfoOut->module = vkShaderModuleHandle;
+	createInfoOut->pName = shaderEntryPointName.c_str(); //Entry point for the shader. 
+	createInfoOut->pSpecializationInfo = nullptr; //TODO?
+}
+
 bool VulkanShader::ConvertShaderFromGLSLToSPIRVFormat(const char* glslCode, uint32_t glslCodeSize, std::vector<char>* spirvCodeOut)
 {
-	
+	//TODO
+	EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanShader::ConvertShaderFromGLSLToSPIRVFormat() Error: Not yet implemented");
+	return false;
+
 	//Done
 	return true;
 }

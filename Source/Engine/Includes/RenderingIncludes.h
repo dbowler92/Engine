@@ -15,3 +15,7 @@
 
 //Shaders && programs/materials
 #include "../Graphics/Shader/Shader.h"
+
+//Pipeline managements
+#include "../Graphics/GraphicsPipelineCache/GraphicsPipelineCache.h"
+#include "../Graphics/GraphicsPipelineState/GraphicsPipelineState.h"

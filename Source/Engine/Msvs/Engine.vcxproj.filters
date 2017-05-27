@@ -169,8 +169,17 @@
     <Filter Include="Src\Graphics\Shader\Vulkan">
       <UniqueIdentifier>{cb482f13-6b04-402f-a42f-ed6bd6ec918a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Src\Graphics\Program">
+    <Filter Include="Src\Graphics\GraphicsPipelineState">
       <UniqueIdentifier>{91065eb9-f4fc-4860-9d61-fcf38356a7ae}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Graphics\GraphicsPipelineState\Vulkan">
+      <UniqueIdentifier>{1cf74fe2-f7ae-4ecb-8672-543ec7e55ed3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Graphics\GraphicsPipelineCache">
+      <UniqueIdentifier>{db3a36be-8d05-4599-82be-91f9c7fe0867}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Graphics\GraphicsPipelineCache\Vulkan">
+      <UniqueIdentifier>{3a3eadc4-9c28-4029-b8a7-c7fb159e1ddf}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -251,6 +260,12 @@
     </ClCompile>
     <ClCompile Include="..\Graphics\Shader\Vulkan\VulkanShader.cpp">
       <Filter>Src\Graphics\Shader\Vulkan</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Graphics\GraphicsPipelineState\Vulkan\VulkanGraphicsPipelineState.cpp">
+      <Filter>Src\Graphics\GraphicsPipelineState\Vulkan</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Graphics\GraphicsPipelineCache\Vulkan\VulkanGraphicsPipelineCache.cpp">
+      <Filter>Src\Graphics\GraphicsPipelineCache\Vulkan</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -409,6 +424,18 @@
     </ClInclude>
     <ClInclude Include="..\Graphics\Shader\Shader.h">
       <Filter>Src\Graphics\Shader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Graphics\GraphicsPipelineState\Vulkan\VulkanGraphicsPipelineState.h">
+      <Filter>Src\Graphics\GraphicsPipelineState\Vulkan</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Graphics\GraphicsPipelineState\GraphicsPipelineState.h">
+      <Filter>Src\Graphics\GraphicsPipelineState</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Graphics\GraphicsPipelineCache\Vulkan\VulkanGraphicsPipelineCache.h">
+      <Filter>Src\Graphics\GraphicsPipelineCache\Vulkan</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Graphics\GraphicsPipelineCache\GraphicsPipelineCache.h">
+      <Filter>Src\Graphics\GraphicsPipelineCache</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

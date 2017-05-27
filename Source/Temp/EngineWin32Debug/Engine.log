@@ -1,11 +1,5 @@
-﻿  VulkanSwapchain.cpp
-c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\swapchain\vulkan\vulkanswapchain.cpp(128): warning C4018: '<': signed/unsigned mismatch
-c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\swapchain\vulkan\vulkanswapchain.cpp(141): warning C4018: '<': signed/unsigned mismatch
-c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\swapchain\vulkan\vulkanswapchain.cpp(373): warning C4018: '<': signed/unsigned mismatch
-c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\swapchain\vulkan\vulkanswapchain.cpp(396): warning C4018: '<': signed/unsigned mismatch
-c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\swapchain\vulkan\vulkanswapchain.cpp(547): warning C4018: '<': signed/unsigned mismatch
-c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\swapchain\vulkan\vulkanswapchain.cpp(640): warning C4018: '<': signed/unsigned mismatch
-c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\swapchain\vulkan\vulkanswapchain.cpp(678): warning C4018: '<': signed/unsigned mismatch
-c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\swapchain\vulkan\vulkanswapchain.cpp(693): warning C4018: '<': signed/unsigned mismatch
-c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\swapchain\vulkan\vulkanswapchain.cpp(755): warning C4552: '!=': operator has no effect; expected operator with side-effect
+﻿  VulkanGraphicsPipelineCache.cpp
+  Generating Code...
+  Skipping... (no relevant changes detected)
+  VulkanStatics.cpp
   Engine.vcxproj -> C:\Users\B1032464\Documents\Programming\Engine\Engine\Source\Engine\Msvs\..\..\Lib\Win32Debug\Engine.lib
