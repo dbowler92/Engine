@@ -102,9 +102,14 @@ bool SandboxApplication::InitApplication()
 
 
 	//
-	//Pipeline
+	//PCO
 	//
+	assert(graphicsPCO.InitVKPipelineCache(device));
 
+	//
+	//Pipeline state
+	//
+	assert(graphicsPipelineState.InitVKGraphicsPipelineState(device));
 
 	return true;
 }
@@ -122,7 +127,8 @@ bool SandboxApplication::ShutdownApplication()
 	testShaderSPIRVVS.Shutdown();
 	testShaderSPIRVFS.Shutdown();
 
-	//Shutdown pipeline state
+	//Shutdown pipeline data
+	graphicsPCO.Shutdown();
 	graphicsPipelineState.Shutdown();
 
 	return true;

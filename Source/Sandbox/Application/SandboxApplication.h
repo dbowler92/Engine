@@ -44,5 +44,6 @@ protected:
 	EngineAPI::Graphics::Shader testShaderSPIRVVS;
 	EngineAPI::Graphics::Shader testShaderSPIRVFS;
 
+	EngineAPI::Graphics::GraphicsPipelineCache graphicsPCO;
 	EngineAPI::Graphics::GraphicsPipelineState graphicsPipelineState;
 }; 

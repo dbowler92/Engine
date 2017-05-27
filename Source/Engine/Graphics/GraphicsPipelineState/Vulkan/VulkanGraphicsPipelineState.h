@@ -30,6 +30,15 @@ namespace EngineAPI
 				//Shutsdown the pipeline object
 				void Shutdown();
 
+				//Inits the VkPipeline object
+				bool InitVKGraphicsPipelineState(EngineAPI::Graphics::RenderDevice* renderingDevice);
+
+			protected:
+				//Pipeline handle
+				VkPipeline vkPipelineHandle = VK_NULL_HANDLE;
+
+				//Cached device used to create this pipeline object
+				VkDevice cachedVKLogicalDevice = VK_NULL_HANDLE;
 			};
 		};
 	};

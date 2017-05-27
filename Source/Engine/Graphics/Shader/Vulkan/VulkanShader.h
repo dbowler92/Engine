@@ -79,8 +79,6 @@ namespace EngineAPI
 			private:
 				//Simple function that reads a file
 				bool ReadFile(const char* filename, std::vector<char>* fileOut);
-
-
 			};
 		};
 	};
