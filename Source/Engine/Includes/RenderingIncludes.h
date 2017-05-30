@@ -14,6 +14,7 @@
 #include "../Rendering/VertexBuffer/VertexBuffer.h"
 
 //Shaders && programs/materials
+#include "../Graphics/Program/Program.h"
 #include "../Graphics/Shader/Shader.h"
 
 //Pipeline managements

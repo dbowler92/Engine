@@ -80,6 +80,9 @@ namespace EngineAPI
 				RenderDevice* GetRenderingDevice() { return &renderingDevice; };
 				Swapchain* GetRenderingSwapchain() { return &renderingSwapchain; };
 
+				//Gets the main render pass
+				RenderPass* GetRenderPass() { return &swapchainRenderPass; };
+
 			public:
 				//Sets the clear values
 				bool SetSwapchainClearValues(UNorm32Colour colourBufferClear, float depthClear, uint32_t stencilClear);

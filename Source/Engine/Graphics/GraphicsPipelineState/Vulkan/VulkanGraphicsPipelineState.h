@@ -12,8 +12,32 @@
 //Device used to create this...
 #include "../../../Graphics/Device/RenderDevice.h"
 
+//Classes required when creating this pipeline state object
+#include "../../../Graphics/RenderPass/RenderPass.h"
+#include "../../../Graphics/GraphicsPipelineCache/GraphicsPipelineCache.h"
+#include "../../../Graphics/Program/Program.h"
+
 //Vulkan header
 #include <vulkan/vulkan.h>
+
+//Represents the pipeline state. Currently, this uses VK structs. Later, we will
+//want to abstract this using custom classes
+struct PipelineStateDescription
+{
+	VkPipelineDynamicStateCreateInfo* dynamicState;
+	VkPipelineVertexInputStateCreateInfo* vertexInputStateInfo;
+	VkPipelineInputAssemblyStateCreateInfo* inputAssemblyInfo;
+	VkPipelineRasterizationStateCreateInfo* rasterStateInfo;
+
+	VkPipelineColorBlendAttachmentState* colorBlendAttachmentStateInfo;
+	uint32_t colourBlendAttachmentStateCount; //One per render target
+
+	VkPipelineColorBlendStateCreateInfo* colorBlendStateInfo;
+	VkPipelineViewportStateCreateInfo* viewportStateInfo;
+	VkPipelineDepthStencilStateCreateInfo* depthStencilStateInfo;
+	VkPipelineMultisampleStateCreateInfo* multiSampleStateInfo;
+	VkPipelineTessellationStateCreateInfo* tessStateInfo;
+};
 
 namespace EngineAPI
 {
@@ -31,7 +55,9 @@ namespace EngineAPI
 				void Shutdown();
 
 				//Inits the VkPipeline object
-				bool InitVKGraphicsPipelineState(EngineAPI::Graphics::RenderDevice* renderingDevice);
+				bool InitVKGraphicsPipelineState(EngineAPI::Graphics::RenderDevice* renderingDevice, 
+					EngineAPI::Graphics::GraphicsPipelineCache* optionalPipelineCache, EngineAPI::Graphics::RenderPass* renderPass,
+					EngineAPI::Graphics::Program* program, PipelineStateDescription* pipelineState);
 
 			protected:
 				//Pipeline handle

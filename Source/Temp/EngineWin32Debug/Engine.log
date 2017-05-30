@@ -1,2 +1,7 @@
-﻿  VulkanGraphicsPipelineState.cpp
+﻿  Win32Application.cpp
+  Generating Code...
+  Skipping... (no relevant changes detected)
+  EngineMain.cpp
+  VulkanGraphicsManager.cpp
+  GraphicsManager.cpp
   Engine.vcxproj -> C:\Users\B1032464\Documents\Programming\Engine\Engine\Source\Engine\Msvs\..\..\Lib\Win32Debug\Engine.lib

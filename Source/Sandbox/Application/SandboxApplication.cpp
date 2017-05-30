@@ -97,9 +97,12 @@ bool SandboxApplication::InitApplication()
 	//assert(testShaderVS.InitVKShader(device, SHADER_ASSETS_FOLDER"TestShaders/Draw.vert", SHADER_STAGE_VERTEX_SHADER, "main", false));
 	//assert(testShaderFS.InitVKShader(device, SHADER_ASSETS_FOLDER"TestShaders/Draw.frag", SHADER_STAGE_FRAGMENT_SHADER, "main", false));
 
-	assert(testShaderSPIRVVS.InitVKShader(device, SHADER_ASSETS_FOLDER"TestShaders/Draw-vert.spv", SHADER_STAGE_VERTEX_SHADER, "main", true));
-	assert(testShaderSPIRVFS.InitVKShader(device, SHADER_ASSETS_FOLDER"TestShaders/Draw-frag.spv", SHADER_STAGE_FRAGMENT_SHADER, "main", true));
+	//assert(testShaderSPIRVVS.InitVKShader(device, SHADER_ASSETS_FOLDER"TestShaders/Draw-vert.spv", SHADER_STAGE_VERTEX_SHADER, "main", true));
+	//assert(testShaderSPIRVFS.InitVKShader(device, SHADER_ASSETS_FOLDER"TestShaders/Draw-frag.spv", SHADER_STAGE_FRAGMENT_SHADER, "main", true));
 
+
+	assert(testProgramSPIR.CreateVKShaderModule(device, SHADER_ASSETS_FOLDER"TestShaders/Draw-vert.spv", SHADER_STAGE_VERTEX_SHADER, "main", true));
+	assert(testProgramSPIR.CreateVKShaderModule(device, SHADER_ASSETS_FOLDER"TestShaders/Draw-frag.spv", SHADER_STAGE_FRAGMENT_SHADER, "main", true));
 
 	//
 	//PCO
@@ -109,7 +112,10 @@ bool SandboxApplication::InitApplication()
 	//
 	//Pipeline state
 	//
-	assert(graphicsPipelineState.InitVKGraphicsPipelineState(device));
+	PipelineStateDescription pipelineStateDesc = {};
+	pipelineStateDesc.colourBlendAttachmentStateCount = 1;
+
+	assert(graphicsPipelineState.InitVKGraphicsPipelineState(device, &graphicsPCO, graphicsSubsystem->GetRenderPass(), &testProgramSPIR, &pipelineStateDesc));
 
 	return true;
 }
@@ -126,6 +132,8 @@ bool SandboxApplication::ShutdownApplication()
 	testShaderFS.Shutdown();
 	testShaderSPIRVVS.Shutdown();
 	testShaderSPIRVFS.Shutdown();
+
+	testProgramSPIR.Shutdown(true);
 
 	//Shutdown pipeline data
 	graphicsPCO.Shutdown();

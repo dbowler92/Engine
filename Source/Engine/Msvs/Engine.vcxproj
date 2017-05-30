@@ -34,6 +34,7 @@
     <ClCompile Include="..\Graphics\Instance\Vulkan\VulkanRenderInstance.cpp" />
     <ClCompile Include="..\Graphics\Manager\GraphicsManager.cpp" />
     <ClCompile Include="..\Graphics\Manager\Vulkan\VulkanGraphicsManager.cpp" />
+    <ClCompile Include="..\Graphics\Program\Vulkan\VulkanProgram.cpp" />
     <ClCompile Include="..\Graphics\RenderCommandBuffer\Vulkan\VulkanRenderCommandBuffer.cpp" />
     <ClCompile Include="..\Graphics\RenderPass\Vulkan\VulkanRenderPass.cpp" />
     <ClCompile Include="..\Graphics\Shader\Vulkan\VulkanShader.cpp" />
@@ -80,6 +81,8 @@
     <ClInclude Include="..\Graphics\Instance\Vulkan\VulkanRenderInstance.h" />
     <ClInclude Include="..\Graphics\Manager\GraphicsManager.h" />
     <ClInclude Include="..\Graphics\Manager\Vulkan\VulkanGraphicsManager.h" />
+    <ClInclude Include="..\Graphics\Program\Program.h" />
+    <ClInclude Include="..\Graphics\Program\Vulkan\VulkanProgram.h" />
     <ClInclude Include="..\Graphics\RenderCommandBuffer\RenderCommandBuffer.h" />
     <ClInclude Include="..\Graphics\RenderCommandBuffer\Vulkan\VulkanRenderCommandBuffer.h" />
     <ClInclude Include="..\Graphics\RenderPass\RenderPass.h" />

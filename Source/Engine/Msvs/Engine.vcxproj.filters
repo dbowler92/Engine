@@ -181,6 +181,12 @@
     <Filter Include="Src\Graphics\GraphicsPipelineCache\Vulkan">
       <UniqueIdentifier>{3a3eadc4-9c28-4029-b8a7-c7fb159e1ddf}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Src\Graphics\Program">
+      <UniqueIdentifier>{ed8ffa1f-f71e-4313-ad7e-c623860c7ec3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Graphics\Program\Vulkan">
+      <UniqueIdentifier>{d3966a75-1ac8-4f03-ab95-e79b41787fae}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Main\EngineMain.cpp">
@@ -266,6 +272,9 @@
     </ClCompile>
     <ClCompile Include="..\Graphics\GraphicsPipelineCache\Vulkan\VulkanGraphicsPipelineCache.cpp">
       <Filter>Src\Graphics\GraphicsPipelineCache\Vulkan</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Graphics\Program\Vulkan\VulkanProgram.cpp">
+      <Filter>Src\Graphics\Program\Vulkan</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -436,6 +445,12 @@
     </ClInclude>
     <ClInclude Include="..\Graphics\GraphicsPipelineCache\GraphicsPipelineCache.h">
       <Filter>Src\Graphics\GraphicsPipelineCache</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Graphics\Program\Vulkan\VulkanProgram.h">
+      <Filter>Src\Graphics\Program\Vulkan</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Graphics\Program\Program.h">
+      <Filter>Src\Graphics\Program</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
