@@ -13,7 +13,7 @@ void VulkanGraphicsPipelineState::Shutdown()
 
 bool VulkanGraphicsPipelineState::InitVKGraphicsPipelineState(EngineAPI::Graphics::RenderDevice* renderingDevice, 
 	EngineAPI::Graphics::GraphicsPipelineCache* optionalPipelineCache, EngineAPI::Graphics::RenderPass* renderPass,
-	EngineAPI::Graphics::Program* program, PipelineStateDescription* pipelineState)
+	EngineAPI::Graphics::Program* program, PipelineStateDescription* pipelineState, bool createUsingOptimiseFlag)
 {
 	//Cache data
 	cachedVKLogicalDevice = renderingDevice->GetVKLogicalDevice();
@@ -23,12 +23,14 @@ bool VulkanGraphicsPipelineState::InitVKGraphicsPipelineState(EngineAPI::Graphic
 	graphicsPipelineCreateInfo.sType = VK_STRUCTURE_TYPE_GRAPHICS_PIPELINE_CREATE_INFO;
 	graphicsPipelineCreateInfo.pNext = nullptr;
 	graphicsPipelineCreateInfo.flags = 0; //TODO
+	if (createUsingOptimiseFlag)
+		graphicsPipelineCreateInfo.flags = VK_PIPELINE_CREATE_DISABLE_OPTIMIZATION_BIT;
 	
 	//States
 	graphicsPipelineCreateInfo.pVertexInputState = pipelineState->vertexInputStateInfo;
 	graphicsPipelineCreateInfo.pInputAssemblyState = pipelineState->inputAssemblyInfo;
 	graphicsPipelineCreateInfo.pRasterizationState = pipelineState->rasterStateInfo;
-	graphicsPipelineCreateInfo.pColorBlendState = pipelineState->colorBlendStateInfo;
+	graphicsPipelineCreateInfo.pColorBlendState = pipelineState->colourBlendStateInfo;
 	graphicsPipelineCreateInfo.pTessellationState = pipelineState->tessStateInfo;
 	graphicsPipelineCreateInfo.pMultisampleState = pipelineState->multiSampleStateInfo;
 	graphicsPipelineCreateInfo.pDynamicState = pipelineState->dynamicState;

@@ -1,7 +1,3 @@
-﻿  Win32Application.cpp
-  Generating Code...
-  Skipping... (no relevant changes detected)
-  EngineMain.cpp
-  VulkanGraphicsManager.cpp
-  GraphicsManager.cpp
+﻿  VulkanGraphicsPipelineState.cpp
+c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\graphicspipelinestate\vulkan\vulkangraphicspipelinestate.cpp(42): warning C4018: '<': signed/unsigned mismatch
   Engine.vcxproj -> C:\Users\B1032464\Documents\Programming\Engine\Engine\Source\Engine\Msvs\..\..\Lib\Win32Debug\Engine.lib

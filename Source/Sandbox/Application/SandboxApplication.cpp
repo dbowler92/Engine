@@ -99,8 +99,7 @@ bool SandboxApplication::InitApplication()
 
 	//assert(testShaderSPIRVVS.InitVKShader(device, SHADER_ASSETS_FOLDER"TestShaders/Draw-vert.spv", SHADER_STAGE_VERTEX_SHADER, "main", true));
 	//assert(testShaderSPIRVFS.InitVKShader(device, SHADER_ASSETS_FOLDER"TestShaders/Draw-frag.spv", SHADER_STAGE_FRAGMENT_SHADER, "main", true));
-
-
+	
 	assert(testProgramSPIR.CreateVKShaderModule(device, SHADER_ASSETS_FOLDER"TestShaders/Draw-vert.spv", SHADER_STAGE_VERTEX_SHADER, "main", true));
 	assert(testProgramSPIR.CreateVKShaderModule(device, SHADER_ASSETS_FOLDER"TestShaders/Draw-frag.spv", SHADER_STAGE_FRAGMENT_SHADER, "main", true));
 
@@ -112,10 +111,41 @@ bool SandboxApplication::InitApplication()
 	//
 	//Pipeline state
 	//
+	VkPipelineDynamicStateCreateInfo dynamicState = {};
+
+	VkPipelineVertexInputStateCreateInfo vertexInputStateInfo = {};
+
+	VkPipelineInputAssemblyStateCreateInfo inputAssemblyInfo = {};
+
+	VkPipelineRasterizationStateCreateInfo rasterStateInfo = {};
+
+	VkPipelineColorBlendStateCreateInfo colourBlendStateInfo = {};
+
+	VkPipelineViewportStateCreateInfo viewportStateInfo = {};
+
+	VkPipelineDepthStencilStateCreateInfo depthStencilStateInfo = {};
+
+	VkPipelineMultisampleStateCreateInfo multiSampleStateInfo = {};
+
+	VkPipelineTessellationStateCreateInfo tessStateInfo = {};
+
+	VkPipelineColorBlendAttachmentState colourBlendAttachmentStateInfo[1];
+	colourBlendAttachmentStateInfo[0] = {};
+
 	PipelineStateDescription pipelineStateDesc = {};
 	pipelineStateDesc.colourBlendAttachmentStateCount = 1;
+	pipelineStateDesc.colourBlendAttachmentStateInfo = &colourBlendAttachmentStateInfo[0];
+	pipelineStateDesc.vertexInputStateInfo = &vertexInputStateInfo;
+	pipelineStateDesc.inputAssemblyInfo = &inputAssemblyInfo;
+	pipelineStateDesc.rasterStateInfo = &rasterStateInfo;
+	pipelineStateDesc.colourBlendStateInfo = &colourBlendStateInfo;
+	pipelineStateDesc.tessStateInfo = &tessStateInfo;
+	pipelineStateDesc.multiSampleStateInfo = &multiSampleStateInfo;
+	pipelineStateDesc.dynamicState = &dynamicState;
+	pipelineStateDesc.viewportStateInfo = &viewportStateInfo;
+	pipelineStateDesc.depthStencilStateInfo = &depthStencilStateInfo;
 
-	assert(graphicsPipelineState.InitVKGraphicsPipelineState(device, &graphicsPCO, graphicsSubsystem->GetRenderPass(), &testProgramSPIR, &pipelineStateDesc));
+	assert(graphicsPipelineState.InitVKGraphicsPipelineState(device, &graphicsPCO, graphicsSubsystem->GetRenderPass(), &testProgramSPIR, &pipelineStateDesc, true));
 
 	return true;
 }

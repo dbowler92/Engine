@@ -29,10 +29,10 @@ struct PipelineStateDescription
 	VkPipelineInputAssemblyStateCreateInfo* inputAssemblyInfo;
 	VkPipelineRasterizationStateCreateInfo* rasterStateInfo;
 
-	VkPipelineColorBlendAttachmentState* colorBlendAttachmentStateInfo;
+	VkPipelineColorBlendAttachmentState* colourBlendAttachmentStateInfo;
 	uint32_t colourBlendAttachmentStateCount; //One per render target
 
-	VkPipelineColorBlendStateCreateInfo* colorBlendStateInfo;
+	VkPipelineColorBlendStateCreateInfo* colourBlendStateInfo;
 	VkPipelineViewportStateCreateInfo* viewportStateInfo;
 	VkPipelineDepthStencilStateCreateInfo* depthStencilStateInfo;
 	VkPipelineMultisampleStateCreateInfo* multiSampleStateInfo;
@@ -57,7 +57,7 @@ namespace EngineAPI
 				//Inits the VkPipeline object
 				bool InitVKGraphicsPipelineState(EngineAPI::Graphics::RenderDevice* renderingDevice, 
 					EngineAPI::Graphics::GraphicsPipelineCache* optionalPipelineCache, EngineAPI::Graphics::RenderPass* renderPass,
-					EngineAPI::Graphics::Program* program, PipelineStateDescription* pipelineState);
+					EngineAPI::Graphics::Program* program, PipelineStateDescription* pipelineState, bool createUsingOptimiseFlag);
 
 			protected:
 				//Pipeline handle
