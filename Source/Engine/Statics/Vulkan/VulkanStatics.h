@@ -144,10 +144,23 @@ namespace EngineAPI
 				const VkPipelineColorBlendAttachmentState* attachments, uint32_t attachmentsCount,
 				const float blendConstants[4] = DEFAULT_BLEND_CONSTANTS);
 
-			//Viewport(s) state
+			//Viewport(s) state && scissor states
 			static void GeneratePipelineViewportStateCreateStruct(VkPipelineViewportStateCreateInfo* structOut, 
 				VkViewport* viewports, uint32_t viewportsCount, 
 				const VkRect2D* scissors, uint32_t scissorsCount);
+
+			//Depth/Stencil state
+			static void GeneratePipelineDepthStencilStateCreateStruct(VkPipelineDepthStencilStateCreateInfo* structOut,
+				VkBool32 depthTestEnabled, VkBool32 depthWriteEnabled, VkBool32 stencilTestEnabled = VK_FALSE, VkBool32 depthBoundsTestEnabled = VK_FALSE,
+				VkCompareOp depthCompareOp = VK_COMPARE_OP_LESS_OR_EQUAL,
+				VkStencilOpState frontStencilOp = {}, VkStencilOpState backStencilOp = {},
+				float minDepthBounds = 0.0f, float maxDepthBounds = 1.0f);
+
+			//Multisample state
+			static void GeneratePipelineMultisampleStateCreateStruct(VkPipelineMultisampleStateCreateInfo* structOut, 
+				VkSampleCountFlagBits sampleCountFlag, VkBool32 sampleShadingEnabled = VK_FALSE, 
+				float minSampleShading = 0.0f, const VkSampleMask* sampleMask = nullptr, 
+				VkBool32 alphaToCoverageEnabled = VK_FALSE, VkBool32 alphaToOneEnabled = VK_FALSE);
 		};
 	};
 };

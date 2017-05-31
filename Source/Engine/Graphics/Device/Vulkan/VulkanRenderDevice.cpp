@@ -84,6 +84,7 @@ bool VulkanRenderDevice::InitVKLogicalDeviceAndQueues(EngineAPI::OS::OSWindow* o
 
 	//Requested features
 	VkPhysicalDeviceFeatures vkDeviceEnabledFeaturesArray = {};
+	vkDeviceEnabledFeaturesArray.depthClamp = VK_TRUE;
 	//if (!ValidateVKDeviceFeatures(&vkDeviceEnabledFeaturesArray))
 	//	return false;
 

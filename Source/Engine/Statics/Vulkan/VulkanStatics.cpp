@@ -490,3 +490,48 @@ void VulkanStates::GeneratePipelineViewportStateCreateStruct(VkPipelineViewportS
 	structOut->pScissors = scissors;
 	structOut->scissorCount = scissorsCount;
 }
+
+void VulkanStates::GeneratePipelineDepthStencilStateCreateStruct(VkPipelineDepthStencilStateCreateInfo* structOut,
+	VkBool32 depthTestEnabled, VkBool32 depthWriteEnabled, VkBool32 stencilTestEnabled, VkBool32 depthBoundsTestEnabled,
+	VkCompareOp depthCompareOp,
+	VkStencilOpState frontStencilOp, VkStencilOpState backStencilOp,
+	float minDepthBounds, float maxDepthBounds)
+{
+	assert(structOut != nullptr);
+
+	structOut->sType = VK_STRUCTURE_TYPE_PIPELINE_DEPTH_STENCIL_STATE_CREATE_INFO;
+	structOut->pNext = nullptr;
+	structOut->flags = 0;
+
+	structOut->depthTestEnable = depthTestEnabled;
+	structOut->depthWriteEnable = depthWriteEnabled;
+	structOut->depthCompareOp = depthCompareOp;
+	structOut->depthBoundsTestEnable = depthBoundsTestEnabled;
+
+	structOut->stencilTestEnable = stencilTestEnabled;
+	structOut->front = frontStencilOp;
+	structOut->back = backStencilOp;
+
+	structOut->minDepthBounds = minDepthBounds;
+	structOut->maxDepthBounds = maxDepthBounds;
+}
+
+void VulkanStates::GeneratePipelineMultisampleStateCreateStruct(VkPipelineMultisampleStateCreateInfo* structOut,
+	VkSampleCountFlagBits sampleCountFlag, VkBool32 sampleShadingEnabled,
+	float minSampleShading, const VkSampleMask* sampleMask,
+	VkBool32 alphaToCoverageEnabled, VkBool32 alphaToOneEnabled)
+{
+	assert(structOut != nullptr);
+
+	structOut->sType = VK_STRUCTURE_TYPE_PIPELINE_MULTISAMPLE_STATE_CREATE_INFO;
+	structOut->pNext = nullptr;
+	structOut->flags = 0;
+
+	structOut->rasterizationSamples = sampleCountFlag;
+	structOut->sampleShadingEnable = sampleShadingEnabled;
+	structOut->minSampleShading = minSampleShading;
+	structOut->pSampleMask = sampleMask;
+
+	structOut->alphaToCoverageEnable = alphaToCoverageEnabled;
+	structOut->alphaToOneEnable = alphaToOneEnabled;
+}

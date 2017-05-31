@@ -28,10 +28,6 @@ struct PipelineStateDescription
 	VkPipelineVertexInputStateCreateInfo* vertexInputStateInfo;
 	VkPipelineInputAssemblyStateCreateInfo* inputAssemblyInfo;
 	VkPipelineRasterizationStateCreateInfo* rasterStateInfo;
-
-	VkPipelineColorBlendAttachmentState* colourBlendAttachmentStateInfo;
-	uint32_t colourBlendAttachmentStateCount; //One per render target
-
 	VkPipelineColorBlendStateCreateInfo* colourBlendStateInfo;
 	VkPipelineViewportStateCreateInfo* viewportStateInfo;
 	VkPipelineDepthStencilStateCreateInfo* depthStencilStateInfo;
@@ -62,6 +58,9 @@ namespace EngineAPI
 			protected:
 				//Pipeline handle
 				VkPipeline vkPipelineHandle = VK_NULL_HANDLE;
+
+				//Pipeline layout
+				VkPipelineLayout vkPipelineLayout = VK_NULL_HANDLE;
 
 				//Cached device used to create this pipeline object
 				VkDevice cachedVKLogicalDevice = VK_NULL_HANDLE;

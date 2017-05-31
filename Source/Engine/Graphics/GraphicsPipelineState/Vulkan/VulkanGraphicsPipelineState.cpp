@@ -4,6 +4,12 @@ using namespace EngineAPI::Graphics::Platform;
 
 void VulkanGraphicsPipelineState::Shutdown()
 {
+	if (vkPipelineLayout)
+	{
+		vkDestroyPipelineLayout(cachedVKLogicalDevice, vkPipelineLayout, nullptr);
+		vkPipelineLayout = VK_NULL_HANDLE;
+	}
+
 	if (vkPipelineHandle)
 	{
 		vkDestroyPipeline(cachedVKLogicalDevice, vkPipelineHandle, nullptr);
@@ -18,6 +24,16 @@ bool VulkanGraphicsPipelineState::InitVKGraphicsPipelineState(EngineAPI::Graphic
 	//Cache data
 	cachedVKLogicalDevice = renderingDevice->GetVKLogicalDevice();
 	
+	//Pipeline layout
+	VkPipelineLayoutCreateInfo pPipelineLayoutCreateInfo = {};
+	pPipelineLayoutCreateInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_LAYOUT_CREATE_INFO;
+	VkResult result = vkCreatePipelineLayout(cachedVKLogicalDevice, &pPipelineLayoutCreateInfo, NULL, &vkPipelineLayout);
+	if (result != VK_SUCCESS)
+	{
+		EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanGraphicsPipelineState::InitVKGraphicsPipelineState(): Error creating pipeline layout\n");
+		return false;
+	}
+
 	//Description
 	VkGraphicsPipelineCreateInfo graphicsPipelineCreateInfo = {};
 	graphicsPipelineCreateInfo.sType = VK_STRUCTURE_TYPE_GRAPHICS_PIPELINE_CREATE_INFO;
@@ -49,13 +65,16 @@ bool VulkanGraphicsPipelineState::InitVKGraphicsPipelineState(EngineAPI::Graphic
 	graphicsPipelineCreateInfo.renderPass = renderPass->GetVKRenderPassHandle();
 	graphicsPipelineCreateInfo.subpass = 0;
 
+	//Set pipeline layout
+	graphicsPipelineCreateInfo.layout = vkPipelineLayout;
+
 	//PCO (Optional - can be null)
 	VkPipelineCache optionalPCOHandle = VK_NULL_HANDLE;
 	if (optionalPipelineCache)
 		optionalPCOHandle = optionalPipelineCache->GetVKPipelineCacheHandle();
 
 	//Create pipeline object
-	VkResult result = vkCreateGraphicsPipelines(cachedVKLogicalDevice, optionalPCOHandle, 1, &graphicsPipelineCreateInfo, nullptr, &vkPipelineHandle);
+	result = vkCreateGraphicsPipelines(cachedVKLogicalDevice, optionalPCOHandle, 1, &graphicsPipelineCreateInfo, nullptr, &vkPipelineHandle);
 	if (result != VK_SUCCESS)
 	{
 		EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanGraphicsPipelineState::InitVKGraphicsPipelineState() Error creating pipeline object\n");

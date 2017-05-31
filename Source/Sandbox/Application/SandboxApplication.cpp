@@ -152,8 +152,8 @@ bool SandboxApplication::InitApplication()
 	viewport.height = graphicsSubsystem->GetRenderingSwapchain()->GetSwapchainDimentions().height;
 	viewport.x = 0;
 	viewport.y = 0;
-	viewport.maxDepth = 1.0f;
-	viewport.minDepth = 0.0f;
+	viewport.maxDepth = 1.0f; //VERIFY
+	viewport.minDepth = 0.0f; //VERIFY
 
 	//TODO: Get scissor rect from viewport struct???
 	VkRect2D scissor = {};
@@ -163,24 +163,32 @@ bool SandboxApplication::InitApplication()
 		nullptr, 1, nullptr, 1); //VERIFY!
 
 	VkPipelineDepthStencilStateCreateInfo depthStencilStateInfo = {};
-	
+	EngineAPI::Statics::VulkanStates::GeneratePipelineDepthStencilStateCreateStruct(&depthStencilStateInfo,
+		VK_TRUE, VK_TRUE); //VERIFY (Stencil front/back in particular + depth bounds!!!!)
+
 	VkPipelineMultisampleStateCreateInfo multiSampleStateInfo = {};
+#if GRAPHICS_CONFIG_ENABLE_MSAA
+	EngineAPI::Statics::VulkanStates::GeneratePipelineMultisampleStateCreateStruct(&multiSampleStateInfo,
+		GRAPHICS_CONFIG_MSAA_SAMPLE_COUNT);
+#else
+	EngineAPI::Statics::VulkanStates::GeneratePipelineMultisampleStateCreateStruct(&multiSampleStateInfo,
+		VK_SAMPLE_COUNT_1_BIT);
+#endif
 
+	//TODO:
 	VkPipelineTessellationStateCreateInfo tessStateInfo = {};
-
+	
 
 	PipelineStateDescription pipelineStateDesc = {};
-	pipelineStateDesc.colourBlendAttachmentStateCount = 1;
-	pipelineStateDesc.colourBlendAttachmentStateInfo = &colourBlendAttachmentStateInfo[0];
 	pipelineStateDesc.vertexInputStateInfo = &vertexInputStateInfo;
 	pipelineStateDesc.inputAssemblyInfo = &inputAssemblyInfo;
 	pipelineStateDesc.rasterStateInfo = &rasterStateInfo;
 	pipelineStateDesc.colourBlendStateInfo = &colourBlendStateInfo;
-	pipelineStateDesc.tessStateInfo = &tessStateInfo;
 	pipelineStateDesc.multiSampleStateInfo = &multiSampleStateInfo;
 	pipelineStateDesc.dynamicState = &dynamicStateInfo;
 	pipelineStateDesc.viewportStateInfo = &viewportStateInfo;
 	pipelineStateDesc.depthStencilStateInfo = &depthStencilStateInfo;
+	pipelineStateDesc.tessStateInfo = nullptr; //TODO
 
 	assert(graphicsPipelineState.InitVKGraphicsPipelineState(device, &graphicsPCO, graphicsSubsystem->GetRenderPass(), &testProgramSPIR, &pipelineStateDesc, true));
 
