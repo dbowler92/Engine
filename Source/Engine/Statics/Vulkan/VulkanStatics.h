@@ -107,6 +107,7 @@ namespace EngineAPI
 //Temp: Quick way of filling out VkPipeline*StateCreateInfo struct. Will abstract this stuff
 //later. 
 //
+const float DEFAULT_BLEND_CONSTANTS[4] = { 1.0f, 1.0f, 1.0f, 1.0f };
 
 namespace EngineAPI
 {
@@ -133,7 +134,20 @@ namespace EngineAPI
 
 			//Raster state
 			static void GeneratePipelineRasterStateCreateStruct(VkPipelineRasterizationStateCreateInfo* structOut, 
-				);
+				VkPolygonMode polygonMode, VkCullModeFlags cullMode, VkFrontFace frontFaceMode, 
+				VkBool32 depthClampEnabled, VkBool32 rasterizerDiscardEnabled = VK_FALSE, VkBool32 depthBiasEnabled = VK_FALSE,
+				float depthBiasConstantFactor = 0.0f, float depthBiasClamp = 0.0f, float depthBiasSlopeFactor = 0.0f, float lineWidth = 1.0f);
+
+			//Colour blending
+			static void GeneratePipelineColourBlendCreateStruct(VkPipelineColorBlendStateCreateInfo* structOut,
+				VkBool32 logicalOpEnabled, VkLogicOp logicalOp,
+				const VkPipelineColorBlendAttachmentState* attachments, uint32_t attachmentsCount,
+				const float blendConstants[4] = DEFAULT_BLEND_CONSTANTS);
+
+			//Viewport(s) state
+			static void GeneratePipelineViewportStateCreateStruct(VkPipelineViewportStateCreateInfo* structOut, 
+				VkViewport* viewports, uint32_t viewportsCount, 
+				const VkRect2D* scissors, uint32_t scissorsCount);
 		};
 	};
 };

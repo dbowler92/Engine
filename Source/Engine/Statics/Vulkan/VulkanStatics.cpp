@@ -427,3 +427,66 @@ void VulkanStates::GeneratePipelineInputAssemblyCreateStruct(VkPipelineInputAsse
 	structOut->topology = topology;
 	structOut->primitiveRestartEnable = primitiveRestartEnabled;
 }
+
+void VulkanStates::GeneratePipelineRasterStateCreateStruct(VkPipelineRasterizationStateCreateInfo* structOut,
+	VkPolygonMode polygonMode, VkCullModeFlags cullMode, VkFrontFace frontFaceMode,
+	VkBool32 depthClampEnabled, VkBool32 rasterizerDiscardEnabled, VkBool32 depthBiasEnabled,
+	float depthBiasConstantFactor, float depthBiasClamp, float depthBiasSlopeFactor, float lineWidth)
+{
+	assert(structOut != nullptr);
+
+	structOut->sType = VK_STRUCTURE_TYPE_PIPELINE_RASTERIZATION_STATE_CREATE_INFO;
+	structOut->pNext = nullptr;
+	structOut->flags = 0;
+
+	structOut->depthClampEnable = depthClampEnabled;
+	structOut->rasterizerDiscardEnable = rasterizerDiscardEnabled;
+	structOut->depthBiasEnable = depthBiasEnabled;
+
+	structOut->polygonMode = polygonMode;
+	structOut->cullMode = cullMode;
+	structOut->frontFace = frontFaceMode;
+
+	structOut->depthBiasConstantFactor = depthBiasConstantFactor;
+	structOut->depthBiasClamp = depthBiasClamp;
+	structOut->depthBiasSlopeFactor = depthBiasSlopeFactor;
+	structOut->lineWidth = lineWidth;
+}
+
+void VulkanStates::GeneratePipelineColourBlendCreateStruct(VkPipelineColorBlendStateCreateInfo* structOut,
+	VkBool32 logicalOpEnabled, VkLogicOp logicalOp,
+	const VkPipelineColorBlendAttachmentState* attachments, uint32_t attachmentsCount,
+	const float blendConstants[4])
+{
+	assert(structOut != nullptr);
+
+	structOut->sType = VK_STRUCTURE_TYPE_PIPELINE_COLOR_BLEND_STATE_CREATE_INFO;
+	structOut->pNext = nullptr;
+	structOut->flags = 0;
+	
+	structOut->logicOpEnable = logicalOpEnabled;
+	structOut->logicOp = logicalOp;
+
+	structOut->pAttachments = attachments;
+	structOut->attachmentCount = attachmentsCount;
+
+	for (int i = 0; i < 4; i++)
+		structOut->blendConstants[i] = blendConstants[i];
+}
+
+void VulkanStates::GeneratePipelineViewportStateCreateStruct(VkPipelineViewportStateCreateInfo* structOut,
+	VkViewport* viewports, uint32_t viewportsCount,
+	const VkRect2D* scissors, uint32_t scissorsCount)
+{
+	assert(structOut != nullptr);
+
+	structOut->sType = VK_STRUCTURE_TYPE_PIPELINE_VIEWPORT_STATE_CREATE_INFO;
+	structOut->pNext = nullptr;
+	structOut->flags = 0;
+
+	structOut->pViewports = viewports;
+	structOut->viewportCount = viewportsCount;
+
+	structOut->pScissors = scissors;
+	structOut->scissorCount = scissorsCount;
+}

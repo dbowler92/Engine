@@ -66,7 +66,7 @@ bool SandboxApplication::InitApplication()
 	vbLayout.VertexStreams = streams;
 
 	bool isDynamicVB = true; //TEMP: For VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT memory rather than GPU only. 
-	
+
 	//Init the VB
 	vb.SetResourceDebugName("Test Vertex Buffer");
 	assert(vb.InitVKVertexBuffer(device, sizeof(triangleData), isDynamicVB));
@@ -75,16 +75,16 @@ bool SandboxApplication::InitApplication()
 
 	//TEMP: Custom store for this resource.
 	uint32_t memoryIndex = 0;
-	assert(EngineAPI::Statics::VulkanStatics::FindMemoryTypeForProperties(vb.GetResourceVKMemoryRequirments().memoryTypeBits, 
+	assert(EngineAPI::Statics::VulkanStatics::FindMemoryTypeForProperties(vb.GetResourceVKMemoryRequirments().memoryTypeBits,
 		VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT,
 		&device->GetVKPhysicalDeviceMemoryProperties(), &memoryIndex));
 
 	EngineAPI::Graphics::DeviceMemoryStore* customStoreForVB = nullptr;
 	customStoreForVB = device->GetDeviceMemoryAllocator()->CreateNewMemoryStore(device,
-			vb.GetResourceVKMemoryRequirments().size,
-			memoryIndex,
-			false);
-	
+		vb.GetResourceVKMemoryRequirments().size,
+		memoryIndex,
+		false);
+
 	//Alloc VB
 	assert(vb.AllocAndBindVKVertexBuffer(device, &vbLayout, &triangleData[0], customStoreForVB));
 
@@ -99,7 +99,7 @@ bool SandboxApplication::InitApplication()
 
 	//assert(testShaderSPIRVVS.InitVKShader(device, SHADER_ASSETS_FOLDER"TestShaders/Draw-vert.spv", SHADER_STAGE_VERTEX_SHADER, "main", true));
 	//assert(testShaderSPIRVFS.InitVKShader(device, SHADER_ASSETS_FOLDER"TestShaders/Draw-frag.spv", SHADER_STAGE_FRAGMENT_SHADER, "main", true));
-	
+
 	assert(testProgramSPIR.CreateVKShaderModule(device, SHADER_ASSETS_FOLDER"TestShaders/Draw-vert.spv", SHADER_STAGE_VERTEX_SHADER, "main", true));
 	assert(testProgramSPIR.CreateVKShaderModule(device, SHADER_ASSETS_FOLDER"TestShaders/Draw-frag.spv", SHADER_STAGE_FRAGMENT_SHADER, "main", true));
 
@@ -119,26 +119,55 @@ bool SandboxApplication::InitApplication()
 
 	VkPipelineVertexInputStateCreateInfo vertexInputStateInfo = {};
 	EngineAPI::Statics::VulkanStates::GeneratePipelineVertexInputCreateStruct(&vertexInputStateInfo,
-		vb.GetInputBindingDescription(), 1, 
+		vb.GetInputBindingDescription(), 1,
 		vb.GetInputAttributesDescriptions(), vb.GetInputAttributesDescriptionsCount());
 
 	VkPipelineInputAssemblyStateCreateInfo inputAssemblyInfo = {};
 	EngineAPI::Statics::VulkanStates::GeneratePipelineInputAssemblyCreateStruct(&inputAssemblyInfo, VK_PRIMITIVE_TOPOLOGY_TRIANGLE_LIST, VK_FALSE);
 
 	VkPipelineRasterizationStateCreateInfo rasterStateInfo = {};
+	EngineAPI::Statics::VulkanStates::GeneratePipelineRasterStateCreateStruct(&rasterStateInfo,
+		VK_POLYGON_MODE_FILL, VK_CULL_MODE_BACK_BIT, VK_FRONT_FACE_CLOCKWISE, VK_TRUE);
+
+	//TODO: Abstract this -> Perhaps no blending as a default (default params to the Genetrate*() function)?
+	VkPipelineColorBlendAttachmentState colourBlendAttachmentStateInfo[1];
+	colourBlendAttachmentStateInfo[0] = {};
+	colourBlendAttachmentStateInfo[0].colorWriteMask = 0xF;
+	colourBlendAttachmentStateInfo[0].blendEnable = VK_FALSE;
+	colourBlendAttachmentStateInfo[0].alphaBlendOp = VK_BLEND_OP_ADD;
+	colourBlendAttachmentStateInfo[0].colorBlendOp = VK_BLEND_OP_ADD;
+	colourBlendAttachmentStateInfo[0].srcColorBlendFactor = VK_BLEND_FACTOR_ZERO;
+	colourBlendAttachmentStateInfo[0].dstColorBlendFactor = VK_BLEND_FACTOR_ZERO;
+	colourBlendAttachmentStateInfo[0].srcAlphaBlendFactor = VK_BLEND_FACTOR_ZERO;
+	colourBlendAttachmentStateInfo[0].dstAlphaBlendFactor = VK_BLEND_FACTOR_ZERO;
 
 	VkPipelineColorBlendStateCreateInfo colourBlendStateInfo = {};
+	EngineAPI::Statics::VulkanStates::GeneratePipelineColourBlendCreateStruct(&colourBlendStateInfo,
+		VK_FALSE, (VkLogicOp)0,
+		&colourBlendAttachmentStateInfo[0], 1);
+
+	//TODO: Abstract viewport struct
+	VkViewport viewport = {};
+	viewport.width = graphicsSubsystem->GetRenderingSwapchain()->GetSwapchainDimentions().width;
+	viewport.height = graphicsSubsystem->GetRenderingSwapchain()->GetSwapchainDimentions().height;
+	viewport.x = 0;
+	viewport.y = 0;
+	viewport.maxDepth = 1.0f;
+	viewport.minDepth = 0.0f;
+
+	//TODO: Get scissor rect from viewport struct???
+	VkRect2D scissor = {};
 
 	VkPipelineViewportStateCreateInfo viewportStateInfo = {};
+	EngineAPI::Statics::VulkanStates::GeneratePipelineViewportStateCreateStruct(&viewportStateInfo,
+		nullptr, 1, nullptr, 1); //VERIFY!
 
 	VkPipelineDepthStencilStateCreateInfo depthStencilStateInfo = {};
-
+	
 	VkPipelineMultisampleStateCreateInfo multiSampleStateInfo = {};
 
 	VkPipelineTessellationStateCreateInfo tessStateInfo = {};
 
-	VkPipelineColorBlendAttachmentState colourBlendAttachmentStateInfo[1];
-	colourBlendAttachmentStateInfo[0] = {};
 
 	PipelineStateDescription pipelineStateDesc = {};
 	pipelineStateDesc.colourBlendAttachmentStateCount = 1;

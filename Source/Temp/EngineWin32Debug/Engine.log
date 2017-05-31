@@ -1,45 +1,46 @@
 ﻿  VulkanStatics.cpp
-c:\users\b1032464\documents\programming\engine\engine\source\engine\statics\vulkan\vulkanstatics.h(136): error C2143: syntax error: missing ';' before '}'
 c:\users\b1032464\documents\programming\engine\engine\source\engine\statics\vulkan\vulkanstatics.cpp(92): warning C4018: '<': signed/unsigned mismatch
 c:\users\b1032464\documents\programming\engine\engine\source\engine\statics\vulkan\vulkanstatics.cpp(140): warning C4018: '<': signed/unsigned mismatch
 c:\users\b1032464\documents\programming\engine\engine\source\engine\statics\vulkan\vulkanstatics.cpp(158): warning C4018: '<': signed/unsigned mismatch
   Generating Code...
   Compiling...
-  Win32Application.cpp
-c:\users\b1032464\documents\programming\engine\engine\source\engine\statics\vulkan\vulkanstatics.h(136): error C2143: syntax error: missing ';' before '}'
-  Generating Code...
-  Compiling...
-  VulkanCommandBufferPool.cpp
-c:\users\b1032464\documents\programming\engine\engine\source\engine\statics\vulkan\vulkanstatics.h(136): error C2143: syntax error: missing ';' before '}'
-  Generating Code...
-  Compiling...
-  VulkanCommandQueueFamily.cpp
-c:\users\b1032464\documents\programming\engine\engine\source\engine\statics\vulkan\vulkanstatics.h(136): error C2143: syntax error: missing ';' before '}'
-c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\commandqueuefamily\vulkan\vulkancommandqueuefamily.cpp(8): warning C4018: '<': signed/unsigned mismatch
-c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\commandqueuefamily\vulkan\vulkancommandqueuefamily.cpp(18): warning C4018: '<': signed/unsigned mismatch
-c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\commandqueuefamily\vulkan\vulkancommandqueuefamily.cpp(60): warning C4018: '<': signed/unsigned mismatch
-  Generating Code...
-  Compiling...
-  VulkanDeviceMemoryAllocator.cpp
-c:\users\b1032464\documents\programming\engine\engine\source\engine\statics\vulkan\vulkanstatics.h(136): error C2143: syntax error: missing ';' before '}'
-c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\devicememoryallocator\vulkan\vulkandevicememoryallocator.cpp(46): warning C4018: '<': signed/unsigned mismatch
-c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\devicememoryallocator\vulkan\vulkandevicememoryallocator.cpp(428): warning C4018: '<': signed/unsigned mismatch
-  Generating Code...
-  Compiling...
-  VulkanDeviceMemoryBlock.cpp
-c:\users\b1032464\documents\programming\engine\engine\source\engine\statics\vulkan\vulkanstatics.h(136): error C2143: syntax error: missing ';' before '}'
-  Generating Code...
-  Compiling...
-  VulkanDeviceMemoryStore.cpp
-c:\users\b1032464\documents\programming\engine\engine\source\engine\statics\vulkan\vulkanstatics.h(136): error C2143: syntax error: missing ';' before '}'
-c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\devicememorystore\vulkan\vulkandevicememorystore.cpp(90): warning C4800: 'uint32_t': forcing value to bool 'true' or 'false' (performance warning)
-c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\devicememorystore\vulkan\vulkandevicememorystore.cpp(145): warning C4800: 'VkBool32': forcing value to bool 'true' or 'false' (performance warning)
-c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\devicememorystore\vulkan\vulkandevicememorystore.cpp(198): warning C4800: 'VkBool32': forcing value to bool 'true' or 'false' (performance warning)
-c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\devicememorystore\vulkan\vulkandevicememorystore.cpp(227): warning C4800: 'VkBool32': forcing value to bool 'true' or 'false' (performance warning)
-  Generating Code...
-  Compiling...
+  VulkanVertexBuffer.cpp
+c:\users\b1032464\documents\programming\engine\engine\source\engine\rendering\vertexbuffer\vulkan\vulkanvertexbuffer.cpp(50): warning C4244: '=': conversion from 'VkDeviceSize' to 'uint32_t', possible loss of data
+c:\users\b1032464\documents\programming\engine\engine\source\engine\rendering\vertexbuffer\vulkan\vulkanvertexbuffer.cpp(56): warning C4244: '=': conversion from 'VkDeviceSize' to 'uint32_t', possible loss of data
+c:\users\b1032464\documents\programming\engine\engine\source\engine\rendering\vertexbuffer\vulkan\vulkanvertexbuffer.cpp(64): warning C4018: '<': signed/unsigned mismatch
+  VulkanTexture.cpp
+  VulkanResource.cpp
+  VulkanDepthTexture.cpp
+  VulkanBuffer.cpp
+c:\users\b1032464\documents\programming\engine\engine\source\engine\rendering\buffer\vulkan\vulkanbuffer.cpp(96): warning C4244: 'argument': conversion from 'VkDeviceSize' to 'std::size_t', possible loss of data
+  EngineMain.cpp
+  VulkanSwapchain.cpp
+c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\swapchain\vulkan\vulkanswapchain.cpp(128): warning C4018: '<': signed/unsigned mismatch
+c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\swapchain\vulkan\vulkanswapchain.cpp(141): warning C4018: '<': signed/unsigned mismatch
+c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\swapchain\vulkan\vulkanswapchain.cpp(373): warning C4018: '<': signed/unsigned mismatch
+c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\swapchain\vulkan\vulkanswapchain.cpp(396): warning C4018: '<': signed/unsigned mismatch
+c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\swapchain\vulkan\vulkanswapchain.cpp(547): warning C4018: '<': signed/unsigned mismatch
+c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\swapchain\vulkan\vulkanswapchain.cpp(640): warning C4018: '<': signed/unsigned mismatch
+c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\swapchain\vulkan\vulkanswapchain.cpp(678): warning C4018: '<': signed/unsigned mismatch
+c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\swapchain\vulkan\vulkanswapchain.cpp(693): warning C4018: '<': signed/unsigned mismatch
+c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\swapchain\vulkan\vulkanswapchain.cpp(755): warning C4552: '!=': operator has no effect; expected operator with side-effect
+  VulkanShader.cpp
+  VulkanRenderPass.cpp
+  VulkanProgram.cpp
+c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\program\vulkan\vulkanprogram.cpp(9): warning C4018: '<': signed/unsigned mismatch
+  VulkanGraphicsManager.cpp
+c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\manager\vulkan\vulkangraphicsmanager.cpp(42): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\stdio.h(1769): note: see declaration of 'sprintf'
+c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\manager\vulkan\vulkangraphicsmanager.cpp(47): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\stdio.h(1769): note: see declaration of 'sprintf'
+c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\manager\vulkan\vulkangraphicsmanager.cpp(52): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\stdio.h(1769): note: see declaration of 'sprintf'
+  GraphicsManager.cpp
+  VulkanGraphicsPipelineState.cpp
+c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\graphicspipelinestate\vulkan\vulkangraphicspipelinestate.cpp(42): warning C4018: '<': signed/unsigned mismatch
+  VulkanGraphicsPipelineCache.cpp
+  VulkanFramebuffer.cpp
   VulkanRenderDevice.cpp
-c:\users\b1032464\documents\programming\engine\engine\source\engine\statics\vulkan\vulkanstatics.h(136): error C2143: syntax error: missing ';' before '}'
 c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\device\vulkan\vulkanrenderdevice.cpp(254): warning C4018: '<': signed/unsigned mismatch
 c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\device\vulkan\vulkanrenderdevice.cpp(417): warning C4018: '<': signed/unsigned mismatch
 c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\device\vulkan\vulkanrenderdevice.cpp(453): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
@@ -58,42 +59,23 @@ c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\dev
 c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\device\vulkan\vulkanrenderdevice.cpp(497): warning C4018: '<': signed/unsigned mismatch
 c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\device\vulkan\vulkanrenderdevice.cpp(505): warning C4018: '<': signed/unsigned mismatch
 c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\device\vulkan\vulkanrenderdevice.cpp(533): warning C4018: '<': signed/unsigned mismatch
-  Generating Code...
-  Compiling...
-  VulkanFramebuffer.cpp
-c:\users\b1032464\documents\programming\engine\engine\source\engine\statics\vulkan\vulkanstatics.h(136): error C2143: syntax error: missing ';' before '}'
-  Generating Code...
-  Compiling...
-  VulkanGraphicsPipelineCache.cpp
-c:\users\b1032464\documents\programming\engine\engine\source\engine\statics\vulkan\vulkanstatics.h(136): error C2143: syntax error: missing ';' before '}'
-  Generating Code...
-  Compiling...
-  VulkanGraphicsPipelineState.cpp
-c:\users\b1032464\documents\programming\engine\engine\source\engine\statics\vulkan\vulkanstatics.h(136): error C2143: syntax error: missing ';' before '}'
-c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\graphicspipelinestate\vulkan\vulkangraphicspipelinestate.cpp(42): warning C4018: '<': signed/unsigned mismatch
-  Generating Code...
-  Compiling...
-  GraphicsManager.cpp
-c:\users\b1032464\documents\programming\engine\engine\source\engine\statics\vulkan\vulkanstatics.h(136): error C2143: syntax error: missing ';' before '}'
-  Generating Code...
-  Compiling...
-  VulkanGraphicsManager.cpp
-c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\manager\vulkan\vulkangraphicsmanager.cpp(42): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\stdio.h(1769): note: see declaration of 'sprintf'
-c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\manager\vulkan\vulkangraphicsmanager.cpp(47): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\stdio.h(1769): note: see declaration of 'sprintf'
-c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\manager\vulkan\vulkangraphicsmanager.cpp(52): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\stdio.h(1769): note: see declaration of 'sprintf'
+  VulkanDeviceMemoryStore.cpp
+c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\devicememorystore\vulkan\vulkandevicememorystore.cpp(90): warning C4800: 'uint32_t': forcing value to bool 'true' or 'false' (performance warning)
+c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\devicememorystore\vulkan\vulkandevicememorystore.cpp(145): warning C4800: 'VkBool32': forcing value to bool 'true' or 'false' (performance warning)
+c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\devicememorystore\vulkan\vulkandevicememorystore.cpp(198): warning C4800: 'VkBool32': forcing value to bool 'true' or 'false' (performance warning)
+c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\devicememorystore\vulkan\vulkandevicememorystore.cpp(227): warning C4800: 'VkBool32': forcing value to bool 'true' or 'false' (performance warning)
+  VulkanDeviceMemoryBlock.cpp
+  VulkanDeviceMemoryAllocator.cpp
+c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\devicememoryallocator\vulkan\vulkandevicememoryallocator.cpp(46): warning C4018: '<': signed/unsigned mismatch
+c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\devicememoryallocator\vulkan\vulkandevicememoryallocator.cpp(428): warning C4018: '<': signed/unsigned mismatch
+  VulkanCommandQueueFamily.cpp
+c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\commandqueuefamily\vulkan\vulkancommandqueuefamily.cpp(8): warning C4018: '<': signed/unsigned mismatch
+c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\commandqueuefamily\vulkan\vulkancommandqueuefamily.cpp(18): warning C4018: '<': signed/unsigned mismatch
+c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\commandqueuefamily\vulkan\vulkancommandqueuefamily.cpp(60): warning C4018: '<': signed/unsigned mismatch
   Generating Code...
 c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\manager\vulkan\vulkangraphicsmanager.cpp(139): warning C4715: 'EngineAPI::Graphics::Platform::VulkanGraphicsManager::OnResize': not all control paths return a value
-  Skipping... (no relevant changes detected)
-  VulkanVertexBuffer.cpp
-  VulkanTexture.cpp
-  VulkanResource.cpp
-  VulkanDepthTexture.cpp
-  VulkanBuffer.cpp
-  EngineMain.cpp
-  VulkanSwapchain.cpp
-  VulkanShader.cpp
-  VulkanRenderPass.cpp
-  VulkanProgram.cpp
+  Compiling...
+  VulkanCommandBufferPool.cpp
+  Win32Application.cpp
+  Generating Code...
+  Engine.vcxproj -> C:\Users\B1032464\Documents\Programming\Engine\Engine\Source\Engine\Msvs\..\..\Lib\Win32Debug\Engine.lib
