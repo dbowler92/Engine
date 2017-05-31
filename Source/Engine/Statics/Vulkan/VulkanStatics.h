@@ -102,3 +102,38 @@ namespace EngineAPI
 		};
 	};
 };
+
+//
+//Temp: Quick way of filling out VkPipeline*StateCreateInfo struct. Will abstract this stuff
+//later. 
+//
+
+namespace EngineAPI
+{
+	namespace Statics
+	{
+		class VulkanStates
+		{
+			//Statics only class - hides constructor etc
+			MAKE_STATICS_CLASS_ONLY(VulkanStates)
+
+		public:
+			//Dynamic states
+			static void GeneratePipelineDynamicStatesCreateStruct(VkPipelineDynamicStateCreateInfo* structOut,
+				const VkDynamicState* dynamicStates, uint32_t dynamicStatesCount);
+
+			//Vertex input state (Vertex buffer)
+			static void GeneratePipelineVertexInputCreateStruct(VkPipelineVertexInputStateCreateInfo* structOut,
+				const VkVertexInputBindingDescription* inputBindings, uint32_t inputBindingsCount, 
+				const VkVertexInputAttributeDescription* inputAttributes, uint32_t inputAttributesCount);
+
+			//Input assembly state (Topology etc)
+			static void GeneratePipelineInputAssemblyCreateStruct(VkPipelineInputAssemblyStateCreateInfo* structOut, 
+				VkPrimitiveTopology topology, VkBool32 primitiveRestartEnabled);
+
+			//Raster state
+			static void GeneratePipelineRasterStateCreateStruct(VkPipelineRasterizationStateCreateInfo* structOut, 
+				);
+		};
+	};
+};

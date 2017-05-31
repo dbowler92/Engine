@@ -385,3 +385,45 @@ bool VulkanCommands::VKCMD_SetImageLayout(const VkCommandBuffer& commandBuffer, 
 	//Done
 	return true;
 }
+
+//
+//States
+//
+void VulkanStates::GeneratePipelineDynamicStatesCreateStruct(VkPipelineDynamicStateCreateInfo* structOut,
+	const VkDynamicState* dynamicStates, uint32_t dynamicStatesCount)
+{
+	assert(structOut != nullptr);
+
+	structOut->sType = VK_STRUCTURE_TYPE_PIPELINE_DYNAMIC_STATE_CREATE_INFO;
+	structOut->pNext = nullptr;
+	structOut->flags = 0;
+	structOut->pDynamicStates = dynamicStates;
+	structOut->dynamicStateCount = dynamicStatesCount;
+}
+
+void VulkanStates::GeneratePipelineVertexInputCreateStruct(VkPipelineVertexInputStateCreateInfo* structOut,
+	const VkVertexInputBindingDescription* inputBindings, uint32_t inputBindingsCount,
+	const VkVertexInputAttributeDescription* inputAttributes, uint32_t inputAttributesCount)
+{
+	assert(structOut != nullptr);
+
+	structOut->sType = VK_STRUCTURE_TYPE_PIPELINE_VERTEX_INPUT_STATE_CREATE_INFO;
+	structOut->pNext = nullptr;
+	structOut->flags = 0;
+	structOut->pVertexBindingDescriptions = inputBindings;
+	structOut->vertexBindingDescriptionCount = inputBindingsCount;
+	structOut->pVertexAttributeDescriptions = inputAttributes;
+	structOut->vertexAttributeDescriptionCount = inputAttributesCount;
+}
+
+void VulkanStates::GeneratePipelineInputAssemblyCreateStruct(VkPipelineInputAssemblyStateCreateInfo* structOut,
+	VkPrimitiveTopology topology, VkBool32 primitiveRestartEnabled)
+{
+	assert(structOut != nullptr);
+
+	structOut->sType = VK_STRUCTURE_TYPE_PIPELINE_INPUT_ASSEMBLY_STATE_CREATE_INFO;
+	structOut->pNext = nullptr;
+	structOut->flags = 0;
+	structOut->topology = topology;
+	structOut->primitiveRestartEnable = primitiveRestartEnabled;
+}

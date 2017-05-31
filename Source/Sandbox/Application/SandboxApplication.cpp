@@ -111,11 +111,19 @@ bool SandboxApplication::InitApplication()
 	//
 	//Pipeline state
 	//
-	VkPipelineDynamicStateCreateInfo dynamicState = {};
+	VkPipelineDynamicStateCreateInfo dynamicStateInfo = {};
+	VkDynamicState dynamicStates[2];
+	dynamicStates[0] = VK_DYNAMIC_STATE_VIEWPORT;
+	dynamicStates[1] = VK_DYNAMIC_STATE_SCISSOR;
+	EngineAPI::Statics::VulkanStates::GeneratePipelineDynamicStatesCreateStruct(&dynamicStateInfo, &dynamicStates[0], 2);
 
 	VkPipelineVertexInputStateCreateInfo vertexInputStateInfo = {};
+	EngineAPI::Statics::VulkanStates::GeneratePipelineVertexInputCreateStruct(&vertexInputStateInfo,
+		vb.GetInputBindingDescription(), 1, 
+		vb.GetInputAttributesDescriptions(), vb.GetInputAttributesDescriptionsCount());
 
 	VkPipelineInputAssemblyStateCreateInfo inputAssemblyInfo = {};
+	EngineAPI::Statics::VulkanStates::GeneratePipelineInputAssemblyCreateStruct(&inputAssemblyInfo, VK_PRIMITIVE_TOPOLOGY_TRIANGLE_LIST, VK_FALSE);
 
 	VkPipelineRasterizationStateCreateInfo rasterStateInfo = {};
 
@@ -141,7 +149,7 @@ bool SandboxApplication::InitApplication()
 	pipelineStateDesc.colourBlendStateInfo = &colourBlendStateInfo;
 	pipelineStateDesc.tessStateInfo = &tessStateInfo;
 	pipelineStateDesc.multiSampleStateInfo = &multiSampleStateInfo;
-	pipelineStateDesc.dynamicState = &dynamicState;
+	pipelineStateDesc.dynamicState = &dynamicStateInfo;
 	pipelineStateDesc.viewportStateInfo = &viewportStateInfo;
 	pipelineStateDesc.depthStencilStateInfo = &depthStencilStateInfo;
 

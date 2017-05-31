@@ -75,6 +75,11 @@ namespace EngineAPI
 				//shaders, we may need to create some buffer views
 				bool InitVKBufferViews(EngineAPI::Graphics::RenderDevice* renderingDevice);
 
+			public:
+				VkVertexInputBindingDescription* GetInputBindingDescription() { return &bufferBindingInfo; };
+				VkVertexInputAttributeDescription* GetInputAttributesDescriptions() { return inputAttributes.data(); };
+				uint32_t GetInputAttributesDescriptionsCount() { return inputAttributes.size(); };
+
 			protected:
 				//Vulkan info
 				VkVertexInputBindingDescription bufferBindingInfo; //Per buffer info (Rate at which this buffers info will be injected for vertex input)
