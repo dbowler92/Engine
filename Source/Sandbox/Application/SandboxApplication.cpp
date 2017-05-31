@@ -152,8 +152,8 @@ bool SandboxApplication::InitApplication()
 	viewport.height = graphicsSubsystem->GetRenderingSwapchain()->GetSwapchainDimentions().height;
 	viewport.x = 0;
 	viewport.y = 0;
-	viewport.maxDepth = 1.0f; //VERIFY
 	viewport.minDepth = 0.0f; //VERIFY
+	viewport.maxDepth = 1.0f; //VERIFY
 
 	//TODO: Get scissor rect from viewport struct???
 	VkRect2D scissor = {};

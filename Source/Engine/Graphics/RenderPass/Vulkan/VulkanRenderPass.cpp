@@ -26,3 +26,10 @@ bool VulkanRenderPass::InitVKRenderPass(EngineAPI::Graphics::RenderDevice* rende
 	//Done
 	return true;
 }
+
+VkExtent2D VulkanRenderPass::CalculateRenderPassAreaGranularity()
+{
+	VkExtent2D out;
+	vkGetRenderAreaGranularity(cachedVkDevice, vkRenderPassHandle, &out);
+	return out;
+}

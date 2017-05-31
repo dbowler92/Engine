@@ -43,6 +43,7 @@
     <ClCompile Include="..\OSWindow\Win32\Win32OSWindow.cpp" />
     <ClCompile Include="..\Rendering\Buffer\Vulkan\VulkanBuffer.cpp" />
     <ClCompile Include="..\Rendering\DepthTexture\Vulkan\VulkanDepthTexture.cpp" />
+    <ClCompile Include="..\Rendering\DrawableObject\Vulkan\VulkanDrawableObject.cpp" />
     <ClCompile Include="..\Rendering\Resource\Vulkan\VulkanResource.cpp" />
     <ClCompile Include="..\Rendering\Texture\Vulkan\VulkanTexture.cpp" />
     <ClCompile Include="..\Rendering\VertexBuffer\Vulkan\VulkanVertexBuffer.cpp" />
@@ -100,6 +101,8 @@
     <ClInclude Include="..\Rendering\Buffer\Vulkan\VulkanBuffer.h" />
     <ClInclude Include="..\Rendering\DepthTexture\DepthTexture.h" />
     <ClInclude Include="..\Rendering\DepthTexture\Vulkan\VulkanDepthTexture.h" />
+    <ClInclude Include="..\Rendering\DrawableObject\DrawableObject.h" />
+    <ClInclude Include="..\Rendering\DrawableObject\Vulkan\VulkanDrawableObject.h" />
     <ClInclude Include="..\Rendering\Resource\Resource.h" />
     <ClInclude Include="..\Rendering\Resource\Vulkan\VulkanResource.h" />
     <ClInclude Include="..\Rendering\Texture\Texture.h" />

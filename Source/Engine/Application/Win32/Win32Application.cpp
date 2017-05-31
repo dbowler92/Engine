@@ -331,7 +331,10 @@ void Win32Application::EnterGameLoop()
 				//to ensure they bind the swapchain at the correct time && to call
 				//present when they are finished (for now, anyway). 
 				UpdateScene(mainGameLoopTimer.DeltaTime());
+
+				graphicsSubsystem->OnFrameBegin();
 				RenderScene();
+				graphicsSubsystem->OnFrameEnd();
 			}
 			else
 				Sleep(100);

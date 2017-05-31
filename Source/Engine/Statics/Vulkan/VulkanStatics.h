@@ -79,6 +79,9 @@ namespace EngineAPI
 //
 //Seperate vulkan commands from general statics.
 //
+//VKCMD_* => Simple Wrapper around Vulkan commands. 
+//CMD_* => Abstraction
+//
 
 namespace EngineAPI
 {
@@ -92,13 +95,36 @@ namespace EngineAPI
 		public:
 			//Writes the commands needed to set the image layout in to a command buffer
 			/*
-			static bool VKCMD_SetImageLayout(const VkImage& image,
+			static bool CMD_SetImageLayout(const VkImage& image,
 				VkImageAspectFlags aspectMask, VkImageLayout oldImageLayout, VkImageLayout newImageLayout, VkAccessFlagBits srcAccessMask,
 				const VkCommandBuffer& commandBuffer);
 			*/
-
-			static bool VKCMD_SetImageLayout(const VkCommandBuffer& commandBuffer, const VkImage& image,
+			static bool CMD_SetImageLayout(const VkCommandBuffer& commandBuffer, const VkImage& image,
 				VkImageAspectFlags aspectMask, VkImageLayout oldImageLayout, VkImageLayout newImageLayout);
+
+			//Changes subpass
+			static void VKCMD_NextSubpass(const VkCommandBuffer& commandBuffer, VkSubpassContents contents);
+
+			//Binds a pipeline
+			static void VKCMD_BindGraphicsPipeline(const VkCommandBuffer& commandBuffer, VkPipeline pipelineHandle);
+			static void VKCMD_BindComputePipeline(const VkCommandBuffer& commandBuffer, VkPipeline pipelineHandle);
+
+			//Binds vertex buffer(s). 
+			static void VKCMD_BindVertexBuffers(const VkCommandBuffer& commandBuffer,
+				uint32_t firstBinding, uint32_t bindingCount, const VkBuffer* buffersArray, const VkDeviceSize* offsetsArray);
+
+			//Dynamically change viewport state
+			static void VKCMD_DynamicallySetViewports(const VkCommandBuffer& commandBuffer,
+				uint32_t firstViewport, uint32_t viewportCount, const VkViewport* viewportsArray);
+
+			//Dynamically change the scissoring state
+			static void VKCMD_DynamicallySetScissors(const VkCommandBuffer& commandBuffer,
+				uint32_t firstScissor, uint32_t scissorsCount, const VkRect2D* scissorsArray);
+
+			//Drawing commands
+			static void VKCMD_Draw(const VkCommandBuffer& commandBuffer, 
+				uint32_t vertexCount, uint32_t instanceCount, 
+				uint32_t firstVertex, uint32_t firstInstance);
 		};
 	};
 };
@@ -161,6 +187,8 @@ namespace EngineAPI
 				VkSampleCountFlagBits sampleCountFlag, VkBool32 sampleShadingEnabled = VK_FALSE, 
 				float minSampleShading = 0.0f, const VkSampleMask* sampleMask = nullptr, 
 				VkBool32 alphaToCoverageEnabled = VK_FALSE, VkBool32 alphaToOneEnabled = VK_FALSE);
+
+			//TODO: Tessellation
 		};
 	};
 };

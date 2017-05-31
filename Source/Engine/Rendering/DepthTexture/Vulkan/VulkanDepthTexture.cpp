@@ -149,7 +149,7 @@ bool VulkanDepthTexture::InitVKDepthTextureLayout(EngineAPI::Graphics::RenderDev
 		if (doesContainStencilComponent)
 			aspectMask |= VK_IMAGE_ASPECT_STENCIL_BIT;
 
-		EngineAPI::Statics::VulkanCommands::VKCMD_SetImageLayout(vkDepthTextureImageLayoutCmdBuffer, vkImageHandle,
+		EngineAPI::Statics::VulkanCommands::CMD_SetImageLayout(vkDepthTextureImageLayoutCmdBuffer, vkImageHandle,
 			aspectMask, VK_IMAGE_LAYOUT_UNDEFINED, VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL);
 	}
 	else

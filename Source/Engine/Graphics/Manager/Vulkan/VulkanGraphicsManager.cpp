@@ -246,3 +246,13 @@ bool VulkanGraphicsManager::InitVKRenderPass()
 	//Done
 	return true;
 }
+
+void VulkanGraphicsManager::OnFrameBegin()
+{
+
+}
+
+void VulkanGraphicsManager::OnFrameEnd()
+{
+
+}

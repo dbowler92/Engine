@@ -41,6 +41,9 @@ namespace EngineAPI
 				bool InitVKRenderPass(EngineAPI::Graphics::RenderDevice* renderingDevice, 
 					VkRenderPassCreateInfo* renderPassCreateInfo);
 
+				//Granularity of this render pass. 
+				VkExtent2D CalculateRenderPassAreaGranularity();
+
 			public:
 				//Getters
 				VkRenderPass GetVKRenderPassHandle() { return vkRenderPassHandle; };

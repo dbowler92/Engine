@@ -74,6 +74,10 @@ namespace EngineAPI
 				//Called when the window is resized
 				bool OnResize(EngineAPI::OS::OSWindow* osWindow);
 
+				//Called when a frame begins & when a frame has ended
+				void OnFrameBegin();
+				void OnFrameEnd();
+
 			public:
 				//Returns the instance, device and swapchains (pointer)
 				RenderInstance* GetRenderingInstance() { return &renderingInstance; };

@@ -187,6 +187,12 @@
     <Filter Include="Src\Graphics\Program\Vulkan">
       <UniqueIdentifier>{d3966a75-1ac8-4f03-ab95-e79b41787fae}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Src\Rendering\DrawableObject">
+      <UniqueIdentifier>{b97a2d8b-5944-4967-9385-f97274370ca2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Rendering\DrawableObject\Vulkan">
+      <UniqueIdentifier>{dfa78f86-7b06-4133-bf4c-d3f67a64d62e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Main\EngineMain.cpp">
@@ -275,6 +281,9 @@
     </ClCompile>
     <ClCompile Include="..\Graphics\Program\Vulkan\VulkanProgram.cpp">
       <Filter>Src\Graphics\Program\Vulkan</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Rendering\DrawableObject\Vulkan\VulkanDrawableObject.cpp">
+      <Filter>Src\Rendering\DrawableObject\Vulkan</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -451,6 +460,12 @@
     </ClInclude>
     <ClInclude Include="..\Graphics\Program\Program.h">
       <Filter>Src\Graphics\Program</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Rendering\DrawableObject\Vulkan\VulkanDrawableObject.h">
+      <Filter>Src\Rendering\DrawableObject\Vulkan</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Rendering\DrawableObject\DrawableObject.h">
+      <Filter>Src\Rendering\DrawableObject</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

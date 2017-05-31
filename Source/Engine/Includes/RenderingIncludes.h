@@ -20,3 +20,6 @@
 //Pipeline managements
 #include "../Graphics/GraphicsPipelineCache/GraphicsPipelineCache.h"
 #include "../Graphics/GraphicsPipelineState/GraphicsPipelineState.h"
+
+//Drawable objects
+#include "../Rendering/DrawableObject/DrawableObject.h"

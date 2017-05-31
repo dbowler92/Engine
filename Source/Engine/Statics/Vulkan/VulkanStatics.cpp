@@ -207,7 +207,7 @@ void VulkanStatics::DestroyVKBufferView(VkDevice* device, VkBufferView* bufferVi
 //
 
 /*
-bool VulkanCommands::VKCMD_SetImageLayout(const VkImage& image,
+bool VulkanCommands::CMD_SetImageLayout(const VkImage& image,
 	VkImageAspectFlags aspectMask, VkImageLayout oldImageLayout, VkImageLayout newImageLayout, VkAccessFlagBits srcAccessMask,
 	const VkCommandBuffer& commandBuffer)
 {
@@ -272,7 +272,7 @@ bool VulkanCommands::VKCMD_SetImageLayout(const VkImage& image,
 }
 */
 
-bool VulkanCommands::VKCMD_SetImageLayout(const VkCommandBuffer& commandBuffer, const VkImage& image,
+bool VulkanCommands::CMD_SetImageLayout(const VkCommandBuffer& commandBuffer, const VkImage& image,
 	VkImageAspectFlags aspectMask, VkImageLayout oldImageLayout, VkImageLayout newImageLayout)
 {
 	//
@@ -384,6 +384,46 @@ bool VulkanCommands::VKCMD_SetImageLayout(const VkCommandBuffer& commandBuffer, 
 
 	//Done
 	return true;
+}
+
+void VulkanCommands::VKCMD_NextSubpass(const VkCommandBuffer& commandBuffer, VkSubpassContents contents)
+{
+	vkCmdNextSubpass(commandBuffer, contents);
+}
+
+void VulkanCommands::VKCMD_BindGraphicsPipeline(const VkCommandBuffer& commandBuffer, VkPipeline pipelineHandle)
+{
+	vkCmdBindPipeline(commandBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, pipelineHandle);
+}
+
+void VulkanCommands::VKCMD_BindComputePipeline(const VkCommandBuffer& commandBuffer, VkPipeline pipelineHandle)
+{
+	vkCmdBindPipeline(commandBuffer, VK_PIPELINE_BIND_POINT_COMPUTE, pipelineHandle);
+}
+
+void VulkanCommands::VKCMD_BindVertexBuffers(const VkCommandBuffer& commandBuffer,
+	uint32_t firstBinding, uint32_t bindingCount, const VkBuffer* buffersArray, const VkDeviceSize* offsetsArray)
+{
+	vkCmdBindVertexBuffers(commandBuffer, firstBinding, bindingCount, buffersArray, offsetsArray);
+}
+
+void VulkanCommands::VKCMD_DynamicallySetViewports(const VkCommandBuffer& commandBuffer,
+	uint32_t firstViewport, uint32_t viewportCount, const VkViewport* viewportsArray)
+{
+	vkCmdSetViewport(commandBuffer, firstViewport, viewportCount, viewportsArray);
+}
+
+void VulkanCommands::VKCMD_DynamicallySetScissors(const VkCommandBuffer& commandBuffer,
+	uint32_t firstScissor, uint32_t scissorsCount, const VkRect2D* scissorsArray)
+{
+	vkCmdSetScissor(commandBuffer, firstScissor, scissorsCount, scissorsArray);
+}
+
+void VulkanCommands::VKCMD_Draw(const VkCommandBuffer& commandBuffer,
+	uint32_t vertexCount, uint32_t instanceCount,
+	uint32_t firstVertex, uint32_t firstInstance)
+{
+	vkCmdDraw(commandBuffer, vertexCount, instanceCount, firstVertex, firstInstance);
 }
 
 //
