@@ -279,6 +279,10 @@ bool VulkanGraphicsManager::InitVKRenderPassInstances()
 			EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanGraphicsManager::InitVKRenderPassInstances() Error: Could not init render pass instance\n");
 			return false;
 		}
+
+		//Set dirty flag to true -> The render pass instance command buffer can now be reset and 
+		//updated with new rendering commands. 
+		renderPassInstancesArray[i].SetRenderPassInstanceCommandBufferDirtyFlag(true);
 	}
 	
 	//Done
@@ -293,12 +297,15 @@ void VulkanGraphicsManager::OnFrameBegin()
 	//Swapchain image index 
 	uint32_t currentSwapchainIdx = renderingSwapchain.GetCurrentSwapchainImageIndex();
 
-	//Begin render pass instance
-	assert(renderPassInstancesArray[currentSwapchainIdx].ResetVKRenderPassCommandBuffer());
-	assert(renderPassInstancesArray[currentSwapchainIdx].BeginVKRenderPassInstanceCommandBufferRecording());
-	assert(renderPassInstancesArray[currentSwapchainIdx].InsertVKRenderPassCommandBufferBeginRenderPassCommands(&renderingDevice, 
-		&swapchainRenderPass, renderingSwapchain.GetFramebufferObjectForSwapchainColourBuffer(currentSwapchainIdx),
-		swpachainClearColour, swapchainDepthClearValue, swapchainStencilClearValue, renderingSwapchain.GetSwapchainDimentions())); //Clear etc
+	if (renderPassInstancesArray[currentSwapchainIdx].GetRenderPassInstanceCommandBufferDirtyFlag())
+	{
+		//Begin filling the render pass instance cmd buffer
+		assert(renderPassInstancesArray[currentSwapchainIdx].ResetVKRenderPassCommandBuffer());
+		assert(renderPassInstancesArray[currentSwapchainIdx].BeginVKRenderPassInstanceCommandBufferRecording());
+		assert(renderPassInstancesArray[currentSwapchainIdx].InsertVKRenderPassCommandBufferBeginRenderPassCommands(&renderingDevice,
+			&swapchainRenderPass, renderingSwapchain.GetFramebufferObjectForSwapchainColourBuffer(currentSwapchainIdx),
+			swpachainClearColour, swapchainDepthClearValue, swapchainStencilClearValue, renderingSwapchain.GetSwapchainDimentions())); //Clear etc
+	}
 }
 
 void VulkanGraphicsManager::OnFrameEnd()
@@ -306,13 +313,16 @@ void VulkanGraphicsManager::OnFrameEnd()
 	//Swapchain image index 
 	uint32_t currentSwapchainIdx = renderingSwapchain.GetCurrentSwapchainImageIndex();
 
-	//End render pass instance
-	assert(renderPassInstancesArray[currentSwapchainIdx].InsertVKRenderPassCommandBufferEndRenderPassCommands());
-	assert(renderPassInstancesArray[currentSwapchainIdx].EndVKRenderPassInstanceCommandBufferRecording());
+	if (renderPassInstancesArray[currentSwapchainIdx].GetRenderPassInstanceCommandBufferDirtyFlag())
+	{
+		//End filling the render pass instance cmd buffer
+		assert(renderPassInstancesArray[currentSwapchainIdx].InsertVKRenderPassCommandBufferEndRenderPassCommands());
+		assert(renderPassInstancesArray[currentSwapchainIdx].EndVKRenderPassInstanceCommandBufferRecording());
 
-	//Update this render pass instances dirty flag -> We will ignore all requests to change the
-	//contents of this command buffer until this is set to true. 
-	renderPassInstancesArray[currentSwapchainIdx].SetRenderPassInstanceCommandBufferDirtyFlag(false);
+		//Update this render pass instances dirty flag -> We will ignore all requests to change the
+		//contents of this command buffer until this is set to true. 
+		renderPassInstancesArray[currentSwapchainIdx].SetRenderPassInstanceCommandBufferDirtyFlag(false);
+	}
 
 	//Submit commands
 	assert(renderPassInstancesArray[currentSwapchainIdx].SubmitVKRenderPassInstanceCommandBuffer(&renderingDevice));
