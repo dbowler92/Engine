@@ -10,6 +10,12 @@
 //Debug
 #include "../../../Debug/Log/DebugLog.h"
 
+//Rendering includes
+#include "../../../Includes/RenderingIncludes.h"
+
+//Graphics manager
+//#include "../../../Graphics/Manager/GraphicsManager.h"
+
 //Vulkan header
 #include <vulkan/vulkan.h>
 
@@ -34,13 +40,10 @@ namespace EngineAPI
 				virtual ~VulkanDrawableObject() = 0 {};
 			
 				//Shutdown this object
-				void Shutdown();
-
-				//Inits the drawable object
-				bool Init(EngineAPI::Graphics::GraphicsManager* graphicsManager);
+				virtual void Shutdown() = 0 {};
 
 				//Called when we need to generate rendering commands. 
-				void GenerateRenderingCommands(VkCommandBuffer& cmdBuffer);
+				virtual void GenerateRenderingCommands(EngineAPI::Graphics::GraphicsManager* graphicsSubsystem) = 0 {};
 			};
 		};
 	};

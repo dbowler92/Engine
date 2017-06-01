@@ -324,16 +324,12 @@ void Win32Application::EnterGameLoop()
 			{
 				CalculateFrameRateStats();
 
-				//Update and render (this calls the users Application subclasses 
-				//update and render functions). 
-				//
-				//In terms of the rendering, it is the applications responsibility
-				//to ensure they bind the swapchain at the correct time && to call
-				//present when they are finished (for now, anyway). 
+				//Update
 				UpdateScene(mainGameLoopTimer.DeltaTime());
 
+				//Rendering
 				graphicsSubsystem->OnFrameBegin();
-				RenderScene();
+				RenderScene(); //Fill render pass instance command buffers 
 				graphicsSubsystem->OnFrameEnd();
 			}
 			else

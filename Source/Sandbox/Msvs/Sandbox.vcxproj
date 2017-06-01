@@ -174,10 +174,12 @@
   <ItemGroup>
     <ClCompile Include="..\Application\SandboxApplication.cpp" />
     <ClCompile Include="..\Main\SandboxMain.cpp" />
+    <ClCompile Include="..\Triangle\Triangle.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\App Config\AppConfig.h" />
     <ClInclude Include="..\Application\SandboxApplication.h" />
+    <ClInclude Include="..\Triangle\Triangle.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

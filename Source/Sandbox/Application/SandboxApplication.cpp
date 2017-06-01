@@ -31,6 +31,10 @@ bool SandboxApplication::InitApplication()
 	//Device -> Used when creating rendering resources
 	EngineAPI::Graphics::RenderDevice* device = EngineAPI::Graphics::GraphicsManager::GetInstance()->GetRenderingDevice();
 
+	//Init triangle
+	tri.Init(graphicsSubsystem);
+
+	/*
 	//Test Vertex buffer object:
 	struct VertexWithColour
 	{
@@ -191,6 +195,7 @@ bool SandboxApplication::InitApplication()
 	pipelineStateDesc.tessStateInfo = nullptr; //TODO
 
 	assert(graphicsPipelineState.InitVKGraphicsPipelineState(device, &graphicsPCO, graphicsSubsystem->GetRenderPass(), &testProgramSPIR, &pipelineStateDesc, true));
+	*/ 
 
 	return true;
 }
@@ -214,6 +219,11 @@ bool SandboxApplication::ShutdownApplication()
 	graphicsPCO.Shutdown();
 	graphicsPipelineState.Shutdown();
 
+	//
+	//Triangle
+	//
+	tri.Shutdown();
+
 	return true;
 }
 
@@ -224,5 +234,6 @@ void SandboxApplication::UpdateScene(float dt)
 
 void SandboxApplication::RenderScene()
 {
-
+	//Render triangle
+	tri.GenerateRenderingCommands(graphicsSubsystem);
 }

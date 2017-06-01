@@ -159,17 +159,6 @@ bool VulkanGraphicsManager::SetSwapchainClearValues(UNorm32Colour colourBufferCl
 	swapchainDepthClearValue = depthClear;
 	swapchainStencilClearValue = stencilClear;
 
-	//Reinit the render pass instances with new ckear colours
-	for (int i = 0; i < renderPassInstanceCount; i++)
-	{
-		if (!renderPassInstancesArray[i].BuildVKRenderPassInstanceCommandBuffer(&renderingDevice, &swapchainRenderPass, renderingSwapchain.GetFramebufferObjectForSwapchainColourBuffer(i),
-			swpachainClearColour, swapchainDepthClearValue, swapchainStencilClearValue, renderingSwapchain.GetSwapchainDimentions()))
-		{
-			EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanGraphicsManager::SetSwapchainClearValues(): Could not rebuild the swapcahin render pass instance command buffers for new clear values\n");
-			return false;
-		}
-	}
-
 	//Done
 	return true;
 }
@@ -285,20 +274,9 @@ bool VulkanGraphicsManager::InitVKRenderPassInstances()
 	//Init
 	for (int i = 0; i < renderPassInstanceCount; i++)
 	{
-		if (!renderPassInstancesArray[i].InitVKRenderPassInstance())
+		if (!renderPassInstancesArray[i].InitVKRenderPassInstance(&renderingDevice))
 		{
 			EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanGraphicsManager::InitVKRenderPassInstances() Error: Could not init render pass instance\n");
-			return false;
-		}
-
-		//Build command buffer
-		if (!renderPassInstancesArray[i].BuildVKRenderPassInstanceCommandBuffer(&renderingDevice,
-			&swapchainRenderPass, renderingSwapchain.GetFramebufferObjectForSwapchainColourBuffer(i),
-			swpachainClearColour, swapchainDepthClearValue, swapchainStencilClearValue,
-			renderingSwapchain.GetSwapchainDimentions()))
-		{
-			//Error
-			EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanGraphicsManager::InitVKRenderPassInstances() Could not (re) build render pass instance command buffer\n");
 			return false;
 		}
 	}
@@ -312,13 +290,29 @@ void VulkanGraphicsManager::OnFrameBegin()
 	//Ready the swapchain
 	assert(renderingSwapchain.GetNextSwapchainImage(&renderingDevice));
 
-	//Submit render pass instance
+	//Swapchain image index 
 	uint32_t currentSwapchainIdx = renderingSwapchain.GetCurrentSwapchainImageIndex();
-	assert(renderPassInstancesArray[currentSwapchainIdx].SubmitVKRenderPassInstanceCommandBuffer(&renderingDevice));
+
+	//Begin render pass instance
+	assert(renderPassInstancesArray[currentSwapchainIdx].ResetVKRenderPassCommandBuffer());
+	assert(renderPassInstancesArray[currentSwapchainIdx].BeginVKRenderPassInstanceCommandBufferRecording());
+	assert(renderPassInstancesArray[currentSwapchainIdx].InsertVKRenderPassCommandBufferBeginRenderPassCommands(&renderingDevice, 
+		&swapchainRenderPass, renderingSwapchain.GetFramebufferObjectForSwapchainColourBuffer(currentSwapchainIdx),
+		swpachainClearColour, swapchainDepthClearValue, swapchainStencilClearValue, renderingSwapchain.GetSwapchainDimentions())); //Clear etc
 }
 
 void VulkanGraphicsManager::OnFrameEnd()
 {
+	//Swapchain image index 
+	uint32_t currentSwapchainIdx = renderingSwapchain.GetCurrentSwapchainImageIndex();
+
+	//End render pass instance
+	assert(renderPassInstancesArray[currentSwapchainIdx].InsertVKRenderPassCommandBufferEndRenderPassCommands());
+	assert(renderPassInstancesArray[currentSwapchainIdx].EndVKRenderPassInstanceCommandBufferRecording());
+
+	//Submit commands
+	assert(renderPassInstancesArray[currentSwapchainIdx].SubmitVKRenderPassInstanceCommandBuffer(&renderingDevice));
+
 	//Present
 	assert(renderingSwapchain.Present(&renderingDevice));
 }

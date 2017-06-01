@@ -1,11 +1,3 @@
-﻿  VulkanDrawableObject.cpp
-  VulkanRenderPassInstance.cpp
-c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\renderpassinstance\vulkan\vulkanrenderpassinstance.cpp(84): warning C4018: '<': signed/unsigned mismatch
-  Generating Code...
-  Skipping... (no relevant changes detected)
-  EngineMain.cpp
-  VulkanSwapchain.cpp
-  VulkanGraphicsManager.cpp
-  GraphicsManager.cpp
-  Win32Application.cpp
+﻿  Win32Application.cpp
+VulkanDrawableObject.obj : warning LNK4221: This object file does not define any previously undefined public symbols, so it will not be used by any link operation that consumes this library
   Engine.vcxproj -> C:\Users\B1032464\Documents\Programming\Engine\Engine\Source\Engine\Msvs\..\..\Lib\Win32Debug\Engine.lib

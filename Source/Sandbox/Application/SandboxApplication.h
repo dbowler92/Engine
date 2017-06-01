@@ -9,8 +9,11 @@
 
 #include "../../Engine/Application/Application.h" //Base class
 
-//Rendering objects
+//Rendering includes
 #include "../../Engine/Includes/RenderingIncludes.h"
+
+//Triangle
+#include "../Triangle/Triangle.h"
 
 class SandboxApplication : public EngineAPI::Core::Application
 { 
@@ -48,4 +51,7 @@ protected:
 
 	EngineAPI::Graphics::GraphicsPipelineCache graphicsPCO;
 	EngineAPI::Graphics::GraphicsPipelineState graphicsPipelineState;
+
+	//Triangle object
+	Triangle tri;
 }; 
