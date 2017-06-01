@@ -25,9 +25,10 @@
 #include "../../Device/RenderDevice.h"
 #include "../../Swapchain/Swapchain.h"
 
-//Manages a render pass and framebuffer
-#include "../../RenderPass/RenderPass.h"
+//Manages a render pass + instance(s) and framebuffer
 #include "../../Framebuffer/Framebuffer.h"
+#include "../../RenderPass/RenderPass.h"
+#include "../../RenderPassInstance/RenderPassInstance.h"
 
 //Vector
 #include <vector>
@@ -101,6 +102,10 @@ namespace EngineAPI
 				//Render pass
 				RenderPass swapchainRenderPass;
 
+				//Render pass instances -> One per swapchain colour image
+				RenderPassInstance* renderPassInstancesArray = nullptr;
+				uint32_t renderPassInstanceCount = 0;
+
 			protected:
 				//Clear colour
 				UNorm32Colour swpachainClearColour;
@@ -110,6 +115,9 @@ namespace EngineAPI
 			private:
 				//Inits the render pass for this engine
 				bool InitVKRenderPass();
+
+				//Inits the render pass instances
+				bool InitVKRenderPassInstances();
 			};
 		};
 	};

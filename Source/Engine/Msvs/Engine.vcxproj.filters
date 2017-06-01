@@ -193,6 +193,12 @@
     <Filter Include="Src\Rendering\DrawableObject\Vulkan">
       <UniqueIdentifier>{dfa78f86-7b06-4133-bf4c-d3f67a64d62e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Src\Graphics\RenderPassInstance">
+      <UniqueIdentifier>{f186faa0-8d96-445f-9569-42ba182f7d0c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Graphics\RenderPassInstance\Vulkan">
+      <UniqueIdentifier>{72f4a496-1ea2-4816-8b2a-2195dec702f4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Main\EngineMain.cpp">
@@ -284,6 +290,9 @@
     </ClCompile>
     <ClCompile Include="..\Rendering\DrawableObject\Vulkan\VulkanDrawableObject.cpp">
       <Filter>Src\Rendering\DrawableObject\Vulkan</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Graphics\RenderPassInstance\Vulkan\VulkanRenderPassInstance.cpp">
+      <Filter>Src\Graphics\RenderPassInstance\Vulkan</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -466,6 +475,12 @@
     </ClInclude>
     <ClInclude Include="..\Rendering\DrawableObject\DrawableObject.h">
       <Filter>Src\Rendering\DrawableObject</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Graphics\RenderPassInstance\Vulkan\VulkanRenderPassInstance.h">
+      <Filter>Src\Graphics\RenderPassInstance\Vulkan</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Graphics\RenderPassInstance\RenderPassInstance.h">
+      <Filter>Src\Graphics\RenderPassInstance</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

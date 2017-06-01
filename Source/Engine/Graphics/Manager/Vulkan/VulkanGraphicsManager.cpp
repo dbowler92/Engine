@@ -20,6 +20,17 @@ bool VulkanGraphicsManager::ShutdownSubsystem()
 	//Shutdown render pass
 	swapchainRenderPass.Shutdown();
 
+	//Shutdown render pass instances
+	if (renderPassInstancesArray != nullptr)
+	{
+		for (int i = 0; i < renderPassInstanceCount; i++)
+			renderPassInstancesArray[i].Shutdown();
+
+		//Delete array
+		delete[] renderPassInstancesArray;
+		renderPassInstancesArray = nullptr;
+	}
+
 	//Cleanup vulkan (reverse order to creation)
 	renderingSwapchain.Shutdown();
 	renderingDevice.Shutdown();
@@ -87,6 +98,13 @@ bool VulkanGraphicsManager::InitSubsystem(EngineAPI::OS::OSWindow* osWindow,
 	if (!renderingSwapchain.InitVKSwapchainRenderPassInstanceCommandBuffers(&renderingDevice, &swapchainRenderPass, swpachainClearColour, swapchainDepthClearValue, swapchainStencilClearValue))
 		return false;
 
+	//Init render pass instances
+	if (!InitVKRenderPassInstances())
+	{
+		EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanGraphicsManager::InitSubsystem() Error: Could not init RenderPassInstances\n");
+		return false;
+	}
+
 	//Done
 	return true;
 }
@@ -131,6 +149,13 @@ bool VulkanGraphicsManager::OnResize(EngineAPI::OS::OSWindow* osWindow)
 	if (!renderingSwapchain.InitVKSwapchainRenderPassInstanceCommandBuffers(&renderingDevice, &swapchainRenderPass, swpachainClearColour, swapchainDepthClearValue, swapchainStencilClearValue))
 	{
 		EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanGraphicsManager::OnResize() Error: Could not reinit swapchain render pass instance (cmd buffers) during resize event\n");
+		return false;
+	}
+
+	//Reinit render pass instances
+	if (!InitVKRenderPassInstances())
+	{
+		EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanGraphicsManager::OnResize() Error: Could not reinit render pass instances during resize event\n");
 		return false;
 	}
 
@@ -243,6 +268,50 @@ bool VulkanGraphicsManager::InitVKRenderPass()
 		return false;
 	}
 
+	//Done
+	return true;
+}
+
+bool VulkanGraphicsManager::InitVKRenderPassInstances()
+{
+	//If we have old data, delete it
+	if (renderPassInstancesArray != nullptr)
+	{
+		for (int i = 0; i < renderPassInstanceCount; i++)
+			renderPassInstancesArray[i].Shutdown();
+
+		//Delete array
+		delete[] renderPassInstancesArray;
+		renderPassInstancesArray = nullptr;
+	}
+
+	//How many render passes now?
+	renderPassInstanceCount = renderingSwapchain.GetSwapchainColourBufferCount();
+
+	//(Re)Create array
+	renderPassInstancesArray = GE_NEW EngineAPI::Graphics::RenderPassInstance[renderPassInstanceCount];
+
+	//Init
+	for (int i = 0; i < renderPassInstanceCount; i++)
+	{
+		if (!renderPassInstancesArray[i].InitVKRenderPassInstance())
+		{
+			EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanGraphicsManager::InitVKRenderPassInstances() Error: Could not init render pass instance\n");
+			return false;
+		}
+
+		//Build command buffer
+		if (!renderPassInstancesArray[i].BuildVKRenderPassInstanceCommandBuffer(&renderingDevice,
+			&swapchainRenderPass, renderingSwapchain.GetFramebufferObjectForSwapchainColourBuffer(i),
+			swpachainClearColour, swapchainDepthClearValue, swapchainStencilClearValue,
+			renderingSwapchain.GetSwapchainDimentions()))
+		{
+			//Error
+			EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanGraphicsManager::InitVKRenderPassInstances() Could not (re) build render pass instance command buffer\n");
+			return false;
+		}
+	}
+	
 	//Done
 	return true;
 }

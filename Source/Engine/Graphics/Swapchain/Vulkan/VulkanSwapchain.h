@@ -19,6 +19,10 @@
 #include "../../RenderPass/RenderPass.h"
 #include "../../Framebuffer/Framebuffer.h"
 
+//TEMP: Uses DrawableObject to build render pass instance command buffers
+#include "../../../Rendering/DrawableObject/DrawableObject.h"
+
+
 namespace EngineAPI
 {
 	namespace Graphics
@@ -73,6 +77,9 @@ namespace EngineAPI
 
 				VkImageView GetVKImageViewForColourBuffer(uint32_t index) { return vkSwapchainColourImageViews[index]; };
 				uint32_t GetSwapchainColourBufferCount() { return vkSwapchainColourImagesCount; };
+
+				//Gets the framebuffer for colour buffer[index]
+				EngineAPI::Graphics::Framebuffer* GetFramebufferObjectForSwapchainColourBuffer(uint32_t index) { return &swapchainFramebuffers[index]; };
 
 				//Returns the depth buffer
 				EngineAPI::Rendering::DepthTexture* GetDepthTexture() { return &depthTexture; };

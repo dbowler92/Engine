@@ -426,6 +426,25 @@ void VulkanCommands::VKCMD_Draw(const VkCommandBuffer& commandBuffer,
 	vkCmdDraw(commandBuffer, vertexCount, instanceCount, firstVertex, firstInstance);
 }
 
+void VulkanCommands::VKCMD_DrawIndexed(const VkCommandBuffer& commandBuffer,
+	uint32_t indexCount, uint32_t instanceCount,
+	uint32_t firstIndex, int32_t vertexOffset, uint32_t firstInstance)
+{
+	vkCmdDrawIndexed(commandBuffer, indexCount, instanceCount, firstIndex, vertexOffset, firstInstance);
+}
+
+void VulkanCommands::VKCMD_DrawIndirect(const VkCommandBuffer& commandBuffer,
+	VkBuffer buffer, VkDeviceSize offset, uint32_t drawCount, uint32_t stride)
+{
+	vkCmdDrawIndirect(commandBuffer, buffer, offset, drawCount, stride);
+}
+
+void VulkanCommands::VKCMD_DrawIndexedIndirect(const VkCommandBuffer& commandBuffer,
+	VkBuffer buffer, VkDeviceSize offset, uint32_t drawCount, uint32_t stride)
+{
+	vkCmdDrawIndexedIndirect(commandBuffer, buffer, offset, drawCount, stride);
+}
+
 //
 //States
 //

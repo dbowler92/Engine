@@ -125,6 +125,15 @@ namespace EngineAPI
 			static void VKCMD_Draw(const VkCommandBuffer& commandBuffer, 
 				uint32_t vertexCount, uint32_t instanceCount, 
 				uint32_t firstVertex, uint32_t firstInstance);
+			static void VKCMD_DrawIndexed(const VkCommandBuffer& commandBuffer,
+				uint32_t indexCount, uint32_t instanceCount,
+				uint32_t firstIndex, int32_t vertexOffset, uint32_t firstInstance);
+
+			//Indirect drawing commands
+			static void VKCMD_DrawIndirect(const VkCommandBuffer& commandBuffer,
+				VkBuffer buffer, VkDeviceSize offset, uint32_t drawCount, uint32_t stride);
+			static void VKCMD_DrawIndexedIndirect(const VkCommandBuffer& commandBuffer,
+				VkBuffer buffer, VkDeviceSize offset, uint32_t drawCount, uint32_t stride);
 		};
 	};
 };

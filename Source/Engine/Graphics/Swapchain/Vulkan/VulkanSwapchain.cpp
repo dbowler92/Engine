@@ -710,6 +710,7 @@ bool VulkanSwapchain::InitVKSwapchainRenderPassInstanceCommandBuffers(EngineAPI:
 		clearValues[0].color.float32[1] = swpachainClearColour.G;
 		clearValues[0].color.float32[2] = swpachainClearColour.B;
 		clearValues[0].color.float32[3] = swpachainClearColour.A;
+		
 
 		//Depth stencil buffer
 		clearValues[1].depthStencil.depth = swapchainDepthClearValue;
@@ -732,13 +733,16 @@ bool VulkanSwapchain::InitVKSwapchainRenderPassInstanceCommandBuffers(EngineAPI:
 		//Start recording the render pass instance
 		vkCmdBeginRenderPass(swapchainImageCommandBuffers[i], &renderPassInfo, VK_SUBPASS_CONTENTS_INLINE);
 
+		//
+		//****Add drawing commands here****
+		//
+
 		//End of render pass instance recording
 		vkCmdEndRenderPass(swapchainImageCommandBuffers[i]);
 
 		//End reading in to this command buffer
 		assert(EngineAPI::Statics::VulkanStatics::CommandBufferEndRecording(&swapchainImageCommandBuffers[i]));
 	}
-
 
 	//Done
 	return true;

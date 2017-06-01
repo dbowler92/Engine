@@ -10,11 +10,16 @@
 //Debug
 #include "../../../Debug/Log/DebugLog.h"
 
-// Device used to create this...
- #include "../../../Graphics/Manager/GraphicsManager.h"
-
 //Vulkan header
 #include <vulkan/vulkan.h>
+
+namespace EngineAPI
+{
+	namespace Graphics
+	{
+		class GraphicsManager;
+	};
+};
 
 namespace EngineAPI
 {
@@ -33,6 +38,8 @@ namespace EngineAPI
 
 				//Inits the drawable object
 				bool Init(EngineAPI::Graphics::GraphicsManager* graphicsManager);
+
+				//Called when we need to 
 			};
 		};
 	};
