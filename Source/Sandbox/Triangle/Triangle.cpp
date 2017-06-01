@@ -182,5 +182,41 @@ void Triangle::Init(EngineAPI::Graphics::GraphicsManager* graphicsSubsystem)
 }
 
 void Triangle::GenerateRenderingCommands(EngineAPI::Graphics::GraphicsManager* graphicsSubsystem)
-{}
+{
+	//Render pass instance command buffer object which we record rendering commands 
+	//in to. 
+	VkCommandBuffer cmdBuffer = graphicsSubsystem->GetCurrentRenderPassInstance()->GetVKRenderPassInstanceCommandBuffer();
+	
+	//Swapchain -> We need its dimentions. 
+	EngineAPI::Graphics::Swapchain* swapchain = graphicsSubsystem->GetRenderingSwapchain();
+
+	//Bind pipeline
+	EngineAPI::Statics::VulkanCommands::VKCMD_BindGraphicsPipeline(cmdBuffer, graphicsPipelineState.GetVKPipelineHandle());
+
+	//Bind VB
+	const VkDeviceSize offsets[1] = { 0 };
+	VkBuffer vertexBuffers[1] = { vb.GetVKBufferHandle() };
+	EngineAPI::Statics::VulkanCommands::VKCMD_BindVertexBuffers(cmdBuffer, 0, 1, vertexBuffers, offsets);
+
+	//Define (Dynamic) viewport
+	VkViewport viewport = {};
+	viewport.width = (float)swapchain->GetSwapchainDimentions().width;
+	viewport.height = (float)swapchain->GetSwapchainDimentions().height;
+	viewport.minDepth = (float) 0.0f;
+	viewport.maxDepth = (float) 1.0f;
+	viewport.x = 0;
+	viewport.y = 0;
+	EngineAPI::Statics::VulkanCommands::VKCMD_DynamicallySetViewports(cmdBuffer, 0, 1, &viewport);
+
+	//Define (Dynamic) scissors 
+	VkRect2D scissor;
+	scissor.extent.width = swapchain->GetSwapchainDimentions().width;
+	scissor.extent.height = swapchain->GetSwapchainDimentions().height;
+	scissor.offset.x = 0;
+	scissor.offset.y = 0;
+	EngineAPI::Statics::VulkanCommands::VKCMD_DynamicallySetScissors(cmdBuffer, 0, 1, &scissor);
+
+	//Issue draw command (1 instance)
+	EngineAPI::Statics::VulkanCommands::VKCMD_Draw(cmdBuffer, 3, 1, 0, 0);
+}
 

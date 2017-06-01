@@ -37,6 +37,9 @@ namespace EngineAPI
 				virtual void Shutdown() = 0;
 
 			public:
+				//Returns the VKBuffer handle
+				VkBuffer GetVKBufferHandle() { return vkBufferHandle; };
+
 				//Getters
 				VkDeviceSize GetBufferContentsSize() { return bufferContentsSizeBytes; };
 

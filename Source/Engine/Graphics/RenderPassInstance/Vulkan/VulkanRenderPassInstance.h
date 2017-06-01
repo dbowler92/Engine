@@ -66,6 +66,10 @@ namespace EngineAPI
 				//Submits the command buffer for processing
 				bool SubmitVKRenderPassInstanceCommandBuffer(EngineAPI::Graphics::RenderDevice* renderingDevice);
 
+			public:
+				//Returns the render pass instance command buffer
+				VkCommandBuffer GetVKRenderPassInstanceCommandBuffer() { return vkRenderPassInstanceCmdBuffer; };
+
 			protected:
 				//Render pass instance command buffer
 				VkCommandBuffer vkRenderPassInstanceCmdBuffer = VK_NULL_HANDLE;

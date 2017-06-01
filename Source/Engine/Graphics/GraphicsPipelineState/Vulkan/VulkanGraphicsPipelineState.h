@@ -55,6 +55,10 @@ namespace EngineAPI
 					EngineAPI::Graphics::GraphicsPipelineCache* optionalPipelineCache, EngineAPI::Graphics::RenderPass* renderPass,
 					EngineAPI::Graphics::Program* program, PipelineStateDescription* pipelineState, bool createUsingOptimiseFlag);
 
+			public:
+				//Returns the Vulkan pipeline object
+				VkPipeline GetVKPipelineHandle() { return vkPipelineHandle; };
+
 			protected:
 				//Pipeline handle
 				VkPipeline vkPipelineHandle = VK_NULL_HANDLE;
