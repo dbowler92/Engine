@@ -310,6 +310,10 @@ void VulkanGraphicsManager::OnFrameEnd()
 	assert(renderPassInstancesArray[currentSwapchainIdx].InsertVKRenderPassCommandBufferEndRenderPassCommands());
 	assert(renderPassInstancesArray[currentSwapchainIdx].EndVKRenderPassInstanceCommandBufferRecording());
 
+	//Update this render pass instances dirty flag -> We will ignore all requests to change the
+	//contents of this command buffer until this is set to true. 
+	renderPassInstancesArray[currentSwapchainIdx].SetRenderPassInstanceCommandBufferDirtyFlag(false);
+
 	//Submit commands
 	assert(renderPassInstancesArray[currentSwapchainIdx].SubmitVKRenderPassInstanceCommandBuffer(&renderingDevice));
 

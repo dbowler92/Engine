@@ -183,6 +183,10 @@ void Triangle::Init(EngineAPI::Graphics::GraphicsManager* graphicsSubsystem)
 
 void Triangle::GenerateRenderingCommands(EngineAPI::Graphics::GraphicsManager* graphicsSubsystem)
 {
+	//Do we need to insert render commands?
+	if (!graphicsSubsystem->GetCurrentRenderPassInstance()->GetRenderPassInstanceCommandBufferDirtyFlag())
+		return;
+
 	//Render pass instance command buffer object which we record rendering commands 
 	//in to. 
 	VkCommandBuffer cmdBuffer = graphicsSubsystem->GetCurrentRenderPassInstance()->GetVKRenderPassInstanceCommandBuffer();

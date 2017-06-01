@@ -30,6 +30,10 @@ bool VulkanRenderPassInstance::InsertVKRenderPassCommandBufferBeginRenderPassCom
 	EngineAPI::Graphics::RenderPass* renderPass, EngineAPI::Graphics::Framebuffer* frameBuffer,
 	UNorm32Colour colourBufferClearValue, float depthClearValue, uint32_t stencilClearValue, VkExtent2D renderAreaExtents)
 {
+	//Early return if we are not allowed to make changes to this command buffer
+	if (!renderPassInstanceDirtyFlag)
+		return true;
+
 	//Clear values
 	VkClearValue clearValues[2];
 
@@ -66,6 +70,10 @@ bool VulkanRenderPassInstance::InsertVKRenderPassCommandBufferBeginRenderPassCom
 
 bool VulkanRenderPassInstance::InsertVKRenderPassCommandBufferEndRenderPassCommands()
 {
+	//Early return if we are not allowed to make changes to this command buffer
+	if (!renderPassInstanceDirtyFlag)
+		return true;
+
 	//End of render pass instance recording
 	vkCmdEndRenderPass(vkRenderPassInstanceCmdBuffer);
 
@@ -75,6 +83,10 @@ bool VulkanRenderPassInstance::InsertVKRenderPassCommandBufferEndRenderPassComma
 
 bool VulkanRenderPassInstance::ResetVKRenderPassCommandBuffer()
 {
+	//Early return if we are not allowed to make changes to this command buffer
+	if (!renderPassInstanceDirtyFlag)
+		return true;
+
 	if (vkRenderPassInstanceCmdBuffer != VK_NULL_HANDLE)
 	{
 		if (!EngineAPI::Statics::VulkanStatics::CommandBufferReset(&vkRenderPassInstanceCmdBuffer, false))
@@ -90,6 +102,10 @@ bool VulkanRenderPassInstance::ResetVKRenderPassCommandBuffer()
 
 bool VulkanRenderPassInstance::BeginVKRenderPassInstanceCommandBufferRecording()
 {
+	//Early return if we are not allowed to make changes to this command buffer
+	if (!renderPassInstanceDirtyFlag)
+		return true;
+
 	assert(EngineAPI::Statics::VulkanStatics::CommandBufferBeginRecordingDefault(&vkRenderPassInstanceCmdBuffer));
 
 	//Done
@@ -98,6 +114,10 @@ bool VulkanRenderPassInstance::BeginVKRenderPassInstanceCommandBufferRecording()
 
 bool VulkanRenderPassInstance::EndVKRenderPassInstanceCommandBufferRecording()
 {
+	//Early return if we are not allowed to make changes to this command buffer
+	if (!renderPassInstanceDirtyFlag)
+		return true;
+
 	//End reading in to this command buffer
 	assert(EngineAPI::Statics::VulkanStatics::CommandBufferEndRecording(&vkRenderPassInstanceCmdBuffer));
 

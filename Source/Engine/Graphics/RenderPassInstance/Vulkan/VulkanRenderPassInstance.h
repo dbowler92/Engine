@@ -67,12 +67,22 @@ namespace EngineAPI
 				bool SubmitVKRenderPassInstanceCommandBuffer(EngineAPI::Graphics::RenderDevice* renderingDevice);
 
 			public:
+				//If the dirty flag is false, we will ignore function calls above leaving the
+				//command buffer in its earlier state (this allows us to reuse the command
+				//buffer over multiple frames if possible)
+				void SetRenderPassInstanceCommandBufferDirtyFlag(bool flag) { renderPassInstanceDirtyFlag = flag; };
+				bool GetRenderPassInstanceCommandBufferDirtyFlag() { return renderPassInstanceDirtyFlag; };
+
+			public:
 				//Returns the render pass instance command buffer
 				VkCommandBuffer GetVKRenderPassInstanceCommandBuffer() { return vkRenderPassInstanceCmdBuffer; };
 
 			protected:
 				//Render pass instance command buffer
 				VkCommandBuffer vkRenderPassInstanceCmdBuffer = VK_NULL_HANDLE;
+
+				//Dirty flag
+				bool renderPassInstanceDirtyFlag = true;
 			};
 		};
 	};
