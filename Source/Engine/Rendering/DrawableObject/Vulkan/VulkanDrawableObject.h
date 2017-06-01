@@ -39,7 +39,8 @@ namespace EngineAPI
 				//Inits the drawable object
 				bool Init(EngineAPI::Graphics::GraphicsManager* graphicsManager);
 
-				//Called when we need to 
+				//Called when we need to generate rendering commands. 
+				void GenerateRenderingCommands(VkCommandBuffer& cmdBuffer);
 			};
 		};
 	};

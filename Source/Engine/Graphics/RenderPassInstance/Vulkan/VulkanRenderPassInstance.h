@@ -24,6 +24,9 @@
 #include "../../../Graphics/RenderPass/RenderPass.h"
 #include "../../../Graphics/Framebuffer/Framebuffer.h"
 
+//Drawable objects
+#include "../../../Rendering/DrawableObject/DrawableObject.h"
+
 //Vulkan header
 #include <vulkan\vulkan.h>
 
@@ -48,7 +51,8 @@ namespace EngineAPI
 				//(Re)Builds the render pass instance command buffer
 				bool BuildVKRenderPassInstanceCommandBuffer(EngineAPI::Graphics::RenderDevice* renderingDevice,
 					EngineAPI::Graphics::RenderPass* renderPass, EngineAPI::Graphics::Framebuffer* frameBuffer,
-					UNorm32Colour colourBufferClearValue, float depthClearValue, uint32_t stencilClearValue, VkExtent2D renderAreaExtents);
+					UNorm32Colour colourBufferClearValue, float depthClearValue, uint32_t stencilClearValue, VkExtent2D renderAreaExtents,
+					EngineAPI::Rendering::DrawableObject* drawableObjectsList = nullptr, uint32_t drawableObjectsCount = 0);
 
 				//Submits the command buffer for processing
 				bool SubmitVKRenderPassInstanceCommandBuffer(EngineAPI::Graphics::RenderDevice* renderingDevice);

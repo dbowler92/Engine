@@ -21,7 +21,8 @@ bool VulkanRenderPassInstance::InitVKRenderPassInstance()
 
 bool VulkanRenderPassInstance::BuildVKRenderPassInstanceCommandBuffer(EngineAPI::Graphics::RenderDevice* renderingDevice,
 	EngineAPI::Graphics::RenderPass* renderPass, EngineAPI::Graphics::Framebuffer* frameBuffer,
-	UNorm32Colour colourBufferClearValue, float depthClearValue, uint32_t stencilClearValue, VkExtent2D renderAreaExtents)
+	UNorm32Colour colourBufferClearValue, float depthClearValue, uint32_t stencilClearValue, VkExtent2D renderAreaExtents, 
+	EngineAPI::Rendering::DrawableObject* drawableObjectsList, uint32_t drawableObjectsCount)
 {
 	//if recalling (Eg: Due to changes to the clear colour info, we need to delete the old command
 	//buffers)
@@ -33,12 +34,14 @@ bool VulkanRenderPassInstance::BuildVKRenderPassInstanceCommandBuffer(EngineAPI:
 			return false;
 		}
 	}
-
-	//Get command buffer
-	if (!renderingDevice->GetGraphicsCommandQueueFamily()->GetCommandBufferPool(0).GetVKCommandBufferFromPool(true, &vkRenderPassInstanceCmdBuffer))
+	else
 	{
-		EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanRenderPassInstance::BuildVKRenderPassInstanceCommandBuffer() - Could not get command buffer\n");
-		return false;
+		//Get command buffer
+		if (!renderingDevice->GetGraphicsCommandQueueFamily()->GetCommandBufferPool(0).GetVKCommandBufferFromPool(true, &vkRenderPassInstanceCmdBuffer))
+		{
+			EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanRenderPassInstance::BuildVKRenderPassInstanceCommandBuffer() - Could not get command buffer\n");
+			return false;
+		}
 	}
 
 	//Bind command buffer
@@ -75,9 +78,20 @@ bool VulkanRenderPassInstance::BuildVKRenderPassInstanceCommandBuffer(EngineAPI:
 	//Start recording the render pass instance
 	vkCmdBeginRenderPass(vkRenderPassInstanceCmdBuffer, &renderPassInfo, VK_SUBPASS_CONTENTS_INLINE);
 
-	//
-	//****Add drawing commands here****
-	//
+	//Drawing commands
+	if (drawableObjectsList && drawableObjectsCount > 0)
+	{
+		for (int i = 0; i < drawableObjectsCount; i++)
+		{
+			//Bind pipeline object
+
+			//Bind vertex buffer
+
+			//Init viewport / scissor
+
+			//Draw object
+		}
+	}
 
 	//End of render pass instance recording
 	vkCmdEndRenderPass(vkRenderPassInstanceCmdBuffer);

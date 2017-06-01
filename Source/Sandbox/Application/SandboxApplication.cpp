@@ -224,13 +224,5 @@ void SandboxApplication::UpdateScene(float dt)
 
 void SandboxApplication::RenderScene()
 {
-	//Bind the swapchain for rendering
-	assert(graphicsSubsystem->GetRenderingSwapchain()->BindAndClearSwapchainBuffers(graphicsSubsystem->GetRenderingDevice()));
 
-	//
-	//Render stuff here
-	//
-
-	//Present
-	assert(graphicsSubsystem->GetRenderingSwapchain()->Present(graphicsSubsystem->GetRenderingDevice()));
 }

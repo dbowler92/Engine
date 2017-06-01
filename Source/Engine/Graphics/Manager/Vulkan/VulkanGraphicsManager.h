@@ -88,6 +88,13 @@ namespace EngineAPI
 				//Gets the main render pass
 				RenderPass* GetRenderPass() { return &swapchainRenderPass; };
 
+				//Gets the current render pass instance
+				RenderPassInstance* GetCurrentRenderPassInstance() { return &renderPassInstancesArray[renderingSwapchain.GetCurrentSwapchainImageIndex()]; };
+
+				//Gets all render pass instances -> One per swapchain colour buffer
+				RenderPassInstance* GetRenderPassInstances() { return renderPassInstancesArray; };
+				uint32_t GetRenderPassInstancesCount() { return renderPassInstanceCount; };
+
 			public:
 				//Sets the clear values
 				bool SetSwapchainClearValues(UNorm32Colour colourBufferClear, float depthClear, uint32_t stencilClear);

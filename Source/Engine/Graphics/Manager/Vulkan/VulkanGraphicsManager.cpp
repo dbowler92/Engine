@@ -94,10 +94,6 @@ bool VulkanGraphicsManager::InitSubsystem(EngineAPI::OS::OSWindow* osWindow,
 	if (!renderingSwapchain.InitVKFramebuffers(&renderingDevice, &swapchainRenderPass))
 		return false;
 
-	//Init command buffers for each swapchain image
-	if (!renderingSwapchain.InitVKSwapchainRenderPassInstanceCommandBuffers(&renderingDevice, &swapchainRenderPass, swpachainClearColour, swapchainDepthClearValue, swapchainStencilClearValue))
-		return false;
-
 	//Init render pass instances
 	if (!InitVKRenderPassInstances())
 	{
@@ -145,13 +141,6 @@ bool VulkanGraphicsManager::OnResize(EngineAPI::OS::OSWindow* osWindow)
 		return false;
 	}
 
-	//Init command buffers for each swapchain image
-	if (!renderingSwapchain.InitVKSwapchainRenderPassInstanceCommandBuffers(&renderingDevice, &swapchainRenderPass, swpachainClearColour, swapchainDepthClearValue, swapchainStencilClearValue))
-	{
-		EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanGraphicsManager::OnResize() Error: Could not reinit swapchain render pass instance (cmd buffers) during resize event\n");
-		return false;
-	}
-
 	//Reinit render pass instances
 	if (!InitVKRenderPassInstances())
 	{
@@ -170,13 +159,15 @@ bool VulkanGraphicsManager::SetSwapchainClearValues(UNorm32Colour colourBufferCl
 	swapchainDepthClearValue = depthClear;
 	swapchainStencilClearValue = stencilClear;
 
-	//TODO: Recreate the swpachain command buffers with new clear
-	//colours
-	if (!renderingSwapchain.InitVKSwapchainRenderPassInstanceCommandBuffers(&renderingDevice, &swapchainRenderPass,
-		swpachainClearColour, swapchainDepthClearValue, swapchainStencilClearValue))
+	//Reinit the render pass instances with new ckear colours
+	for (int i = 0; i < renderPassInstanceCount; i++)
 	{
-		EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanGraphicsManager::SetSwapchainClearValues(): Could not rebuild the swapcahin render pass instance command buffers for new clear values\n");
-		return false;
+		if (!renderPassInstancesArray[i].BuildVKRenderPassInstanceCommandBuffer(&renderingDevice, &swapchainRenderPass, renderingSwapchain.GetFramebufferObjectForSwapchainColourBuffer(i),
+			swpachainClearColour, swapchainDepthClearValue, swapchainStencilClearValue, renderingSwapchain.GetSwapchainDimentions()))
+		{
+			EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanGraphicsManager::SetSwapchainClearValues(): Could not rebuild the swapcahin render pass instance command buffers for new clear values\n");
+			return false;
+		}
 	}
 
 	//Done
@@ -318,10 +309,16 @@ bool VulkanGraphicsManager::InitVKRenderPassInstances()
 
 void VulkanGraphicsManager::OnFrameBegin()
 {
+	//Ready the swapchain
+	assert(renderingSwapchain.GetNextSwapchainImage(&renderingDevice));
 
+	//Submit render pass instance
+	uint32_t currentSwapchainIdx = renderingSwapchain.GetCurrentSwapchainImageIndex();
+	assert(renderPassInstancesArray[currentSwapchainIdx].SubmitVKRenderPassInstanceCommandBuffer(&renderingDevice));
 }
 
 void VulkanGraphicsManager::OnFrameEnd()
 {
-
+	//Present
+	assert(renderingSwapchain.Present(&renderingDevice));
 }

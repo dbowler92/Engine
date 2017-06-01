@@ -128,7 +128,6 @@ void VulkanSwapchain::Shutdown(bool doShutdownLogicalSurface, bool doShutdownSwa
 	for (int i = 0; i < swapchainFramebuffers.size(); i++)
 		swapchainFramebuffers[i].Shutdown();
 	swapchainFramebuffers.clear();
-	swapchainImageCommandBuffers.clear(); //Reset them???
 
 	//Cleanup array data
 	delete[] surfaceFormatsArray;
@@ -667,88 +666,7 @@ bool VulkanSwapchain::InitVKFramebuffers(EngineAPI::Graphics::RenderDevice* rend
 	return true;
 }
 
-bool VulkanSwapchain::InitVKSwapchainRenderPassInstanceCommandBuffers(EngineAPI::Graphics::RenderDevice* renderingDevice,
-	EngineAPI::Graphics::RenderPass* renderPass, 
-	UNorm32Colour swpachainClearColour, float swapchainDepthClearValue, uint32_t swapchainStencilClearValue)
-{
-	//if recalling (Eg: Due to changes to the clear colour info, we need to delete the old command
-	//buffers)
-	if (swapchainImageCommandBuffers.size() != 0)
-	{
-		for (int i = 0; i < swapchainImageCommandBuffers.size(); i++)
-		{
-			if (!EngineAPI::Statics::VulkanStatics::CommandBufferReset(&swapchainImageCommandBuffers[i], true))
-			{
-				EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanSwapchain::InitVKSwapchainRenderPassInstanceCommandBuffers() - Could not reset command buffers\n");
-				return false;
-			}
-		}
-
-		//Clear vector
-		swapchainImageCommandBuffers.clear();
-	}
-
-	//1 per swapchain colour image
-	swapchainImageCommandBuffers.resize(GetSwapchainColourBufferCount());
-	for (int i = 0; i < swapchainImageCommandBuffers.size(); i++)
-	{
-		//Get command buffer
-		if (!renderingDevice->GetGraphicsCommandQueueFamily()->GetCommandBufferPool(0).GetVKCommandBufferFromPool(true, &swapchainImageCommandBuffers[i]))
-		{
-			EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanSwapchain::InitVKSwapchainRenderPassInstanceCommandBuffers() - Could not get command buffer\n");
-			return false;
-		}
-
-		//Bind command buffer
-		assert(EngineAPI::Statics::VulkanStatics::CommandBufferBeginRecordingDefault(&swapchainImageCommandBuffers[i]));
-
-		//Clear values
-		VkClearValue clearValues[2];
-
-		//Colour buffer
-		clearValues[0].color.float32[0] = swpachainClearColour.R;
-		clearValues[0].color.float32[1] = swpachainClearColour.G;
-		clearValues[0].color.float32[2] = swpachainClearColour.B;
-		clearValues[0].color.float32[3] = swpachainClearColour.A;
-		
-
-		//Depth stencil buffer
-		clearValues[1].depthStencil.depth = swapchainDepthClearValue;
-		clearValues[1].depthStencil.stencil = swapchainStencilClearValue;
-
-		//Create render pass instance -> This will be used to record a 
-		//begin render pass command in to this buffer
-		VkRenderPassBeginInfo renderPassInfo = {};
-		renderPassInfo.sType = VK_STRUCTURE_TYPE_RENDER_PASS_BEGIN_INFO;
-		renderPassInfo.pNext = nullptr;
-		renderPassInfo.renderPass = renderPass->GetVKRenderPassHandle();
-		renderPassInfo.framebuffer = swapchainFramebuffers[i].GetVKFramebufferHandle();
-		renderPassInfo.renderArea.offset.x = 0;
-		renderPassInfo.renderArea.offset.y = 0;
-		renderPassInfo.renderArea.extent.width = GetSwapchainDimentions().width;
-		renderPassInfo.renderArea.extent.height = GetSwapchainDimentions().height;
-		renderPassInfo.clearValueCount = 2;
-		renderPassInfo.pClearValues = clearValues;
-	
-		//Start recording the render pass instance
-		vkCmdBeginRenderPass(swapchainImageCommandBuffers[i], &renderPassInfo, VK_SUBPASS_CONTENTS_INLINE);
-
-		//
-		//****Add drawing commands here****
-		//
-
-		//End of render pass instance recording
-		vkCmdEndRenderPass(swapchainImageCommandBuffers[i]);
-
-		//End reading in to this command buffer
-		assert(EngineAPI::Statics::VulkanStatics::CommandBufferEndRecording(&swapchainImageCommandBuffers[i]));
-	}
-
-	//Done
-	return true;
-}
-
-bool VulkanSwapchain::BindAndClearSwapchainBuffers(EngineAPI::Graphics::RenderDevice* renderingDevice)
+bool VulkanSwapchain::GetNextSwapchainImage(EngineAPI::Graphics::RenderDevice* renderingDevice)
 {
 	//Get frontbuffer to render in to.
 	VkResult result = fpAcquireNextImageKHR(renderingDevice->GetVKLogicalDevice(), vkSwapchainHandle, UINT64_MAX, 
@@ -757,10 +675,6 @@ bool VulkanSwapchain::BindAndClearSwapchainBuffers(EngineAPI::Graphics::RenderDe
 	//Wait on fence
 	if (vkGetNextImageFence)
 		vkGetFenceStatus(renderingDevice->GetVKLogicalDevice(), vkGetNextImageFence) != VK_SUCCESS;
-
-	//Bind and clear
-	renderingDevice->GetGraphicsCommandQueueFamily()->SubmitVKCommandBuffersToQueueDefault(0,
-		&swapchainImageCommandBuffers[currentColourBufferIndex], 1, VK_NULL_HANDLE, true);
 
 	//Reset fence
 	assert(vkResetFences(renderingDevice->GetVKLogicalDevice(), 1, &vkGetNextImageFence) == VK_SUCCESS);

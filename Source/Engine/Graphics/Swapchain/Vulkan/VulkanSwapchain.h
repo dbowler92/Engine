@@ -54,15 +54,10 @@ namespace EngineAPI
 				//should be called after a Render pass has been inited by the graphics manager
 				bool InitVKFramebuffers(EngineAPI::Graphics::RenderDevice* renderingDevice,
 					EngineAPI::Graphics::RenderPass* renderPass);
-				bool InitVKSwapchainRenderPassInstanceCommandBuffers(EngineAPI::Graphics::RenderDevice* renderingDevice,
-					EngineAPI::Graphics::RenderPass* renderPass, 
-					UNorm32Colour swpachainClearColour, float swapchainDepthClearValue, uint32_t swapchainStencilClearValue);
-
+				
 			public:
-				//Called when we want to bind and clear the swapchain images for rendering in to.
-				//In a forward rendering system, this could be at the frame start (assuming no render to texture).
-				//In a deferred rendeirng system, this could be after the geometry pass but before the light pass
-				bool BindAndClearSwapchainBuffers(EngineAPI::Graphics::RenderDevice* renderingDevice);
+				//Called when we want to begin rendering to the swapchain images (backbuffer)
+				bool GetNextSwapchainImage(EngineAPI::Graphics::RenderDevice* renderingDevice);
 
 				//Called when we want to present the swapchain to the monitor
 				bool Present(EngineAPI::Graphics::RenderDevice* renderingDevice);
@@ -77,6 +72,9 @@ namespace EngineAPI
 
 				VkImageView GetVKImageViewForColourBuffer(uint32_t index) { return vkSwapchainColourImageViews[index]; };
 				uint32_t GetSwapchainColourBufferCount() { return vkSwapchainColourImagesCount; };
+
+				//Gets the index of the current active swapchain image
+				uint32_t GetCurrentSwapchainImageIndex() { return currentColourBufferIndex; };
 
 				//Gets the framebuffer for colour buffer[index]
 				EngineAPI::Graphics::Framebuffer* GetFramebufferObjectForSwapchainColourBuffer(uint32_t index) { return &swapchainFramebuffers[index]; };
@@ -134,9 +132,6 @@ namespace EngineAPI
 
 				//Framebuffer objects - one per colour buffer
 				std::vector<EngineAPI::Graphics::Framebuffer> swapchainFramebuffers;
-
-				//Command buffer per swapchain image
-				std::vector<VkCommandBuffer> swapchainImageCommandBuffers;
 
 			private:
 				//WSI Extension

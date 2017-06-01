@@ -18,3 +18,8 @@ bool VulkanDrawableObject::Init(EngineAPI::Graphics::GraphicsManager* graphicsMa
 	//Done
 	return true;
 }
+
+void VulkanDrawableObject::GenerateRenderingCommands(VkCommandBuffer& cmdBuffer)
+{
+
+}
