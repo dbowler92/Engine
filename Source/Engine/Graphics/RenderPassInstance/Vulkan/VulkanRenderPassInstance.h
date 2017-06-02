@@ -64,7 +64,7 @@ namespace EngineAPI
 				bool EndVKRenderPassInstanceCommandBufferRecording();
 
 				//Submits the command buffer for processing
-				bool SubmitVKRenderPassInstanceCommandBuffer(EngineAPI::Graphics::RenderDevice* renderingDevice);
+				bool SubmitVKRenderPassInstanceCommandBuffer(EngineAPI::Graphics::RenderDevice* renderingDevice, bool doUseInternalSignalSemaphore);
 
 			public:
 				//If the dirty flag is false, we will ignore function calls above leaving the
@@ -73,6 +73,11 @@ namespace EngineAPI
 				void SetRenderPassInstanceCommandBufferDirtyFlag(bool flag) { renderPassInstanceDirtyFlag = flag; };
 				bool GetRenderPassInstanceCommandBufferDirtyFlag() { return renderPassInstanceDirtyFlag; };
 
+				//Gets the sempahore -> This will be signaled when the render pass instance command buffer
+				//has finished processing (Assuming SubmitVKRenderPassInstanceCommandBuffer() is called with
+				//true for the doUseInternalSignalSemaphore flag)
+				VkSemaphore GetRenderPassInstanceCommandBufferOnSubmitSemaphore() { return vkRenderPassInstanceCmdBufferSignalSemaphore; };
+
 			public:
 				//Returns the render pass instance command buffer
 				VkCommandBuffer GetVKRenderPassInstanceCommandBuffer() { return vkRenderPassInstanceCmdBuffer; };
@@ -80,6 +85,14 @@ namespace EngineAPI
 			protected:
 				//Render pass instance command buffer
 				VkCommandBuffer vkRenderPassInstanceCmdBuffer = VK_NULL_HANDLE;
+
+				//Semaphore -> This will be signaled when we have finished processing
+				//the render pass instance command buffer. The present engine, for example, can
+				//wait on this to be signaled. 
+				VkSemaphore vkRenderPassInstanceCmdBufferSignalSemaphore = VK_NULL_HANDLE;
+
+				//Cached device -> Creates the semaphore
+				VkDevice cachedVKLogicalDevice = VK_NULL_HANDLE;
 
 				//Dirty flag
 				bool renderPassInstanceDirtyFlag = true;

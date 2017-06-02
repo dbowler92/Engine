@@ -59,8 +59,10 @@ namespace EngineAPI
 				//Called when we want to begin rendering to the swapchain images (backbuffer)
 				bool GetNextSwapchainImage(EngineAPI::Graphics::RenderDevice* renderingDevice);
 
-				//Called when we want to present the swapchain to the monitor
-				bool Present(EngineAPI::Graphics::RenderDevice* renderingDevice);
+				//Called when we want to present the swapchain to the monitor -> Can use a semaphore for
+				//synchronization: This will be the semaphore signaled by the render pass instance
+				//after the render pass instance command buffer has finished its submission work. 
+				bool Present(EngineAPI::Graphics::RenderDevice* renderingDevice, VkSemaphore optionalWaitSemaphore);
 
 			public:
 				//Returns the logical surface - needed when creating device queues

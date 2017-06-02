@@ -672,7 +672,35 @@ bool VulkanSwapchain::GetNextSwapchainImage(EngineAPI::Graphics::RenderDevice* r
 	VkResult result = fpAcquireNextImageKHR(renderingDevice->GetVKLogicalDevice(), vkSwapchainHandle, UINT64_MAX, 
 		VK_NULL_HANDLE, vkGetNextImageFence, &currentColourBufferIndex);
 
-	//Wait on fence
+	if (result != VK_SUCCESS)
+	{
+		//TODO: Handle errors if possible
+		if (result == VK_ERROR_SURFACE_LOST_KHR)
+		{
+			EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanSwapchain::GetNextSwapchainImage(): VkAquireNextImageKRH() Returned surface lost error\n");
+			return false;
+		}
+		if (result == VK_NOT_READY)
+		{
+			EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanSwapchain::GetNextSwapchainImage(): VkAquireNextImageKRH() Returned not ready error\n");
+			return false;
+		}
+		if (result == VK_TIMEOUT)
+		{
+			EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanSwapchain::GetNextSwapchainImage(): VkAquireNextImageKRH() Returned timeout error\n");
+			return false;
+		}
+		if (result == VK_ERROR_OUT_OF_DATE_KHR)
+		{
+			EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanSwapchain::GetNextSwapchainImage(): VkAquireNextImageKRH() Returned out of date error\n");
+			return false;
+		}
+		if (result == VK_SUBOPTIMAL_KHR)
+			EngineAPI::Debug::DebugLog::PrintWarningMessage("VulkanSwapchain::GetNextSwapchainImage(): VkAquireNextImageKRH() Returned suboptimal warning (Though, this image can still be used)\n");
+	}
+
+	//Wait on fence (fpAcquireNextImageKHR() returns as soon as it has identified the next image
+	//to use. *Not* when it is ready to use...)
 	if (vkGetNextImageFence)
 		vkGetFenceStatus(renderingDevice->GetVKLogicalDevice(), vkGetNextImageFence) != VK_SUCCESS;
 
@@ -683,7 +711,7 @@ bool VulkanSwapchain::GetNextSwapchainImage(EngineAPI::Graphics::RenderDevice* r
 	return true;
 }
 
-bool VulkanSwapchain::Present(EngineAPI::Graphics::RenderDevice* renderingDevice)
+bool VulkanSwapchain::Present(EngineAPI::Graphics::RenderDevice* renderingDevice, VkSemaphore optionalWaitSemaphore)
 {
 	//Presentation queue
 	EngineAPI::Graphics::CommandQueue& cmdQueue = renderingDevice->GetPresentCommandQueueFamily()->GetCommandQueues()[0];
@@ -698,12 +726,30 @@ bool VulkanSwapchain::Present(EngineAPI::Graphics::RenderDevice* renderingDevice
 	presentInfo.pImageIndices = &currentColourBufferIndex;
 	presentInfo.pResults = nullptr;
 
+	//Optional semaphore -> Waits on the render pass instance to finish its submission
+	//work before presenting. 
+	if (optionalWaitSemaphore != VK_NULL_HANDLE)
+	{
+		presentInfo.waitSemaphoreCount = 1;
+		presentInfo.pWaitSemaphores = &optionalWaitSemaphore;
+	}
+
 	//Queue image for presentation
 	VkResult result = fpQueuePresentKHR(presentQueue, &presentInfo);
 	if (result != VK_SUCCESS)
 	{
-		EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanSwapchain::Present() Error: Could not present swapchain\n");
-		return false;
+		if (result == VK_ERROR_SURFACE_LOST_KHR)
+		{
+			EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanSwapchain::Present() Error: Surface lost\n");
+			return false;
+		}
+		if (result == VK_ERROR_OUT_OF_DATE_KHR)
+		{
+			EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanSwapchain::Present() Error: Out of date\n");
+			return false;
+		}
+		if (result == VK_SUBOPTIMAL_KHR)
+			EngineAPI::Debug::DebugLog::PrintWarningMessage("VulkanSwapchain::Present() Warning: Suboptimal\n");
 	}
 
 	//Done

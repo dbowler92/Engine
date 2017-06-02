@@ -4,6 +4,10 @@ using namespace EngineAPI::Graphics::Platform;
 
 void VulkanRenderPassInstance::Shutdown()
 {
+	//Destroy semaphore
+	if (vkRenderPassInstanceCmdBufferSignalSemaphore)
+		vkDestroySemaphore(cachedVKLogicalDevice, vkRenderPassInstanceCmdBufferSignalSemaphore, nullptr);
+
 	//Release command buffer
 	if (vkRenderPassInstanceCmdBuffer)
 	{
@@ -15,10 +19,25 @@ void VulkanRenderPassInstance::Shutdown()
 
 bool VulkanRenderPassInstance::InitVKRenderPassInstance(EngineAPI::Graphics::RenderDevice* renderingDevice)
 {
+	//Cache device
+	cachedVKLogicalDevice = renderingDevice->GetVKLogicalDevice();
+
 	//Get command buffer
 	if (!renderingDevice->GetGraphicsCommandQueueFamily()->GetCommandBufferPool(0).GetVKCommandBufferFromPool(true, &vkRenderPassInstanceCmdBuffer))
 	{
 		EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanRenderPassInstance::BuildVKRenderPassInstanceCommandBuffer() - Could not get command buffer\n");
+		return false;
+	}
+
+	//Create semaphore
+	VkSemaphoreCreateInfo semaphoreCreateInfo = {};
+	semaphoreCreateInfo.sType = VK_STRUCTURE_TYPE_SEMAPHORE_CREATE_INFO;
+	semaphoreCreateInfo.pNext = nullptr;
+	semaphoreCreateInfo.flags = 0;
+	VkResult result = vkCreateSemaphore(cachedVKLogicalDevice, &semaphoreCreateInfo, nullptr, &vkRenderPassInstanceCmdBufferSignalSemaphore);
+	if (result != VK_SUCCESS)
+	{
+		EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanRenderPassInstance::InitVKRenderPassInstance() Error: Could not create semaphore\n");
 		return false;
 	}
 
@@ -125,11 +144,33 @@ bool VulkanRenderPassInstance::EndVKRenderPassInstanceCommandBufferRecording()
 	return true;
 }
 
-bool VulkanRenderPassInstance::SubmitVKRenderPassInstanceCommandBuffer(EngineAPI::Graphics::RenderDevice* renderingDevice)
+bool VulkanRenderPassInstance::SubmitVKRenderPassInstanceCommandBuffer(EngineAPI::Graphics::RenderDevice* renderingDevice, bool doUseInternalSignalSemaphore)
 {
-	//Submit render pass instance to queue
-	assert(renderingDevice->GetGraphicsCommandQueueFamily()->SubmitVKCommandBuffersToQueueDefault(0,
-		&vkRenderPassInstanceCmdBuffer, 1, VK_NULL_HANDLE, true));
+	if (doUseInternalSignalSemaphore)
+	{
+		VkPipelineStageFlags submitPipelineStages = VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT;
+
+		//Submit description
+		VkSubmitInfo submitInfo = {};
+		submitInfo.sType = VK_STRUCTURE_TYPE_SUBMIT_INFO;
+		submitInfo.pNext = nullptr;
+		submitInfo.waitSemaphoreCount = 0;
+		submitInfo.pWaitSemaphores = nullptr;
+		submitInfo.pWaitDstStageMask = &submitPipelineStages;
+		submitInfo.commandBufferCount = 1;
+		submitInfo.pCommandBuffers = &vkRenderPassInstanceCmdBuffer;
+		submitInfo.signalSemaphoreCount = 1;
+		submitInfo.pSignalSemaphores = &vkRenderPassInstanceCmdBufferSignalSemaphore;
+
+		//Submit work.
+		assert(renderingDevice->GetGraphicsCommandQueueFamily()->SubmitVKCommandBuffersToQueue(0, &submitInfo, 1, VK_NULL_HANDLE, true));
+	}
+	else
+	{
+		//Submit render pass instance to queue
+		assert(renderingDevice->GetGraphicsCommandQueueFamily()->SubmitVKCommandBuffersToQueueDefault(0,
+			&vkRenderPassInstanceCmdBuffer, 1, VK_NULL_HANDLE, true));
+	}
 
 	//Done
 	return true;

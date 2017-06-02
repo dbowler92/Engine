@@ -325,8 +325,8 @@ void VulkanGraphicsManager::OnFrameEnd()
 	}
 
 	//Submit commands
-	assert(renderPassInstancesArray[currentSwapchainIdx].SubmitVKRenderPassInstanceCommandBuffer(&renderingDevice));
+	assert(renderPassInstancesArray[currentSwapchainIdx].SubmitVKRenderPassInstanceCommandBuffer(&renderingDevice, true));
 
 	//Present
-	assert(renderingSwapchain.Present(&renderingDevice));
+	assert(renderingSwapchain.Present(&renderingDevice, renderPassInstancesArray[currentSwapchainIdx].GetRenderPassInstanceCommandBufferOnSubmitSemaphore()));
 }
