@@ -7,6 +7,7 @@
 #include "../../../Rendering/DepthTexture/DepthTexture.h"
 
 #include "../../../Rendering/VertexBuffer/VertexBuffer.h"
+#include "../../../Rendering/IndexBuffer/IndexBuffer.h"
 
 using namespace EngineAPI::Graphics::Platform;
 
@@ -282,7 +283,33 @@ SuballocationResult VulkanDeviceMemoryAllocator::AllocateResourceAuto(EngineAPI:
 		{
 			EngineAPI::Debug::DebugLog::PrintInfoMessage("VulkanDeviceMemoryAllocator::AllocateResourceAuto(): Allocating Index Buffer\n");
 
-			success = ALLOCATION_RESULT_NOT_IMPLEMENTED;
+			//Cast to index buffer
+			EngineAPI::Rendering::IndexBuffer* ib = static_cast<EngineAPI::Rendering::IndexBuffer*>(resource);
+
+			//Vulkan memory requirements for this buffer -> Helps us find the correct store
+			//for this resource. 
+			VkMemoryRequirements memoryRequirments = ib->GetResourceVKMemoryRequirments();
+
+			//Device memory properties. Used with VkMemoryRequirments to work out what memory type
+			//we want to use when allocing this depth texture
+			VkPhysicalDeviceMemoryProperties physicalDeviceMemoryProperties = renderingDevice->GetVKPhysicalDeviceMemoryProperties();
+
+			//Memory properties for this resource type
+			VkMemoryPropertyFlags optimalFlags = VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT;
+			VkMemoryPropertyFlags fallbackFlags = 0;
+			if (ib->IsDynamicResource())
+			{
+				optimalFlags = VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT | VK_MEMORY_PROPERTY_HOST_CACHED_BIT;
+				fallbackFlags = VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT;
+			}
+
+			//Is dynamic resource or can we store it in GPU?
+			bool gpuOnlyStore = !(ib->IsDynamicResource());
+
+			//Allocate on the device
+			success = AllocResourceAuto(renderingDevice, resource, resourceType,
+				optimalFlags, fallbackFlags, gpuOnlyStore,
+				memoryRequirments, physicalDeviceMemoryProperties);
 			break;
 		}
 		case RENDERING_RESOURCE_TYPE_CONSTANT_BUFFER:

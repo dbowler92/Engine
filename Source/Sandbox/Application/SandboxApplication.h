@@ -12,8 +12,9 @@
 //Rendering includes
 #include "../../Engine/Includes/RenderingIncludes.h"
 
-//Triangle
+//Test rendering objects
 #include "../Triangle/Triangle.h"
+#include "../Quad/Quad.h" //IB && VB
 
 class SandboxApplication : public EngineAPI::Core::Application
 { 
@@ -52,6 +53,9 @@ protected:
 	EngineAPI::Graphics::GraphicsPipelineCache graphicsPCO;
 	EngineAPI::Graphics::GraphicsPipelineState graphicsPipelineState;
 
-	//Triangle object
+	//Rendering object
 	Triangle tri;
+	Quad quad;
+
+	bool doRenderTriangle = true;
 }; 

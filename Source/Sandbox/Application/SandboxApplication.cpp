@@ -34,6 +34,11 @@ bool SandboxApplication::InitApplication()
 	//Init triangle
 	tri.Init(graphicsSubsystem);
 
+	//Init quad
+	quad.Init(graphicsSubsystem);
+
+	//graphicsSubsystem->GetRenderingDevice()->GetDeviceMemoryAllocator()->Debug_LongDump(DEBUG_DUMPS_FOLDER"IndexBuffer");
+
 	/*
 	//Test Vertex buffer object:
 	struct VertexWithColour
@@ -224,16 +229,35 @@ bool SandboxApplication::ShutdownApplication()
 	//
 	tri.Shutdown();
 
+	//
+	//Quad
+	//
+	quad.Shutdown();
+
 	return true;
 }
 
 void SandboxApplication::UpdateScene(float dt)
 {
+	static float timer = 0.0f;
+	timer += dt;
+	
+	if (timer >= 1.0f)
+	{
+		//Switch rendering
+		doRenderTriangle = !doRenderTriangle;
+		timer -= 1.0f;
 
+		//TODO: Mark rendering as dirty -> Render pass instance
+		//command buffers need to be reset and reinited! 
+	}
 }
 
 void SandboxApplication::RenderScene()
 {
-	//Render triangle
-	tri.GenerateRenderingCommands(graphicsSubsystem);
+	//Render something...
+	//if (doRenderTriangle)
+	//	tri.GenerateRenderingCommands(graphicsSubsystem);
+	//else
+		quad.GenerateRenderingCommands(graphicsSubsystem);
 }

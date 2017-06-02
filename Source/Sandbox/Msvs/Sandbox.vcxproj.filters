@@ -16,6 +16,9 @@
     <Filter Include="Src\Triangle">
       <UniqueIdentifier>{20ba5288-8abc-45cd-8c6a-6bb4b3f28140}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Src\Quad">
+      <UniqueIdentifier>{313dff68-5bd2-46a7-8673-7e026283b47f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Main\SandboxMain.cpp">
@@ -27,6 +30,9 @@
     <ClCompile Include="..\Triangle\Triangle.cpp">
       <Filter>Src\Triangle</Filter>
     </ClCompile>
+    <ClCompile Include="..\Quad\Quad.cpp">
+      <Filter>Src\Quad</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Application\SandboxApplication.h">
@@ -37,6 +43,9 @@
     </ClInclude>
     <ClInclude Include="..\Triangle\Triangle.h">
       <Filter>Src\Triangle</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Quad\Quad.h">
+      <Filter>Src\Quad</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

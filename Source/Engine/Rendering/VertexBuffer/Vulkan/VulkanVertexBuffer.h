@@ -80,6 +80,9 @@ namespace EngineAPI
 				VkVertexInputAttributeDescription* GetInputAttributesDescriptions() { return inputAttributes.data(); };
 				uint32_t GetInputAttributesDescriptionsCount() { return inputAttributes.size(); };
 
+				//Gets the number of vertex elements in the buffer
+				uint32_t GetVKVertexBufferElementsCount() { return vertexBufferElementsCount; };
+
 			protected:
 				//Vulkan info
 				VkVertexInputBindingDescription bufferBindingInfo; //Per buffer info (Rate at which this buffers info will be injected for vertex input)

@@ -62,7 +62,7 @@ void Triangle::Init(EngineAPI::Graphics::GraphicsManager* graphicsSubsystem)
 	bool isDynamicVB = true; //TEMP: For VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT memory rather than GPU only. 
 
 	//Init the VB
-	vb.SetResourceDebugName("Test Vertex Buffer");
+	vb.SetResourceDebugName("Triangle Vertex Buffer");
 	assert(vb.InitVKVertexBuffer(device, sizeof(triangleData), isDynamicVB));
 
 	VkPhysicalDeviceMemoryProperties p = device->GetVKPhysicalDeviceMemoryProperties();
@@ -221,6 +221,6 @@ void Triangle::GenerateRenderingCommands(EngineAPI::Graphics::GraphicsManager* g
 	EngineAPI::Statics::VulkanCommands::VKCMD_DynamicallySetScissors(cmdBuffer, 0, 1, &scissor);
 
 	//Issue draw command (1 instance)
-	EngineAPI::Statics::VulkanCommands::VKCMD_Draw(cmdBuffer, 3, 1, 0, 0);
+	EngineAPI::Statics::VulkanCommands::VKCMD_Draw(cmdBuffer, vb.GetVKVertexBufferElementsCount(), 1, 0, 0);
 }
 

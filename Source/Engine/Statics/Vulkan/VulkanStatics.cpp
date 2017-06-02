@@ -407,6 +407,12 @@ void VulkanCommands::VKCMD_BindVertexBuffers(const VkCommandBuffer& commandBuffe
 	vkCmdBindVertexBuffers(commandBuffer, firstBinding, bindingCount, buffersArray, offsetsArray);
 }
 
+void VulkanCommands::VKCMD_BindIndexBuffer(const VkCommandBuffer& commandBuffer,
+	VkBuffer buffer, VkDeviceSize offset, VkIndexType indexType)
+{
+	vkCmdBindIndexBuffer(commandBuffer, buffer, offset, indexType);
+}
+
 void VulkanCommands::VKCMD_DynamicallySetViewports(const VkCommandBuffer& commandBuffer,
 	uint32_t firstViewport, uint32_t viewportCount, const VkViewport* viewportsArray)
 {

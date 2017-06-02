@@ -113,6 +113,10 @@ namespace EngineAPI
 			static void VKCMD_BindVertexBuffers(const VkCommandBuffer& commandBuffer,
 				uint32_t firstBinding, uint32_t bindingCount, const VkBuffer* buffersArray, const VkDeviceSize* offsetsArray);
 
+			//Binds index buffer
+			static void VKCMD_BindIndexBuffer(const VkCommandBuffer& commandBuffer,
+				VkBuffer buffer, VkDeviceSize offset, VkIndexType indexType);
+
 			//Dynamically change viewport state
 			static void VKCMD_DynamicallySetViewports(const VkCommandBuffer& commandBuffer,
 				uint32_t firstViewport, uint32_t viewportCount, const VkViewport* viewportsArray);
