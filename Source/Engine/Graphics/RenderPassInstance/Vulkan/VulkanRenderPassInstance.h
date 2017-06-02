@@ -64,7 +64,8 @@ namespace EngineAPI
 				bool EndVKRenderPassInstanceCommandBufferRecording();
 
 				//Submits the command buffer for processing
-				bool SubmitVKRenderPassInstanceCommandBuffer(EngineAPI::Graphics::RenderDevice* renderingDevice, bool doUseInternalSignalSemaphore);
+				bool SubmitVKRenderPassInstanceCommandBuffer(EngineAPI::Graphics::RenderDevice* renderingDevice, 
+					VkSemaphore optionalWaitSemaphore, bool doUseInternalSignalSemaphore);
 
 			public:
 				//If the dirty flag is false, we will ignore function calls above leaving the

@@ -111,12 +111,31 @@ bool VulkanSwapchain::InitVKSwapchain(EngineAPI::OS::OSWindow* osWindow,
 		return false;
 	}
 
+	//10) Create semaphore used to synchronize access to the next swpachain image
+	VkSemaphoreCreateInfo semaphoreCreateInfo = {};
+	semaphoreCreateInfo.sType = VK_STRUCTURE_TYPE_SEMAPHORE_CREATE_INFO;
+	semaphoreCreateInfo.pNext = nullptr;
+	semaphoreCreateInfo.flags = 0;
+	if (vkCreateSemaphore(cachedVKDevice, &semaphoreCreateInfo, nullptr, &vkGetNextImageSemaphore) != VK_SUCCESS)
+	{
+		EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanSwapchain::InitVKSwapchain(): Error creating vkGetNextImageSemaphore\n");
+		return false;
+	}
+	
+
 	//Done
 	return true;
 }
 
 void VulkanSwapchain::Shutdown(bool doShutdownLogicalSurface, bool doShutdownSwapchainObject)
 {
+	//Cleanup semaphore
+	if (vkGetNextImageSemaphore)
+	{
+		vkDestroySemaphore(cachedVKDevice, vkGetNextImageSemaphore, nullptr);
+		vkGetNextImageSemaphore = VK_NULL_HANDLE;
+	}
+
 	//Cleanup fence
 	if (vkGetNextImageFence)
 	{
@@ -666,15 +685,29 @@ bool VulkanSwapchain::InitVKFramebuffers(EngineAPI::Graphics::RenderDevice* rend
 	return true;
 }
 
-bool VulkanSwapchain::GetNextSwapchainImage(EngineAPI::Graphics::RenderDevice* renderingDevice)
+bool VulkanSwapchain::GetNextSwapchainImage(EngineAPI::Graphics::RenderDevice* renderingDevice, bool doUseSignalSemaphore)
 {
 	//Get frontbuffer to render in to.
-	VkResult result = fpAcquireNextImageKHR(renderingDevice->GetVKLogicalDevice(), vkSwapchainHandle, UINT64_MAX, 
-		VK_NULL_HANDLE, vkGetNextImageFence, &currentColourBufferIndex);
+	VkResult result;
+	if (!doUseSignalSemaphore)
+	{	
+		//Fence as sync
+		result = fpAcquireNextImageKHR(renderingDevice->GetVKLogicalDevice(), vkSwapchainHandle, UINT64_MAX,
+			VK_NULL_HANDLE, vkGetNextImageFence, &currentColourBufferIndex);
+	}
+	else
+	{
+		//Semaphore as sync
+		result = fpAcquireNextImageKHR(renderingDevice->GetVKLogicalDevice(), vkSwapchainHandle, UINT64_MAX,
+			vkGetNextImageSemaphore, VK_NULL_HANDLE, &currentColourBufferIndex);
+	}
 
+	//Check for error...
 	if (result != VK_SUCCESS)
 	{
-		//TODO: Handle errors if possible
+		//
+		//TODO: Handle errors
+		//
 		if (result == VK_ERROR_SURFACE_LOST_KHR)
 		{
 			EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanSwapchain::GetNextSwapchainImage(): VkAquireNextImageKRH() Returned surface lost error\n");
@@ -701,11 +734,16 @@ bool VulkanSwapchain::GetNextSwapchainImage(EngineAPI::Graphics::RenderDevice* r
 
 	//Wait on fence (fpAcquireNextImageKHR() returns as soon as it has identified the next image
 	//to use. *Not* when it is ready to use...)
-	if (vkGetNextImageFence)
+	if (!doUseSignalSemaphore)
+	{
+		assert(vkGetNextImageFence != VK_NULL_HANDLE);
+
+		//Wait...
 		vkGetFenceStatus(renderingDevice->GetVKLogicalDevice(), vkGetNextImageFence) != VK_SUCCESS;
 
-	//Reset fence
-	assert(vkResetFences(renderingDevice->GetVKLogicalDevice(), 1, &vkGetNextImageFence) == VK_SUCCESS);
+		//Reset fence
+		assert(vkResetFences(renderingDevice->GetVKLogicalDevice(), 1, &vkGetNextImageFence) == VK_SUCCESS);
+	}
 
 	//Done
 	return true;

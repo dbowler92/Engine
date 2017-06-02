@@ -57,7 +57,7 @@ namespace EngineAPI
 				
 			public:
 				//Called when we want to begin rendering to the swapchain images (backbuffer)
-				bool GetNextSwapchainImage(EngineAPI::Graphics::RenderDevice* renderingDevice);
+				bool GetNextSwapchainImage(EngineAPI::Graphics::RenderDevice* renderingDevice, bool doUseSignalSemaphore);
 
 				//Called when we want to present the swapchain to the monitor -> Can use a semaphore for
 				//synchronization: This will be the semaphore signaled by the render pass instance
@@ -83,6 +83,12 @@ namespace EngineAPI
 
 				//Returns the depth buffer
 				EngineAPI::Rendering::DepthTexture* GetDepthTexture() { return &depthTexture; };
+				
+				//Returns the semaphore which will be signaled when we have got the next 
+				//image in the swapchain + it is ready to be rendered in to. Rendering commands
+				//will, internally, wait on this semaphore to be signaled before the commands
+				//are actually executed (but can be submitted before)
+				VkSemaphore ReturnGetNextSwapchainImageSemaphore() { return vkGetNextImageSemaphore; };
 
 			private:
 				//WSI created logical surface
@@ -126,6 +132,13 @@ namespace EngineAPI
 				//
 				//Bind and clear fence -> Used to wait on vkGetNextSwapchainImageKHR()
 				VkFence vkGetNextImageFence = VK_NULL_HANDLE;
+
+				//Semaphore which is signaled when we have finished obtaining the next image
+				//in the swapchain -> Whilst fpAcquireNextImageKHR() returns immediatly, the
+				//image may not be ready to be drawn in to right away. Instead, rendering commands
+				//should wait until it is ready using this semaphore (as aposed to a fence which
+				//blocks the thread/CPU)
+				VkSemaphore vkGetNextImageSemaphore = VK_NULL_HANDLE;
 
 			private:
 				//Creates and manages a depth buffer to be used alongside the

@@ -6,7 +6,10 @@ void VulkanRenderPassInstance::Shutdown()
 {
 	//Destroy semaphore
 	if (vkRenderPassInstanceCmdBufferSignalSemaphore)
+	{
 		vkDestroySemaphore(cachedVKLogicalDevice, vkRenderPassInstanceCmdBufferSignalSemaphore, nullptr);
+		vkRenderPassInstanceCmdBufferSignalSemaphore = VK_NULL_HANDLE;
+	}
 
 	//Release command buffer
 	if (vkRenderPassInstanceCmdBuffer)
@@ -144,7 +147,8 @@ bool VulkanRenderPassInstance::EndVKRenderPassInstanceCommandBufferRecording()
 	return true;
 }
 
-bool VulkanRenderPassInstance::SubmitVKRenderPassInstanceCommandBuffer(EngineAPI::Graphics::RenderDevice* renderingDevice, bool doUseInternalSignalSemaphore)
+bool VulkanRenderPassInstance::SubmitVKRenderPassInstanceCommandBuffer(EngineAPI::Graphics::RenderDevice* renderingDevice, 
+	VkSemaphore optionalWaitSemaphore, bool doUseInternalSignalSemaphore)
 {
 	if (doUseInternalSignalSemaphore)
 	{
@@ -156,6 +160,13 @@ bool VulkanRenderPassInstance::SubmitVKRenderPassInstanceCommandBuffer(EngineAPI
 		submitInfo.pNext = nullptr;
 		submitInfo.waitSemaphoreCount = 0;
 		submitInfo.pWaitSemaphores = nullptr;
+
+		if (optionalWaitSemaphore != VK_NULL_HANDLE)
+		{
+			submitInfo.waitSemaphoreCount = 1;
+			submitInfo.pWaitSemaphores = &optionalWaitSemaphore;
+		}
+
 		submitInfo.pWaitDstStageMask = &submitPipelineStages;
 		submitInfo.commandBufferCount = 1;
 		submitInfo.pCommandBuffers = &vkRenderPassInstanceCmdBuffer;

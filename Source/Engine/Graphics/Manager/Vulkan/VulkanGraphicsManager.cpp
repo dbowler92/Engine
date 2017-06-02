@@ -292,7 +292,7 @@ bool VulkanGraphicsManager::InitVKRenderPassInstances()
 void VulkanGraphicsManager::OnFrameBegin()
 {
 	//Ready the swapchain
-	assert(renderingSwapchain.GetNextSwapchainImage(&renderingDevice));
+	assert(renderingSwapchain.GetNextSwapchainImage(&renderingDevice, true));
 
 	//Swapchain image index 
 	uint32_t currentSwapchainIdx = renderingSwapchain.GetCurrentSwapchainImageIndex();
@@ -325,7 +325,7 @@ void VulkanGraphicsManager::OnFrameEnd()
 	}
 
 	//Submit commands
-	assert(renderPassInstancesArray[currentSwapchainIdx].SubmitVKRenderPassInstanceCommandBuffer(&renderingDevice, true));
+	assert(renderPassInstancesArray[currentSwapchainIdx].SubmitVKRenderPassInstanceCommandBuffer(&renderingDevice, renderingSwapchain.ReturnGetNextSwapchainImageSemaphore(), true));
 
 	//Present
 	assert(renderingSwapchain.Present(&renderingDevice, renderPassInstancesArray[currentSwapchainIdx].GetRenderPassInstanceCommandBufferOnSubmitSemaphore()));
