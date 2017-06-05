@@ -15,7 +15,7 @@
 //Classes required when creating this pipeline state object
 #include "../../../Graphics/RenderPass/RenderPass.h"
 #include "../../../Graphics/GraphicsPipelineCache/GraphicsPipelineCache.h"
-#include "../../../Graphics/GraphicsPipelineLayout/GraphicsPipelineLayout.h"
+#include "../../GraphicsPipelineLayout/GraphicsPipelineLayout.h"
 #include "../../../Graphics/Program/Program.h"
 
 //Vulkan header
@@ -68,7 +68,7 @@ namespace EngineAPI
 
 				//Pipeline layout -> Copies the handle from passed in pipelineLayout object at init
 				//time. This class does *not* clean this up as it doesnt create/manage it - another
-				//object will be responsable for creating it and thus, deleting it!
+				//object will be responsible for creating it and thus, deleting it!
 				VkPipelineLayout vkPipelineLayoutHandleCopy = VK_NULL_HANDLE;
 
 				//Cached device used to create this pipeline object

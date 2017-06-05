@@ -5,7 +5,7 @@
 
 using namespace EngineAPI::Graphics::Platform;
 
-void VulkanGraphicsPipelieLayout::Shutdown()
+void VulkanGraphicsPipelineLayout::Shutdown()
 {
 	if (vkPipelineLayoutHandle)
 	{
@@ -14,7 +14,7 @@ void VulkanGraphicsPipelieLayout::Shutdown()
 	}
 }
 
-bool VulkanGraphicsPipelieLayout::InitVKGraphicsPipelineLayout(EngineAPI::Graphics::RenderDevice* renderingDevice,
+bool VulkanGraphicsPipelineLayout::InitVKGraphicsPipelineLayout(EngineAPI::Graphics::RenderDevice* renderingDevice,
 	EngineAPI::Graphics::DescriptorSet* descriptorSetsArray, uint32_t descriptorSetsCount)
 {
 	//Cache device

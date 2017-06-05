@@ -24,18 +24,17 @@ namespace EngineAPI
 	};
 };
 
-
 namespace EngineAPI
 {
 	namespace Graphics
 	{
 		namespace Platform
 		{
-			class VulkanGraphicsPipelieLayout
+			class VulkanGraphicsPipelineLayout
 			{
 			public:
-				VulkanGraphicsPipelieLayout() {};
-				virtual ~VulkanGraphicsPipelieLayout() = 0 {};
+				VulkanGraphicsPipelineLayout() {};
+				virtual ~VulkanGraphicsPipelineLayout() = 0 {};
 
 				//Shutdown the descriptor object
 				void Shutdown();

@@ -21,6 +21,7 @@
 //Pipeline managements
 #include "../Graphics/GraphicsPipelineCache/GraphicsPipelineCache.h"
 #include "../Graphics/GraphicsPipelineState/GraphicsPipelineState.h"
+#include "../Graphics/GraphicsPipelineLayout/GraphicsPipelineLayout.h"
 
 //Descriptors
 #include "../Graphics/DescriptorSet/DescriptorSet.h"

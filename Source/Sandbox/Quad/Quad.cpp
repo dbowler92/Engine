@@ -16,6 +16,7 @@ void Quad::Shutdown()
 	ib.Shutdown();
 
 	testProgramSPIR.Shutdown(true);
+	graphicsPipelineLayout.Shutdown();
 	graphicsPipelineState.Shutdown();
 }
 
@@ -200,8 +201,13 @@ void Quad::Init(EngineAPI::Graphics::GraphicsManager* graphicsSubsystem)
 	pipelineStateDesc.depthStencilStateInfo = &depthStencilStateInfo;
 	pipelineStateDesc.tessStateInfo = nullptr; //TODO
 
+	//
+	//Graphics pipeline layout
+	//
+	assert(graphicsPipelineLayout.InitVKGraphicsPipelineLayout(device, nullptr, 0));
+
 	EngineAPI::Graphics::GraphicsPipelineCache* graphicsPCO = graphicsSubsystem->GetGraphicsPipelineCacheObject();
-	assert(graphicsPipelineState.InitVKGraphicsPipelineState(device, graphicsPCO, graphicsSubsystem->GetRenderPass(), &testProgramSPIR, &pipelineStateDesc, true));
+	assert(graphicsPipelineState.InitVKGraphicsPipelineState(device, graphicsPCO, graphicsSubsystem->GetRenderPass(), &testProgramSPIR, &pipelineStateDesc, &graphicsPipelineLayout, true));
 }
 
 void Quad::GenerateRenderingCommands(EngineAPI::Graphics::GraphicsManager* graphicsSubsystem)

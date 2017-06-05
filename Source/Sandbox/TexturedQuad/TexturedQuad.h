@@ -27,6 +27,7 @@ protected:
 	EngineAPI::Graphics::Program testProgramSPIR;
 
 	EngineAPI::Graphics::GraphicsPipelineState graphicsPipelineState;
+	EngineAPI::Graphics::GraphicsPipelineLayout graphicsPipelineLayout;
 
 	EngineAPI::Graphics::DescriptorSet descriptorSet;
 };

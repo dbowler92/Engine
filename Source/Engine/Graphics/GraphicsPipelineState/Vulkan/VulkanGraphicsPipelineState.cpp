@@ -71,7 +71,7 @@ bool VulkanGraphicsPipelineState::InitVKGraphicsPipelineState(EngineAPI::Graphic
 		optionalPCOHandle = optionalPipelineCache->GetVKPipelineCacheHandle();
 
 	//Create pipeline object
-	result = vkCreateGraphicsPipelines(cachedVKLogicalDevice, optionalPCOHandle, 1, &graphicsPipelineCreateInfo, nullptr, &vkPipelineHandle);
+	VkResult result = vkCreateGraphicsPipelines(cachedVKLogicalDevice, optionalPCOHandle, 1, &graphicsPipelineCreateInfo, nullptr, &vkPipelineHandle);
 	if (result != VK_SUCCESS)
 	{
 		EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanGraphicsPipelineState::InitVKGraphicsPipelineState() Error creating pipeline object\n");

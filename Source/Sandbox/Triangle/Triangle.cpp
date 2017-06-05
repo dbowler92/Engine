@@ -14,6 +14,8 @@ void Triangle::Shutdown()
 	//Shutdown rendering data
 	vb.Shutdown();
 	testProgramSPIR.Shutdown(true);
+
+	graphicsPipelineLayout.Shutdown();
 	graphicsPipelineState.Shutdown();
 }
 
@@ -171,8 +173,13 @@ void Triangle::Init(EngineAPI::Graphics::GraphicsManager* graphicsSubsystem)
 	pipelineStateDesc.depthStencilStateInfo = &depthStencilStateInfo;
 	pipelineStateDesc.tessStateInfo = nullptr; //TODO
 
+	//
+	//Graphics pipeline layout
+	//
+	assert(graphicsPipelineLayout.InitVKGraphicsPipelineLayout(device, nullptr, 0));
+
 	EngineAPI::Graphics::GraphicsPipelineCache* graphicsPCO = graphicsSubsystem->GetGraphicsPipelineCacheObject();
-	assert(graphicsPipelineState.InitVKGraphicsPipelineState(device, graphicsPCO, graphicsSubsystem->GetRenderPass(), &testProgramSPIR, &pipelineStateDesc, true));
+	assert(graphicsPipelineState.InitVKGraphicsPipelineState(device, graphicsPCO, graphicsSubsystem->GetRenderPass(), &testProgramSPIR, &pipelineStateDesc, &graphicsPipelineLayout, true));
 }
 
 void Triangle::GenerateRenderingCommands(EngineAPI::Graphics::GraphicsManager* graphicsSubsystem)
