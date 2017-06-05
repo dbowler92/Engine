@@ -23,6 +23,9 @@ void* VulkanResource::MapResource()
 	VkDeviceMemory memory = resourceMemoryBlock->GetParentStore()->GetVKDeviceMemoryHandle();
 	VkDeviceSize offset = resourceMemoryBlock->GetBlockAlignedOffsetInStoreBytes();
 	VkDeviceSize size = resourceMemoryBlock->GetBlockSizeBytes();
+
+	VkMemoryPropertyFlags memoryPropsFlags = resourceMemoryBlock->GetParentStore()->GetStoreMemoryPropertyFlags();
+
 	VkMemoryMapFlags flags = 0;
 	void* mappedData = nullptr;
 	
@@ -48,6 +51,9 @@ void VulkanResource::UnmapResource()
 
 	VkDevice device = resourceMemoryBlock->GetParentStore()->GetOwningVKLogicalDevice();
 	VkDeviceMemory memory = resourceMemoryBlock->GetParentStore()->GetVKDeviceMemoryHandle();
+
+	VkMemoryPropertyFlags memoryPropsFlags = resourceMemoryBlock->GetParentStore()->GetStoreMemoryPropertyFlags();
+
 	vkUnmapMemory(device, memory);
 
 	//Block is now unmapped

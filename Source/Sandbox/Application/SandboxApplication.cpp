@@ -38,7 +38,7 @@ bool SandboxApplication::InitApplication()
 	quad.Init(graphicsSubsystem);
 
 	//Init textured quad
-	tQuad.Init(graphicsSubsystem);
+	tCube.Init(graphicsSubsystem);
 	
 	//graphicsSubsystem->GetRenderingDevice()->GetDeviceMemoryAllocator()->Debug_LongDump(DEBUG_DUMPS_FOLDER"UniformBuffer");
 
@@ -62,7 +62,7 @@ bool SandboxApplication::ShutdownApplication()
 	//
 	//Textured Quad
 	//
-	tQuad.Shutdown();
+	tCube.Shutdown();
 
 	return true;
 }
@@ -88,5 +88,5 @@ void SandboxApplication::RenderScene()
 	//Render something...
 	//tri.GenerateRenderingCommands(graphicsSubsystem);
 	//quad.GenerateRenderingCommands(graphicsSubsystem);
-	tQuad.GenerateRenderingCommands(graphicsSubsystem);
+	tCube.GenerateRenderingCommands(graphicsSubsystem);
 }

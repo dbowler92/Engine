@@ -15,7 +15,7 @@
 //Test rendering objects
 #include "../Triangle/Triangle.h"
 #include "../Quad/Quad.h" //IB && VB
-#include "../TexturedQuad/TexturedQuad.h"
+#include "../TexturedCube/TexturedCube.h"
 
 class SandboxApplication : public EngineAPI::Core::Application
 { 
@@ -43,7 +43,7 @@ protected:
 	//Rendering object
 	Triangle tri;
 	Quad quad;
-	TexturedQuad tQuad;
+	TexturedCube tCube;
 
 	bool doRenderTriangle = true;
 }; 

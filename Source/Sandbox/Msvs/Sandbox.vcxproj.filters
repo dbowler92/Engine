@@ -19,7 +19,7 @@
     <Filter Include="Src\Quad">
       <UniqueIdentifier>{313dff68-5bd2-46a7-8673-7e026283b47f}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Src\TexturedQuad">
+    <Filter Include="Src\TexturedCube">
       <UniqueIdentifier>{363d716c-8af8-4151-97fa-e3c042a4fa7a}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -36,8 +36,8 @@
     <ClCompile Include="..\Quad\Quad.cpp">
       <Filter>Src\Quad</Filter>
     </ClCompile>
-    <ClCompile Include="..\TexturedQuad\TexturedQuad.cpp">
-      <Filter>Src\TexturedQuad</Filter>
+    <ClCompile Include="..\TexturedCube\TexturedCube.cpp">
+      <Filter>Src\TexturedCube</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -53,8 +53,8 @@
     <ClInclude Include="..\Quad\Quad.h">
       <Filter>Src\Quad</Filter>
     </ClInclude>
-    <ClInclude Include="..\TexturedQuad\TexturedQuad.h">
-      <Filter>Src\TexturedQuad</Filter>
+    <ClInclude Include="..\TexturedCube\TexturedCube.h">
+      <Filter>Src\TexturedCube</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
