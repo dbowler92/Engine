@@ -1,9 +1,15 @@
-﻿  Win32Application.cpp
-  Generating Code...
-  Compiling...
-  VulkanDrawableObject.cpp
+﻿  VulkanDrawableObject.cpp
+c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\graphicspipelinelayout\graphicspipelinelayout.h(23): error C2039: 'VulkanGraphicsPipelineLayout': is not a member of 'EngineAPI::Graphics::Platform'
+  c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\graphicspipelinelayout\vulkan\vulkangraphicspipelinelayout.h(32): note: see declaration of 'EngineAPI::Graphics::Platform'
+c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\graphicspipelinelayout\graphicspipelinelayout.h(23): error C2504: 'VulkanGraphicsPipelineLayout': base class undefined
   EngineMain.cpp
+c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\graphicspipelinelayout\graphicspipelinelayout.h(23): error C2039: 'VulkanGraphicsPipelineLayout': is not a member of 'EngineAPI::Graphics::Platform'
+  c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\graphicspipelinelayout\vulkan\vulkangraphicspipelinelayout.h(32): note: see declaration of 'EngineAPI::Graphics::Platform'
+c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\graphicspipelinelayout\graphicspipelinelayout.h(23): error C2504: 'VulkanGraphicsPipelineLayout': base class undefined
   VulkanSwapchain.cpp
+c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\graphicspipelinelayout\graphicspipelinelayout.h(23): error C2039: 'VulkanGraphicsPipelineLayout': is not a member of 'EngineAPI::Graphics::Platform'
+  c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\graphicspipelinelayout\vulkan\vulkangraphicspipelinelayout.h(32): note: see declaration of 'EngineAPI::Graphics::Platform'
+c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\graphicspipelinelayout\graphicspipelinelayout.h(23): error C2504: 'VulkanGraphicsPipelineLayout': base class undefined
 c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\swapchain\vulkan\vulkanswapchain.cpp(147): warning C4018: '<': signed/unsigned mismatch
 c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\swapchain\vulkan\vulkanswapchain.cpp(159): warning C4018: '<': signed/unsigned mismatch
 c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\swapchain\vulkan\vulkanswapchain.cpp(394): warning C4018: '<': signed/unsigned mismatch
@@ -12,6 +18,9 @@ c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\swa
 c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\swapchain\vulkan\vulkanswapchain.cpp(661): warning C4018: '<': signed/unsigned mismatch
 c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\swapchain\vulkan\vulkanswapchain.cpp(745): warning C4552: '!=': operator has no effect; expected operator with side-effect
   VulkanGraphicsManager.cpp
+c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\graphicspipelinelayout\graphicspipelinelayout.h(23): error C2039: 'VulkanGraphicsPipelineLayout': is not a member of 'EngineAPI::Graphics::Platform'
+  c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\graphicspipelinelayout\vulkan\vulkangraphicspipelinelayout.h(32): note: see declaration of 'EngineAPI::Graphics::Platform'
+c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\graphicspipelinelayout\graphicspipelinelayout.h(23): error C2504: 'VulkanGraphicsPipelineLayout': base class undefined
 c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\manager\vulkan\vulkangraphicsmanager.cpp(29): warning C4018: '<': signed/unsigned mismatch
 c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\manager\vulkan\vulkangraphicsmanager.cpp(56): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
   c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\stdio.h(1769): note: see declaration of 'sprintf'
@@ -22,9 +31,20 @@ c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\man
 c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\manager\vulkan\vulkangraphicsmanager.cpp(270): warning C4018: '<': signed/unsigned mismatch
 c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\manager\vulkan\vulkangraphicsmanager.cpp(285): warning C4018: '<': signed/unsigned mismatch
   GraphicsManager.cpp
+c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\graphicspipelinelayout\graphicspipelinelayout.h(23): error C2039: 'VulkanGraphicsPipelineLayout': is not a member of 'EngineAPI::Graphics::Platform'
+  c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\graphicspipelinelayout\vulkan\vulkangraphicspipelinelayout.h(32): note: see declaration of 'EngineAPI::Graphics::Platform'
+c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\graphicspipelinelayout\graphicspipelinelayout.h(23): error C2504: 'VulkanGraphicsPipelineLayout': base class undefined
+  VulkanGraphicsPipelineState.cpp
+c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\graphicspipelinelayout\graphicspipelinelayout.h(23): error C2039: 'VulkanGraphicsPipelineLayout': is not a member of 'EngineAPI::Graphics::Platform'
+  c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\graphicspipelinelayout\vulkan\vulkangraphicspipelinelayout.h(32): note: see declaration of 'EngineAPI::Graphics::Platform'
+c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\graphicspipelinelayout\graphicspipelinelayout.h(23): error C2504: 'VulkanGraphicsPipelineLayout': base class undefined
+c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\graphicspipelinestate\vulkan\vulkangraphicspipelinestate.cpp(32): error C2039: 'GetVKPipelineLayoutHandle': is not a member of 'EngineAPI::Graphics::GraphicsPipelineLayout'
+  c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\graphicspipelinelayout\graphicspipelinelayout.h(22): note: see declaration of 'EngineAPI::Graphics::GraphicsPipelineLayout'
+c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\graphicspipelinestate\vulkan\vulkangraphicspipelinestate.cpp(55): warning C4018: '<': signed/unsigned mismatch
+c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\graphicspipelinestate\vulkan\vulkangraphicspipelinestate.cpp(74): error C2065: 'result': undeclared identifier
+c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\graphicspipelinestate\vulkan\vulkangraphicspipelinestate.cpp(75): error C2065: 'result': undeclared identifier
+  Win32Application.cpp
+c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\graphicspipelinelayout\graphicspipelinelayout.h(23): error C2039: 'VulkanGraphicsPipelineLayout': is not a member of 'EngineAPI::Graphics::Platform'
+  c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\graphicspipelinelayout\vulkan\vulkangraphicspipelinelayout.h(32): note: see declaration of 'EngineAPI::Graphics::Platform'
+c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\graphicspipelinelayout\graphicspipelinelayout.h(23): error C2504: 'VulkanGraphicsPipelineLayout': base class undefined
   Generating Code...
-c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\manager\vulkan\vulkangraphicsmanager.cpp(163): warning C4715: 'EngineAPI::Graphics::Platform::VulkanGraphicsManager::OnResize': not all control paths return a value
-  Skipping... (no relevant changes detected)
-  VulkanRenderPassInstance.cpp
-VulkanDrawableObject.obj : warning LNK4221: This object file does not define any previously undefined public symbols, so it will not be used by any link operation that consumes this library
-  Engine.vcxproj -> C:\Users\B1032464\Documents\Programming\Engine\Engine\Source\Engine\Msvs\..\..\Lib\Win32Debug\Engine.lib

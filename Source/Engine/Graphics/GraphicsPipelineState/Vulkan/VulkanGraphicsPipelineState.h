@@ -15,6 +15,7 @@
 //Classes required when creating this pipeline state object
 #include "../../../Graphics/RenderPass/RenderPass.h"
 #include "../../../Graphics/GraphicsPipelineCache/GraphicsPipelineCache.h"
+#include "../../../Graphics/GraphicsPipelineLayout/GraphicsPipelineLayout.h"
 #include "../../../Graphics/Program/Program.h"
 
 //Vulkan header
@@ -53,7 +54,9 @@ namespace EngineAPI
 				//Inits the VkPipeline object
 				bool InitVKGraphicsPipelineState(EngineAPI::Graphics::RenderDevice* renderingDevice, 
 					EngineAPI::Graphics::GraphicsPipelineCache* optionalPipelineCache, EngineAPI::Graphics::RenderPass* renderPass,
-					EngineAPI::Graphics::Program* program, PipelineStateDescription* pipelineState, bool createUsingOptimiseFlag);
+					EngineAPI::Graphics::Program* program, PipelineStateDescription* pipelineState, 
+					EngineAPI::Graphics::GraphicsPipelineLayout* pipelineLayout,
+					bool createUsingOptimiseFlag);
 
 			public:
 				//Returns the Vulkan pipeline object
@@ -63,8 +66,10 @@ namespace EngineAPI
 				//Pipeline handle
 				VkPipeline vkPipelineHandle = VK_NULL_HANDLE;
 
-				//Pipeline layout
-				VkPipelineLayout vkPipelineLayout = VK_NULL_HANDLE;
+				//Pipeline layout -> Copies the handle from passed in pipelineLayout object at init
+				//time. This class does *not* clean this up as it doesnt create/manage it - another
+				//object will be responsable for creating it and thus, deleting it!
+				VkPipelineLayout vkPipelineLayoutHandleCopy = VK_NULL_HANDLE;
 
 				//Cached device used to create this pipeline object
 				VkDevice cachedVKLogicalDevice = VK_NULL_HANDLE;

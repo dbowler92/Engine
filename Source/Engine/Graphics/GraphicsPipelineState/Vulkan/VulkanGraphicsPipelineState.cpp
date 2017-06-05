@@ -4,11 +4,13 @@ using namespace EngineAPI::Graphics::Platform;
 
 void VulkanGraphicsPipelineState::Shutdown()
 {
+	/*
 	if (vkPipelineLayout)
 	{
 		vkDestroyPipelineLayout(cachedVKLogicalDevice, vkPipelineLayout, nullptr);
 		vkPipelineLayout = VK_NULL_HANDLE;
 	}
+	*/
 
 	if (vkPipelineHandle)
 	{
@@ -19,20 +21,15 @@ void VulkanGraphicsPipelineState::Shutdown()
 
 bool VulkanGraphicsPipelineState::InitVKGraphicsPipelineState(EngineAPI::Graphics::RenderDevice* renderingDevice, 
 	EngineAPI::Graphics::GraphicsPipelineCache* optionalPipelineCache, EngineAPI::Graphics::RenderPass* renderPass,
-	EngineAPI::Graphics::Program* program, PipelineStateDescription* pipelineState, bool createUsingOptimiseFlag)
+	EngineAPI::Graphics::Program* program, PipelineStateDescription* pipelineState, 
+	EngineAPI::Graphics::GraphicsPipelineLayout* pipelineLayout,
+	bool createUsingOptimiseFlag)
 {
 	//Cache data
 	cachedVKLogicalDevice = renderingDevice->GetVKLogicalDevice();
 	
-	//Pipeline layout
-	VkPipelineLayoutCreateInfo pPipelineLayoutCreateInfo = {};
-	pPipelineLayoutCreateInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_LAYOUT_CREATE_INFO;
-	VkResult result = vkCreatePipelineLayout(cachedVKLogicalDevice, &pPipelineLayoutCreateInfo, NULL, &vkPipelineLayout);
-	if (result != VK_SUCCESS)
-	{
-		EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanGraphicsPipelineState::InitVKGraphicsPipelineState(): Error creating pipeline layout\n");
-		return false;
-	}
+	//Copy pipeline layout object
+	vkPipelineLayoutHandleCopy = pipelineLayout->GetVKPipelineLayoutHandle();
 
 	//Description
 	VkGraphicsPipelineCreateInfo graphicsPipelineCreateInfo = {};
@@ -66,7 +63,7 @@ bool VulkanGraphicsPipelineState::InitVKGraphicsPipelineState(EngineAPI::Graphic
 	graphicsPipelineCreateInfo.subpass = 0;
 
 	//Set pipeline layout
-	graphicsPipelineCreateInfo.layout = vkPipelineLayout;
+	graphicsPipelineCreateInfo.layout = vkPipelineLayoutHandleCopy;
 
 	//PCO (Optional - can be null)
 	VkPipelineCache optionalPCOHandle = VK_NULL_HANDLE;

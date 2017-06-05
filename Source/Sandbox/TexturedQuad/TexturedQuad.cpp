@@ -117,8 +117,8 @@ void TexturedQuad::Init(EngineAPI::Graphics::GraphicsManager* graphicsSubsystem)
 	//
 	//Program
 	//
-	assert(testProgramSPIR.CreateVKShaderModule(device, SHADER_ASSETS_FOLDER"TestShaders/Draw-vert.spv", SHADER_STAGE_VERTEX_SHADER, "main", true));
-	assert(testProgramSPIR.CreateVKShaderModule(device, SHADER_ASSETS_FOLDER"TestShaders/Draw-frag.spv", SHADER_STAGE_FRAGMENT_SHADER, "main", true));
+	assert(testProgramSPIR.CreateVKShaderModule(device, SHADER_ASSETS_FOLDER"TestShaders/Descriptor-vert.spv", SHADER_STAGE_VERTEX_SHADER, "main", true));
+	assert(testProgramSPIR.CreateVKShaderModule(device, SHADER_ASSETS_FOLDER"TestShaders/Descriptor-frag.spv", SHADER_STAGE_FRAGMENT_SHADER, "main", true));
 
 	//
 	//Descriptor set
@@ -176,7 +176,7 @@ void TexturedQuad::Init(EngineAPI::Graphics::GraphicsManager* graphicsSubsystem)
 	viewport.minDepth = 0.0f; //VERIFY
 	viewport.maxDepth = 1.0f; //VERIFY
 
-							  //TODO: Get scissor rect from viewport struct???
+	//TODO: Get scissor rect from viewport struct???
 	VkRect2D scissor = {};
 
 	VkPipelineViewportStateCreateInfo viewportStateInfo = {};

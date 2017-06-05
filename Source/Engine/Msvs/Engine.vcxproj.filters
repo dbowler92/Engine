@@ -223,6 +223,12 @@
     <Filter Include="Src\Graphics\DescriptorBinding\Vulkan">
       <UniqueIdentifier>{4c917c13-144c-4329-b84a-74abe18c3122}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Src\Graphics\GraphicsPipelineLayout">
+      <UniqueIdentifier>{c2fb79bf-ae64-4277-bc2a-aa64e5da8cee}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Graphics\GraphicsPipelineLayout\Vulkan">
+      <UniqueIdentifier>{b9b2d20d-e7ca-4b63-ba97-0812d47c0a02}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Main\EngineMain.cpp">
@@ -329,6 +335,9 @@
     </ClCompile>
     <ClCompile Include="..\Graphics\DescriptorBinding\Vulkan\VulkanDescriptorBinding.cpp">
       <Filter>Src\Graphics\DescriptorBinding\Vulkan</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Graphics\GraphicsPipelineLayout\Vulkan\VulkanGraphicsPipelineLayout.cpp">
+      <Filter>Src\Graphics\GraphicsPipelineLayout\Vulkan</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -541,6 +550,12 @@
     </ClInclude>
     <ClInclude Include="..\Graphics\DescriptorBinding\DescriptorBinding.h">
       <Filter>Src\Graphics\DescriptorBinding</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Graphics\GraphicsPipelineLayout\Vulkan\VulkanGraphicsPipelineLayout.h">
+      <Filter>Src\Graphics\GraphicsPipelineLayout\Vulkan</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Graphics\GraphicsPipelineLayout\GraphicsPipelineLayout.h">
+      <Filter>Src\Graphics\GraphicsPipelineLayout</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

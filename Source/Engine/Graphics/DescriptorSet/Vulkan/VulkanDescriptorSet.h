@@ -37,6 +37,10 @@ namespace EngineAPI
 				bool InitVKDescriptorSet(EngineAPI::Graphics::RenderDevice* renderingDevice,
 					EngineAPI::Graphics::DescriptorBinding* descriptorBindingsArray, uint32_t bindingsCount);
 
+			public:
+				//Gets the filled descriptor set layout struct
+				VkDescriptorSetLayout& GetVKDescriptorSetLayoutHandle() { return vkDescriptorSetLayoutHandle; };
+
 			protected:
 				//Vulkan handle representing the descriptor set layout -> Describes the 
 				//number and metadata of the descriptor bindings

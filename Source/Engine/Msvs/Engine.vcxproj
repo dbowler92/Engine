@@ -33,6 +33,7 @@
     <ClCompile Include="..\Graphics\Device\Vulkan\VulkanRenderDevice.cpp" />
     <ClCompile Include="..\Graphics\Framebuffer\Vulkan\VulkanFramebuffer.cpp" />
     <ClCompile Include="..\Graphics\GraphicsPipelineCache\Vulkan\VulkanGraphicsPipelineCache.cpp" />
+    <ClCompile Include="..\Graphics\GraphicsPipelineLayout\Vulkan\VulkanGraphicsPipelineLayout.cpp" />
     <ClCompile Include="..\Graphics\GraphicsPipelineState\Vulkan\VulkanGraphicsPipelineState.cpp" />
     <ClCompile Include="..\Graphics\Instance\Vulkan\VulkanRenderInstance.cpp" />
     <ClCompile Include="..\Graphics\Manager\GraphicsManager.cpp" />
@@ -87,6 +88,8 @@
     <ClInclude Include="..\Graphics\Framebuffer\Vulkan\VulkanFramebuffer.h" />
     <ClInclude Include="..\Graphics\GraphicsPipelineCache\GraphicsPipelineCache.h" />
     <ClInclude Include="..\Graphics\GraphicsPipelineCache\Vulkan\VulkanGraphicsPipelineCache.h" />
+    <ClInclude Include="..\Graphics\GraphicsPipelineLayout\GraphicsPipelineLayout.h" />
+    <ClInclude Include="..\Graphics\GraphicsPipelineLayout\Vulkan\VulkanGraphicsPipelineLayout.h" />
     <ClInclude Include="..\Graphics\GraphicsPipelineState\GraphicsPipelineState.h" />
     <ClInclude Include="..\Graphics\GraphicsPipelineState\Vulkan\VulkanGraphicsPipelineState.h" />
     <ClInclude Include="..\Graphics\Instance\RenderInstance.h" />
