@@ -37,6 +37,9 @@ bool SandboxApplication::InitApplication()
 	//Init quad
 	quad.Init(graphicsSubsystem);
 
+	//Init textured quad
+	tQuad.Init(graphicsSubsystem);
+
 	//graphicsSubsystem->GetRenderingDevice()->GetDeviceMemoryAllocator()->Debug_LongDump(DEBUG_DUMPS_FOLDER"IndexBuffer");
 
 	/*
@@ -234,6 +237,11 @@ bool SandboxApplication::ShutdownApplication()
 	//
 	quad.Shutdown();
 
+	//
+	//Textured Quad
+	//
+	tQuad.Shutdown();
+
 	return true;
 }
 
@@ -259,5 +267,6 @@ void SandboxApplication::RenderScene()
 	//if (doRenderTriangle)
 	//	tri.GenerateRenderingCommands(graphicsSubsystem);
 	//else
-		quad.GenerateRenderingCommands(graphicsSubsystem);
+	//	quad.GenerateRenderingCommands(graphicsSubsystem);
+	tQuad.GenerateRenderingCommands(graphicsSubsystem);
 }

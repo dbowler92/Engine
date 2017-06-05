@@ -205,6 +205,24 @@
     <Filter Include="Src\Rendering\IndexBuffer\Vulkan">
       <UniqueIdentifier>{45821f1c-9b64-42a2-b826-9ec32263eb59}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Src\Graphics\DescriptorPool">
+      <UniqueIdentifier>{dbd22b46-8022-48a0-b113-0571bb7a1b58}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Graphics\DescriptorPool\Vulkan">
+      <UniqueIdentifier>{3da138d0-1b6e-4b84-bd19-f34629010647}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Graphics\DescriptorSet">
+      <UniqueIdentifier>{7e4db5c7-4d2c-4ef2-9bf5-5c63da984883}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Graphics\DescriptorSet\Vulkan">
+      <UniqueIdentifier>{f2fca217-979b-443d-89b5-58d2b4468e4d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Graphics\DescriptorBinding">
+      <UniqueIdentifier>{268f859a-1027-4988-b5ab-3bbddd8aff6d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Graphics\DescriptorBinding\Vulkan">
+      <UniqueIdentifier>{4c917c13-144c-4329-b84a-74abe18c3122}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Main\EngineMain.cpp">
@@ -302,6 +320,15 @@
     </ClCompile>
     <ClCompile Include="..\Rendering\IndexBuffer\Vulkan\VulkanIndexBuffer.cpp">
       <Filter>Src\Rendering\IndexBuffer\Vulkan</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Graphics\DescriptorPool\Vulkan\VulkanDescriptorPool.cpp">
+      <Filter>Src\Graphics\DescriptorPool\Vulkan</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Graphics\DescriptorSet\Vulkan\VulkanDescriptorSet.cpp">
+      <Filter>Src\Graphics\DescriptorSet\Vulkan</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Graphics\DescriptorBinding\Vulkan\VulkanDescriptorBinding.cpp">
+      <Filter>Src\Graphics\DescriptorBinding\Vulkan</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -496,6 +523,24 @@
     </ClInclude>
     <ClInclude Include="..\Rendering\IndexBuffer\IndexBuffer.h">
       <Filter>Src\Rendering\IndexBuffer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Graphics\DescriptorPool\Vulkan\VulkanDescriptorPool.h">
+      <Filter>Src\Graphics\DescriptorPool\Vulkan</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Graphics\DescriptorPool\DescriptorPool.h">
+      <Filter>Src\Graphics\DescriptorPool</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Graphics\DescriptorSet\Vulkan\VulkanDescriptorSet.h">
+      <Filter>Src\Graphics\DescriptorSet\Vulkan</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Graphics\DescriptorSet\DescriptorSet.h">
+      <Filter>Src\Graphics\DescriptorSet</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Graphics\DescriptorBinding\Vulkan\VulkanDescriptorBinding.h">
+      <Filter>Src\Graphics\DescriptorBinding\Vulkan</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Graphics\DescriptorBinding\DescriptorBinding.h">
+      <Filter>Src\Graphics\DescriptorBinding</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

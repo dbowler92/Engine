@@ -24,6 +24,9 @@
     <ClCompile Include="..\Graphics\CommandBufferPool\Vulkan\VulkanCommandBufferPool.cpp" />
     <ClCompile Include="..\Graphics\CommandQueueFamily\Vulkan\VulkanCommandQueueFamily.cpp" />
     <ClCompile Include="..\Graphics\CommandQueue\Vulkan\VulkanCommandQueue.cpp" />
+    <ClCompile Include="..\Graphics\DescriptorBinding\Vulkan\VulkanDescriptorBinding.cpp" />
+    <ClCompile Include="..\Graphics\DescriptorPool\Vulkan\VulkanDescriptorPool.cpp" />
+    <ClCompile Include="..\Graphics\DescriptorSet\Vulkan\VulkanDescriptorSet.cpp" />
     <ClCompile Include="..\Graphics\DeviceMemoryAllocator\Vulkan\VulkanDeviceMemoryAllocator.cpp" />
     <ClCompile Include="..\Graphics\DeviceMemoryBlock\Vulkan\VulkanDeviceMemoryBlock.cpp" />
     <ClCompile Include="..\Graphics\DeviceMemoryStore\Vulkan\VulkanDeviceMemoryStore.cpp" />
@@ -66,6 +69,12 @@
     <ClInclude Include="..\Graphics\CommandQueueFamily\Vulkan\VulkanCommandQueueFamily.h" />
     <ClInclude Include="..\Graphics\CommandQueue\CommandQueue.h" />
     <ClInclude Include="..\Graphics\CommandQueue\Vulkan\VulkanCommandQueue.h" />
+    <ClInclude Include="..\Graphics\DescriptorBinding\DescriptorBinding.h" />
+    <ClInclude Include="..\Graphics\DescriptorBinding\Vulkan\VulkanDescriptorBinding.h" />
+    <ClInclude Include="..\Graphics\DescriptorPool\DescriptorPool.h" />
+    <ClInclude Include="..\Graphics\DescriptorPool\Vulkan\VulkanDescriptorPool.h" />
+    <ClInclude Include="..\Graphics\DescriptorSet\DescriptorSet.h" />
+    <ClInclude Include="..\Graphics\DescriptorSet\Vulkan\VulkanDescriptorSet.h" />
     <ClInclude Include="..\Graphics\DeviceMemoryAllocator\DeviceMemoryAllocator.h" />
     <ClInclude Include="..\Graphics\DeviceMemoryAllocator\Vulkan\VulkanDeviceMemoryAllocator.h" />
     <ClInclude Include="..\Graphics\DeviceMemoryBlock\DeviceMemoryBlock.h" />
