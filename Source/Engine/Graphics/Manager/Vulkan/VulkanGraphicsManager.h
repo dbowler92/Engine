@@ -137,6 +137,9 @@ namespace EngineAPI
 
 				//Inits the render pass instances
 				bool InitVKRenderPassInstances();
+
+				//Inits the descriptor pools
+				bool InitVKDescriptorPools();
 			};
 		};
 	};
