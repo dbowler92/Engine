@@ -16,7 +16,6 @@ void Quad::Shutdown()
 	ib.Shutdown();
 
 	testProgramSPIR.Shutdown(true);
-	graphicsPCO.Shutdown();
 	graphicsPipelineState.Shutdown();
 }
 
@@ -120,12 +119,6 @@ void Quad::Init(EngineAPI::Graphics::GraphicsManager* graphicsSubsystem)
 	assert(testProgramSPIR.CreateVKShaderModule(device, SHADER_ASSETS_FOLDER"TestShaders/Draw-frag.spv", SHADER_STAGE_FRAGMENT_SHADER, "main", true));
 
 	//
-	//PCO
-	//
-	assert(graphicsPCO.InitVKPipelineCache(device));
-
-
-	//
 	//Pipeline state
 	//
 	VkPipelineDynamicStateCreateInfo dynamicStateInfo = {};
@@ -207,7 +200,8 @@ void Quad::Init(EngineAPI::Graphics::GraphicsManager* graphicsSubsystem)
 	pipelineStateDesc.depthStencilStateInfo = &depthStencilStateInfo;
 	pipelineStateDesc.tessStateInfo = nullptr; //TODO
 
-	assert(graphicsPipelineState.InitVKGraphicsPipelineState(device, &graphicsPCO, graphicsSubsystem->GetRenderPass(), &testProgramSPIR, &pipelineStateDesc, true));
+	EngineAPI::Graphics::GraphicsPipelineCache* graphicsPCO = graphicsSubsystem->GetGraphicsPipelineCacheObject();
+	assert(graphicsPipelineState.InitVKGraphicsPipelineState(device, graphicsPCO, graphicsSubsystem->GetRenderPass(), &testProgramSPIR, &pipelineStateDesc, true));
 }
 
 void Quad::GenerateRenderingCommands(EngineAPI::Graphics::GraphicsManager* graphicsSubsystem)

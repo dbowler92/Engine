@@ -24,6 +24,5 @@ protected:
 	EngineAPI::Rendering::VertexBuffer vb;
 	EngineAPI::Graphics::Program testProgramSPIR;
 
-	EngineAPI::Graphics::GraphicsPipelineCache graphicsPCO;
 	EngineAPI::Graphics::GraphicsPipelineState graphicsPipelineState;
 };

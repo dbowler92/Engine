@@ -17,6 +17,9 @@ bool VulkanGraphicsManager::ShutdownSubsystem()
 {
 	EngineAPI::Debug::DebugLog::PrintInfoMessage("VulkanGraphicsManager::ShutdownSubsystem()\n");
 
+	//Shutdown PCO
+	graphicsPCO.Shutdown();
+
 	//Shutdown render pass
 	swapchainRenderPass.Shutdown();
 
@@ -98,6 +101,13 @@ bool VulkanGraphicsManager::InitSubsystem(EngineAPI::OS::OSWindow* osWindow,
 	if (!InitVKRenderPassInstances())
 	{
 		EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanGraphicsManager::InitSubsystem() Error: Could not init RenderPassInstances\n");
+		return false;
+	}
+
+	//Init PCO
+	if (!graphicsPCO.InitVKPipelineCache(&renderingDevice))
+	{
+		EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanGraphicsManager::InitSubsystem() Error: Could not init graphics pipeline cache object\n");
 		return false;
 	}
 

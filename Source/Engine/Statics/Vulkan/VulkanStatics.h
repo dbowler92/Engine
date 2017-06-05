@@ -72,6 +72,14 @@ namespace EngineAPI
 			//Creates a VkBufferView
 			static bool CreateVKBufferView(VkDevice* device, VkBufferViewCreateInfo* viewCreateInfo, VkBufferView* bufferViewHandleOut);
 			static void DestroyVKBufferView(VkDevice* device, VkBufferView* bufferView);
+
+			//Sync
+			//
+			//Creates a fence, semaphore and events
+			static bool CreateVKFence(VkDevice* device, bool isInitedInSignaledState, VkFence* fenceOut);
+			static bool CreateVKSemaphore(VkDevice* device, VkSemaphore* semaphoreOut);
+			static bool CreateVKEvent(VkDevice* device, VkEvent* eventOut);
+
 		};
 	};
 };

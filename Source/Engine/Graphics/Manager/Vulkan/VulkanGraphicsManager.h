@@ -95,6 +95,9 @@ namespace EngineAPI
 				RenderPassInstance* GetRenderPassInstances() { return renderPassInstancesArray; };
 				uint32_t GetRenderPassInstancesCount() { return renderPassInstanceCount; };
 
+				//Gets graphics pipeline cache object (PCO)
+				GraphicsPipelineCache* GetGraphicsPipelineCacheObject() { return &graphicsPCO; };
+
 			public:
 				//Sets the clear values
 				bool SetSwapchainClearValues(UNorm32Colour colourBufferClear, float depthClear, uint32_t stencilClear);
@@ -112,6 +115,9 @@ namespace EngineAPI
 				//Render pass instances -> One per swapchain colour image
 				RenderPassInstance* renderPassInstancesArray = nullptr;
 				uint32_t renderPassInstanceCount = 0;
+
+				//Pipeline cache object
+				GraphicsPipelineCache graphicsPCO;
 
 			protected:
 				//Clear colour

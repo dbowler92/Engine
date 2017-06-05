@@ -1,5 +1,2 @@
-﻿  Quad.cpp
-c:\users\b1032464\documents\programming\engine\engine\source\sandbox\quad\quad.cpp(168): warning C4244: '=': conversion from 'uint32_t' to 'float', possible loss of data
-c:\users\b1032464\documents\programming\engine\engine\source\sandbox\quad\quad.cpp(169): warning C4244: '=': conversion from 'uint32_t' to 'float', possible loss of data
-  Sandbox.vcxproj -> C:\Users\B1032464\Documents\Programming\Engine\Engine\Source\Engine\Msvs\..\..\Lib\Win32Debug\SandboxWin32Debug.exe
+﻿  Sandbox.vcxproj -> C:\Users\B1032464\Documents\Programming\Engine\Engine\Source\Engine\Msvs\..\..\Lib\Win32Debug\SandboxWin32Debug.exe
   Sandbox.vcxproj -> C:\Users\B1032464\Documents\Programming\Engine\Engine\Source\Engine\Msvs\..\..\Lib\Win32Debug\SandboxWin32Debug.pdb (Full PDB)

@@ -26,6 +26,5 @@ protected:
 
 	EngineAPI::Graphics::Program testProgramSPIR;
 
-	EngineAPI::Graphics::GraphicsPipelineCache graphicsPCO;
 	EngineAPI::Graphics::GraphicsPipelineState graphicsPipelineState;
 };

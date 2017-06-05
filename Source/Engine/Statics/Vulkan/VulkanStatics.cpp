@@ -201,6 +201,60 @@ void VulkanStatics::DestroyVKBufferView(VkDevice* device, VkBufferView* bufferVi
 	vkDestroyBufferView(*device, *bufferView, nullptr);
 }
 
+bool VulkanStatics::CreateVKFence(VkDevice* device, bool isInitedInSignaledState, VkFence* fenceOut)
+{
+	VkFenceCreateInfo createInfo = {};
+	createInfo.sType = VK_STRUCTURE_TYPE_FENCE_CREATE_INFO;
+	createInfo.pNext = nullptr;
+	createInfo.flags = 0;
+	if (isInitedInSignaledState)
+		createInfo.flags = VK_FENCE_CREATE_SIGNALED_BIT;
+
+	VkResult r = vkCreateFence(*device, &createInfo, nullptr, fenceOut);
+	if (r != VK_SUCCESS)
+	{
+		EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanStatics::CreateVKFence() Failed to create fence\n");
+		return false;
+	}
+
+	return true;
+}
+
+bool VulkanStatics::CreateVKSemaphore(VkDevice* device, VkSemaphore* semaphoreOut)
+{
+	VkSemaphoreCreateInfo createInfo = {};
+	createInfo.sType = VK_STRUCTURE_TYPE_SEMAPHORE_CREATE_INFO;
+	createInfo.pNext = nullptr;
+	createInfo.flags = 0;
+
+	VkResult r = vkCreateSemaphore(*device, &createInfo, nullptr, semaphoreOut);
+	if (r != VK_SUCCESS)
+	{
+		EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanStatics::CreateVKSemaphore() Failed to create semaphore\n");
+		return false;
+	}
+
+	//Done
+	return true;
+}
+
+bool VulkanStatics::CreateVKEvent(VkDevice* device, VkEvent* eventOut)
+{
+	VkEventCreateInfo createInfo = {};
+	createInfo.sType = VK_STRUCTURE_TYPE_EVENT_CREATE_INFO;
+	createInfo.pNext = nullptr;
+	createInfo.flags = 0;
+
+	VkResult r = vkCreateEvent(*device, &createInfo, nullptr, eventOut);
+	if (r != VK_SUCCESS)
+	{
+		EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanStatics::CreateVKEvent() Failed to create event\n");
+		return false;
+	}
+
+	//Done
+	return true;
+}
 
 //
 //Commands

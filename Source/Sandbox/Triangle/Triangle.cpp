@@ -14,7 +14,6 @@ void Triangle::Shutdown()
 	//Shutdown rendering data
 	vb.Shutdown();
 	testProgramSPIR.Shutdown(true);
-	graphicsPCO.Shutdown();
 	graphicsPipelineState.Shutdown();
 }
 
@@ -89,12 +88,6 @@ void Triangle::Init(EngineAPI::Graphics::GraphicsManager* graphicsSubsystem)
 	//
 	assert(testProgramSPIR.CreateVKShaderModule(device, SHADER_ASSETS_FOLDER"TestShaders/Draw-vert.spv", SHADER_STAGE_VERTEX_SHADER, "main", true));
 	assert(testProgramSPIR.CreateVKShaderModule(device, SHADER_ASSETS_FOLDER"TestShaders/Draw-frag.spv", SHADER_STAGE_FRAGMENT_SHADER, "main", true));
-
-	//
-	//PCO
-	//
-	assert(graphicsPCO.InitVKPipelineCache(device));
-
 
 	//
 	//Pipeline state
@@ -178,7 +171,8 @@ void Triangle::Init(EngineAPI::Graphics::GraphicsManager* graphicsSubsystem)
 	pipelineStateDesc.depthStencilStateInfo = &depthStencilStateInfo;
 	pipelineStateDesc.tessStateInfo = nullptr; //TODO
 
-	assert(graphicsPipelineState.InitVKGraphicsPipelineState(device, &graphicsPCO, graphicsSubsystem->GetRenderPass(), &testProgramSPIR, &pipelineStateDesc, true));
+	EngineAPI::Graphics::GraphicsPipelineCache* graphicsPCO = graphicsSubsystem->GetGraphicsPipelineCacheObject();
+	assert(graphicsPipelineState.InitVKGraphicsPipelineState(device, graphicsPCO, graphicsSubsystem->GetRenderPass(), &testProgramSPIR, &pipelineStateDesc, true));
 }
 
 void Triangle::GenerateRenderingCommands(EngineAPI::Graphics::GraphicsManager* graphicsSubsystem)

@@ -188,6 +188,9 @@ bool VulkanSwapchain::OnResize(EngineAPI::OS::OSWindow* osWindow,
 {
 	EngineAPI::Debug::DebugLog::PrintInfoMessage("VulkanSwapchain::OnResize()\n");
 
+	//Wait for queue to finish
+	assert(renderingDevice->GetPresentCommandQueueFamily()->GetCommandQueueAtIndex(0)->BlockUntilVKQueueIdle());
+
 	this->Shutdown(false, true);
 	if (!this->InitVKSwapchain(osWindow, renderingInstance, renderingDevice))
 	{

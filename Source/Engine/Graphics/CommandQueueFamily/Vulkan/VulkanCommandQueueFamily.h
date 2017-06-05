@@ -56,6 +56,7 @@ namespace EngineAPI
 			public:
 				//Returns the queues & number of them
 				CommandQueue* GetCommandQueues() { return commandQueuesArray; };
+				CommandQueue* GetCommandQueueAtIndex(int index) { return &commandQueuesArray[index]; };
 				unsigned GetCommandQueueCount() { return commandQueuesCount; };
 
 				//Command queue family support flag
