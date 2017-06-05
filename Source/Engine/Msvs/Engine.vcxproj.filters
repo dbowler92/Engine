@@ -232,6 +232,9 @@
     <Filter Include="Src\Rendering\UniformBuffer">
       <UniqueIdentifier>{5a7805e1-ae85-4b56-9971-63cff16c5d1b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Src\Rendering\UniformBuffer\Vulkan">
+      <UniqueIdentifier>{9b943bda-6a28-415c-a815-357de2dba8c7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Main\EngineMain.cpp">
@@ -341,6 +344,9 @@
     </ClCompile>
     <ClCompile Include="..\Graphics\GraphicsPipelineLayout\Vulkan\VulkanGraphicsPipelineLayout.cpp">
       <Filter>Src\Graphics\GraphicsPipelineLayout\Vulkan</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Rendering\UniformBuffer\Vulkan\VulkanUniformBuffer.cpp">
+      <Filter>Src\Rendering\UniformBuffer\Vulkan</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -559,6 +565,12 @@
     </ClInclude>
     <ClInclude Include="..\Graphics\GraphicsPipelineLayout\GraphicsPipelineLayout.h">
       <Filter>Src\Graphics\GraphicsPipelineLayout</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Rendering\UniformBuffer\Vulkan\VulkanUniformBuffer.h">
+      <Filter>Src\Rendering\UniformBuffer\Vulkan</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Rendering\UniformBuffer\UniformBuffer.h">
+      <Filter>Src\Rendering\UniformBuffer</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

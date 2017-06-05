@@ -24,6 +24,8 @@ protected:
 	EngineAPI::Rendering::VertexBuffer vb;
 	EngineAPI::Rendering::IndexBuffer ib;
 
+	EngineAPI::Rendering::UniformBuffer uniformBuffer;
+
 	EngineAPI::Graphics::Program testProgramSPIR;
 
 	EngineAPI::Graphics::GraphicsPipelineState graphicsPipelineState;

@@ -15,6 +15,8 @@ void TexturedQuad::Shutdown()
 	vb.Shutdown();
 	ib.Shutdown();
 
+	uniformBuffer.Shutdown();
+
 	testProgramSPIR.Shutdown(true);
 
 	graphicsPipelineLayout.Shutdown();
@@ -115,6 +117,26 @@ void TexturedQuad::Init(EngineAPI::Graphics::GraphicsManager* graphicsSubsystem)
 
 	//Alloc
 	assert(ib.AllocAndBindVKIndexBuffer(device, &ibDesc, &squareIndices[0], customStoreForIB));
+
+	//
+	//Uniform buffer
+	//
+	uniformBuffer.SetResourceDebugName("Quad Uniform Buffer");
+	bool isDynamicUB = true;
+	float uniformBufferData[16];
+	VkDeviceSize ubSize = sizeof(uniformBufferData); //Matrix4x4
+	assert(uniformBuffer.InitVKUniformBuffer(device, ubSize, isDynamicUB));
+	
+	uint32_t memoryIndexUB = 0;
+	assert(EngineAPI::Statics::VulkanStatics::FindMemoryTypeForProperties(uniformBuffer.GetResourceVKMemoryRequirments().memoryTypeBits,
+		VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT,
+		&device->GetVKPhysicalDeviceMemoryProperties(), &memoryIndexUB));
+
+	EngineAPI::Graphics::DeviceMemoryStore* uniformBufferDeviceStore = nullptr;
+	uniformBufferDeviceStore = device->GetDeviceMemoryAllocator()->CreateNewMemoryStore(device,
+		uniformBuffer.GetResourceVKMemoryRequirments().size,
+		memoryIndexUB, false);
+	assert(uniformBuffer.AllocAndBindVKUniformBuffer(device, uniformBufferData, uniformBufferDeviceStore));
 
 	//
 	//Program

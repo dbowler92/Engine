@@ -52,6 +52,7 @@
     <ClCompile Include="..\Rendering\IndexBuffer\Vulkan\VulkanIndexBuffer.cpp" />
     <ClCompile Include="..\Rendering\Resource\Vulkan\VulkanResource.cpp" />
     <ClCompile Include="..\Rendering\Texture\Vulkan\VulkanTexture.cpp" />
+    <ClCompile Include="..\Rendering\UniformBuffer\Vulkan\VulkanUniformBuffer.cpp" />
     <ClCompile Include="..\Rendering\VertexBuffer\Vulkan\VulkanVertexBuffer.cpp" />
     <ClCompile Include="..\Statics\Vulkan\VulkanStatics.cpp" />
     <ClCompile Include="..\Utils\GameTimer\GameTimer.cpp" />
@@ -125,6 +126,8 @@
     <ClInclude Include="..\Rendering\Resource\Vulkan\VulkanResource.h" />
     <ClInclude Include="..\Rendering\Texture\Texture.h" />
     <ClInclude Include="..\Rendering\Texture\Vulkan\VulkanTexture.h" />
+    <ClInclude Include="..\Rendering\UniformBuffer\UniformBuffer.h" />
+    <ClInclude Include="..\Rendering\UniformBuffer\Vulkan\VulkanUniformBuffer.h" />
     <ClInclude Include="..\Rendering\VertexBuffer\VertexBuffer.h" />
     <ClInclude Include="..\Rendering\VertexBuffer\Vulkan\VulkanVertexBuffer.h" />
     <ClInclude Include="..\Statics\Vulkan\VulkanStatics.h" />

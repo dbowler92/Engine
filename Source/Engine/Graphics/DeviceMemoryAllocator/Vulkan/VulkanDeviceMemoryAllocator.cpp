@@ -312,7 +312,7 @@ SuballocationResult VulkanDeviceMemoryAllocator::AllocateResourceAuto(EngineAPI:
 				memoryRequirments, physicalDeviceMemoryProperties);
 			break;
 		}
-		case RENDERING_RESOURCE_TYPE_CONSTANT_BUFFER:
+		case RENDERING_RESOURCE_TYPE_UNIFORM_BUFFER:
 		{
 			EngineAPI::Debug::DebugLog::PrintInfoMessage("VulkanDeviceMemoryAllocator::AllocateResourceAuto(): Allocating Constant Buffer\n");
 

@@ -13,6 +13,7 @@
 //Buffer objects
 #include "../Rendering/VertexBuffer/VertexBuffer.h"
 #include "../Rendering/IndexBuffer/IndexBuffer.h"
+#include "../Rendering/UniformBuffer/UniformBuffer.h"
 
 //Shaders && programs/materials
 #include "../Graphics/Program/Program.h"
