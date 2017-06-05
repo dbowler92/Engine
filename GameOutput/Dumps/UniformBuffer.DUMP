@@ -1,13 +1,14 @@
 **************VulkanDeviceMemoryAllocator Dump****************
 
-Allocator address: 00AF4D40
+Allocator address: 00D14D40
 Number of memory stores: 7
 
 **************************************************************
 
-[Store: 0] 00AF4D48
+[Store: 0] 00D14D48
 Is Active Store: 1
 Is Public Store: 1
+Is Auto Store: 1
 Store Size: 268435456
 Vulkan Device Memory Handle: 9
 Vulkan Memory Type Index: 8
@@ -15,13 +16,13 @@ Vulkan Memory Property Flags: 1
 Is Memory Mappable: 0
 Number of blocks: 1
 
-	[Block: 0] 03AAAFA0
+	[Block: 0] 03DD8AB0
 		Is Free: 0
 		Is Mappable: 0
 		Is Mapped: 0
 		Resource Size (Vulkan Defined): 2457600
 		Resource Alignment: 1024
-		Resource Address: 00B3CE20
+		Resource Address: 00D5CE20
 		Resource Type: 2
 		Resource Debug Name: Swapchain Depth Texture
 		Block Size: 2457600
@@ -30,9 +31,10 @@ Number of blocks: 1
 
 **************************************************************
 
-[Store: 1] 00AF4D90
+[Store: 1] 00D14D90
 Is Active Store: 1
 Is Public Store: 0
+Is Auto Store: 0
 Store Size: 256
 Vulkan Device Memory Handle: 21
 Vulkan Memory Type Index: 9
@@ -40,14 +42,14 @@ Vulkan Memory Property Flags: 6
 Is Memory Mappable: 1
 Number of blocks: 1
 
-	[Block: 0] 03AAB320
+	[Block: 0] 03DD9630
 		Is Free: 0
 		Is Mappable: 1
 		Is Mapped: 0
 		Resource Size (Vulkan Defined): 256
 		Resource Alignment: 256
 		Buffer Contents Size: 96
-		Resource Address: 01079CA0
+		Resource Address: 00189CA0
 		Resource Type: 5
 		Resource Debug Name: Triangle Vertex Buffer
 		Block Size: 256
@@ -56,9 +58,10 @@ Number of blocks: 1
 
 **************************************************************
 
-[Store: 2] 00AF4DD8
+[Store: 2] 00D14DD8
 Is Active Store: 1
 Is Public Store: 0
+Is Auto Store: 0
 Store Size: 256
 Vulkan Device Memory Handle: 27
 Vulkan Memory Type Index: 9
@@ -66,14 +69,14 @@ Vulkan Memory Property Flags: 6
 Is Memory Mappable: 1
 Number of blocks: 1
 
-	[Block: 0] 03AAB1A0
+	[Block: 0] 03DD93B0
 		Is Free: 0
 		Is Mappable: 1
 		Is Mapped: 0
 		Resource Size (Vulkan Defined): 256
 		Resource Alignment: 256
 		Buffer Contents Size: 128
-		Resource Address: 01079DA0
+		Resource Address: 00189DA0
 		Resource Type: 5
 		Resource Debug Name: Quad Vertex Buffer
 		Block Size: 256
@@ -82,9 +85,10 @@ Number of blocks: 1
 
 **************************************************************
 
-[Store: 3] 00AF4E20
+[Store: 3] 00D14E20
 Is Active Store: 1
 Is Public Store: 0
+Is Auto Store: 0
 Store Size: 256
 Vulkan Device Memory Handle: 29
 Vulkan Memory Type Index: 9
@@ -92,14 +96,14 @@ Vulkan Memory Property Flags: 6
 Is Memory Mappable: 1
 Number of blocks: 1
 
-	[Block: 0] 03AABB20
+	[Block: 0] 03DD92B0
 		Is Free: 0
 		Is Mappable: 1
 		Is Mapped: 0
 		Resource Size (Vulkan Defined): 256
 		Resource Alignment: 256
 		Buffer Contents Size: 12
-		Resource Address: 01079E48
+		Resource Address: 00189E48
 		Resource Type: 6
 		Resource Debug Name: Quad Index Buffer
 		Block Size: 256
@@ -108,9 +112,10 @@ Number of blocks: 1
 
 **************************************************************
 
-[Store: 4] 00AF4E68
+[Store: 4] 00D14E68
 Is Active Store: 1
 Is Public Store: 0
+Is Auto Store: 0
 Store Size: 256
 Vulkan Device Memory Handle: 35
 Vulkan Memory Type Index: 9
@@ -118,14 +123,14 @@ Vulkan Memory Property Flags: 6
 Is Memory Mappable: 1
 Number of blocks: 1
 
-	[Block: 0] 03AAB420
+	[Block: 0] 03DD8B30
 		Is Free: 0
 		Is Mappable: 1
 		Is Mapped: 0
 		Resource Size (Vulkan Defined): 256
 		Resource Alignment: 256
 		Buffer Contents Size: 128
-		Resource Address: 01079F20
+		Resource Address: 00189F20
 		Resource Type: 5
 		Resource Debug Name: Quad Vertex Buffer
 		Block Size: 256
@@ -134,9 +139,10 @@ Number of blocks: 1
 
 **************************************************************
 
-[Store: 5] 00AF4EB0
+[Store: 5] 00D14EB0
 Is Active Store: 1
 Is Public Store: 0
+Is Auto Store: 0
 Store Size: 256
 Vulkan Device Memory Handle: 37
 Vulkan Memory Type Index: 9
@@ -144,14 +150,14 @@ Vulkan Memory Property Flags: 6
 Is Memory Mappable: 1
 Number of blocks: 1
 
-	[Block: 0] 03AAB220
+	[Block: 0] 03DD87B0
 		Is Free: 0
 		Is Mappable: 1
 		Is Mapped: 0
 		Resource Size (Vulkan Defined): 256
 		Resource Alignment: 256
 		Buffer Contents Size: 12
-		Resource Address: 01079FC8
+		Resource Address: 00189FC8
 		Resource Type: 6
 		Resource Debug Name: Quad Index Buffer
 		Block Size: 256
@@ -160,9 +166,10 @@ Number of blocks: 1
 
 **************************************************************
 
-[Store: 6] 00AF4EF8
+[Store: 6] 00D14EF8
 Is Active Store: 1
 Is Public Store: 0
+Is Auto Store: 0
 Store Size: 256
 Vulkan Device Memory Handle: 39
 Vulkan Memory Type Index: 9
@@ -170,14 +177,14 @@ Vulkan Memory Property Flags: 6
 Is Memory Mappable: 1
 Number of blocks: 1
 
-	[Block: 0] 03AABCA0
+	[Block: 0] 03DD9530
 		Is Free: 0
 		Is Mappable: 1
 		Is Mapped: 0
 		Resource Size (Vulkan Defined): 256
 		Resource Alignment: 256
 		Buffer Contents Size: 64
-		Resource Address: 0107A048
+		Resource Address: 0018A048
 		Resource Type: 7
 		Resource Debug Name: Quad Uniform Buffer
 		Block Size: 256

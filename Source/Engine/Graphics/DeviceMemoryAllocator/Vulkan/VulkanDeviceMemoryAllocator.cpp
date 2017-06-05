@@ -8,6 +8,7 @@
 
 #include "../../../Rendering/VertexBuffer/VertexBuffer.h"
 #include "../../../Rendering/IndexBuffer/IndexBuffer.h"
+#include "../../../Rendering/UniformBuffer/UniformBuffer.h"
 
 using namespace EngineAPI::Graphics::Platform;
 
@@ -52,6 +53,7 @@ void VulkanDeviceMemoryAllocator::Debug_LongDump(std::string filename)
 
 			out << "Is Active Store: " << store.IsMemoryStoreActive() << "\n";
 			out << "Is Public Store: " << store.IsPublicMemoryStore() << "\n";
+			out << "Is Auto Store: " << store.IsAutoCreatedStore() << "\n";
 
 			out << "Store Size: " << store.GetMemoryStoreSizeBytes() << "\n";
 			out << "Vulkan Device Memory Handle: " << store.GetVKDeviceMemoryHandle() << "\n";
@@ -314,9 +316,35 @@ SuballocationResult VulkanDeviceMemoryAllocator::AllocateResourceAuto(EngineAPI:
 		}
 		case RENDERING_RESOURCE_TYPE_UNIFORM_BUFFER:
 		{
-			EngineAPI::Debug::DebugLog::PrintInfoMessage("VulkanDeviceMemoryAllocator::AllocateResourceAuto(): Allocating Constant Buffer\n");
+			EngineAPI::Debug::DebugLog::PrintInfoMessage("VulkanDeviceMemoryAllocator::AllocateResourceAuto(): Allocating Uniform/Constant Buffer\n");
 
-			success = ALLOCATION_RESULT_NOT_IMPLEMENTED;
+			//Cast to uniform buffer
+			EngineAPI::Rendering::UniformBuffer* ub = static_cast<EngineAPI::Rendering::UniformBuffer*>(resource);
+
+			//Vulkan memory requirements for this buffer -> Helps us find the correct store
+			//for this resource. 
+			VkMemoryRequirements memoryRequirments = ub->GetResourceVKMemoryRequirments();
+
+			//Device memory properties. Used with VkMemoryRequirments to work out what memory type
+			//we want to use when allocing this depth texture
+			VkPhysicalDeviceMemoryProperties physicalDeviceMemoryProperties = renderingDevice->GetVKPhysicalDeviceMemoryProperties();
+
+			//Memory properties for this resource type
+			VkMemoryPropertyFlags optimalFlags = VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT;
+			VkMemoryPropertyFlags fallbackFlags = 0;
+			if (ub->IsDynamicResource())
+			{
+				optimalFlags = VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT | VK_MEMORY_PROPERTY_HOST_CACHED_BIT;
+				fallbackFlags = VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT;
+			}
+
+			//Is dynamic resource or can we store it in GPU?
+			bool gpuOnlyStore = !(ub->IsDynamicResource());
+
+			//Allocate on the device
+			success = AllocResourceAuto(renderingDevice, resource, resourceType,
+				optimalFlags, fallbackFlags, gpuOnlyStore,
+				memoryRequirments, physicalDeviceMemoryProperties);
 			break;
 		}
 
@@ -406,6 +434,9 @@ SuballocationResult VulkanDeviceMemoryAllocator::AllocResourceAuto(EngineAPI::Gr
 			EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanDeviceMemoryAllocator::AllocTextureResourceAuto(): Error - Could not create a new store for this resource\n");
 			return ALLOCATION_RESULT_COULD_NOT_CREATE_NEW_STORE;
 		}
+
+		//Is an auto created store
+		newStore->Private_SetStoreIsAutoFlag(true);
 
 		//Suballoc a block for this resource out of this store. 
 		SuballocationResult result = newStore->Private_Suballoc(resource, resourceMemoryRequirments.size, resourceMemoryRequirments.alignment, resourceMemoryRequirments.size);

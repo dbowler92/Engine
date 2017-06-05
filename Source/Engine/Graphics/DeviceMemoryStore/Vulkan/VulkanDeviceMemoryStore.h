@@ -112,7 +112,8 @@ namespace EngineAPI
 
 				bool IsPublicMemoryStore() { return isPublicStore; };
 				bool IsMemoryStoreActive() { return isStoreActive; };
-				
+				bool IsAutoCreatedStore() { return isAutoCreatedStore; };
+
 				std::list<EngineAPI::Graphics::DeviceMemoryBlock>* GetMemoryBlocksList() { return &deviceMemoryBlocksList; };
 				EngineAPI::Graphics::DeviceMemoryBlock* GetLastMemoryBlock() { return lastSuballocedBlock; };
 
@@ -159,6 +160,9 @@ namespace EngineAPI
 				//Is the store active -> Available to be suballoced in to. 
 				bool isStoreActive = false;
 
+				//Was the store created as a result of a call to AllocResourceAuto()?
+				bool isAutoCreatedStore = false;
+
 			private:
 				//Loops through the list of blocks and tries to find one
 				//which is a) free and b) large enough to hold our resource
@@ -177,6 +181,10 @@ namespace EngineAPI
 					EngineAPI::Graphics::DeviceMemoryBlock* block);
 
 				void Private_FreeBlock(EngineAPI::Graphics::DeviceMemoryBlock* block);
+
+				//Private function, called by allocator only, which sets the isAutoCreatedStore
+				//flag. We will set this when a store is created as a result of a call to AllocResourceAuto();
+				void Private_SetStoreIsAutoFlag(bool flag) { isAutoCreatedStore = flag; };
 			};
 		};
 	};
