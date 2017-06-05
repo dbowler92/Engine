@@ -40,7 +40,7 @@ bool SandboxApplication::InitApplication()
 	//Init textured quad
 	tQuad.Init(graphicsSubsystem);
 	
-	graphicsSubsystem->GetRenderingDevice()->GetDeviceMemoryAllocator()->Debug_LongDump(DEBUG_DUMPS_FOLDER"UniformBuffer");
+	//graphicsSubsystem->GetRenderingDevice()->GetDeviceMemoryAllocator()->Debug_LongDump(DEBUG_DUMPS_FOLDER"UniformBuffer");
 
 	/*
 	//Test Vertex buffer object:

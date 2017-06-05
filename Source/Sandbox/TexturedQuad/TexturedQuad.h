@@ -25,6 +25,7 @@ protected:
 	EngineAPI::Rendering::IndexBuffer ib;
 
 	EngineAPI::Rendering::UniformBuffer uniformBuffer;
+	glm::mat4x4 uniformBufferMatrixData;
 
 	EngineAPI::Graphics::Program testProgramSPIR;
 

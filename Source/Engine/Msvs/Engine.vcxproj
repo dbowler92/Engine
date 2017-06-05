@@ -188,7 +188,7 @@
     <IntDir>$(SolutionDir)..\..\Temp\$(ProjectName)$(PlatformName)$(Configuration)\</IntDir>
     <OutDir>$(SolutionDir)..\..\Lib\$(PlatformName)$(Configuration)\</OutDir>
     <TargetExt>.lib</TargetExt>
-    <IncludePath>C:\Users\Dan\Documents\Programming\3DGameEngine\Game_Engine\3DGCCEngine\Source\Engine\3rdParty\DXUT\Optional;C:\Users\Dan\Documents\Programming\3DGameEngine\Game_Engine\3DGCCEngine\Source\Engine\3rdParty\DXUT\Core;$(DXSDK_DIR)Include;C:\VulkanSDK\1.0.46.0\Include;C:\VulkanSDK\1.0.46.0\glslang;$(IncludePath)</IncludePath>
+    <IncludePath>C:\Users\Dan\Documents\Programming\3DGameEngine\Game_Engine\3DGCCEngine\Source\Engine\3rdParty\DXUT\Optional;C:\Users\Dan\Documents\Programming\3DGameEngine\Game_Engine\3DGCCEngine\Source\Engine\3rdParty\DXUT\Core;$(DXSDK_DIR)Include;C:\VulkanSDK\1.0.46.0\Include;C:\VulkanSDK\1.0.46.0\glslang;..\3rdParty\glm\;$(IncludePath)</IncludePath>
     <LibraryPath>$(DXSDK_DIR)Lib\x86;C:\VulkanSDK\1.0.46.0\Lib32;$(SolutionDir)..\..\Lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -204,7 +204,7 @@
     <IntDir>$(SolutionDir)..\..\Temp\$(ProjectName)$(PlatformName)$(Configuration)\</IntDir>
     <OutDir>$(SolutionDir)..\..\Lib\$(PlatformName)$(Configuration)\</OutDir>
     <TargetExt>.lib</TargetExt>
-    <IncludePath>C:\Users\Dan\Documents\Programming\3DGameEngine\Game_Engine\3DGCCEngine\Source\Engine\3rdParty\DXUT\Optional;C:\Users\Dan\Documents\Programming\3DGameEngine\Game_Engine\3DGCCEngine\Source\Engine\3rdParty\DXUT\Core;$(DXSDK_DIR)Include;C:\VulkanSDK\1.0.46.0\Include;C:\VulkanSDK\1.0.46.0\glslang;$(IncludePath)</IncludePath>
+    <IncludePath>C:\Users\Dan\Documents\Programming\3DGameEngine\Game_Engine\3DGCCEngine\Source\Engine\3rdParty\DXUT\Optional;C:\Users\Dan\Documents\Programming\3DGameEngine\Game_Engine\3DGCCEngine\Source\Engine\3rdParty\DXUT\Core;$(DXSDK_DIR)Include;C:\VulkanSDK\1.0.46.0\Include;C:\VulkanSDK\1.0.46.0\glslang;..\3rdParty\glm\;$(IncludePath)</IncludePath>
     <LibraryPath>$(DXSDK_DIR)Lib\x86;C:\VulkanSDK\1.0.46.0\Lib32;$(SolutionDir)..\..\Lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">

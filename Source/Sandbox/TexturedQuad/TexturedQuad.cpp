@@ -123,8 +123,7 @@ void TexturedQuad::Init(EngineAPI::Graphics::GraphicsManager* graphicsSubsystem)
 	//
 	uniformBuffer.SetResourceDebugName("Quad Uniform Buffer");
 	bool isDynamicUB = true;
-	float uniformBufferData[16];
-	VkDeviceSize ubSize = sizeof(uniformBufferData); //Matrix4x4
+	VkDeviceSize ubSize = sizeof(uniformBufferMatrixData); //Matrix4x4
 	assert(uniformBuffer.InitVKUniformBuffer(device, ubSize, isDynamicUB));
 	
 	uint32_t memoryIndexUB = 0;
@@ -136,7 +135,7 @@ void TexturedQuad::Init(EngineAPI::Graphics::GraphicsManager* graphicsSubsystem)
 	uniformBufferDeviceStore = device->GetDeviceMemoryAllocator()->CreateNewMemoryStore(device,
 		uniformBuffer.GetResourceVKMemoryRequirments().size,
 		memoryIndexUB, false);
-	assert(uniformBuffer.AllocAndBindVKUniformBuffer(device, uniformBufferData, uniformBufferDeviceStore));
+	assert(uniformBuffer.AllocAndBindVKUniformBuffer(device, reinterpret_cast<void*>(&uniformBufferMatrixData), uniformBufferDeviceStore));
 
 	//
 	//Program

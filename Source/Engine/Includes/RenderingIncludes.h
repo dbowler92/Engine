@@ -7,6 +7,9 @@
 
 #pragma once
 
+//Math
+#include <glm/glm.hpp>
+
 //Texture objects:
 #include "../Rendering/DepthTexture/DepthTexture.h"
 
