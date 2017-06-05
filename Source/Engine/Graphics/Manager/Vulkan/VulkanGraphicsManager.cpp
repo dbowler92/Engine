@@ -17,6 +17,9 @@ bool VulkanGraphicsManager::ShutdownSubsystem()
 {
 	EngineAPI::Debug::DebugLog::PrintInfoMessage("VulkanGraphicsManager::ShutdownSubsystem()\n");
 
+	//Shutdown descriptor pools
+	graphicsDescriptorPool.Shutdown();
+
 	//Shutdown PCO
 	graphicsPCO.Shutdown();
 
@@ -108,6 +111,19 @@ bool VulkanGraphicsManager::InitSubsystem(EngineAPI::OS::OSWindow* osWindow,
 	if (!graphicsPCO.InitVKPipelineCache(&renderingDevice))
 	{
 		EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanGraphicsManager::InitSubsystem() Error: Could not init graphics pipeline cache object\n");
+		return false;
+	}
+
+	//Init descriptor pool(s)
+	VkDescriptorPoolSize descriptorPools[2];
+	descriptorPools[0].type = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER;
+	descriptorPools[0].descriptorCount = 1;
+	descriptorPools[1].type = VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER;
+	descriptorPools[1].descriptorCount = 1;
+
+	if (!graphicsDescriptorPool.InitVKDescriptorPools(&renderingDevice, descriptorPools, 2, true))
+	{
+		EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanGraphicsManager::InitSubsystem() Error: Could not init descriptor pools object\n");
 		return false;
 	}
 

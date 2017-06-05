@@ -30,6 +30,9 @@
 #include "../../RenderPass/RenderPass.h"
 #include "../../RenderPassInstance/RenderPassInstance.h"
 
+//Descriptor pools
+#include "../../DescriptorPool/DescriptorPool.h"
+
 //Vector
 #include <vector>
 
@@ -118,6 +121,9 @@ namespace EngineAPI
 
 				//Pipeline cache object
 				GraphicsPipelineCache graphicsPCO;
+
+				//Desfriptor pools
+				DescriptorPool graphicsDescriptorPool;
 
 			protected:
 				//Clear colour

@@ -11,7 +11,8 @@ void VulkanDescriptorPool::Shutdown()
 	}
 }
 
-bool VulkanDescriptorPool::InitVKDescriptorPool(EngineAPI::Graphics::RenderDevice* renderingDevice)
+bool VulkanDescriptorPool::InitVKDescriptorPools(EngineAPI::Graphics::RenderDevice* renderingDevice,
+	VkDescriptorPoolSize* pools, uint32_t poolsCount, bool doInitWithCreateFreeDescriptorSetBitFlag)
 {
 	//Cache device
 	cachedVKLogicalDevice = renderingDevice->GetVKLogicalDevice();
@@ -20,8 +21,15 @@ bool VulkanDescriptorPool::InitVKDescriptorPool(EngineAPI::Graphics::RenderDevic
 	VkDescriptorPoolCreateInfo poolCreateInfo = {};
 	poolCreateInfo.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_POOL_CREATE_INFO;
 	poolCreateInfo.pNext = nullptr;
-	poolCreateInfo.flags = 0; //TODO
-	//poolCreateInfo.
+
+	if (doInitWithCreateFreeDescriptorSetBitFlag)
+		poolCreateInfo.flags = VK_DESCRIPTOR_POOL_CREATE_FREE_DESCRIPTOR_SET_BIT;
+	else
+		poolCreateInfo.flags = 0;
+
+	poolCreateInfo.pPoolSizes = pools;
+	poolCreateInfo.poolSizeCount = poolsCount;
+	poolCreateInfo.maxSets = 1; //VERIFY
 
 	//Create pool
 	VkResult result = vkCreateDescriptorPool(cachedVKLogicalDevice, &poolCreateInfo, nullptr, &vkDescriptorPoolHandle);

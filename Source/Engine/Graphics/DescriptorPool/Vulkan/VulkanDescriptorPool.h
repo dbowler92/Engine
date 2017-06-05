@@ -31,7 +31,8 @@ namespace EngineAPI
 				void Shutdown();
 
 				//Inits the descriptor pool
-				bool InitVKDescriptorPool(EngineAPI::Graphics::RenderDevice* renderingDevice);
+				bool InitVKDescriptorPools(EngineAPI::Graphics::RenderDevice* renderingDevice, 
+					VkDescriptorPoolSize* pools, uint32_t poolsCount, bool doInitWithCreateFreeDescriptorSetBitFlag);
 
 			protected:
 				//Vk handle representing the descriptor pool

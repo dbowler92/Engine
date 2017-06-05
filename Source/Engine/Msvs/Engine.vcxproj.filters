@@ -229,6 +229,9 @@
     <Filter Include="Src\Graphics\GraphicsPipelineLayout\Vulkan">
       <UniqueIdentifier>{b9b2d20d-e7ca-4b63-ba97-0812d47c0a02}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Src\Rendering\UniformBuffer">
+      <UniqueIdentifier>{5a7805e1-ae85-4b56-9971-63cff16c5d1b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Main\EngineMain.cpp">

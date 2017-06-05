@@ -355,6 +355,8 @@ VKAPI_ATTR VkBool32 VKAPI_CALL VulkanRenderInstance::DebugReportPrintFunction(Vk
 		EngineAPI::Debug::DebugLog::PrintInfoMessage(s.c_str());
 #endif
 	
+		return VK_FALSE;
+
 		//std::cout << "[VK_DEBUG_REPORT] INFORMATION: [" << layerPrefix << "] Code" << msgCode << ":" << msg << std::endl;
 	}
 	else if (msgFlags & VK_DEBUG_REPORT_PERFORMANCE_WARNING_BIT_EXT) 

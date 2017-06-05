@@ -52,6 +52,10 @@ namespace EngineAPI
 				void Shutdown();
 
 				//Inits the VkPipeline object
+				//
+				//NOTE: You must pass a valid pipeline layout even if you do not use descriptor sets -> 
+				//In this case, when creating a pipeline layout, just pass null and 0 as params and it
+				//will create a blank/default pipeline layout object. 
 				bool InitVKGraphicsPipelineState(EngineAPI::Graphics::RenderDevice* renderingDevice, 
 					EngineAPI::Graphics::GraphicsPipelineCache* optionalPipelineCache, EngineAPI::Graphics::RenderPass* renderPass,
 					EngineAPI::Graphics::Program* program, PipelineStateDescription* pipelineState, 

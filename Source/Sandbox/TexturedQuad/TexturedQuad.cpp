@@ -216,7 +216,7 @@ void TexturedQuad::Init(EngineAPI::Graphics::GraphicsManager* graphicsSubsystem)
 	//
 	//Graphics pipeline layout
 	//
-	assert(graphicsPipelineLayout.InitVKGraphicsPipelineLayout(device, nullptr, 0));
+	assert(graphicsPipelineLayout.InitVKGraphicsPipelineLayout(device, &descriptorSet, 1));
 
 	EngineAPI::Graphics::GraphicsPipelineCache* graphicsPCO = graphicsSubsystem->GetGraphicsPipelineCacheObject();
 	assert(graphicsPipelineState.InitVKGraphicsPipelineState(device, graphicsPCO, graphicsSubsystem->GetRenderPass(), &testProgramSPIR, &pipelineStateDesc, &graphicsPipelineLayout, true));

@@ -32,13 +32,13 @@ bool SandboxApplication::InitApplication()
 	EngineAPI::Graphics::RenderDevice* device = EngineAPI::Graphics::GraphicsManager::GetInstance()->GetRenderingDevice();
 
 	//Init triangle
-	//tri.Init(graphicsSubsystem);
+	tri.Init(graphicsSubsystem);
 
 	//Init quad
 	quad.Init(graphicsSubsystem);
 
 	//Init textured quad
-	//tQuad.Init(graphicsSubsystem);
+	tQuad.Init(graphicsSubsystem);
 
 	//graphicsSubsystem->GetRenderingDevice()->GetDeviceMemoryAllocator()->Debug_LongDump(DEBUG_DUMPS_FOLDER"IndexBuffer");
 
@@ -230,7 +230,7 @@ bool SandboxApplication::ShutdownApplication()
 	//
 	//Triangle
 	//
-	//tri.Shutdown();
+	tri.Shutdown();
 
 	//
 	//Quad
@@ -240,7 +240,7 @@ bool SandboxApplication::ShutdownApplication()
 	//
 	//Textured Quad
 	//
-	//tQuad.Shutdown();
+	tQuad.Shutdown();
 
 	return true;
 }
@@ -265,6 +265,6 @@ void SandboxApplication::RenderScene()
 {
 	//Render something...
 	//tri.GenerateRenderingCommands(graphicsSubsystem);
-	quad.GenerateRenderingCommands(graphicsSubsystem);
-	//tQuad.GenerateRenderingCommands(graphicsSubsystem);
+	//quad.GenerateRenderingCommands(graphicsSubsystem);
+	tQuad.GenerateRenderingCommands(graphicsSubsystem);
 }

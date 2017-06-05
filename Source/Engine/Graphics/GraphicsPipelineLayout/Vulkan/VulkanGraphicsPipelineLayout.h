@@ -2,7 +2,8 @@
 //Created 05/06/17
 //Created By Daniel Bowler
 //
-//Descriptor layout used alongside the pipeline state
+//Pipeline layout used alongside the pipeline state -> Allows the pipeline to access the descriptor
+//sets
 
 #pragma once
 
