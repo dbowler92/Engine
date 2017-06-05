@@ -8,7 +8,9 @@
 #pragma once
 
 //Math
-#include <glm/glm.hpp>
+#define GLM_FORCE_RADIANS
+#include "glm/glm.hpp"
+#include <glm/gtc/matrix_transform.hpp>
 
 //Texture objects:
 #include "../Rendering/DepthTexture/DepthTexture.h"

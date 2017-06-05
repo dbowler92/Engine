@@ -121,6 +121,15 @@ void TexturedQuad::Init(EngineAPI::Graphics::GraphicsManager* graphicsSubsystem)
 	//
 	//Uniform buffer
 	//
+
+	glm::mat4x4 proj = glm::perspective(glm::radians(45.f), 1.f, .1f, 100.f);
+	glm::mat4x4 view = glm::lookAt(
+		glm::vec3(10, 3, 10), // Camera in World Space
+		glm::vec3(0, 0, 0), // and looks at the origin
+		glm::vec3(0, -1, 0));// Head is up
+	glm::mat4x4 model = glm::mat4(1.0f);
+	uniformBufferMatrixData = proj * view * model;
+
 	uniformBuffer.SetResourceDebugName("Quad Uniform Buffer");
 	bool isDynamicUB = true;
 	VkDeviceSize ubSize = sizeof(uniformBufferMatrixData); //Matrix4x4

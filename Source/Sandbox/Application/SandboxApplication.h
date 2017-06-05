@@ -40,20 +40,6 @@ public:
 	virtual void RenderScene();
 
 protected:
-	//Objects
-	EngineAPI::Rendering::VertexBuffer vb;
-
-	EngineAPI::Graphics::Shader testShaderVS;
-	EngineAPI::Graphics::Shader testShaderFS;
-
-	EngineAPI::Graphics::Shader testShaderSPIRVVS;
-	EngineAPI::Graphics::Shader testShaderSPIRVFS;
-
-	EngineAPI::Graphics::Program testProgramSPIR;
-
-	EngineAPI::Graphics::GraphicsPipelineCache graphicsPCO;
-	EngineAPI::Graphics::GraphicsPipelineState graphicsPipelineState;
-
 	//Rendering object
 	Triangle tri;
 	Quad quad;

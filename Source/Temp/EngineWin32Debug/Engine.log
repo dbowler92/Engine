@@ -1,4 +1,7 @@
-﻿  VulkanDrawableObject.cpp
+﻿  Win32Application.cpp
+  Generating Code...
+  Compiling...
+  VulkanDrawableObject.cpp
   EngineMain.cpp
   VulkanSwapchain.cpp
 c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\swapchain\vulkan\vulkanswapchain.cpp(147): warning C4018: '<': signed/unsigned mismatch
@@ -19,7 +22,6 @@ c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\man
 c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\manager\vulkan\vulkangraphicsmanager.cpp(286): warning C4018: '<': signed/unsigned mismatch
 c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\manager\vulkan\vulkangraphicsmanager.cpp(301): warning C4018: '<': signed/unsigned mismatch
   GraphicsManager.cpp
-  Win32Application.cpp
   Generating Code...
 c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\manager\vulkan\vulkangraphicsmanager.cpp(179): warning C4715: 'EngineAPI::Graphics::Platform::VulkanGraphicsManager::OnResize': not all control paths return a value
   Engine.vcxproj -> C:\Users\B1032464\Documents\Programming\Engine\Engine\Source\Engine\Msvs\..\..\Lib\Win32Debug\Engine.lib
