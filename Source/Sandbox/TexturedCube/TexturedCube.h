@@ -25,12 +25,13 @@ protected:
 	EngineAPI::Rendering::IndexBuffer ib;
 
 	EngineAPI::Rendering::UniformBuffer uniformBuffer;
-	glm::mat4x4 uniformBufferMatrixData;
+	glm::mat4x4 uniformBufferMatrixData; //Fed in to the uniform buffer. 
 
 	EngineAPI::Graphics::Program testProgramSPIR;
 
 	EngineAPI::Graphics::GraphicsPipelineState graphicsPipelineState;
 	EngineAPI::Graphics::GraphicsPipelineLayout graphicsPipelineLayout;
 
+	EngineAPI::Graphics::DescriptorPool descriptorPool;
 	EngineAPI::Graphics::DescriptorSet descriptorSet;
 };

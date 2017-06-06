@@ -23,6 +23,7 @@ void TexturedCube::Shutdown()
 	graphicsPipelineState.Shutdown();
 
 	descriptorSet.Shutdown();
+	descriptorPool.Shutdown();
 }
 
 void TexturedCube::Init(EngineAPI::Graphics::GraphicsManager* graphicsSubsystem)
@@ -121,7 +122,6 @@ void TexturedCube::Init(EngineAPI::Graphics::GraphicsManager* graphicsSubsystem)
 	//
 	//Uniform buffer
 	//
-
 	glm::mat4x4 proj = glm::perspective(glm::radians(45.f), 1.f, .1f, 100.f);
 	glm::mat4x4 view = glm::lookAt(
 		glm::vec3(10, 3, 10), // Camera in World Space
@@ -144,7 +144,7 @@ void TexturedCube::Init(EngineAPI::Graphics::GraphicsManager* graphicsSubsystem)
 	uniformBufferDeviceStore = device->GetDeviceMemoryAllocator()->CreateNewMemoryStore(device,
 		uniformBuffer.GetResourceVKMemoryRequirments().size,
 		memoryIndexUB, false);
-	assert(uniformBuffer.AllocAndBindVKUniformBuffer(device, reinterpret_cast<void*>(&uniformBufferMatrixData), uniformBufferDeviceStore));
+	assert(uniformBuffer.AllocAndBindVKUniformBuffer(device, &uniformBufferMatrixData, uniformBufferDeviceStore));
 
 	//
 	//Program
@@ -155,9 +155,19 @@ void TexturedCube::Init(EngineAPI::Graphics::GraphicsManager* graphicsSubsystem)
 	//
 	//Descriptor set
 	//
+	//Descriptor Pool
+	VkDescriptorPoolSize descriptorPools[2];
+	descriptorPools[0].type = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER;
+	descriptorPools[0].descriptorCount = 1;
+	descriptorPools[1].type = VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER;
+	descriptorPools[1].descriptorCount = 1;
+	assert(descriptorPool.InitVKDescriptorPools(device, descriptorPools, 2, true));
+
+	//Set
 	EngineAPI::Graphics::DescriptorBinding descriptorBindings[2];
-	descriptorBindings[0].InitVKDescriptorBindingData(0, VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER, 1, VK_SHADER_STAGE_VERTEX_BIT, nullptr);
-	descriptorBindings[1].InitVKDescriptorBindingData(1, VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER, 1, VK_SHADER_STAGE_FRAGMENT_BIT, nullptr);
+	descriptorBindings[0].InitVKDescriptorBindingData(0, descriptorPools[0].type, descriptorPools[0].descriptorCount, VK_SHADER_STAGE_VERTEX_BIT, nullptr);
+	descriptorBindings[1].InitVKDescriptorBindingData(1, descriptorPools[1].type, descriptorPools[1].descriptorCount, VK_SHADER_STAGE_FRAGMENT_BIT, nullptr);
+	//assert(descriptorSet.InitVKDescriptorSetWithExistingDescriptorPool(device, &descriptorBindings[0], 2, &descriptorPool));
 	assert(descriptorSet.InitVKDescriptorSet(device, &descriptorBindings[0], 2));
 
 
@@ -230,8 +240,7 @@ void TexturedCube::Init(EngineAPI::Graphics::GraphicsManager* graphicsSubsystem)
 
 	//TODO:
 	VkPipelineTessellationStateCreateInfo tessStateInfo = {};
-
-
+	
 	PipelineStateDescription pipelineStateDesc = {};
 	pipelineStateDesc.vertexInputStateInfo = &vertexInputStateInfo;
 	pipelineStateDesc.inputAssemblyInfo = &inputAssemblyInfo;

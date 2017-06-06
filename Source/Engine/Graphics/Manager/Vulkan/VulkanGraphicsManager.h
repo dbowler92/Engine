@@ -122,9 +122,6 @@ namespace EngineAPI
 				//Pipeline cache object
 				GraphicsPipelineCache graphicsPCO;
 
-				//Desfriptor pools
-				DescriptorPool graphicsDescriptorPool;
-
 			protected:
 				//Clear colour
 				UNorm32Colour swpachainClearColour;
@@ -137,9 +134,6 @@ namespace EngineAPI
 
 				//Inits the render pass instances
 				bool InitVKRenderPassInstances();
-
-				//Inits the descriptor pools
-				bool InitVKDescriptorPools();
 			};
 		};
 	};
