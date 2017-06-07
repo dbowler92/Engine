@@ -28,6 +28,9 @@ protected:
 
 	EngineAPI::Rendering::UniformBuffer uniformBuffer;
 	glm::mat4x4 uniformBufferMatrixData; //Fed in to the uniform buffer. 
+	glm::mat4x4 world;
+	glm::mat4x4 view;
+	glm::mat4x4 proj;
 
 	EngineAPI::Graphics::Program testProgramSPIR;
 

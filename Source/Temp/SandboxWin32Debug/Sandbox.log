@@ -1,12 +1,4 @@
-﻿  SandboxMain.cpp
-  SandboxApplication.cpp
-  Generating Code...
-  Compiling...
-  Triangle.cpp
-c:\users\dan\documents\programming\3dgameengine\game_engine\engine\source\sandbox\triangle\triangle.cpp(134): warning C4244: '=': conversion from 'uint32_t' to 'float', possible loss of data
-c:\users\dan\documents\programming\3dgameengine\game_engine\engine\source\sandbox\triangle\triangle.cpp(135): warning C4244: '=': conversion from 'uint32_t' to 'float', possible loss of data
-  Quad.cpp
-c:\users\dan\documents\programming\3dgameengine\game_engine\engine\source\sandbox\quad\quad.cpp(162): warning C4244: '=': conversion from 'uint32_t' to 'float', possible loss of data
-c:\users\dan\documents\programming\3dgameengine\game_engine\engine\source\sandbox\quad\quad.cpp(163): warning C4244: '=': conversion from 'uint32_t' to 'float', possible loss of data
-  Generating Code...
+﻿  TexturedCube.cpp
+c:\users\dan\documents\programming\3dgameengine\game_engine\engine\source\sandbox\texturedcube\texturedcube.cpp(262): warning C4244: '=': conversion from 'uint32_t' to 'float', possible loss of data
+c:\users\dan\documents\programming\3dgameengine\game_engine\engine\source\sandbox\texturedcube\texturedcube.cpp(263): warning C4244: '=': conversion from 'uint32_t' to 'float', possible loss of data
   Sandbox.vcxproj -> C:\Users\Dan\Documents\Programming\3DGameEngine\Game_Engine\Engine\Source\Engine\Msvs\..\..\Lib\Win32Debug\SandboxWin32Debug.exe

@@ -161,13 +161,13 @@ void TexturedCube::Init(EngineAPI::Graphics::GraphicsManager* graphicsSubsystem)
 	//
 	//Uniform buffer
 	//
-	glm::mat4x4 proj = glm::perspective(glm::radians(45.f), 1.f, .1f, 100.f);
-	glm::mat4x4 view = glm::lookAt(
+	proj = glm::perspective(glm::radians(45.f), 1.f, .1f, 100.f);
+	view = glm::lookAt(
 		glm::vec3(10, 3, 10), // Camera in World Space
 		glm::vec3(0, 0, 0), // and looks at the origin
 		glm::vec3(0, -1, 0));// Head is up
-	glm::mat4x4 model = glm::mat4(1.0f);
-	uniformBufferMatrixData = proj * view * model;
+	world = glm::mat4(1.0f);
+	uniformBufferMatrixData = proj * view * world;
 
 	uniformBuffer.SetResourceDebugName("Cube Uniform Buffer");
 	bool isDynamicUB = true;
@@ -311,9 +311,22 @@ void TexturedCube::Init(EngineAPI::Graphics::GraphicsManager* graphicsSubsystem)
 
 void TexturedCube::Update(float dt)
 {
-	//Rotate cube...
+	//Update the world matrix
+	static float rot = 0;
+	rot += 0.5f * dt;
+	world = glm::rotate(glm::mat4(), rot, glm::vec3(0.0f, 1.0f, 0.0f)) * glm::rotate(glm::mat4(), rot, glm::vec3(1.0f, 0.0f, 0.0f));
+	
+	//Construct MVP matrix
+	uniformBufferMatrixData = proj * view * world;
 
 	//Rebuild uniform buffer. 
+	void* ubData = uniformBuffer.MapResource();
+	assert(ubData != nullptr);
+
+	//Update...
+	std::memcpy(ubData, (void*)&uniformBufferMatrixData, sizeof(glm::mat4x4));
+
+	uniformBuffer.UnmapResource();
 }
 
 void TexturedCube::GenerateRenderingCommands(EngineAPI::Graphics::GraphicsManager* graphicsSubsystem)
