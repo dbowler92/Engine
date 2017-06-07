@@ -62,7 +62,7 @@ void VulkanResource::UnmapResource()
 	mappedRange.sType = VK_STRUCTURE_TYPE_MAPPED_MEMORY_RANGE;
 	mappedRange.memory = memory;
 	mappedRange.offset = 0;
-	mappedRange.size = resourceMemoryBlock->GetResourceSize(); //TODO: Actual resource size, not VK assigned which is aligned data
+	mappedRange.size = resourceMemoryBlock->GetResourceSize(); //TODO: Actual resource size, not VK assigned size for the buffer (which could be larger than the actual resouce data)
 	
 	if (memoryPropsFlags & VK_MEMORY_PROPERTY_HOST_COHERENT_BIT == 0)
 		vkInvalidateMappedMemoryRanges(device, 1,&mappedRange);

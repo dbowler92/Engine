@@ -30,7 +30,11 @@ struct DescriptorSetWriteUpdateData
 	uint32_t BindingIndex;
 	VkDescriptorType Type;
 	uint32_t DescriptorCount; //Should be 1
+
+	//TODO: Move to abstracted data types
 	VkDescriptorBufferInfo* Buffers = nullptr;
+	VkDescriptorImageInfo* Images = nullptr;
+	VkBufferView* TexelBufferViews = nullptr;
 };
 
 namespace EngineAPI

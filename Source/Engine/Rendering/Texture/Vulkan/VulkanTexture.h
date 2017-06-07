@@ -38,8 +38,11 @@ namespace EngineAPI
 				virtual void Shutdown() = 0;
 
 			public:
-				//Getters
+				//Vulkan image handle
 				VkImage GetVKImageHandle() { return vkImageHandle; };
+
+				//Descriptor info
+				//VkDescriptorImageInfo& GetVKImageDescriptorInfo() { return vkImageDescriptorInfo; };
 
 				//Image settings
 				VkExtent3D GetVkImageDimentions()		        { return vkTextureDimentions; };
@@ -85,6 +88,9 @@ namespace EngineAPI
 
 				//Vulkan tiling mode
 				VkImageTiling vkImageTilingMode;
+
+				//Descriptor info
+				//VkDescriptorImageInfo vkImageDescriptorInfo;
 			};
 		}
 	};

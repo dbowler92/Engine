@@ -188,7 +188,12 @@ bool VulkanDescriptorSet::UpdateVKDescriptorSet(DescriptorSetWriteUpdateData* wr
 		vkWriteDescriptorSetArray[i].descriptorType = writeDataArray[i].Type;
 		vkWriteDescriptorSetArray[i].dstBinding = writeDataArray[i].BindingIndex;
 		vkWriteDescriptorSetArray[i].pBufferInfo = writeDataArray[i].Buffers;
+		vkWriteDescriptorSetArray[i].pImageInfo = writeDataArray[i].Images;
+		vkWriteDescriptorSetArray[i].pTexelBufferView = writeDataArray[i].TexelBufferViews;
 	}
+
+	//Update descriptor set
+	vkUpdateDescriptorSets(cachedVKLogicalDevice, writeDataCount, &vkWriteDescriptorSetArray[0], 0, nullptr);
 
 	//Done
 	return true;
