@@ -161,7 +161,10 @@ void TexturedCube::Init(EngineAPI::Graphics::GraphicsManager* graphicsSubsystem)
 	//
 	//Uniform buffer
 	//
-	proj = glm::perspective(glm::radians(45.f), 1.f, .1f, 100.f);
+	EngineAPI::Graphics::Swapchain* swapchain = graphicsSubsystem->GetRenderingSwapchain();
+	VkExtent2D extents = swapchain->GetSwapchainDimentions();
+	float aspect = extents.width / extents.height;
+	proj = glm::perspective(glm::radians(45.f), aspect, .1f, 100.f);
 	view = glm::lookAt(
 		glm::vec3(10, 3, 10), // Camera in World Space
 		glm::vec3(0, 0, 0), // and looks at the origin
@@ -314,8 +317,9 @@ void TexturedCube::Update(float dt)
 	//Update the world matrix
 	static float rot = 0;
 	rot += 0.5f * dt;
-	world = glm::rotate(glm::mat4(), rot, glm::vec3(0.0f, 1.0f, 0.0f)) * glm::rotate(glm::mat4(), rot, glm::vec3(1.0f, 0.0f, 0.0f));
-	
+	world = glm::rotate(glm::mat4(), rot, glm::vec3(0.0f, 1.0f, 0.0f)) * glm::rotate(glm::mat4(), rot / 2.0f, glm::vec3(1.0f, 0.0f, 0.0f));
+	//world = glm::rotate(glm::mat4(), rot, glm::vec3(0.0f, 1.0f, 0.0f));
+
 	//Construct MVP matrix
 	uniformBufferMatrixData = proj * view * world;
 
@@ -324,7 +328,7 @@ void TexturedCube::Update(float dt)
 	assert(ubData != nullptr);
 
 	//Update...
-	std::memcpy(ubData, (void*)&uniformBufferMatrixData, sizeof(glm::mat4x4));
+	memcpy(ubData, (void*)&uniformBufferMatrixData, sizeof(glm::mat4x4));
 
 	uniformBuffer.UnmapResource();
 }
