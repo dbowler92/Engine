@@ -29,7 +29,7 @@ bool VulkanDescriptorPool::InitVKDescriptorPools(EngineAPI::Graphics::RenderDevi
 
 	poolCreateInfo.pPoolSizes = pools;
 	poolCreateInfo.poolSizeCount = poolsCount;
-	poolCreateInfo.maxSets = 1; //VERIFY
+	poolCreateInfo.maxSets = 1; //TODO: VERIFY
 
 	//Create pool
 	VkResult result = vkCreateDescriptorPool(cachedVKLogicalDevice, &poolCreateInfo, nullptr, &vkDescriptorPoolHandle);

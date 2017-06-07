@@ -4,6 +4,10 @@ using namespace EngineAPI::Graphics::Platform;
 
 void VulkanDescriptorSet::Shutdown()
 {
+	//Writes
+	if (vkWriteDescriptorSetArray)
+		delete[] vkWriteDescriptorSetArray;
+
 	//Sets
 	if (vkDescriptorSetHandle != VK_NULL_HANDLE)
 	{
@@ -19,7 +23,7 @@ void VulkanDescriptorSet::Shutdown()
 			vkFreeDescriptorSets(cachedVKLogicalDevice, cachedExistingDescriptorPool, 1, &vkDescriptorSetHandle);
 	}
 
-
+	//Layout
 	if (vkDescriptorSetLayoutHandle)
 	{
 		vkDestroyDescriptorSetLayout(cachedVKLogicalDevice, vkDescriptorSetLayoutHandle, nullptr);
@@ -33,6 +37,9 @@ bool VulkanDescriptorSet::InitVKDescriptorSet(EngineAPI::Graphics::RenderDevice*
 	//Cache device
 	cachedVKLogicalDevice = renderingDevice->GetVKLogicalDevice();
 
+	//Number of bindings. 
+	this->bindingsCount = bindingsCount;
+
 	//Create array of VkDescriptorSetLayoutBindings -> One for each input binding
 	std::vector<VkDescriptorSetLayoutBinding> layoutBidings(bindingsCount);
 	for (int i = 0; i < bindingsCount; ++i)
@@ -42,7 +49,7 @@ bool VulkanDescriptorSet::InitVKDescriptorSet(EngineAPI::Graphics::RenderDevice*
 	VkDescriptorSetLayoutCreateInfo layoutCreateInfo = {};
 	layoutCreateInfo.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_LAYOUT_CREATE_INFO;
 	layoutCreateInfo.pNext = nullptr;
-	layoutCreateInfo.bindingCount = 0;
+	layoutCreateInfo.flags = 0;
 	layoutCreateInfo.pBindings = bindingsCount > 0 ? layoutBidings.data() : nullptr;
 	layoutCreateInfo.bindingCount = bindingsCount;
 
@@ -80,6 +87,24 @@ bool VulkanDescriptorSet::InitVKDescriptorSet(EngineAPI::Graphics::RenderDevice*
 		return false;
 	}
 
+	//Alloc writes descriptor
+	vkWriteDescriptorSetArray = GE_NEW VkWriteDescriptorSet[bindingsCount];
+
+	//Init
+	for (int i = 0; i < bindingsCount; i++)
+	{
+		vkWriteDescriptorSetArray[i] = {};
+		vkWriteDescriptorSetArray[i].sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
+		vkWriteDescriptorSetArray[i].pNext = nullptr;
+		vkWriteDescriptorSetArray[i].dstSet = vkDescriptorSetHandle;
+		vkWriteDescriptorSetArray[i].descriptorCount = descriptorBindingsArray[i].GetVKDescriptorSetLayoutBindingDescription().descriptorCount;
+		vkWriteDescriptorSetArray[i].descriptorType = descriptorBindingsArray[i].GetVKDescriptorSetLayoutBindingDescription().descriptorType;
+		vkWriteDescriptorSetArray[i].dstBinding = descriptorBindingsArray[i].GetVKDescriptorSetLayoutBindingDescription().binding;
+		vkWriteDescriptorSetArray[i].dstArrayElement = 0;
+	}
+
+	//Write initial data
+
 	//Done
 	return true;
 }
@@ -94,6 +119,9 @@ bool VulkanDescriptorSet::InitVKDescriptorSetWithExistingDescriptorPool(EngineAP
 	//Cache the descriptor pool handle used to alloc sets out of
 	cachedExistingDescriptorPool = descriptorPool->GetVKDescriptorPoolHandle();
 
+	//Number of bindings
+	this->bindingsCount = bindingsCount;
+
 	//Create array of VkDescriptorSetLayoutBindings -> One for each input binding
 	std::vector<VkDescriptorSetLayoutBinding> layoutBidings(bindingsCount);
 	for (int i = 0; i < bindingsCount; ++i)
@@ -103,7 +131,7 @@ bool VulkanDescriptorSet::InitVKDescriptorSetWithExistingDescriptorPool(EngineAP
 	VkDescriptorSetLayoutCreateInfo layoutCreateInfo = {};
 	layoutCreateInfo.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_LAYOUT_CREATE_INFO;
 	layoutCreateInfo.pNext = nullptr;
-	layoutCreateInfo.bindingCount = 0;
+	layoutCreateInfo.flags = 0;
 	layoutCreateInfo.pBindings = bindingsCount > 0 ? layoutBidings.data() : nullptr;
 	layoutCreateInfo.bindingCount = bindingsCount;
 
@@ -129,6 +157,39 @@ bool VulkanDescriptorSet::InitVKDescriptorSetWithExistingDescriptorPool(EngineAP
 		return false;
 	}
 
+	//Alloc writes descriptor
+	vkWriteDescriptorSetArray = GE_NEW VkWriteDescriptorSet[bindingsCount];
+	for (int i = 0; i < bindingsCount; i++)
+	{
+		vkWriteDescriptorSetArray[i] = {};
+		vkWriteDescriptorSetArray[i].sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
+		vkWriteDescriptorSetArray[i].pNext = nullptr;
+		vkWriteDescriptorSetArray[i].dstSet = vkDescriptorSetHandle;
+		vkWriteDescriptorSetArray[i].descriptorCount = descriptorBindingsArray[i].GetVKDescriptorSetLayoutBindingDescription().descriptorCount;
+		vkWriteDescriptorSetArray[i].descriptorType = descriptorBindingsArray[i].GetVKDescriptorSetLayoutBindingDescription().descriptorType;
+		vkWriteDescriptorSetArray[i].dstBinding = descriptorBindingsArray[i].GetVKDescriptorSetLayoutBindingDescription().binding;
+		vkWriteDescriptorSetArray[i].dstArrayElement = 0;
+	}
+
+	//Write initial data
+
+	//Done
+	return true;
+}
+
+bool VulkanDescriptorSet::UpdateVKDescriptorSet(DescriptorSetWriteUpdateData* writeDataArray, uint32_t writeDataCount)
+{
+	assert(writeDataArray);
+	assert(writeDataCount <= bindingsCount);
+
+	for (int i = 0; i < writeDataCount; i++)
+	{
+		vkWriteDescriptorSetArray[i].descriptorCount = writeDataArray[i].DescriptorCount;
+		vkWriteDescriptorSetArray[i].descriptorType = writeDataArray[i].Type;
+		vkWriteDescriptorSetArray[i].dstBinding = writeDataArray[i].BindingIndex;
+		vkWriteDescriptorSetArray[i].pBufferInfo = writeDataArray[i].Buffers;
+	}
+
 	//Done
 	return true;
 }
@@ -148,7 +209,9 @@ void VulkanDescriptorSet::CalculateDescriptorPoolInitInfo(EngineAPI::Graphics::D
 			{
 				//Yes, increment the count of resources of this type that the pool should be allocated
 				//with.
-				poolSizesOut[j].descriptorCount++;
+				assert(binding.GetVKDescriptorSetLayoutBindingDescription().descriptorCount == 1); //If this is not 1, we need to do some refactoring...
+
+				poolSizesOut[j].descriptorCount += binding.GetVKDescriptorSetLayoutBindingDescription().descriptorCount;
 				bindingHandled = true; 
 			}
 		}

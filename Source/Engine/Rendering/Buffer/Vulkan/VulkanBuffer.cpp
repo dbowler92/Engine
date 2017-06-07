@@ -74,9 +74,9 @@ bool VulkanBuffer::AllocVKBufferMemoryBlock(EngineAPI::Graphics::RenderDevice* r
 	}
 
 	//Fill VK buffer description
-	vkBufferInfo.buffer = vkBufferHandle;
-	vkBufferInfo.range = vkResourceMemoryRequirments.size; //Full range of the buffer allocated - not just resource size??? VERIFY
-	vkBufferInfo.offset = 0; //VERIFY - Should this take in to account alignment???
+	vkBufferDescriptorInfo.buffer = vkBufferHandle;
+	vkBufferDescriptorInfo.range = vkResourceMemoryRequirments.size; //Full range of the buffer allocated - not just resource size??? VERIFY
+	vkBufferDescriptorInfo.offset = 0; //VERIFY - Should this take in to account alignment???
 
 	//Done
 	return true;

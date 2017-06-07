@@ -71,7 +71,7 @@ void TexturedCube::Init(EngineAPI::Graphics::GraphicsManager* graphicsSubsystem)
 	bool isDynamicVB = true; //TEMP: For VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT memory rather than GPU only. 
 
 							 //Init the VB
-	vb.SetResourceDebugName("Quad Vertex Buffer");
+	vb.SetResourceDebugName("Cube Vertex Buffer");
 	assert(vb.InitVKVertexBuffer(device, sizeof(squareData), isDynamicVB));
 
 	VkPhysicalDeviceMemoryProperties p = device->GetVKPhysicalDeviceMemoryProperties();
@@ -98,7 +98,7 @@ void TexturedCube::Init(EngineAPI::Graphics::GraphicsManager* graphicsSubsystem)
 	uint16_t squareIndices[] = { 0, 1, 2, 0, 2, 3 }; //0, 3, 1, 3, 2, 1
 	bool isDynamicIB = true; //TEMP: For VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT memory rather than GPU only. 
 
-	ib.SetResourceDebugName("Quad Index Buffer");
+	ib.SetResourceDebugName("Cube Index Buffer");
 	assert(ib.InitVKIndexBuffer(device, sizeof(squareIndices), isDynamicIB));
 
 	//Ib description
@@ -130,11 +130,11 @@ void TexturedCube::Init(EngineAPI::Graphics::GraphicsManager* graphicsSubsystem)
 	glm::mat4x4 model = glm::mat4(1.0f);
 	uniformBufferMatrixData = proj * view * model;
 
-	uniformBuffer.SetResourceDebugName("Quad Uniform Buffer");
+	uniformBuffer.SetResourceDebugName("Cube Uniform Buffer");
 	bool isDynamicUB = true;
 	VkDeviceSize ubSize = sizeof(uniformBufferMatrixData); //Matrix4x4
 	assert(uniformBuffer.InitVKUniformBuffer(device, ubSize, isDynamicUB));
-	
+
 	uint32_t memoryIndexUB = 0;
 	assert(EngineAPI::Statics::VulkanStatics::FindMemoryTypeForProperties(uniformBuffer.GetResourceVKMemoryRequirments().memoryTypeBits,
 		VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT,
@@ -165,10 +165,19 @@ void TexturedCube::Init(EngineAPI::Graphics::GraphicsManager* graphicsSubsystem)
 
 	//Set
 	EngineAPI::Graphics::DescriptorBinding descriptorBindings[2];
-	descriptorBindings[0].InitVKDescriptorBindingData(0, descriptorPools[0].type, descriptorPools[0].descriptorCount, VK_SHADER_STAGE_VERTEX_BIT, nullptr);
-	descriptorBindings[1].InitVKDescriptorBindingData(1, descriptorPools[1].type, descriptorPools[1].descriptorCount, VK_SHADER_STAGE_FRAGMENT_BIT, nullptr);
+	descriptorBindings[0].InitVKDescriptorBindingData(0, VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER, 1, VK_SHADER_STAGE_VERTEX_BIT, nullptr);
+	descriptorBindings[1].InitVKDescriptorBindingData(1, VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER, 1, VK_SHADER_STAGE_FRAGMENT_BIT, nullptr);
 	//assert(descriptorSet.InitVKDescriptorSetWithExistingDescriptorPool(device, &descriptorBindings[0], 2, &descriptorPool));
 	assert(descriptorSet.InitVKDescriptorSet(device, &descriptorBindings[0], 2));
+
+	//Update descriptor set
+	VkDescriptorBufferInfo uniformBufferDescriptorInfo = uniformBuffer.GetVKDescriptorBufferInfo();
+	DescriptorSetWriteUpdateData ubufferInitData[2] = {}; //0 UB, 1 Sampler
+	ubufferInitData[0].BindingIndex = 0;
+	ubufferInitData[0].Type = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER;
+	ubufferInitData[0].DescriptorCount = 1;
+	ubufferInitData[0].Buffers = &uniformBufferDescriptorInfo;
+	assert(descriptorSet.UpdateVKDescriptorSet(ubufferInitData, 1));
 
 
 	//

@@ -40,7 +40,10 @@ namespace EngineAPI
 				//Returns the VKBuffer handle
 				VkBuffer GetVKBufferHandle() { return vkBufferHandle; };
 
-				//Getters
+				//Returns the buffer descriptor info
+				VkDescriptorBufferInfo& GetVKDescriptorBufferInfo() { return vkBufferDescriptorInfo; };
+
+				//General getters. 
 				VkDeviceSize GetBufferContentsSize() { return bufferContentsSizeBytes; };
 
 			protected:
@@ -67,7 +70,7 @@ namespace EngineAPI
 				VkBuffer vkBufferHandle = VK_NULL_HANDLE;
 
 				//Buffer description
-				VkDescriptorBufferInfo vkBufferInfo;
+				VkDescriptorBufferInfo vkBufferDescriptorInfo;
 
 			protected:
 				//Buffer size (bytes)

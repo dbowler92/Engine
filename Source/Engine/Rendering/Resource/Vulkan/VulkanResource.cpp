@@ -54,6 +54,19 @@ void VulkanResource::UnmapResource()
 
 	VkMemoryPropertyFlags memoryPropsFlags = resourceMemoryBlock->GetParentStore()->GetStoreMemoryPropertyFlags();
 
+	//Invalidate the range of mapped buffer in order to make it visible to the host.
+	//if the memory property is set with VK_MEMORY_PROPERTY_HOST_COHERENT_BIT
+	//then the driver may take care of this, otherwise for non-coherent 
+	//mapped memory vkInvalidateMappedMemoryRanges() needs to be called explicitly.
+	VkMappedMemoryRange mappedRange = {};
+	mappedRange.sType = VK_STRUCTURE_TYPE_MAPPED_MEMORY_RANGE;
+	mappedRange.memory = memory;
+	mappedRange.offset = 0;
+	mappedRange.size = resourceMemoryBlock->GetResourceSize(); //TODO: Actual resource size, not VK assigned which is aligned data
+	
+	if (memoryPropsFlags & VK_MEMORY_PROPERTY_HOST_COHERENT_BIT == 0)
+		vkInvalidateMappedMemoryRanges(device, 1,&mappedRange);
+
 	vkUnmapMemory(device, memory);
 
 	//Block is now unmapped
