@@ -445,6 +445,22 @@ void VulkanCommands::VKCMD_NextSubpass(const VkCommandBuffer& commandBuffer, VkS
 	vkCmdNextSubpass(commandBuffer, contents);
 }
 
+void VulkanCommands::VKCMD_BindGraphicsDescriptorSets(const VkCommandBuffer& commandBuffer,
+	VkPipelineLayout pipelineLayout, const VkDescriptorSet* descriptorSets, uint32_t firstSet, uint32_t descriptorSetCount,
+	uint32_t dynamicOffsetsCount, const uint32_t* dynamicOffsetsArray)
+{
+	vkCmdBindDescriptorSets(commandBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, pipelineLayout, 
+		firstSet, descriptorSetCount, descriptorSets, dynamicOffsetsCount, dynamicOffsetsArray);
+}
+
+void VulkanCommands::VKCMD_BindComputeDescriptorSets(const VkCommandBuffer& commandBuffer,
+	VkPipelineLayout pipelineLayout, const VkDescriptorSet* descriptorSets, uint32_t firstSet, uint32_t descriptorSetCount,
+	uint32_t dynamicOffsetsCount, const uint32_t* dynamicOffsetsArray)
+{
+	vkCmdBindDescriptorSets(commandBuffer, VK_PIPELINE_BIND_POINT_COMPUTE, pipelineLayout,
+		firstSet, descriptorSetCount, descriptorSets, dynamicOffsetsCount, dynamicOffsetsArray);
+}
+
 void VulkanCommands::VKCMD_BindGraphicsPipeline(const VkCommandBuffer& commandBuffer, VkPipeline pipelineHandle)
 {
 	vkCmdBindPipeline(commandBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, pipelineHandle);

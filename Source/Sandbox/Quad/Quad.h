@@ -16,6 +16,9 @@ public:
 	~Quad();
 
 	void Shutdown() override;
+
+	void Update(float dt) override {};
+
 	void GenerateRenderingCommands(EngineAPI::Graphics::GraphicsManager* graphicsSubsystem) override;
 
 	void Init(EngineAPI::Graphics::GraphicsManager* graphicsSubsystem);

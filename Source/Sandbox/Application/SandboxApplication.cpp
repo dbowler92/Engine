@@ -32,10 +32,10 @@ bool SandboxApplication::InitApplication()
 	EngineAPI::Graphics::RenderDevice* device = EngineAPI::Graphics::GraphicsManager::GetInstance()->GetRenderingDevice();
 
 	//Init triangle
-	tri.Init(graphicsSubsystem);
+	//tri.Init(graphicsSubsystem);
 
 	//Init quad
-	quad.Init(graphicsSubsystem);
+	//quad.Init(graphicsSubsystem);
 
 	//Init textured quad
 	tCube.Init(graphicsSubsystem);
@@ -52,12 +52,12 @@ bool SandboxApplication::ShutdownApplication()
 	//
 	//Triangle
 	//
-	tri.Shutdown();
+	//tri.Shutdown();
 
 	//
 	//Quad
 	//
-	quad.Shutdown();
+	//quad.Shutdown();
 
 	//
 	//Textured Quad
@@ -81,6 +81,8 @@ void SandboxApplication::UpdateScene(float dt)
 		//TODO: Mark rendering as dirty -> Render pass instance
 		//command buffers need to be reset and reinited! 
 	}
+
+	tCube.Update(dt);
 }
 
 void SandboxApplication::RenderScene()

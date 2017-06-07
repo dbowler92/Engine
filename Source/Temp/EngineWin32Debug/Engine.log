@@ -1,3 +1,2 @@
-﻿  VulkanResource.cpp
-c:\users\dan\documents\programming\3dgameengine\game_engine\engine\source\engine\rendering\resource\vulkan\vulkanresource.cpp(67): warning C4554: '&': check operator precedence for possible error; use parentheses to clarify precedence
+﻿  VulkanDrawableObject.cpp
   Engine.vcxproj -> C:\Users\Dan\Documents\Programming\3DGameEngine\Game_Engine\Engine\Source\Engine\Msvs\..\..\Lib\Win32Debug\Engine.lib

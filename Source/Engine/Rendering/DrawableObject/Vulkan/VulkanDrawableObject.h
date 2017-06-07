@@ -42,8 +42,11 @@ namespace EngineAPI
 				//Shutdown this object
 				virtual void Shutdown() = 0 {};
 
+				//Updates the object
+				virtual void Update(float dt) = 0 {};
+
 				//Called when we need to generate rendering commands. 
-				virtual void GenerateRenderingCommands(EngineAPI::Graphics::GraphicsManager* graphicsSubsystem) = 0 {};
+				virtual void GenerateRenderingCommands(EngineAPI::Graphics::GraphicsManager* graphicsSubsystem) = 0;
 			};
 		};
 	};

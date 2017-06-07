@@ -13,7 +13,7 @@ void TexturedCube::Shutdown()
 {
 	//Shutdown rendering data
 	vb.Shutdown();
-	ib.Shutdown();
+	//ib.Shutdown();
 
 	uniformBuffer.Shutdown();
 
@@ -40,12 +40,49 @@ void TexturedCube::Init(EngineAPI::Graphics::GraphicsManager* graphicsSubsystem)
 		float r, g, b, a; // Colour format Red, Green, Blue, Alpha
 	};
 
-	VertexWithColour squareData[] =
+	VertexWithColour cubeData[] =
 	{
-		{ -0.5f,  0.5f, 0.0f, 1.0f, 1.0f, 1.0f, 0.0f, 1.0 },
-		{ 0.5f,  0.5f, 0.0f, 1.0f, 1.0f, 0.0f, 0.0f, 1.0 },
-		{ 0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f, 1.0 },
-		{ -0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f, 1.0 },
+		{ 1, -1, -1, 1.0f,		0.f, 0.f, 0.f, 1.0f },
+		{ -1, -1, -1, 1.0f,		1.f, 0.f, 0.f, 1.0f },
+		{ 1,  1, -1, 1.0f,		0.f, 1.f, 0.f, 1.0f },
+		{ 1,  1, -1, 1.0f,		0.f, 1.f, 0.f, 1.0f },
+		{ -1, -1, -1, 1.0f,		1.f, 0.f, 0.f, 1.0f },
+		{ -1,  1, -1, 1.0f,		1.f, 1.f, 0.f, 1.0f },
+
+		{ 1, -1, 1, 1.0f,		0.f, 0.f, 1.f, 1.0f },
+		{ 1,  1, 1, 1.0f,		0.f, 1.f, 1.f, 1.0f },
+		{ -1, -1, 1, 1.0f,		1.f, 0.f, 1.f, 1.0f },
+		{ -1, -1, 1, 1.0f,		1.f, 0.f, 1.f, 1.0f },
+		{ 1,  1, 1, 1.0f,		0.f, 1.f, 1.f, 1.0f },
+		{ -1,  1, 1, 1.0f,		1.f, 1.f, 1.f, 1.0f },
+
+		{ 1, -1,  1, 1.0f,		1.f, 1.f, 1.f, 1.0f },
+		{ 1, -1, -1, 1.0f,		1.f, 1.f, 0.f, 1.0f },
+		{ 1,  1,  1, 1.0f,		1.f, 0.f, 1.f, 1.0f },
+		{ 1,  1,  1, 1.0f,		1.f, 0.f, 1.f, 1.0f },
+		{ 1, -1, -1, 1.0f,		1.f, 1.f, 0.f, 1.0f },
+		{ 1,  1, -1, 1.0f,		1.f, 0.f, 0.f, 1.0f },
+
+		{ -1, -1,  1, 1.0f,		0.f, 1.f, 1.f, 1.0f },
+		{ -1,  1,  1, 1.0f,		0.f, 0.f, 1.f, 1.0f },
+		{ -1, -1, -1, 1.0f,		0.f, 1.f, 0.f, 1.0f },
+		{ -1, -1, -1, 1.0f,		0.f, 1.f, 0.f, 1.0f },
+		{ -1,  1,  1, 1.0f,		0.f, 0.f, 1.f, 1.0f },
+		{ -1,  1, -1, 1.0f,		0.f, 0.f, 0.f, 1.0f },
+
+		{ 1, 1, -1, 1.0f,		1.f, 1.f, 1.f, 1.0f },
+		{ -1, 1, -1, 1.0f,		0.f, 1.f, 1.f, 1.0f },
+		{ 1, 1,  1, 1.0f,		1.f, 1.f, 0.f, 1.0f },
+		{ 1, 1,  1, 1.0f,		1.f, 1.f, 0.f, 1.0f },
+		{ -1, 1, -1, 1.0f,		0.f, 1.f, 1.f, 1.0f },
+		{ -1, 1,  1, 1.0f,		0.f, 1.f, 0.f, 1.0f },
+
+		{ 1, -1, -1, 1.0f,		1.f, 0.f, 1.f, 1.0f },
+		{ 1, -1,  1, 1.0f,		1.f, 0.f, 0.f, 1.0f },
+		{ -1, -1, -1, 1.0f,		0.f, 0.f, 1.f, 1.0f },
+		{ -1, -1, -1, 1.0f,		0.f, 0.f, 1.f, 1.0f },
+		{ 1, -1,  1, 1.0f,		1.f, 0.f, 0.f, 1.0f },
+		{ -1, -1,  1, 1.0f,		0.f, 0.f, 0.f, 1.0f },
 	};
 
 	//Streams
@@ -72,7 +109,7 @@ void TexturedCube::Init(EngineAPI::Graphics::GraphicsManager* graphicsSubsystem)
 
 							 //Init the VB
 	vb.SetResourceDebugName("Cube Vertex Buffer");
-	assert(vb.InitVKVertexBuffer(device, sizeof(squareData), isDynamicVB));
+	assert(vb.InitVKVertexBuffer(device, sizeof(cubeData), isDynamicVB));
 
 	VkPhysicalDeviceMemoryProperties p = device->GetVKPhysicalDeviceMemoryProperties();
 
@@ -90,12 +127,13 @@ void TexturedCube::Init(EngineAPI::Graphics::GraphicsManager* graphicsSubsystem)
 	//
 	//Alloc VB
 	//
-	assert(vb.AllocAndBindVKVertexBuffer(device, &vbLayout, &squareData[0], customStoreForVB));
+	assert(vb.AllocAndBindVKVertexBuffer(device, &vbLayout, &cubeData[0], customStoreForVB));
 
 	//
 	//Index buffer
 	//
-	uint16_t squareIndices[] = { 0, 1, 2, 0, 2, 3 }; //0, 3, 1, 3, 2, 1
+	/*
+	uint16_t cubeIndicies[] = { 0, 1, 2, 0, 2, 3 }; //0, 3, 1, 3, 2, 1
 	bool isDynamicIB = true; //TEMP: For VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT memory rather than GPU only. 
 
 	ib.SetResourceDebugName("Cube Index Buffer");
@@ -118,6 +156,7 @@ void TexturedCube::Init(EngineAPI::Graphics::GraphicsManager* graphicsSubsystem)
 
 	//Alloc
 	assert(ib.AllocAndBindVKIndexBuffer(device, &ibDesc, &squareIndices[0], customStoreForIB));
+	*/
 
 	//
 	//Uniform buffer
@@ -161,7 +200,7 @@ void TexturedCube::Init(EngineAPI::Graphics::GraphicsManager* graphicsSubsystem)
 	descriptorPools[0].descriptorCount = 1;
 	descriptorPools[1].type = VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER;
 	descriptorPools[1].descriptorCount = 1;
-	assert(descriptorPool.InitVKDescriptorPools(device, descriptorPools, 2, true));
+	//assert(descriptorPool.InitVKDescriptorPools(device, descriptorPools, 2, true));
 
 	//Set
 	EngineAPI::Graphics::DescriptorBinding descriptorBindings[2];
@@ -270,6 +309,13 @@ void TexturedCube::Init(EngineAPI::Graphics::GraphicsManager* graphicsSubsystem)
 	assert(graphicsPipelineState.InitVKGraphicsPipelineState(device, graphicsPCO, graphicsSubsystem->GetRenderPass(), &testProgramSPIR, &pipelineStateDesc, &graphicsPipelineLayout, true));
 }
 
+void TexturedCube::Update(float dt)
+{
+	//Rotate cube...
+
+	//Rebuild uniform buffer. 
+}
+
 void TexturedCube::GenerateRenderingCommands(EngineAPI::Graphics::GraphicsManager* graphicsSubsystem)
 {
 	//Do we need to insert render commands?
@@ -286,15 +332,18 @@ void TexturedCube::GenerateRenderingCommands(EngineAPI::Graphics::GraphicsManage
 	//Bind pipeline
 	EngineAPI::Statics::VulkanCommands::VKCMD_BindGraphicsPipeline(cmdBuffer, graphicsPipelineState.GetVKPipelineHandle());
 
+	//Bind descriptor set
+	VkDescriptorSet descriptorSets[1];
+	descriptorSets[0] = descriptorSet.GetVKDescriptorSetHandle();
+	VkPipelineLayout graphicsPipelineLayoutHandle = graphicsPipelineLayout.GetVKPipelineLayoutHandle();
+
+	EngineAPI::Statics::VulkanCommands::VKCMD_BindGraphicsDescriptorSets(cmdBuffer, 
+		graphicsPipelineLayoutHandle, descriptorSets, 0, 1, 0, nullptr);
+
 	//Bind VB
 	const VkDeviceSize offsets[1] = { 0 };
 	VkBuffer vertexBuffers[1] = { vb.GetVKBufferHandle() };
 	EngineAPI::Statics::VulkanCommands::VKCMD_BindVertexBuffers(cmdBuffer, 0, 1, vertexBuffers, offsets);
-
-	//Bind IB
-	VkIndexType indexType = ib.GetVKIndexType();
-	VkDeviceSize ibOffset = 0;
-	EngineAPI::Statics::VulkanCommands::VKCMD_BindIndexBuffer(cmdBuffer, ib.GetVKBufferHandle(), ibOffset, indexType);
 
 	//Define (Dynamic) viewport
 	VkViewport viewport = {};
@@ -315,6 +364,6 @@ void TexturedCube::GenerateRenderingCommands(EngineAPI::Graphics::GraphicsManage
 	EngineAPI::Statics::VulkanCommands::VKCMD_DynamicallySetScissors(cmdBuffer, 0, 1, &scissor);
 
 	//Issue draw command (1 instance)
-	EngineAPI::Statics::VulkanCommands::VKCMD_DrawIndexed(cmdBuffer, ib.GetVKIndexBufferElementCount(), 1, 0, 0, 0);
+	EngineAPI::Statics::VulkanCommands::VKCMD_Draw(cmdBuffer, 36, 1, 0, 0);
 }
 

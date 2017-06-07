@@ -16,13 +16,15 @@ public:
 	~TexturedCube();
 
 	void Shutdown() override;
-	void GenerateRenderingCommands(EngineAPI::Graphics::GraphicsManager* graphicsSubsystem) override;
 
 	void Init(EngineAPI::Graphics::GraphicsManager* graphicsSubsystem);
 
+	void Update(float dt) override;
+	void GenerateRenderingCommands(EngineAPI::Graphics::GraphicsManager* graphicsSubsystem) override;
+	
 protected:
 	EngineAPI::Rendering::VertexBuffer vb;
-	EngineAPI::Rendering::IndexBuffer ib;
+	//EngineAPI::Rendering::IndexBuffer ib;
 
 	EngineAPI::Rendering::UniformBuffer uniformBuffer;
 	glm::mat4x4 uniformBufferMatrixData; //Fed in to the uniform buffer. 

@@ -113,6 +113,15 @@ namespace EngineAPI
 			//Changes subpass
 			static void VKCMD_NextSubpass(const VkCommandBuffer& commandBuffer, VkSubpassContents contents);
 
+			//Binds descriptor sets
+			static void VKCMD_BindGraphicsDescriptorSets(const VkCommandBuffer& commandBuffer,
+				VkPipelineLayout pipelineLayout, const VkDescriptorSet* descriptorSets, uint32_t firstSet, uint32_t descriptorSetCount,
+				uint32_t dynamicOffsetsCount, const uint32_t* dynamicOffsetsArray);
+
+			static void VKCMD_BindComputeDescriptorSets(const VkCommandBuffer& commandBuffer, 
+				VkPipelineLayout pipelineLayout, const VkDescriptorSet* descriptorSets, uint32_t firstSet, uint32_t descriptorSetCount,
+				uint32_t dynamicOffsetsCount, const uint32_t* dynamicOffsetsArray);
+
 			//Binds a pipeline
 			static void VKCMD_BindGraphicsPipeline(const VkCommandBuffer& commandBuffer, VkPipeline pipelineHandle);
 			static void VKCMD_BindComputePipeline(const VkCommandBuffer& commandBuffer, VkPipeline pipelineHandle);
