@@ -108,7 +108,7 @@ void TexturedCube::Init(EngineAPI::Graphics::GraphicsManager* graphicsSubsystem)
 	bool isDynamicVB = true; //TEMP: For VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT memory rather than GPU only. 
 
 							 //Init the VB
-	vb.SetResourceDebugName("Cube Vertex Buffer");
+	vb.SetResourceDebugName("Textured Cube Vertex Buffer");
 	assert(vb.InitVKVertexBuffer(device, sizeof(cubeData), isDynamicVB));
 
 	VkPhysicalDeviceMemoryProperties p = device->GetVKPhysicalDeviceMemoryProperties();
@@ -136,7 +136,7 @@ void TexturedCube::Init(EngineAPI::Graphics::GraphicsManager* graphicsSubsystem)
 	uint16_t cubeIndicies[] = { 0, 1, 2, 0, 2, 3 }; //0, 3, 1, 3, 2, 1
 	bool isDynamicIB = true; //TEMP: For VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT memory rather than GPU only. 
 
-	ib.SetResourceDebugName("Cube Index Buffer");
+	ib.SetResourceDebugName("Textured Cube Index Buffer");
 	assert(ib.InitVKIndexBuffer(device, sizeof(squareIndices), isDynamicIB));
 
 	//Ib description
@@ -163,7 +163,7 @@ void TexturedCube::Init(EngineAPI::Graphics::GraphicsManager* graphicsSubsystem)
 	//
 	EngineAPI::Graphics::Swapchain* swapchain = graphicsSubsystem->GetRenderingSwapchain();
 	VkExtent2D extents = swapchain->GetSwapchainDimentions();
-	float aspect = extents.width / extents.height;
+	float aspect = (float)extents.width / (float)extents.height;
 	proj = glm::perspective(glm::radians(45.f), aspect, .1f, 100.f);
 	view = glm::lookAt(
 		glm::vec3(10, 3, 5), // Camera in World Space
@@ -172,7 +172,7 @@ void TexturedCube::Init(EngineAPI::Graphics::GraphicsManager* graphicsSubsystem)
 	world = glm::mat4(1.0f);
 	uniformBufferMatrixData = proj * view * world;
 
-	uniformBuffer.SetResourceDebugName("Cube Uniform Buffer");
+	uniformBuffer.SetResourceDebugName("Textured Cube Uniform Buffer");
 	bool isDynamicUB = true;
 	VkDeviceSize ubSize = sizeof(uniformBufferMatrixData); //Matrix4x4
 	assert(uniformBuffer.InitVKUniformBuffer(device, ubSize, isDynamicUB));

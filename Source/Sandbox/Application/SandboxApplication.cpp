@@ -38,12 +38,12 @@ bool SandboxApplication::InitApplication()
 	//quad.Init(graphicsSubsystem);
 
 	//Init textured quad
-	//tCube.Init(graphicsSubsystem);
+	tCube.Init(graphicsSubsystem);
 
 	//Init Push Constant cube
-	pConstCube.Init(graphicsSubsystem);
+	//pConstCube.Init(graphicsSubsystem);
 	
-	//graphicsSubsystem->GetRenderingDevice()->GetDeviceMemoryAllocator()->Debug_LongDump(DEBUG_DUMPS_FOLDER"UniformBuffer");
+	graphicsSubsystem->GetRenderingDevice()->GetDeviceMemoryAllocator()->Debug_LongDump(DEBUG_DUMPS_FOLDER"TexturedCube");
 
 	return true;
 }
@@ -65,12 +65,12 @@ bool SandboxApplication::ShutdownApplication()
 	//
 	//Textured Quad
 	//
-	//tCube.Shutdown();
+	tCube.Shutdown();
 
 	//
 	//Push constant cube
 	//
-	pConstCube.Shutdown();
+	//pConstCube.Shutdown();
 
 	return true;
 }
@@ -90,8 +90,8 @@ void SandboxApplication::UpdateScene(float dt)
 		//command buffers need to be reset and reinited! 
 	}
 
-	//tCube.Update(dt);
-	pConstCube.Update(dt);
+	tCube.Update(dt);
+	//pConstCube.Update(dt);
 }
 
 void SandboxApplication::RenderScene()
@@ -99,6 +99,6 @@ void SandboxApplication::RenderScene()
 	//Render something...
 	//tri.GenerateRenderingCommands(graphicsSubsystem);
 	//quad.GenerateRenderingCommands(graphicsSubsystem);
-	//tCube.GenerateRenderingCommands(graphicsSubsystem);
-	pConstCube.GenerateRenderingCommands(graphicsSubsystem);
+	tCube.GenerateRenderingCommands(graphicsSubsystem);
+	//pConstCube.GenerateRenderingCommands(graphicsSubsystem);
 }

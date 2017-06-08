@@ -59,6 +59,8 @@ void VulkanDeviceMemoryAllocator::Debug_LongDump(std::string filename)
 			out << "Vulkan Device Memory Handle: " << store.GetVKDeviceMemoryHandle() << "\n";
 			out << "Vulkan Memory Type Index: " << store.GetVKMemoryTypeIndex() << "\n";
 			out << "Vulkan Memory Property Flags: " << store.GetStoreMemoryPropertyFlags() << "\n";
+			out << "Vulkan Memory Heap Index: " << store.GetVKMemoryHeapIndex() << "\n";
+			out << "Vulkan Memory Heap Flags: " << store.GetVKMemoryHeapFlags() << "\n";
 			out << "Is Memory Mappable: " << store.IsVKMemoryMappable() << "\n";
 			out << "Number of blocks: " << store.GetMemoryBlocksList()->size() << "\n";
 			out << "\n";

@@ -331,7 +331,7 @@ void PushConstantCube::Update(float dt)
 		colourFlag++;
 		timer -= 1.0f;
 
-		if (colourFlag > 5)
+		if (colourFlag >= 5)
 			colourFlag = 1;
 	}
 
@@ -339,7 +339,7 @@ void PushConstantCube::Update(float dt)
 	EngineAPI::Graphics::RenderDevice* device = EngineAPI::Graphics::GraphicsManager::GetInstance()->GetRenderingDevice();
 
 	VkExtent2D extents = swapchain->GetSwapchainDimentions();
-	float aspect = extents.width / extents.height;
+	float aspect = (float)extents.width / (float)extents.height;
 	proj = glm::perspective(glm::radians(45.f), aspect, .1f, 100.f);
 	view = glm::lookAt(
 		glm::vec3(10, 3, 10), // Camera in World Space

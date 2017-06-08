@@ -109,6 +109,8 @@ namespace EngineAPI
 				VkBool32 IsVKMemoryMappable() { return vkIsStoreMemoryMappable; };
 				VkDeviceSize GetMemoryStoreSizeBytes() { return memoryStoreSizeBytes; };
 				VkMemoryPropertyFlags GetStoreMemoryPropertyFlags() { return vkMemoryPropertyFlags; };
+				uint32_t GetVKMemoryHeapIndex() { return vkMemoryHeapIndex; };
+				VkMemoryHeapFlags GetVKMemoryHeapFlags() { return vkMemoryHeapFlags; };
 
 				bool IsPublicMemoryStore() { return isPublicStore; };
 				bool IsMemoryStoreActive() { return isStoreActive; };
@@ -126,6 +128,10 @@ namespace EngineAPI
 
 				//Vulkan memory property flags
 				VkMemoryPropertyFlags vkMemoryPropertyFlags;
+
+				//Heap index and flag
+				uint32_t vkMemoryHeapIndex;
+				VkMemoryHeapFlags vkMemoryHeapFlags;
 
 				//Is the store mappable?
 				VkBool32 vkIsStoreMemoryMappable = false;

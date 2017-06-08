@@ -19,8 +19,9 @@ bool VulkanDeviceMemoryStore::InitVKDeviceMemoryStore(EngineAPI::Graphics::Devic
 	vkMemoryPropertyFlags = fullDeviceMemoryProperties->memoryTypes[memoryTypeIndex].propertyFlags;
 
 	//Are we requesting more bytes than is available?
-	uint32_t heapIndex = fullDeviceMemoryProperties->memoryTypes[memoryTypeIndex].heapIndex;
-	VkDeviceSize maxHeapSize = fullDeviceMemoryProperties->memoryHeaps[heapIndex].size;
+	vkMemoryHeapIndex = fullDeviceMemoryProperties->memoryTypes[memoryTypeIndex].heapIndex;
+	vkMemoryHeapFlags = fullDeviceMemoryProperties->memoryHeaps[vkMemoryHeapIndex].flags;
+	VkDeviceSize maxHeapSize = fullDeviceMemoryProperties->memoryHeaps[vkMemoryHeapIndex].size;
 	if (deviceMemorySizeInBytesToAlloc > maxHeapSize)
 	{
 		//Error
