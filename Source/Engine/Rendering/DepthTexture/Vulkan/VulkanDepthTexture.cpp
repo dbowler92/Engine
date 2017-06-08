@@ -106,7 +106,7 @@ bool VulkanDepthTexture::AllocAndBindVKDepthTexture(EngineAPI::Graphics::RenderD
 	//Allocate the texture/image
 	if (!AllocAndBindVKTextureMemory(renderingDevice, optionalDeviceStore))
 	{
-		EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanDepthTexture::Init() Error - Could not Allocate texture\n");
+		EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanDepthTexture::AllocAndBindVKDepthTexture() Error - Could not Allocate texture\n");
 		return false;
 	}
 

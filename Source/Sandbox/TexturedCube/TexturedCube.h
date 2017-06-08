@@ -41,5 +41,5 @@ protected:
 	EngineAPI::Graphics::DescriptorSet descriptorSet;
 
 	EngineAPI::Graphics::SamplerState samplerState;
-	EngineAPI::Rendering::Sampler2D sampler2D;
+	EngineAPI::Rendering::Sampler2D sampler2DLinear;
 };

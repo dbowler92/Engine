@@ -26,7 +26,7 @@ void TexturedCube::Shutdown()
 	descriptorPool.Shutdown();
 
 	samplerState.Shutdown();
-	sampler2D.Shutdown();
+	sampler2DLinear.Shutdown();
 }
 
 void TexturedCube::Init(EngineAPI::Graphics::GraphicsManager* graphicsSubsystem)
@@ -337,9 +337,23 @@ void TexturedCube::Init(EngineAPI::Graphics::GraphicsManager* graphicsSubsystem)
 	//
 	//Sampler2D - Colour texture loaded from file. 
 	//
-	assert(sampler2D.InitVKSampler2DFromFile(device, TEXTURE_ASSETS_FOLDER"TestTextures/LearningVulkan.ktx", TEXTURE_LOADING_API_GLI, 
+	sampler2DLinear.SetResourceDebugName("Textured Cube Sampler2D (Linear)");
+	assert(sampler2DLinear.InitVKSampler2DFromFile(device, TEXTURE_ASSETS_FOLDER"TestTextures/LearningVulkan.ktx", TEXTURE_LOADING_API_GLI,
 		TEXTURE_TILING_MODE_LINEAR, true,
 		VK_FORMAT_R8G8B8A8_UNORM, VK_IMAGE_USAGE_SAMPLED_BIT));
+
+	uint32_t memoryTypeIndexSampler2D = 0;
+	assert(EngineAPI::Statics::VulkanStatics::FindMemoryTypeForProperties(sampler2DLinear.GetResourceVKMemoryRequirments().memoryTypeBits,
+		VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT,
+		&device->GetVKPhysicalDeviceMemoryProperties(), &memoryTypeIndexSampler2D));
+
+	EngineAPI::Graphics::DeviceMemoryStore* sampler2DDeviceStore = nullptr;
+	sampler2DDeviceStore = device->GetDeviceMemoryAllocator()->CreateNewMemoryStore(device,
+		sampler2DLinear.GetResourceVKMemoryRequirments().size,
+		memoryTypeIndexSampler2D, false);
+
+	assert(sampler2DLinear.AllocAndBindVKSampler2D(device, sampler2DDeviceStore));
+
 }
 
 

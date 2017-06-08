@@ -1,21 +1,2 @@
-﻿  SandboxApplication.cpp
-  Generating Code...
-  Compiling...
-  Triangle.cpp
-c:\users\b1032464\documents\programming\engine\engine\source\sandbox\triangle\triangle.cpp(134): warning C4244: '=': conversion from 'uint32_t' to 'float', possible loss of data
-c:\users\b1032464\documents\programming\engine\engine\source\sandbox\triangle\triangle.cpp(135): warning C4244: '=': conversion from 'uint32_t' to 'float', possible loss of data
-  TexturedCube.cpp
-c:\users\b1032464\documents\programming\engine\engine\source\sandbox\texturedcube\texturedcube.cpp(272): warning C4244: '=': conversion from 'uint32_t' to 'float', possible loss of data
-c:\users\b1032464\documents\programming\engine\engine\source\sandbox\texturedcube\texturedcube.cpp(273): warning C4244: '=': conversion from 'uint32_t' to 'float', possible loss of data
-c:\users\b1032464\documents\programming\engine\engine\source\sandbox\texturedcube\texturedcube.cpp(350): warning C4244: 'initializing': conversion from 'uint32_t' to 'float', possible loss of data
-  Quad.cpp
-c:\users\b1032464\documents\programming\engine\engine\source\sandbox\quad\quad.cpp(162): warning C4244: '=': conversion from 'uint32_t' to 'float', possible loss of data
-c:\users\b1032464\documents\programming\engine\engine\source\sandbox\quad\quad.cpp(163): warning C4244: '=': conversion from 'uint32_t' to 'float', possible loss of data
-  PushConstantCube.cpp
-c:\users\b1032464\documents\programming\engine\engine\source\sandbox\pushconstantcube\pushconstantcube.cpp(171): warning C4244: 'initializing': conversion from 'uint32_t' to 'float', possible loss of data
-c:\users\b1032464\documents\programming\engine\engine\source\sandbox\pushconstantcube\pushconstantcube.cpp(274): warning C4244: '=': conversion from 'uint32_t' to 'float', possible loss of data
-c:\users\b1032464\documents\programming\engine\engine\source\sandbox\pushconstantcube\pushconstantcube.cpp(275): warning C4244: '=': conversion from 'uint32_t' to 'float', possible loss of data
-  SandboxMain.cpp
-  Generating Code...
-  Sandbox.vcxproj -> C:\Users\B1032464\Documents\Programming\Engine\Engine\Source\Engine\Msvs\..\..\Lib\Win32Debug\SandboxWin32Debug.exe
+﻿  Sandbox.vcxproj -> C:\Users\B1032464\Documents\Programming\Engine\Engine\Source\Engine\Msvs\..\..\Lib\Win32Debug\SandboxWin32Debug.exe
   Sandbox.vcxproj -> C:\Users\B1032464\Documents\Programming\Engine\Engine\Source\Engine\Msvs\..\..\Lib\Win32Debug\SandboxWin32Debug.pdb (Full PDB)

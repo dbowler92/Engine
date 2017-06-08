@@ -43,7 +43,7 @@ bool SandboxApplication::InitApplication()
 	//Init Push Constant cube
 	//pConstCube.Init(graphicsSubsystem);
 	
-	graphicsSubsystem->GetRenderingDevice()->GetDeviceMemoryAllocator()->Debug_LongDump(DEBUG_DUMPS_FOLDER"TexturedCube");
+	graphicsSubsystem->GetRenderingDevice()->GetDeviceMemoryAllocator()->Debug_LongDump(DEBUG_DUMPS_FOLDER"TexturedCubeLinear");
 
 	return true;
 }

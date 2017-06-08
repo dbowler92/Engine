@@ -12,6 +12,10 @@
 //Does need to know about the device to create it
 #include "../../../Graphics/Device/RenderDevice.h"
 
+//Texture loading
+#include <gli/gli.hpp> //NOTE: Preprocessor define required: _CRT_SECURE_NO_WARNINGS
+#include "../../3rdParty/LodePNG/lodePNG.h"
+
 //Which texture loading API do we wish to use
 enum TextureLoadingAPI
 {
@@ -53,12 +57,32 @@ namespace EngineAPI
 				//3) Inits the sampler2D image views && layout. 
 				bool InitVKSampler2DLayoutAndViews(EngineAPI::Graphics::RenderDevice* renderingDevice);
 			
+			public:
+				//Returns the shader sampler image view
+				VkImageView GetVKShaderSamplerImageView() { return vkShaderSamplerView; };
+
 			protected:
 				//Image view -> Used to bind the image as shader input
-				VkImageView vkSamplerView = VK_NULL_HANDLE;
+				VkImageView vkShaderSamplerView = VK_NULL_HANDLE;
 
 				//Command buffers
 
+				//Image loading - Dynamically created since we can only load a gli::texture2D
+				//when the constructor is called. 
+				gli::texture2D* gliTexture2D = nullptr;
+
+			private:
+				//Internal init
+				bool InitVKSampler2DLayout(EngineAPI::Graphics::RenderDevice* renderingDevice);
+				bool InitVKSampler2DViews(EngineAPI::Graphics::RenderDevice* renderingDevice);
+
+				//Writes the parsed data to memory
+				bool WriteParsedTextureDataToMemory(uint8_t* data);
+
+			private:
+				//Clears the GLI && lodePNG data
+				void CleanupGLIData();
+				void CleanupLodePNGData();
 			};
 		};
 	};

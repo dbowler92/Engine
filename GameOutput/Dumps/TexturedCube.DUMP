@@ -1,11 +1,11 @@
 **************VulkanDeviceMemoryAllocator Dump****************
 
-Allocator address: 00F050B0
-Number of memory stores: 3
+Allocator address: 012F50B0
+Number of memory stores: 4
 
 **************************************************************
 
-[Store: 0] 00F050B8
+[Store: 0] 012F50B8
 Is Active Store: 1
 Is Public Store: 1
 Is Auto Store: 1
@@ -18,13 +18,13 @@ Vulkan Memory Heap Flags: 1
 Is Memory Mappable: 0
 Number of blocks: 1
 
-	[Block: 0] 04087998
+	[Block: 0] 0460D288
 		Is Free: 0
 		Is Mappable: 0
 		Is Mapped: 0
 		Resource Size (Vulkan Defined): 2457600
 		Resource Alignment: 1024
-		Resource Address: 00F55190
+		Resource Address: 01345190
 		Resource Type: 2
 		Resource Debug Name: Swapchain Depth Texture
 		Block Size: 2457600
@@ -33,7 +33,7 @@ Number of blocks: 1
 
 **************************************************************
 
-[Store: 1] 00F05108
+[Store: 1] 012F5108
 Is Active Store: 1
 Is Public Store: 0
 Is Auto Store: 0
@@ -46,14 +46,14 @@ Vulkan Memory Heap Flags: 0
 Is Memory Mappable: 1
 Number of blocks: 1
 
-	[Block: 0] 04087298
+	[Block: 0] 0460D008
 		Is Free: 0
 		Is Mappable: 1
 		Is Mapped: 0
 		Resource Size (Vulkan Defined): 1024
 		Resource Alignment: 256
 		Buffer Contents Size: 864
-		Resource Address: 00D3FFD8
+		Resource Address: 003A0FD8
 		Resource Type: 5
 		Resource Debug Name: Textured Cube Vertex Buffer
 		Block Size: 1024
@@ -62,7 +62,7 @@ Number of blocks: 1
 
 **************************************************************
 
-[Store: 2] 00F05158
+[Store: 2] 012F5158
 Is Active Store: 1
 Is Public Store: 0
 Is Auto Store: 0
@@ -75,19 +75,34 @@ Vulkan Memory Heap Flags: 0
 Is Memory Mappable: 1
 Number of blocks: 1
 
-	[Block: 0] 04086D18
+	[Block: 0] 0460D108
 		Is Free: 0
 		Is Mappable: 1
 		Is Mapped: 0
 		Resource Size (Vulkan Defined): 256
 		Resource Alignment: 256
 		Buffer Contents Size: 64
-		Resource Address: 00D40080
+		Resource Address: 003A1080
 		Resource Type: 7
 		Resource Debug Name: Textured Cube Uniform Buffer
 		Block Size: 256
 		Block Offset: 0
 		Block Aligned Offset: 0
+
+**************************************************************
+
+[Store: 3] 012F51A8
+Is Active Store: 1
+Is Public Store: 0
+Is Auto Store: 0
+Store Size: 1433600
+Vulkan Device Memory Handle: 32
+Vulkan Memory Type Index: 9
+Vulkan Memory Property Flags: 6
+Vulkan Memory Heap Index: 1
+Vulkan Memory Heap Flags: 0
+Is Memory Mappable: 1
+Number of blocks: 0
 
 **************************************************************
 
