@@ -20,6 +20,7 @@
 //Assets folders 
 #define ASSETS_FOLDER "../Assets/"
 #define SHADER_ASSETS_FOLDER ASSETS_FOLDER"Shaders/"
+#define TEXTURE_ASSETS_FOLDER ASSETS_FOLDER"Textures/"
 
 //Platform - not really used for now?
 #define PLATFORM_IDX_WIN32 0

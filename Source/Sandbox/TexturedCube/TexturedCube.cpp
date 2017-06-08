@@ -337,7 +337,9 @@ void TexturedCube::Init(EngineAPI::Graphics::GraphicsManager* graphicsSubsystem)
 	//
 	//Sampler2D - Colour texture loaded from file. 
 	//
-	
+	assert(sampler2D.InitVKSampler2DFromFile(device, TEXTURE_ASSETS_FOLDER"TestTextures/LearningVulkan.ktx", TEXTURE_LOADING_API_GLI, 
+		TEXTURE_TILING_MODE_LINEAR, true,
+		VK_FORMAT_R8G8B8A8_UNORM, VK_IMAGE_USAGE_SAMPLED_BIT));
 }
 
 

@@ -65,7 +65,7 @@ bool VulkanDepthTexture::InitVKDepthTexture(EngineAPI::Graphics::RenderDevice* r
 	else
 	{
 		//Error...
-		EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanDepthTexture::Init() Error - Failed to find tiling mode for this texture suggesting an unsupported depth texture format\n");
+		EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanDepthTexture::InitVKDepthTexture() Error - Failed to find tiling mode for this texture suggesting an unsupported depth texture format\n");
 		return false;
 	}
 
@@ -92,7 +92,7 @@ bool VulkanDepthTexture::InitVKDepthTexture(EngineAPI::Graphics::RenderDevice* r
 	//Init texture/image (parent)
 	if (!InitVKTexture(renderingDevice, &depthTextureCreateInfo, false))
 	{
-		EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanDepthTexture::Init() Error - Could not init VkImage object\n");
+		EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanDepthTexture::Init() InitVKDepthTexture - Could not init VkImage object\n");
 		return false;
 	}
 
