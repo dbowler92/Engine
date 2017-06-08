@@ -24,6 +24,9 @@
 #include "../Graphics/Program/Program.h"
 #include "../Graphics/Shader/Shader.h"
 
+//Sampler state
+#include "../Graphics/SamplerState/SamplerState.h"
+
 //Pipeline managements
 #include "../Graphics/GraphicsPipelineCache/GraphicsPipelineCache.h"
 #include "../Graphics/GraphicsPipelineState/GraphicsPipelineState.h"

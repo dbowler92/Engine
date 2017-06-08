@@ -39,4 +39,6 @@ protected:
 
 	EngineAPI::Graphics::DescriptorPool descriptorPool;
 	EngineAPI::Graphics::DescriptorSet descriptorSet;
+
+	EngineAPI::Graphics::SamplerState samplerState;
 };

@@ -121,29 +121,11 @@
     <Filter Include="Src\Graphics\DeviceMemoryAllocator\Vulkan">
       <UniqueIdentifier>{e5170116-ac18-4c3b-b52d-91180ce61fe7}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Src\Rendering\Resource">
-      <UniqueIdentifier>{c86645b4-d777-4edc-9ecc-b6edf96048cf}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Src\Rendering\Resource\Vulkan">
-      <UniqueIdentifier>{19184592-7d00-42ef-84ea-d87bd40bb361}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Src\Rendering\Texture">
-      <UniqueIdentifier>{f388de51-4e07-43be-baef-ab931599c5ae}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Src\Rendering\Texture\Vulkan">
-      <UniqueIdentifier>{9ff536c0-5ae1-41d6-8699-dd8e68559be7}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Src\Statics">
       <UniqueIdentifier>{48f0701c-46b4-43bd-a57b-83fa4f29cd75}</UniqueIdentifier>
     </Filter>
     <Filter Include="Src\Statics\Vulkan">
       <UniqueIdentifier>{e6bc3afb-9af4-45a5-b320-5cd7f82a1aed}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Src\Rendering\Buffer">
-      <UniqueIdentifier>{02e05e44-7cae-4d0f-bf55-293b94e6e43f}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Src\Rendering\Buffer\Vulkan">
-      <UniqueIdentifier>{9bae62ab-831b-4f21-a70c-7384f22a33dd}</UniqueIdentifier>
     </Filter>
     <Filter Include="Src\Rendering\VertexBuffer">
       <UniqueIdentifier>{cd6cac99-493f-4076-b70a-1c1612598101}</UniqueIdentifier>
@@ -186,12 +168,6 @@
     </Filter>
     <Filter Include="Src\Graphics\Program\Vulkan">
       <UniqueIdentifier>{d3966a75-1ac8-4f03-ab95-e79b41787fae}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Src\Rendering\DrawableObject">
-      <UniqueIdentifier>{b97a2d8b-5944-4967-9385-f97274370ca2}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Src\Rendering\DrawableObject\Vulkan">
-      <UniqueIdentifier>{dfa78f86-7b06-4133-bf4c-d3f67a64d62e}</UniqueIdentifier>
     </Filter>
     <Filter Include="Src\Graphics\RenderPassInstance">
       <UniqueIdentifier>{f186faa0-8d96-445f-9569-42ba182f7d0c}</UniqueIdentifier>
@@ -240,6 +216,54 @@
     </Filter>
     <Filter Include="Src\Graphics\PushConstantBinding\Vulkan">
       <UniqueIdentifier>{2287036b-02f9-4511-a637-46895debba38}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Graphics\StagingBuffer">
+      <UniqueIdentifier>{a4770c35-4423-4981-af9d-3c732d3f9e38}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Rendering\Sampler2D">
+      <UniqueIdentifier>{7c5e93c6-d578-40ea-9fbd-f367e7b5e895}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Graphics\SamplerState">
+      <UniqueIdentifier>{51667316-3cd8-4d5f-a684-1a26d44a312a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Graphics\SamplerState\Vulkan">
+      <UniqueIdentifier>{646c4561-101f-4971-89a6-a264803d5c37}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Graphics\DepthStencilState">
+      <UniqueIdentifier>{5b2fc5cd-abce-4a4a-b4c5-b88fb92ba9a5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Graphics\InputAssemblyState">
+      <UniqueIdentifier>{9cfb83ee-9f86-4046-9ef3-9b72ce932a13}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Rendering\_Base">
+      <UniqueIdentifier>{5e9eed5a-3e51-4cdf-8004-ea23a7232de8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Rendering\_Base\Resource">
+      <UniqueIdentifier>{c86645b4-d777-4edc-9ecc-b6edf96048cf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Rendering\_Base\Resource\Vulkan">
+      <UniqueIdentifier>{19184592-7d00-42ef-84ea-d87bd40bb361}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Rendering\_Base\Buffer">
+      <UniqueIdentifier>{02e05e44-7cae-4d0f-bf55-293b94e6e43f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Rendering\_Base\Buffer\Vulkan">
+      <UniqueIdentifier>{9bae62ab-831b-4f21-a70c-7384f22a33dd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Rendering\_Base\Texture">
+      <UniqueIdentifier>{f388de51-4e07-43be-baef-ab931599c5ae}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Rendering\_Base\Texture\Vulkan">
+      <UniqueIdentifier>{9ff536c0-5ae1-41d6-8699-dd8e68559be7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Rendering\_Other">
+      <UniqueIdentifier>{19c64364-8aae-405f-a295-ea8c8fb81862}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Rendering\_Other\DrawableObject">
+      <UniqueIdentifier>{b97a2d8b-5944-4967-9385-f97274370ca2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Rendering\_Other\DrawableObject\Vulkan">
+      <UniqueIdentifier>{dfa78f86-7b06-4133-bf4c-d3f67a64d62e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -298,16 +322,16 @@
       <Filter>Src\Graphics\DeviceMemoryAllocator\Vulkan</Filter>
     </ClCompile>
     <ClCompile Include="..\Rendering\Resource\Vulkan\VulkanResource.cpp">
-      <Filter>Src\Rendering\Resource\Vulkan</Filter>
+      <Filter>Src\Rendering\_Base\Resource\Vulkan</Filter>
     </ClCompile>
     <ClCompile Include="..\Rendering\Texture\Vulkan\VulkanTexture.cpp">
-      <Filter>Src\Rendering\Texture\Vulkan</Filter>
+      <Filter>Src\Rendering\_Base\Texture\Vulkan</Filter>
     </ClCompile>
     <ClCompile Include="..\Statics\Vulkan\VulkanStatics.cpp">
       <Filter>Src\Statics\Vulkan</Filter>
     </ClCompile>
     <ClCompile Include="..\Rendering\Buffer\Vulkan\VulkanBuffer.cpp">
-      <Filter>Src\Rendering\Buffer\Vulkan</Filter>
+      <Filter>Src\Rendering\_Base\Buffer\Vulkan</Filter>
     </ClCompile>
     <ClCompile Include="..\Rendering\VertexBuffer\Vulkan\VulkanVertexBuffer.cpp">
       <Filter>Src\Rendering\VertexBuffer\Vulkan</Filter>
@@ -331,7 +355,7 @@
       <Filter>Src\Graphics\Program\Vulkan</Filter>
     </ClCompile>
     <ClCompile Include="..\Rendering\DrawableObject\Vulkan\VulkanDrawableObject.cpp">
-      <Filter>Src\Rendering\DrawableObject\Vulkan</Filter>
+      <Filter>Src\Rendering\_Other\DrawableObject\Vulkan</Filter>
     </ClCompile>
     <ClCompile Include="..\Graphics\RenderPassInstance\Vulkan\VulkanRenderPassInstance.cpp">
       <Filter>Src\Graphics\RenderPassInstance\Vulkan</Filter>
@@ -356,6 +380,9 @@
     </ClCompile>
     <ClCompile Include="..\Graphics\PushConstantBinding\Vulkan\VulkanPushConstantBinding.cpp">
       <Filter>Src\Graphics\PushConstantBinding\Vulkan</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Graphics\SamplerState\Vulkan\VulkanSamplerState.cpp">
+      <Filter>Src\Graphics\SamplerState\Vulkan</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -468,25 +495,25 @@
       <Filter>Src\OSWindow</Filter>
     </ClInclude>
     <ClInclude Include="..\Rendering\Resource\Vulkan\VulkanResource.h">
-      <Filter>Src\Rendering\Resource\Vulkan</Filter>
+      <Filter>Src\Rendering\_Base\Resource\Vulkan</Filter>
     </ClInclude>
     <ClInclude Include="..\Rendering\Texture\Vulkan\VulkanTexture.h">
-      <Filter>Src\Rendering\Texture\Vulkan</Filter>
+      <Filter>Src\Rendering\_Base\Texture\Vulkan</Filter>
     </ClInclude>
     <ClInclude Include="..\Rendering\Texture\Texture.h">
-      <Filter>Src\Rendering\Texture</Filter>
+      <Filter>Src\Rendering\_Base\Texture</Filter>
     </ClInclude>
     <ClInclude Include="..\Rendering\Resource\Resource.h">
-      <Filter>Src\Rendering\Resource</Filter>
+      <Filter>Src\Rendering\_Base\Resource</Filter>
     </ClInclude>
     <ClInclude Include="..\Statics\Vulkan\VulkanStatics.h">
       <Filter>Src\Statics\Vulkan</Filter>
     </ClInclude>
     <ClInclude Include="..\Rendering\Buffer\Vulkan\VulkanBuffer.h">
-      <Filter>Src\Rendering\Buffer\Vulkan</Filter>
+      <Filter>Src\Rendering\_Base\Buffer\Vulkan</Filter>
     </ClInclude>
     <ClInclude Include="..\Rendering\Buffer\Buffer.h">
-      <Filter>Src\Rendering\Buffer</Filter>
+      <Filter>Src\Rendering\_Base\Buffer</Filter>
     </ClInclude>
     <ClInclude Include="..\Rendering\VertexBuffer\Vulkan\VulkanVertexBuffer.h">
       <Filter>Src\Rendering\VertexBuffer\Vulkan</Filter>
@@ -534,10 +561,10 @@
       <Filter>Src\Graphics\Program</Filter>
     </ClInclude>
     <ClInclude Include="..\Rendering\DrawableObject\Vulkan\VulkanDrawableObject.h">
-      <Filter>Src\Rendering\DrawableObject\Vulkan</Filter>
+      <Filter>Src\Rendering\_Other\DrawableObject\Vulkan</Filter>
     </ClInclude>
     <ClInclude Include="..\Rendering\DrawableObject\DrawableObject.h">
-      <Filter>Src\Rendering\DrawableObject</Filter>
+      <Filter>Src\Rendering\_Other\DrawableObject</Filter>
     </ClInclude>
     <ClInclude Include="..\Graphics\RenderPassInstance\Vulkan\VulkanRenderPassInstance.h">
       <Filter>Src\Graphics\RenderPassInstance\Vulkan</Filter>
@@ -586,6 +613,12 @@
     </ClInclude>
     <ClInclude Include="..\Graphics\PushConstantBinding\PushConstantBinding.h">
       <Filter>Src\Graphics\PushConstantBinding</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Graphics\SamplerState\SamplerState.h">
+      <Filter>Src\Graphics\SamplerState</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Graphics\SamplerState\Vulkan\VulkanSamplerState.h">
+      <Filter>Src\Graphics\SamplerState\Vulkan</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -24,6 +24,8 @@ void TexturedCube::Shutdown()
 
 	descriptorSet.Shutdown();
 	descriptorPool.Shutdown();
+
+	samplerState.Shutdown();
 }
 
 void TexturedCube::Init(EngineAPI::Graphics::GraphicsManager* graphicsSubsystem)
@@ -310,7 +312,24 @@ void TexturedCube::Init(EngineAPI::Graphics::GraphicsManager* graphicsSubsystem)
 
 	EngineAPI::Graphics::GraphicsPipelineCache* graphicsPCO = graphicsSubsystem->GetGraphicsPipelineCacheObject();
 	assert(graphicsPipelineState.InitVKGraphicsPipelineState(device, graphicsPCO, graphicsSubsystem->GetRenderPass(), &testProgramSPIR, &pipelineStateDesc, &graphicsPipelineLayout, true));
+
+	//
+	//Sampler state
+	//
+	SamplerMinMagState minMagState = {};
+	SamplerMipmapState mipmapState = {};
+	SamplerLODState lodState = {};
+	SamplerAddressState addressState = {};
+	SamplerCompareOpState copmpareOpState = {};
+	SamplerAnisotropyState anistoropyState = {};
+	anistoropyState.AnisotropyEnabled = VK_TRUE;
+	anistoropyState.MaxAnisotropy = 8.0f;
+
+	bool isUnnormalizedTexCoords = false;
+	assert(samplerState.InitVKSamplerState(device, 
+		&minMagState, &mipmapState, &lodState, &addressState, &copmpareOpState, &anistoropyState, isUnnormalizedTexCoords));
 }
+
 
 void TexturedCube::Update(float dt)
 {

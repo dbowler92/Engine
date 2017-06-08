@@ -1,30 +1,30 @@
 **************VulkanDeviceMemoryAllocator Dump****************
 
-Allocator address: 0060B520
+Allocator address: 00914E20
 Number of memory stores: 3
 
 **************************************************************
 
-[Store: 0] 0060B528
+[Store: 0] 00914E28
 Is Active Store: 1
 Is Public Store: 1
 Is Auto Store: 1
 Store Size: 268435456
 Vulkan Device Memory Handle: 9
-Vulkan Memory Type Index: 7
+Vulkan Memory Type Index: 8
 Vulkan Memory Property Flags: 1
 Vulkan Memory Heap Index: 0
 Vulkan Memory Heap Flags: 1
 Is Memory Mappable: 0
 Number of blocks: 1
 
-	[Block: 0] 00AB4688
+	[Block: 0] 03E16C90
 		Is Free: 0
 		Is Mappable: 0
 		Is Mapped: 0
 		Resource Size (Vulkan Defined): 2457600
 		Resource Alignment: 1024
-		Resource Address: 0065B600
+		Resource Address: 00964F00
 		Resource Type: 2
 		Resource Debug Name: Swapchain Depth Texture
 		Block Size: 2457600
@@ -33,7 +33,7 @@ Number of blocks: 1
 
 **************************************************************
 
-[Store: 1] 0060B578
+[Store: 1] 00914E78
 Is Active Store: 1
 Is Public Store: 0
 Is Auto Store: 0
@@ -46,14 +46,14 @@ Vulkan Memory Heap Flags: 0
 Is Memory Mappable: 1
 Number of blocks: 1
 
-	[Block: 0] 00AB4188
+	[Block: 0] 03E17590
 		Is Free: 0
 		Is Mappable: 1
 		Is Mapped: 0
 		Resource Size (Vulkan Defined): 1280
 		Resource Alignment: 256
 		Buffer Contents Size: 1152
-		Resource Address: 01275DC8
+		Resource Address: 00D32E48
 		Resource Type: 5
 		Resource Debug Name: Textured Cube Vertex Buffer
 		Block Size: 1280
@@ -62,7 +62,7 @@ Number of blocks: 1
 
 **************************************************************
 
-[Store: 2] 0060B5C8
+[Store: 2] 00914EC8
 Is Active Store: 1
 Is Public Store: 0
 Is Auto Store: 0
@@ -75,14 +75,14 @@ Vulkan Memory Heap Flags: 0
 Is Memory Mappable: 1
 Number of blocks: 1
 
-	[Block: 0] 00AB4008
+	[Block: 0] 03E16810
 		Is Free: 0
 		Is Mappable: 1
 		Is Mapped: 0
 		Resource Size (Vulkan Defined): 256
 		Resource Alignment: 256
 		Buffer Contents Size: 64
-		Resource Address: 01275E70
+		Resource Address: 00D32EF0
 		Resource Type: 7
 		Resource Debug Name: Textured Cube Uniform Buffer
 		Block Size: 256
