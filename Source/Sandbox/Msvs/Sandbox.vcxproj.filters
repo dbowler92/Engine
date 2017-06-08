@@ -22,6 +22,9 @@
     <Filter Include="Src\TexturedCube">
       <UniqueIdentifier>{363d716c-8af8-4151-97fa-e3c042a4fa7a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Src\PushConstantCube">
+      <UniqueIdentifier>{de6f56b1-b46c-48b2-a46a-8dde98173b21}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Main\SandboxMain.cpp">
@@ -39,6 +42,9 @@
     <ClCompile Include="..\TexturedCube\TexturedCube.cpp">
       <Filter>Src\TexturedCube</Filter>
     </ClCompile>
+    <ClCompile Include="..\PushConstantCube\PushConstantCube.cpp">
+      <Filter>Src\PushConstantCube</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Application\SandboxApplication.h">
@@ -55,6 +61,9 @@
     </ClInclude>
     <ClInclude Include="..\TexturedCube\TexturedCube.h">
       <Filter>Src\TexturedCube</Filter>
+    </ClInclude>
+    <ClInclude Include="..\PushConstantCube\PushConstantCube.h">
+      <Filter>Src\PushConstantCube</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

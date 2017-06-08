@@ -176,7 +176,7 @@ void Triangle::Init(EngineAPI::Graphics::GraphicsManager* graphicsSubsystem)
 	//
 	//Graphics pipeline layout
 	//
-	assert(graphicsPipelineLayout.InitVKGraphicsPipelineLayout(device, nullptr, 0));
+	assert(graphicsPipelineLayout.InitVKGraphicsPipelineLayout(device, nullptr, 0, nullptr, 0));
 
 	EngineAPI::Graphics::GraphicsPipelineCache* graphicsPCO = graphicsSubsystem->GetGraphicsPipelineCacheObject();
 	assert(graphicsPipelineState.InitVKGraphicsPipelineState(device, graphicsPCO, graphicsSubsystem->GetRenderPass(), &testProgramSPIR, &pipelineStateDesc, &graphicsPipelineLayout, true));

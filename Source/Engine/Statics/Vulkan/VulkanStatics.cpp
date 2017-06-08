@@ -471,6 +471,13 @@ void VulkanCommands::VKCMD_BindComputePipeline(const VkCommandBuffer& commandBuf
 	vkCmdBindPipeline(commandBuffer, VK_PIPELINE_BIND_POINT_COMPUTE, pipelineHandle);
 }
 
+void VulkanCommands::VKCMD_UpdatePushConstants(const VkCommandBuffer& commandBuffer,
+	VkPipelineLayout pipelineLayout, VkShaderStageFlags stageFlags, uint32_t offset, uint32_t size, const void* data)
+{
+	assert(data != nullptr);
+	vkCmdPushConstants(commandBuffer, pipelineLayout, stageFlags, offset, size, data);
+}
+
 void VulkanCommands::VKCMD_BindVertexBuffers(const VkCommandBuffer& commandBuffer,
 	uint32_t firstBinding, uint32_t bindingCount, const VkBuffer* buffersArray, const VkDeviceSize* offsetsArray)
 {

@@ -103,8 +103,6 @@ bool VulkanDescriptorSet::InitVKDescriptorSet(EngineAPI::Graphics::RenderDevice*
 		vkWriteDescriptorSetArray[i].dstArrayElement = 0;
 	}
 
-	//Write initial data
-
 	//Done
 	return true;
 }
@@ -170,8 +168,6 @@ bool VulkanDescriptorSet::InitVKDescriptorSetWithExistingDescriptorPool(EngineAP
 		vkWriteDescriptorSetArray[i].dstBinding = descriptorBindingsArray[i].GetVKDescriptorSetLayoutBindingDescription().binding;
 		vkWriteDescriptorSetArray[i].dstArrayElement = 0;
 	}
-
-	//Write initial data
 
 	//Done
 	return true;

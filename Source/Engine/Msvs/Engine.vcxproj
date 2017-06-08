@@ -39,6 +39,7 @@
     <ClCompile Include="..\Graphics\Manager\GraphicsManager.cpp" />
     <ClCompile Include="..\Graphics\Manager\Vulkan\VulkanGraphicsManager.cpp" />
     <ClCompile Include="..\Graphics\Program\Vulkan\VulkanProgram.cpp" />
+    <ClCompile Include="..\Graphics\PushConstantBinding\Vulkan\VulkanPushConstantBinding.cpp" />
     <ClCompile Include="..\Graphics\RenderCommandBuffer\Vulkan\VulkanRenderCommandBuffer.cpp" />
     <ClCompile Include="..\Graphics\RenderPassInstance\Vulkan\VulkanRenderPassInstance.cpp" />
     <ClCompile Include="..\Graphics\RenderPass\Vulkan\VulkanRenderPass.cpp" />
@@ -99,6 +100,8 @@
     <ClInclude Include="..\Graphics\Manager\Vulkan\VulkanGraphicsManager.h" />
     <ClInclude Include="..\Graphics\Program\Program.h" />
     <ClInclude Include="..\Graphics\Program\Vulkan\VulkanProgram.h" />
+    <ClInclude Include="..\Graphics\PushConstantBinding\PushConstantBinding.h" />
+    <ClInclude Include="..\Graphics\PushConstantBinding\Vulkan\VulkanPushConstantBinding.h" />
     <ClInclude Include="..\Graphics\RenderCommandBuffer\RenderCommandBuffer.h" />
     <ClInclude Include="..\Graphics\RenderCommandBuffer\Vulkan\VulkanRenderCommandBuffer.h" />
     <ClInclude Include="..\Graphics\RenderPassInstance\RenderPassInstance.h" />

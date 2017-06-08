@@ -122,6 +122,10 @@ namespace EngineAPI
 				VkPipelineLayout pipelineLayout, const VkDescriptorSet* descriptorSets, uint32_t firstSet, uint32_t descriptorSetCount,
 				uint32_t dynamicOffsetsCount, const uint32_t* dynamicOffsetsArray);
 
+			//Updates push constant data
+			static void VKCMD_UpdatePushConstants(const VkCommandBuffer& commandBuffer,
+				VkPipelineLayout pipelineLayout, VkShaderStageFlags stageFlags, uint32_t offset, uint32_t size, const void* data);
+
 			//Binds a pipeline
 			static void VKCMD_BindGraphicsPipeline(const VkCommandBuffer& commandBuffer, VkPipeline pipelineHandle);
 			static void VKCMD_BindComputePipeline(const VkCommandBuffer& commandBuffer, VkPipeline pipelineHandle);

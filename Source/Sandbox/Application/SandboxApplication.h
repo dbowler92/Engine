@@ -16,6 +16,7 @@
 #include "../Triangle/Triangle.h"
 #include "../Quad/Quad.h" //IB && VB
 #include "../TexturedCube/TexturedCube.h"
+#include "../PushConstantCube/PushConstantCube.h"
 
 class SandboxApplication : public EngineAPI::Core::Application
 { 
@@ -44,6 +45,8 @@ protected:
 	Triangle tri;
 	Quad quad;
 	TexturedCube tCube;
+	PushConstantCube pConstCube;
+
 
 	bool doRenderTriangle = true;
 }; 

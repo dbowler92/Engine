@@ -16,12 +16,13 @@
 //Vulkan header
 #include <vulkan/vulkan.h>
 
-//Knows about the descriptor sets
+//Knows about the descriptor sets && push constant binding
 namespace EngineAPI
 {
 	namespace Graphics
 	{
 		class DescriptorSet;
+		class PushConstantBinding;
 	};
 };
 
@@ -42,7 +43,8 @@ namespace EngineAPI
 
 				//Inits the pipeline layout object
 				bool InitVKGraphicsPipelineLayout(EngineAPI::Graphics::RenderDevice* renderingDevice, 
-					EngineAPI::Graphics::DescriptorSet* descriptorSetsArray, uint32_t descriptorSetsCount);
+					EngineAPI::Graphics::DescriptorSet* descriptorSetsArray, uint32_t descriptorSetsCount, 
+					EngineAPI::Graphics::PushConstantBinding* pushConstantsArray, uint32_t pushConstantsCount);
 
 			public:
 				//Gets the pipeline layout handle.

@@ -166,7 +166,7 @@ void TexturedCube::Init(EngineAPI::Graphics::GraphicsManager* graphicsSubsystem)
 	float aspect = extents.width / extents.height;
 	proj = glm::perspective(glm::radians(45.f), aspect, .1f, 100.f);
 	view = glm::lookAt(
-		glm::vec3(10, 3, 10), // Camera in World Space
+		glm::vec3(10, 3, 5), // Camera in World Space
 		glm::vec3(0, 0, 0), // and looks at the origin
 		glm::vec3(0, -1, 0));// Head is up
 	world = glm::mat4(1.0f);
@@ -203,14 +203,14 @@ void TexturedCube::Init(EngineAPI::Graphics::GraphicsManager* graphicsSubsystem)
 	descriptorPools[0].descriptorCount = 1;
 	descriptorPools[1].type = VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER;
 	descriptorPools[1].descriptorCount = 1;
-	//assert(descriptorPool.InitVKDescriptorPools(device, descriptorPools, 2, true));
+	assert(descriptorPool.InitVKDescriptorPools(device, descriptorPools, 2, true));
 
 	//Set
 	EngineAPI::Graphics::DescriptorBinding descriptorBindings[2];
 	descriptorBindings[0].InitVKDescriptorBindingData(0, VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER, 1, VK_SHADER_STAGE_VERTEX_BIT, nullptr);
 	descriptorBindings[1].InitVKDescriptorBindingData(1, VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER, 1, VK_SHADER_STAGE_FRAGMENT_BIT, nullptr);
-	//assert(descriptorSet.InitVKDescriptorSetWithExistingDescriptorPool(device, &descriptorBindings[0], 2, &descriptorPool));
-	assert(descriptorSet.InitVKDescriptorSet(device, &descriptorBindings[0], 2));
+	assert(descriptorSet.InitVKDescriptorSetWithExistingDescriptorPool(device, &descriptorBindings[0], 2, &descriptorPool));
+	//assert(descriptorSet.InitVKDescriptorSet(device, &descriptorBindings[0], 2));
 
 	//Update descriptor set
 	VkDescriptorBufferInfo uniformBufferDescriptorInfo = uniformBuffer.GetVKDescriptorBufferInfo();
@@ -306,7 +306,7 @@ void TexturedCube::Init(EngineAPI::Graphics::GraphicsManager* graphicsSubsystem)
 	//
 	//Graphics pipeline layout
 	//
-	assert(graphicsPipelineLayout.InitVKGraphicsPipelineLayout(device, &descriptorSet, 1));
+	assert(graphicsPipelineLayout.InitVKGraphicsPipelineLayout(device, &descriptorSet, 1, nullptr, 0));
 
 	EngineAPI::Graphics::GraphicsPipelineCache* graphicsPCO = graphicsSubsystem->GetGraphicsPipelineCacheObject();
 	assert(graphicsPipelineState.InitVKGraphicsPipelineState(device, graphicsPCO, graphicsSubsystem->GetRenderPass(), &testProgramSPIR, &pipelineStateDesc, &graphicsPipelineLayout, true));
@@ -314,6 +314,15 @@ void TexturedCube::Init(EngineAPI::Graphics::GraphicsManager* graphicsSubsystem)
 
 void TexturedCube::Update(float dt)
 {
+	EngineAPI::Graphics::Swapchain* swapchain = EngineAPI::Graphics::GraphicsManager::GetInstance()->GetRenderingSwapchain();
+	VkExtent2D extents = swapchain->GetSwapchainDimentions();
+	float aspect = extents.width / extents.height;
+	proj = glm::perspective(glm::radians(45.f), aspect, .1f, 100.f);
+	view = glm::lookAt(
+		glm::vec3(10, 3, 10), // Camera in World Space
+		glm::vec3(0, 0, 0), // and looks at the origin
+		glm::vec3(0, -1, 0));// Head is up
+
 	//Update the world matrix
 	static float rot = 0;
 	rot += 0.5f * dt;

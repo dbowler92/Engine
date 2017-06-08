@@ -2,6 +2,7 @@
 
 //Complete forward declarations
 #include "../../DescriptorSet/DescriptorSet.h"
+#include "../../PushConstantBinding/PushConstantBinding.h"
 
 using namespace EngineAPI::Graphics::Platform;
 
@@ -15,7 +16,8 @@ void VulkanGraphicsPipelineLayout::Shutdown()
 }
 
 bool VulkanGraphicsPipelineLayout::InitVKGraphicsPipelineLayout(EngineAPI::Graphics::RenderDevice* renderingDevice,
-	EngineAPI::Graphics::DescriptorSet* descriptorSetsArray, uint32_t descriptorSetsCount)
+	EngineAPI::Graphics::DescriptorSet* descriptorSetsArray, uint32_t descriptorSetsCount, 
+	EngineAPI::Graphics::PushConstantBinding* pushConstantsArray, uint32_t pushConstantsCount)
 {
 	//Cache device
 	cachedVKLogicalDevice = renderingDevice->GetVKLogicalDevice();
@@ -35,8 +37,12 @@ bool VulkanGraphicsPipelineLayout::InitVKGraphicsPipelineLayout(EngineAPI::Graph
 	pPipelineLayoutCreateInfo.setLayoutCount = descriptorSetsCount;
 
 	//Push constants
-	pPipelineLayoutCreateInfo.pPushConstantRanges = nullptr; //TODO
-	pPipelineLayoutCreateInfo.pushConstantRangeCount = 0; //TODO
+	std::vector<VkPushConstantRange> pushConstantRanges(pushConstantsCount);
+	for (int i = 0; i < pushConstantsCount; i++)
+		pushConstantRanges[i] = pushConstantsArray[i].GetVKPushConstantBindingRangeData();
+
+	pPipelineLayoutCreateInfo.pPushConstantRanges = pushConstantsCount > 0 ? pushConstantRanges.data() : nullptr;
+	pPipelineLayoutCreateInfo.pushConstantRangeCount = pushConstantsCount; 
 
 	VkResult result = vkCreatePipelineLayout(cachedVKLogicalDevice, &pPipelineLayoutCreateInfo, NULL, &vkPipelineLayoutHandle);
 	if (result != VK_SUCCESS)

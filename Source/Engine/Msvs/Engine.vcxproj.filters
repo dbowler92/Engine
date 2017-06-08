@@ -235,6 +235,12 @@
     <Filter Include="Src\Rendering\UniformBuffer\Vulkan">
       <UniqueIdentifier>{9b943bda-6a28-415c-a815-357de2dba8c7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Src\Graphics\PushConstantBinding">
+      <UniqueIdentifier>{f8027433-e25f-4d01-8073-5102f1a86af0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Graphics\PushConstantBinding\Vulkan">
+      <UniqueIdentifier>{2287036b-02f9-4511-a637-46895debba38}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Main\EngineMain.cpp">
@@ -347,6 +353,9 @@
     </ClCompile>
     <ClCompile Include="..\Rendering\UniformBuffer\Vulkan\VulkanUniformBuffer.cpp">
       <Filter>Src\Rendering\UniformBuffer\Vulkan</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Graphics\PushConstantBinding\Vulkan\VulkanPushConstantBinding.cpp">
+      <Filter>Src\Graphics\PushConstantBinding\Vulkan</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -571,6 +580,12 @@
     </ClInclude>
     <ClInclude Include="..\Rendering\UniformBuffer\UniformBuffer.h">
       <Filter>Src\Rendering\UniformBuffer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Graphics\PushConstantBinding\Vulkan\VulkanPushConstantBinding.h">
+      <Filter>Src\Graphics\PushConstantBinding\Vulkan</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Graphics\PushConstantBinding\PushConstantBinding.h">
+      <Filter>Src\Graphics\PushConstantBinding</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
