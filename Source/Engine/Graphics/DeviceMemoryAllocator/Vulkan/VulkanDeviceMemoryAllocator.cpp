@@ -194,9 +194,9 @@ SuballocationResult VulkanDeviceMemoryAllocator::AllocateResourceAuto(EngineAPI:
 		//Textures
 		//
 
-		case RENDERING_RESOURCE_TYPE_BITMAP_TEXTURE:
+		case RENDERING_RESOURCE_TYPE_SAMPLER_2D:
 		{
-			EngineAPI::Debug::DebugLog::PrintInfoMessage("VulkanDeviceMemoryAllocator::AllocateResourceAuto(): Allocating Bitmap Texture\n");
+			EngineAPI::Debug::DebugLog::PrintInfoMessage("VulkanDeviceMemoryAllocator::AllocateResourceAuto(): Allocating Sampler2D Texture\n");
 			
 			success = ALLOCATION_RESULT_NOT_IMPLEMENTED;
 			break;

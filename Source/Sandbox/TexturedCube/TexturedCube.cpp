@@ -26,6 +26,7 @@ void TexturedCube::Shutdown()
 	descriptorPool.Shutdown();
 
 	samplerState.Shutdown();
+	sampler2D.Shutdown();
 }
 
 void TexturedCube::Init(EngineAPI::Graphics::GraphicsManager* graphicsSubsystem)
@@ -36,55 +37,55 @@ void TexturedCube::Init(EngineAPI::Graphics::GraphicsManager* graphicsSubsystem)
 	//
 	//VB
 	//
-	struct VertexWithColour
+	struct VertexWithUV
 	{
-		float x, y, z, w; // Vertex Position
-		float r, g, b, a; // Colour format Red, Green, Blue, Alpha
+		float x, y, z, w;   // Vertex Position
+		float u, v;         // Texture format U,V
 	};
 
-	VertexWithColour cubeData[] =
+	VertexWithUV cubeData[] =
 	{
-		{ 1, -1, -1, 1.0f,		0.f, 0.f, 0.f, 1.0f },
-		{ -1, -1, -1, 1.0f,		1.f, 0.f, 0.f, 1.0f },
-		{ 1,  1, -1, 1.0f,		0.f, 1.f, 0.f, 1.0f },
-		{ 1,  1, -1, 1.0f,		0.f, 1.f, 0.f, 1.0f },
-		{ -1, -1, -1, 1.0f,		1.f, 0.f, 0.f, 1.0f },
-		{ -1,  1, -1, 1.0f,		1.f, 1.f, 0.f, 1.0f },
+		{ -1.0f,-1.0f,-1.0f, 1.0f, 1.0f, 1.0f },  // -X side
+		{ -1.0f,-1.0f, 1.0f, 1.0f, 0.0f, 1.0f },
+		{ -1.0f, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f },
+		{ -1.0f, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f },
+		{ -1.0f, 1.0f,-1.0f, 1.0f, 1.0f, 0.0f },
+		{ -1.0f,-1.0f,-1.0f, 1.0f, 1.0f, 1.0f },
 
-		{ 1, -1, 1, 1.0f,		0.f, 0.f, 1.f, 1.0f },
-		{ 1,  1, 1, 1.0f,		0.f, 1.f, 1.f, 1.0f },
-		{ -1, -1, 1, 1.0f,		1.f, 0.f, 1.f, 1.0f },
-		{ -1, -1, 1, 1.0f,		1.f, 0.f, 1.f, 1.0f },
-		{ 1,  1, 1, 1.0f,		0.f, 1.f, 1.f, 1.0f },
-		{ -1,  1, 1, 1.0f,		1.f, 1.f, 1.f, 1.0f },
+		{ -1.0f,-1.0f,-1.0f, 1.0f, 0.0f, 1.0f },  // -Z side
+		{ 1.0f, 1.0f,-1.0f, 1.0f, 1.0f, 0.0f },
+		{ 1.0f,-1.0f,-1.0f, 1.0f, 1.0f, 1.0f },
+		{ -1.0f,-1.0f,-1.0f, 1.0f, 0.0f, 1.0f },
+		{ -1.0f, 1.0f,-1.0f, 1.0f, 0.0f, 0.0f },
+		{ 1.0f, 1.0f,-1.0f, 1.0f, 1.0f, 0.0f },
 
-		{ 1, -1,  1, 1.0f,		1.f, 1.f, 1.f, 1.0f },
-		{ 1, -1, -1, 1.0f,		1.f, 1.f, 0.f, 1.0f },
-		{ 1,  1,  1, 1.0f,		1.f, 0.f, 1.f, 1.0f },
-		{ 1,  1,  1, 1.0f,		1.f, 0.f, 1.f, 1.0f },
-		{ 1, -1, -1, 1.0f,		1.f, 1.f, 0.f, 1.0f },
-		{ 1,  1, -1, 1.0f,		1.f, 0.f, 0.f, 1.0f },
+		{ -1.0f,-1.0f,-1.0f, 1.0f, 0.0f, 1.0f }, // -Y
+		{ 1.0f,-1.0f,-1.0f, 1.0f, 0.0f, 0.0f },
+		{ 1.0f,-1.0f, 1.0f, 1.0f, 1.0f, 0.0f },
+		{ -1.0f,-1.0f,-1.0f, 1.0f, 0.0f, 1.0f },
+		{ 1.0f,-1.0f, 1.0f, 1.0f, 1.0f, 0.0f },
+		{ -1.0f,-1.0f, 1.0f, 1.0f, 1.0f, 1.0f },
 
-		{ -1, -1,  1, 1.0f,		0.f, 1.f, 1.f, 1.0f },
-		{ -1,  1,  1, 1.0f,		0.f, 0.f, 1.f, 1.0f },
-		{ -1, -1, -1, 1.0f,		0.f, 1.f, 0.f, 1.0f },
-		{ -1, -1, -1, 1.0f,		0.f, 1.f, 0.f, 1.0f },
-		{ -1,  1,  1, 1.0f,		0.f, 0.f, 1.f, 1.0f },
-		{ -1,  1, -1, 1.0f,		0.f, 0.f, 0.f, 1.0f },
+		{ -1.0f, 1.0f,-1.0f, 1.0f, 0.0f, 1.0f },  // +Y side
+		{ -1.0f, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f },
+		{ 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f },
+		{ -1.0f, 1.0f,-1.0f, 1.0f, 0.0f, 1.0f },
+		{ 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 0.0f },
+		{ 1.0f, 1.0f,-1.0f, 1.0f, 1.0f, 1.0f },
 
-		{ 1, 1, -1, 1.0f,		1.f, 1.f, 1.f, 1.0f },
-		{ -1, 1, -1, 1.0f,		0.f, 1.f, 1.f, 1.0f },
-		{ 1, 1,  1, 1.0f,		1.f, 1.f, 0.f, 1.0f },
-		{ 1, 1,  1, 1.0f,		1.f, 1.f, 0.f, 1.0f },
-		{ -1, 1, -1, 1.0f,		0.f, 1.f, 1.f, 1.0f },
-		{ -1, 1,  1, 1.0f,		0.f, 1.f, 0.f, 1.0f },
+		{ 1.0f, 1.0f,-1.0f, 1.0f, 0.0f, 1.0f },  // +X side
+		{ 1.0f, 1.0f, 1.0f, 1.0f, 0.0f, 0.0f },
+		{ 1.0f,-1.0f, 1.0f, 1.0f, 1.0f, 0.0f },
+		{ 1.0f,-1.0f, 1.0f, 1.0f, 1.0f, 0.0f },
+		{ 1.0f,-1.0f,-1.0f, 1.0f, 1.0f, 1.0f },
+		{ 1.0f, 1.0f,-1.0f, 1.0f, 0.0f, 1.0f },
 
-		{ 1, -1, -1, 1.0f,		1.f, 0.f, 1.f, 1.0f },
-		{ 1, -1,  1, 1.0f,		1.f, 0.f, 0.f, 1.0f },
-		{ -1, -1, -1, 1.0f,		0.f, 0.f, 1.f, 1.0f },
-		{ -1, -1, -1, 1.0f,		0.f, 0.f, 1.f, 1.0f },
-		{ 1, -1,  1, 1.0f,		1.f, 0.f, 0.f, 1.0f },
-		{ -1, -1,  1, 1.0f,		0.f, 0.f, 0.f, 1.0f },
+		{ -1.0f, 1.0f, 1.0f, 1.0f, 0.0f, 1.0f },  // +Z side
+		{ -1.0f,-1.0f, 1.0f, 1.0f, 0.0f, 0.0f },
+		{ 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f },
+		{ -1.0f,-1.0f, 1.0f, 1.0f, 0.0f, 0.0f },
+		{ 1.0f,-1.0f, 1.0f, 1.0f, 1.0f, 0.0f },
+		{ 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f },
 	};
 
 	//Streams
@@ -95,7 +96,7 @@ void TexturedCube::Init(EngineAPI::Graphics::GraphicsManager* graphicsSubsystem)
 	streams[0].Offset = 0;
 
 	streams[1].BufferBinding = 0;
-	streams[1].Format = VK_FORMAT_R32G32B32A32_SFLOAT;
+	streams[1].Format = VK_FORMAT_R32G32_SFLOAT;
 	streams[1].ShaderBinding = 1;
 	streams[1].Offset = sizeof(float) * 4;
 
@@ -103,13 +104,13 @@ void TexturedCube::Init(EngineAPI::Graphics::GraphicsManager* graphicsSubsystem)
 	VertexBufferLayout vbLayout = {};
 	vbLayout.Usage = VERTEX_BUFFER_USAGE_PER_VERTEX_DATA;
 	vbLayout.BufferBinding = 0;
-	vbLayout.VertexStride = sizeof(VertexWithColour);
+	vbLayout.VertexStride = sizeof(VertexWithUV);
 	vbLayout.VertexStreamsCount = 2;
 	vbLayout.VertexStreams = streams;
 
 	bool isDynamicVB = true; //TEMP: For VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT memory rather than GPU only. 
 
-							 //Init the VB
+	//Init the VB
 	vb.SetResourceDebugName("Textured Cube Vertex Buffer");
 	assert(vb.InitVKVertexBuffer(device, sizeof(cubeData), isDynamicVB));
 
@@ -193,8 +194,12 @@ void TexturedCube::Init(EngineAPI::Graphics::GraphicsManager* graphicsSubsystem)
 	//
 	//Program
 	//
-	assert(testProgramSPIR.CreateVKShaderModule(device, SHADER_ASSETS_FOLDER"TestShaders/Descriptor-vert.spv", SHADER_STAGE_VERTEX_SHADER, "main", true));
-	assert(testProgramSPIR.CreateVKShaderModule(device, SHADER_ASSETS_FOLDER"TestShaders/Descriptor-frag.spv", SHADER_STAGE_FRAGMENT_SHADER, "main", true));
+	assert(testProgramSPIR.CreateVKShaderModule(device, SHADER_ASSETS_FOLDER"TestShaders/Texture-vert.spv", SHADER_STAGE_VERTEX_SHADER, "main", true));
+	assert(testProgramSPIR.CreateVKShaderModule(device, SHADER_ASSETS_FOLDER"TestShaders/Texture-frag.spv", SHADER_STAGE_FRAGMENT_SHADER, "main", true));
+
+	//assert(testProgramSPIR.CreateVKShaderModule(device, SHADER_ASSETS_FOLDER"TestShaders/Descriptor-vert.spv", SHADER_STAGE_VERTEX_SHADER, "main", true));
+	//assert(testProgramSPIR.CreateVKShaderModule(device, SHADER_ASSETS_FOLDER"TestShaders/Descriptor-frag.spv", SHADER_STAGE_FRAGMENT_SHADER, "main", true));
+
 
 	//
 	//Descriptor set
@@ -328,6 +333,11 @@ void TexturedCube::Init(EngineAPI::Graphics::GraphicsManager* graphicsSubsystem)
 	bool isUnnormalizedTexCoords = false;
 	assert(samplerState.InitVKSamplerState(device, 
 		&minMagState, &mipmapState, &lodState, &addressState, &copmpareOpState, &anistoropyState, isUnnormalizedTexCoords));
+
+	//
+	//Sampler2D - Colour texture loaded from file. 
+	//
+	
 }
 
 

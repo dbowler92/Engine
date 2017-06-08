@@ -53,6 +53,7 @@
     <ClCompile Include="..\Rendering\DrawableObject\Vulkan\VulkanDrawableObject.cpp" />
     <ClCompile Include="..\Rendering\IndexBuffer\Vulkan\VulkanIndexBuffer.cpp" />
     <ClCompile Include="..\Rendering\Resource\Vulkan\VulkanResource.cpp" />
+    <ClCompile Include="..\Rendering\Sampler2D\Vulkan\VulkanSampler2D.cpp" />
     <ClCompile Include="..\Rendering\Texture\Vulkan\VulkanTexture.cpp" />
     <ClCompile Include="..\Rendering\UniformBuffer\Vulkan\VulkanUniformBuffer.cpp" />
     <ClCompile Include="..\Rendering\VertexBuffer\Vulkan\VulkanVertexBuffer.cpp" />
@@ -130,6 +131,8 @@
     <ClInclude Include="..\Rendering\IndexBuffer\Vulkan\VulkanIndexBuffer.h" />
     <ClInclude Include="..\Rendering\Resource\Resource.h" />
     <ClInclude Include="..\Rendering\Resource\Vulkan\VulkanResource.h" />
+    <ClInclude Include="..\Rendering\Sampler2D\Sampler2D.h" />
+    <ClInclude Include="..\Rendering\Sampler2D\Vulkan\VulkanSampler2D.h" />
     <ClInclude Include="..\Rendering\Texture\Texture.h" />
     <ClInclude Include="..\Rendering\Texture\Vulkan\VulkanTexture.h" />
     <ClInclude Include="..\Rendering\UniformBuffer\UniformBuffer.h" />

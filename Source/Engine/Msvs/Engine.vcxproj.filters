@@ -265,6 +265,9 @@
     <Filter Include="Src\Rendering\_Other\DrawableObject\Vulkan">
       <UniqueIdentifier>{dfa78f86-7b06-4133-bf4c-d3f67a64d62e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Src\Rendering\Sampler2D\Vulkan">
+      <UniqueIdentifier>{537595d3-b414-46f2-bec8-24400f4984d3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Main\EngineMain.cpp">
@@ -383,6 +386,9 @@
     </ClCompile>
     <ClCompile Include="..\Graphics\SamplerState\Vulkan\VulkanSamplerState.cpp">
       <Filter>Src\Graphics\SamplerState\Vulkan</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Rendering\Sampler2D\Vulkan\VulkanSampler2D.cpp">
+      <Filter>Src\Rendering\Sampler2D\Vulkan</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -619,6 +625,12 @@
     </ClInclude>
     <ClInclude Include="..\Graphics\SamplerState\Vulkan\VulkanSamplerState.h">
       <Filter>Src\Graphics\SamplerState\Vulkan</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Rendering\Sampler2D\Vulkan\VulkanSampler2D.h">
+      <Filter>Src\Rendering\Sampler2D\Vulkan</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Rendering\Sampler2D\Sampler2D.h">
+      <Filter>Src\Rendering\Sampler2D</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

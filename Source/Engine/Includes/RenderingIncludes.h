@@ -14,6 +14,7 @@
 
 //Texture objects:
 #include "../Rendering/DepthTexture/DepthTexture.h"
+#include "../Rendering/Sampler2D/Sampler2D.h"
 
 //Buffer objects
 #include "../Rendering/VertexBuffer/VertexBuffer.h"

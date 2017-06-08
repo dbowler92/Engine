@@ -1,40 +1,5 @@
-﻿  VulkanRenderDevice.cpp
-c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\device\vulkan\vulkanrenderdevice.cpp(257): warning C4018: '<': signed/unsigned mismatch
-c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\device\vulkan\vulkanrenderdevice.cpp(420): warning C4018: '<': signed/unsigned mismatch
-c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\device\vulkan\vulkanrenderdevice.cpp(456): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\stdio.h(1769): note: see declaration of 'sprintf'
-c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\device\vulkan\vulkanrenderdevice.cpp(463): warning C4477: 'sprintf' : format string '%u' requires an argument of type 'unsigned int', but variadic argument 1 has type 'uint64_t'
-  c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\device\vulkan\vulkanrenderdevice.cpp(463): note: consider using '%llu' in the format string
-  c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\device\vulkan\vulkanrenderdevice.cpp(463): note: consider using '%I64u' in the format string
-c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\device\vulkan\vulkanrenderdevice.cpp(463): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\stdio.h(1769): note: see declaration of 'sprintf'
-c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\device\vulkan\vulkanrenderdevice.cpp(469): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\stdio.h(1769): note: see declaration of 'sprintf'
-c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\device\vulkan\vulkanrenderdevice.cpp(476): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\stdio.h(1769): note: see declaration of 'sprintf'
-c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\device\vulkan\vulkanrenderdevice.cpp(482): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-  c:\program files (x86)\windows kits\10\include\10.0.10240.0\ucrt\stdio.h(1769): note: see declaration of 'sprintf'
-c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\device\vulkan\vulkanrenderdevice.cpp(500): warning C4018: '<': signed/unsigned mismatch
-c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\device\vulkan\vulkanrenderdevice.cpp(508): warning C4018: '<': signed/unsigned mismatch
-c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\device\vulkan\vulkanrenderdevice.cpp(536): warning C4018: '<': signed/unsigned mismatch
-  Generating Code...
-  Compiling...
-  VulkanStatics.cpp
-c:\users\b1032464\documents\programming\engine\engine\source\engine\statics\vulkan\vulkanstatics.cpp(92): warning C4018: '<': signed/unsigned mismatch
-c:\users\b1032464\documents\programming\engine\engine\source\engine\statics\vulkan\vulkanstatics.cpp(140): warning C4018: '<': signed/unsigned mismatch
-c:\users\b1032464\documents\programming\engine\engine\source\engine\statics\vulkan\vulkanstatics.cpp(158): warning C4018: '<': signed/unsigned mismatch
-  VulkanVertexBuffer.cpp
-c:\users\b1032464\documents\programming\engine\engine\source\engine\rendering\vertexbuffer\vulkan\vulkanvertexbuffer.cpp(50): warning C4244: '=': conversion from 'VkDeviceSize' to 'uint32_t', possible loss of data
-c:\users\b1032464\documents\programming\engine\engine\source\engine\rendering\vertexbuffer\vulkan\vulkanvertexbuffer.cpp(56): warning C4244: '=': conversion from 'VkDeviceSize' to 'uint32_t', possible loss of data
-c:\users\b1032464\documents\programming\engine\engine\source\engine\rendering\vertexbuffer\vulkan\vulkanvertexbuffer.cpp(64): warning C4018: '<': signed/unsigned mismatch
-  VulkanUniformBuffer.cpp
-  VulkanTexture.cpp
-  VulkanIndexBuffer.cpp
-c:\users\b1032464\documents\programming\engine\engine\source\engine\rendering\indexbuffer\vulkan\vulkanindexbuffer.cpp(56): warning C4244: '=': conversion from 'VkDeviceSize' to 'uint32_t', possible loss of data
+﻿  VulkanSampler2D.cpp
   VulkanDrawableObject.cpp
-  VulkanDepthTexture.cpp
-  VulkanBuffer.cpp
-c:\users\b1032464\documents\programming\engine\engine\source\engine\rendering\buffer\vulkan\vulkanbuffer.cpp(96): warning C4244: 'argument': conversion from 'VkDeviceSize' to 'std::size_t', possible loss of data
   EngineMain.cpp
   VulkanSwapchain.cpp
 c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\swapchain\vulkan\vulkanswapchain.cpp(147): warning C4018: '<': signed/unsigned mismatch
@@ -44,13 +9,6 @@ c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\swa
 c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\swapchain\vulkan\vulkanswapchain.cpp(568): warning C4018: '<': signed/unsigned mismatch
 c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\swapchain\vulkan\vulkanswapchain.cpp(661): warning C4018: '<': signed/unsigned mismatch
 c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\swapchain\vulkan\vulkanswapchain.cpp(745): warning C4552: '!=': operator has no effect; expected operator with side-effect
-  VulkanShader.cpp
-  VulkanSamplerState.cpp
-  VulkanRenderPass.cpp
-  VulkanRenderPassInstance.cpp
-  VulkanPushConstantBinding.cpp
-  VulkanProgram.cpp
-c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\program\vulkan\vulkanprogram.cpp(9): warning C4018: '<': signed/unsigned mismatch
   VulkanGraphicsManager.cpp
 c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\manager\vulkan\vulkangraphicsmanager.cpp(29): warning C4018: '<': signed/unsigned mismatch
 c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\manager\vulkan\vulkangraphicsmanager.cpp(56): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
@@ -62,28 +20,7 @@ c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\man
 c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\manager\vulkan\vulkangraphicsmanager.cpp(270): warning C4018: '<': signed/unsigned mismatch
 c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\manager\vulkan\vulkangraphicsmanager.cpp(285): warning C4018: '<': signed/unsigned mismatch
   GraphicsManager.cpp
-  VulkanGraphicsPipelineState.cpp
-c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\graphicspipelinestate\vulkan\vulkangraphicspipelinestate.cpp(55): warning C4018: '<': signed/unsigned mismatch
-  VulkanGraphicsPipelineLayout.cpp
-c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\graphicspipelinelayout\vulkan\vulkangraphicspipelinelayout.cpp(33): warning C4018: '<': signed/unsigned mismatch
-c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\graphicspipelinelayout\vulkan\vulkangraphicspipelinelayout.cpp(41): warning C4018: '<': signed/unsigned mismatch
-  Generating Code...
-c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\manager\vulkan\vulkangraphicsmanager.cpp(163): warning C4715: 'EngineAPI::Graphics::Platform::VulkanGraphicsManager::OnResize': not all control paths return a value
-  Compiling...
-  VulkanGraphicsPipelineCache.cpp
-  VulkanFramebuffer.cpp
-  VulkanDeviceMemoryAllocator.cpp
-c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\devicememoryallocator\vulkan\vulkandevicememoryallocator.cpp(48): warning C4018: '<': signed/unsigned mismatch
-c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\devicememoryallocator\vulkan\vulkandevicememoryallocator.cpp(488): warning C4018: '<': signed/unsigned mismatch
-  VulkanDescriptorSet.cpp
-c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\descriptorset\vulkan\vulkandescriptorset.cpp(45): warning C4018: '<': signed/unsigned mismatch
-c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\descriptorset\vulkan\vulkandescriptorset.cpp(94): warning C4018: '<': signed/unsigned mismatch
-c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\descriptorset\vulkan\vulkandescriptorset.cpp(125): warning C4018: '<': signed/unsigned mismatch
-c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\descriptorset\vulkan\vulkandescriptorset.cpp(160): warning C4018: '<': signed/unsigned mismatch
-c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\descriptorset\vulkan\vulkandescriptorset.cpp(181): warning C4018: '<': signed/unsigned mismatch
-c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\descriptorset\vulkan\vulkandescriptorset.cpp(201): warning C4018: '<': signed/unsigned mismatch
-c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\descriptorset\vulkan\vulkandescriptorset.cpp(207): warning C4018: '<': signed/unsigned mismatch
-  VulkanDescriptorPool.cpp
   Win32Application.cpp
   Generating Code...
+c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\manager\vulkan\vulkangraphicsmanager.cpp(163): warning C4715: 'EngineAPI::Graphics::Platform::VulkanGraphicsManager::OnResize': not all control paths return a value
   Engine.vcxproj -> C:\Users\B1032464\Documents\Programming\Engine\Engine\Source\Engine\Msvs\..\..\Lib\Win32Debug\Engine.lib
