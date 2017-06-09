@@ -11,6 +11,7 @@ bool VulkanTexture::InitVKTexture(EngineAPI::Graphics::RenderDevice* renderingDe
 	//Cache texture info for future use
 	vkImageTilingMode   = imageCreateInfo->tiling;
 	vkTextureDimentions = imageCreateInfo->extent;
+	mipLevelsCount = imageCreateInfo->mipLevels;
 	vkTextureFormat = imageCreateInfo->format;
 	vkImageType = imageCreateInfo->imageType;
 	vkImageUsageFlags = imageCreateInfo->usage;

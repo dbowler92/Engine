@@ -4,9 +4,12 @@ using namespace EngineAPI::Rendering::Platform;
 
 void VulkanSampler2D::Shutdown()
 {
-	//...Shouldnt be still handing around...
+	//...Shouldn't be still handing around...
 	CleanupGLIData();
 	CleanupLodePNGData();
+
+	if (vkSampler2DTextureImageLayoutCmdBuffer != VK_NULL_HANDLE)
+		EngineAPI::Statics::VulkanStatics::CommandBufferReset(&vkSampler2DTextureImageLayoutCmdBuffer, true);
 
 	//Destroy self...
 	if (vkShaderSamplerView != VK_NULL_HANDLE)
@@ -138,6 +141,42 @@ bool VulkanSampler2D::InitVKSampler2DLayoutAndViews(EngineAPI::Graphics::RenderD
 
 bool VulkanSampler2D::InitVKSampler2DLayout(EngineAPI::Graphics::RenderDevice* renderingDevice)
 {
+	//Get a command buffer from the graphics command buffer pool (we will submit the command buffer
+	//to the graphics queue later)
+	EngineAPI::Graphics::CommandBufferPool& cmdPool = renderingDevice->GetGraphicsCommandQueueFamily()->GetCommandBufferPool(0);
+	if (!cmdPool.GetVKCommandBufferFromPool(true, &vkSampler2DTextureImageLayoutCmdBuffer))
+	{
+		//Error
+		EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanSampler2D::InitVKSampler2DLayout() - Could not get command buffer from pool\n");
+		return false;
+	}
+
+	//Begin reading commands to this buffer
+	if (EngineAPI::Statics::VulkanStatics::CommandBufferBeginRecordingDefault(&vkSampler2DTextureImageLayoutCmdBuffer))
+	{
+		//EngineAPI::Statics::VulkanCommands::CMD_SetImageLayout(vkSampler2DTextureImageLayoutCmdBuffer, 
+		//vkImageHandle, VK_IMAGE_ASPECT_COLOR_BIT, VK_IMAGE_LAYOUT_UNDEFINED, VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL);
+	}
+	else
+	{
+		//Error
+		EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanSampler2D::InitVKSampler2DLayout() - Failed to begin reading to command buffer\n");
+		EngineAPI::Statics::VulkanStatics::CommandBufferEndRecording(&vkSampler2DTextureImageLayoutCmdBuffer);
+		return false;
+	}
+
+	//Stop reading commands in to the command buffer
+	EngineAPI::Statics::VulkanStatics::CommandBufferEndRecording(&vkSampler2DTextureImageLayoutCmdBuffer);
+
+	//Submit the work -> Inits this images & its layout. 
+	EngineAPI::Graphics::CommandQueueFamily* graphicsQueueFamily = renderingDevice->GetGraphicsCommandQueueFamily();
+
+	if (!graphicsQueueFamily->SubmitVKCommandBuffersToQueueDefault(0, &vkSampler2DTextureImageLayoutCmdBuffer, 1, VK_NULL_HANDLE, true))
+	{
+		//Error in submission
+		EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanSampler2D::InitVKSampler2DLayout() Error - Failed to submit layout command buffer to queue\n");
+		return false;
+	}
 
 	//Done
 	return true;
@@ -163,11 +202,18 @@ bool VulkanSampler2D::WriteParsedTextureDataToMemory(uint8_t* data)
 	vkGetImageSubresourceLayout(cachedVkDevice, vkImageHandle, &subresource, &layout);
 
 	//Map memory
-	void* mappedMemory = MapResource();
+	uint8_t* mappedMemory = (uint8_t*)MapResource();
 	assert(mappedMemory != nullptr);
 
 	//Write data
-
+	for (int y = 0; y < vkTextureDimentions.height; y++)
+	{
+		size_t imageWidthSize = vkTextureDimentions.height * 4;
+		memcpy(mappedMemory, data, imageWidthSize);
+		
+		data += imageWidthSize;
+		mappedMemory += layout.rowPitch;
+	}
 
 	//Unmap
 	UnmapResource();

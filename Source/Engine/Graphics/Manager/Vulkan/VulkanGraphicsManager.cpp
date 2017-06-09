@@ -197,7 +197,7 @@ bool VulkanGraphicsManager::InitVKRenderPass()
 	attachments[0].flags = VK_ATTACHMENT_DESCRIPTION_MAY_ALIAS_BIT;
 
 	//Depth buffer. 
-	attachments[1].format = renderingSwapchain.GetDepthTexture()->GetVkImageFormat();
+	attachments[1].format = renderingSwapchain.GetDepthTexture()->GetVKImageFormat();
 	attachments[1].samples = (VkSampleCountFlagBits)msaaSamples;
 	attachments[1].loadOp = VK_ATTACHMENT_LOAD_OP_CLEAR;
 	attachments[1].storeOp = VK_ATTACHMENT_STORE_OP_STORE;

@@ -52,8 +52,7 @@ void* VulkanResource::MapResource()
 		VkResult result = vkInvalidateMappedMemoryRanges(device, 1, &mappedRange);
 		assert(result == VK_SUCCESS);
 	}
-
-
+	
 	//Data is mapped
 	resourceMemoryBlock->isMapped = true;
 

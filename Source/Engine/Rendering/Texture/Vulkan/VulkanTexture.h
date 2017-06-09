@@ -45,8 +45,9 @@ namespace EngineAPI
 				//VkDescriptorImageInfo& GetVKImageDescriptorInfo() { return vkImageDescriptorInfo; };
 
 				//Image settings
-				VkExtent3D GetVkImageDimentions()		        { return vkTextureDimentions; };
-				VkFormat GetVkImageFormat()					    { return vkTextureFormat; };
+				VkExtent3D GetVKImageDimentions()		        { return vkTextureDimentions; };
+				uint32_t GetVKImageMipLevels()				    { return mipLevelsCount; };
+				VkFormat GetVKImageFormat()					    { return vkTextureFormat; };
 				VkImageType GetVKImageType()				    { return vkImageType; };
 				VkImageUsageFlags GetVKImageUsageFlags()	    { return vkImageUsageFlags; };
 				VkSampleCountFlags GetVKImageSamplesCountFlag() { return vkSamplesCountFlag; };
@@ -75,6 +76,9 @@ namespace EngineAPI
 				//
 				//Dimensions
 				VkExtent3D vkTextureDimentions;
+
+				//Mip levels
+				uint32_t mipLevelsCount;
 
 				//Image format & type
 				VkFormat vkTextureFormat;

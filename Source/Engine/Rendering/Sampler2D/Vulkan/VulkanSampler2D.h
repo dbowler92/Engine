@@ -66,6 +66,7 @@ namespace EngineAPI
 				VkImageView vkShaderSamplerView = VK_NULL_HANDLE;
 
 				//Command buffers
+				VkCommandBuffer vkSampler2DTextureImageLayoutCmdBuffer = VK_NULL_HANDLE;
 
 				//Image loading - Dynamically created since we can only load a gli::texture2D
 				//when the constructor is called. 
