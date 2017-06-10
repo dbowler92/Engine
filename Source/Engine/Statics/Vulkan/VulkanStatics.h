@@ -113,7 +113,6 @@ namespace EngineAPI
 				VkImageAspectFlags aspectMask, VkImageLayout oldImageLayout, VkImageLayout newImageLayout, 
 				const VkImageSubresourceRange& subresourceRange);
 
-
 			//Changes subpass
 			static void VKCMD_NextSubpass(const VkCommandBuffer& commandBuffer, VkSubpassContents contents);
 
@@ -163,6 +162,18 @@ namespace EngineAPI
 				VkBuffer buffer, VkDeviceSize offset, uint32_t drawCount, uint32_t stride);
 			static void VKCMD_DrawIndexedIndirect(const VkCommandBuffer& commandBuffer,
 				VkBuffer buffer, VkDeviceSize offset, uint32_t drawCount, uint32_t stride);
+
+			//Copy commands
+			static void VKCMD_CopyBufferToBuffer(VkCommandBuffer& commandBuffer, 
+				VkBuffer src, VkBuffer dst, const VkBufferCopy* regions, uint32_t regionsCount);
+			static void VKCMD_CopyImageToImage(VkCommandBuffer& commandBuffer, 
+				VkImage srcImage, VkImageLayout srcImageLayout, VkImage dstImage, VkImageLayout dstImageLayout, 
+				const VkImageCopy* regions, uint32_t regionsCount);
+			
+			static void VKCMD_CopyBufferToImage(VkCommandBuffer& commandBuffer, 
+				VkBuffer srcBuffer, VkImage dstImage, VkImageLayout dstImageLayout, const VkBufferImageCopy* regions, uint32_t regionsCount);
+			static void VKCMD_CopyImageToBufffer(VkCommandBuffer& commandBuffer,
+				VkImage srcImage, VkImageLayout srcImageLayout, VkBuffer dstBuffer, const VkBufferImageCopy* regions, uint32_t regionsCount);
 		};
 	};
 };

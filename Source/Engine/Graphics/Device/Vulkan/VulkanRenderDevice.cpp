@@ -83,9 +83,13 @@ bool VulkanRenderDevice::InitVKLogicalDeviceAndQueues(EngineAPI::OS::OSWindow* o
 		return false;
 
 	//Requested features
+	vkGetPhysicalDeviceFeatures(vkPhysicalDevice, &vkDeviceAvailableFeatures);
+
 	vkDeviceEnabledFeaturesArray = {};
-	vkDeviceEnabledFeaturesArray.depthClamp = VK_TRUE;
-	vkDeviceEnabledFeaturesArray.samplerAnisotropy = VK_TRUE;
+	if (vkDeviceAvailableFeatures.depthClamp == VK_TRUE)
+		vkDeviceEnabledFeaturesArray.depthClamp = VK_TRUE;
+	if (vkDeviceAvailableFeatures.samplerAnisotropy == VK_TRUE)
+		vkDeviceEnabledFeaturesArray.samplerAnisotropy = VK_TRUE;
 
 	//if (!ValidateVKDeviceFeatures(&vkDeviceEnabledFeaturesArray))
 	//	return false;

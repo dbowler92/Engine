@@ -166,12 +166,22 @@ bool VulkanDepthTexture::InitVKDepthTextureLayout(EngineAPI::Graphics::RenderDev
 	//Submit the work -> Inits this images & its layout. 
 	EngineAPI::Graphics::CommandQueueFamily* graphicsQueueFamily = renderingDevice->GetGraphicsCommandQueueFamily();
 	
-	if (!graphicsQueueFamily->SubmitVKCommandBuffersToQueueDefault(0, &vkDepthTextureImageLayoutCmdBuffer, 1, VK_NULL_HANDLE, true))
+	//Ensure that the GPU has finished the submitted work before the host 
+	//takes over again
+	VkFence imageLayoutInitFence;
+	VkDevice device = renderingDevice->GetVKLogicalDevice();
+	assert(EngineAPI::Statics::VulkanStatics::CreateVKFence(&device, false, &imageLayoutInitFence));
+	
+	if (!graphicsQueueFamily->SubmitVKCommandBuffersToQueueDefault(0, &vkDepthTextureImageLayoutCmdBuffer, 1, imageLayoutInitFence, true))
 	{
 		//Error in submission
 		EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanDepthTexture::InitVKDepthTextureLayout() Error - Failed to submit layout command buffer to queue\n");
 		return false;
 	}
+	
+	//Wait on fence
+	vkWaitForFences(device, 1, &imageLayoutInitFence, VK_TRUE, 10000000000);
+	vkDestroyFence(device, imageLayoutInitFence, nullptr);
 
 	//Done
 	return true;

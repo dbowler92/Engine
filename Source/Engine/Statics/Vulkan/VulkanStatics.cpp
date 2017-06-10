@@ -539,6 +539,31 @@ void VulkanCommands::VKCMD_DrawIndexedIndirect(const VkCommandBuffer& commandBuf
 	vkCmdDrawIndexedIndirect(commandBuffer, buffer, offset, drawCount, stride);
 }
 
+void VulkanCommands::VKCMD_CopyBufferToBuffer(VkCommandBuffer& commandBuffer,
+	VkBuffer src, VkBuffer dst, const VkBufferCopy* regions, uint32_t regionsCount)
+{
+	vkCmdCopyBuffer(commandBuffer, src, dst, regionsCount, regions);
+}
+
+void VulkanCommands::VKCMD_CopyImageToImage(VkCommandBuffer& commandBuffer,
+	VkImage srcImage, VkImageLayout srcImageLayout, VkImage dstImage, VkImageLayout dstImageLayout,
+	const VkImageCopy* regions, uint32_t regionsCount)
+{
+	vkCmdCopyImage(commandBuffer, srcImage, srcImageLayout, dstImage, dstImageLayout, regionsCount, regions);
+}
+
+void VulkanCommands::VKCMD_CopyBufferToImage(VkCommandBuffer& commandBuffer, 
+	VkBuffer srcBuffer, VkImage dstImage, VkImageLayout dstImageLayout, const VkBufferImageCopy* regions, uint32_t regionsCount)
+{
+	vkCmdCopyBufferToImage(commandBuffer, srcBuffer, dstImage, dstImageLayout, regionsCount, regions);
+}
+
+void VulkanCommands::VKCMD_CopyImageToBufffer(VkCommandBuffer& commandBuffer, 
+	VkImage srcImage, VkImageLayout srcImageLayout, VkBuffer dstBuffer, const VkBufferImageCopy* regions, uint32_t regionsCount)
+{
+	vkCmdCopyImageToBuffer(commandBuffer, srcImage, srcImageLayout, dstBuffer, regionsCount, regions);
+}
+
 //
 //States
 //

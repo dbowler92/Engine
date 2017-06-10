@@ -89,6 +89,8 @@ namespace EngineAPI
 				//Device properties
 				VkPhysicalDeviceProperties vkDeviceProperties;			   //General info
 				VkPhysicalDeviceMemoryProperties vkDeviceMemoryProperties; //Device memory info
+				
+				VkPhysicalDeviceFeatures vkDeviceAvailableFeatures;        //All available features for this physical device
 				VkPhysicalDeviceFeatures vkDeviceEnabledFeaturesArray;     //Manually enabled device features. 
 
 				 //*ALL* Device families queues supported by this physical device

@@ -137,7 +137,7 @@ void TexturedCube::Init(EngineAPI::Graphics::GraphicsManager* graphicsSubsystem)
 	//
 	/*
 	uint16_t cubeIndicies[] = { 0, 1, 2, 0, 2, 3 }; //0, 3, 1, 3, 2, 1
-	bool isDynamicIB = true; //TEMP: For VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT memory rather than GPU only. 
+	bool isDynamicIB = true; //TEMP: For VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT memory rather than GPU only.
 
 	ib.SetResourceDebugName("Textured Cube Index Buffer");
 	assert(ib.InitVKIndexBuffer(device, sizeof(squareIndices), isDynamicIB));
@@ -192,6 +192,51 @@ void TexturedCube::Init(EngineAPI::Graphics::GraphicsManager* graphicsSubsystem)
 	assert(uniformBuffer.AllocAndBindVKUniformBuffer(device, &uniformBufferMatrixData, uniformBufferDeviceStore));
 
 	//
+	//Sampler2D - Colour texture loaded from file. 
+	//
+	sampler2DLinear.SetResourceDebugName("Textured Cube Sampler2D (Linear)");
+	assert(sampler2DLinear.InitVKSampler2DFromFile(device, TEXTURE_ASSETS_FOLDER"TestTextures/LearningVulkan.ktx", TEXTURE_LOADING_API_GLI,
+		TEXTURE_TILING_MODE_LINEAR, true,
+		VK_FORMAT_R8G8B8A8_UNORM, VK_IMAGE_USAGE_SAMPLED_BIT));
+
+	//assert(sampler2DLinear.InitVKSampler2DFromFile(device, TEXTURE_ASSETS_FOLDER"TestTextures/floor.dds", TEXTURE_LOADING_API_GLI,
+	//	TEXTURE_TILING_MODE_LINEAR, true,
+	//	VK_FORMAT_R8G8B8A8_UNORM, VK_IMAGE_USAGE_SAMPLED_BIT));
+
+	//assert(sampler2DLinear.InitVKSampler2DFromFile(device, TEXTURE_ASSETS_FOLDER"TestTextures/TestPNGFile_256_256.png", TEXTURE_LOADING_API_LODE_PNG,
+	//	TEXTURE_TILING_MODE_LINEAR, true,
+	//	VK_FORMAT_R8G8B8A8_UNORM, VK_IMAGE_USAGE_SAMPLED_BIT));
+
+	uint32_t memoryTypeIndexSampler2D = 0;
+	assert(EngineAPI::Statics::VulkanStatics::FindMemoryTypeForProperties(sampler2DLinear.GetResourceVKMemoryRequirments().memoryTypeBits,
+		VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT,
+		&device->GetVKPhysicalDeviceMemoryProperties(), &memoryTypeIndexSampler2D));
+
+	EngineAPI::Graphics::DeviceMemoryStore* sampler2DDeviceStore = nullptr;
+	sampler2DDeviceStore = device->GetDeviceMemoryAllocator()->CreateNewMemoryStore(device,
+		sampler2DLinear.GetResourceVKMemoryRequirments().size,
+		memoryTypeIndexSampler2D, false);
+
+	assert(sampler2DLinear.AllocAndBindVKSampler2D(device, sampler2DDeviceStore));
+	assert(sampler2DLinear.InitVKSampler2DLayoutAndViews(device));
+
+	//
+	//Sampler state
+	//
+	SamplerMinMagState minMagState = {};
+	SamplerMipmapState mipmapState = {};
+	SamplerLODState lodState = {};
+	SamplerAddressState addressState = {};
+	SamplerCompareOpState copmpareOpState = {};
+	SamplerAnisotropyState anistoropyState = {};
+	anistoropyState.AnisotropyEnabled = VK_TRUE;
+	anistoropyState.MaxAnisotropy = 8.0f;
+
+	bool isUnnormalizedTexCoords = false;
+	assert(samplerState.InitVKSamplerState(device,
+		&minMagState, &mipmapState, &lodState, &addressState, &copmpareOpState, &anistoropyState, isUnnormalizedTexCoords));
+
+	//
 	//Program
 	//
 	assert(testProgramSPIR.CreateVKShaderModule(device, SHADER_ASSETS_FOLDER"TestShaders/Texture-vert.spv", SHADER_STAGE_VERTEX_SHADER, "main", true));
@@ -219,14 +264,25 @@ void TexturedCube::Init(EngineAPI::Graphics::GraphicsManager* graphicsSubsystem)
 	assert(descriptorSet.InitVKDescriptorSetWithExistingDescriptorPool(device, &descriptorBindings[0], 2, &descriptorPool));
 	//assert(descriptorSet.InitVKDescriptorSet(device, &descriptorBindings[0], 2));
 
+	VkDescriptorImageInfo samplerImageDescriptorInfo = {};
+	samplerImageDescriptorInfo.sampler = samplerState.GetVKSamplerStateHandle();
+	samplerImageDescriptorInfo.imageView = sampler2DLinear.GetVKShaderSamplerImageView();
+	samplerImageDescriptorInfo.imageLayout = VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
+
 	//Update descriptor set
 	VkDescriptorBufferInfo uniformBufferDescriptorInfo = uniformBuffer.GetVKDescriptorBufferInfo();
-	DescriptorSetWriteUpdateData ubufferInitData[2] = {}; //0 UB, 1 Sampler
-	ubufferInitData[0].BindingIndex = 0;
-	ubufferInitData[0].Type = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER;
-	ubufferInitData[0].DescriptorCount = 1;
-	ubufferInitData[0].Buffers = &uniformBufferDescriptorInfo;
-	assert(descriptorSet.UpdateVKDescriptorSet(ubufferInitData, 1));
+	DescriptorSetWriteUpdateData descriptorSetWriteData[2] = {}; //0 UB, 1 Sampler
+	descriptorSetWriteData[0].BindingIndex = 0;
+	descriptorSetWriteData[0].Type = VK_DESCRIPTOR_TYPE_UNIFORM_BUFFER;
+	descriptorSetWriteData[0].DescriptorCount = 1;
+	descriptorSetWriteData[0].Buffers = &uniformBufferDescriptorInfo;
+
+	descriptorSetWriteData[1].BindingIndex = 1;
+	descriptorSetWriteData[1].Type = VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER;
+	descriptorSetWriteData[1].DescriptorCount = 1;
+	descriptorSetWriteData[1].Images = &samplerImageDescriptorInfo;
+
+	assert(descriptorSet.UpdateVKDescriptorSet(descriptorSetWriteData, 2));
 
 
 	//
@@ -317,43 +373,6 @@ void TexturedCube::Init(EngineAPI::Graphics::GraphicsManager* graphicsSubsystem)
 
 	EngineAPI::Graphics::GraphicsPipelineCache* graphicsPCO = graphicsSubsystem->GetGraphicsPipelineCacheObject();
 	assert(graphicsPipelineState.InitVKGraphicsPipelineState(device, graphicsPCO, graphicsSubsystem->GetRenderPass(), &testProgramSPIR, &pipelineStateDesc, &graphicsPipelineLayout, true));
-
-	//
-	//Sampler state
-	//
-	SamplerMinMagState minMagState = {};
-	SamplerMipmapState mipmapState = {};
-	SamplerLODState lodState = {};
-	SamplerAddressState addressState = {};
-	SamplerCompareOpState copmpareOpState = {};
-	SamplerAnisotropyState anistoropyState = {};
-	anistoropyState.AnisotropyEnabled = VK_TRUE;
-	anistoropyState.MaxAnisotropy = 8.0f;
-
-	bool isUnnormalizedTexCoords = false;
-	assert(samplerState.InitVKSamplerState(device, 
-		&minMagState, &mipmapState, &lodState, &addressState, &copmpareOpState, &anistoropyState, isUnnormalizedTexCoords));
-
-	//
-	//Sampler2D - Colour texture loaded from file. 
-	//
-	sampler2DLinear.SetResourceDebugName("Textured Cube Sampler2D (Linear)");
-	assert(sampler2DLinear.InitVKSampler2DFromFile(device, TEXTURE_ASSETS_FOLDER"TestTextures/LearningVulkan.ktx", TEXTURE_LOADING_API_GLI,
-		TEXTURE_TILING_MODE_LINEAR, true,
-		VK_FORMAT_R8G8B8A8_UNORM, VK_IMAGE_USAGE_SAMPLED_BIT));
-
-	uint32_t memoryTypeIndexSampler2D = 0;
-	assert(EngineAPI::Statics::VulkanStatics::FindMemoryTypeForProperties(sampler2DLinear.GetResourceVKMemoryRequirments().memoryTypeBits,
-		VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT,
-		&device->GetVKPhysicalDeviceMemoryProperties(), &memoryTypeIndexSampler2D));
-
-	EngineAPI::Graphics::DeviceMemoryStore* sampler2DDeviceStore = nullptr;
-	sampler2DDeviceStore = device->GetDeviceMemoryAllocator()->CreateNewMemoryStore(device,
-		sampler2DLinear.GetResourceVKMemoryRequirments().size,
-		memoryTypeIndexSampler2D, false);
-
-	assert(sampler2DLinear.AllocAndBindVKSampler2D(device, sampler2DDeviceStore));
-	assert(sampler2DLinear.InitVKSampler2DLayoutAndViews(device));
 }
 
 
