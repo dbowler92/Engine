@@ -14,7 +14,7 @@
 
 //Texture loading
 #include <gli/gli.hpp> //NOTE: Preprocessor define required: _CRT_SECURE_NO_WARNINGS
-#include "../../3rdParty/LodePNG/lodePNG.h"
+#include "../../../3rdParty/LodePNG/lodepng.h"
 
 //Which texture loading API do we wish to use
 enum TextureLoadingAPI
@@ -71,7 +71,7 @@ namespace EngineAPI
 				//Image loading - Dynamically created since we can only load a gli::texture2D
 				//when the constructor is called. 
 				gli::texture2D* gliTexture2D = nullptr;
-
+				std::vector<unsigned char>lodePNGtextureBuffer;
 
 
 			private:

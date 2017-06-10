@@ -23,9 +23,6 @@ bool VulkanSampler2D::InitVKSampler2DFromFile(EngineAPI::Graphics::RenderDevice*
 	const char* filename, TextureLoadingAPI textureLoadingAPI, TextureTilingMode tilingMode,
 	bool isDynamicTexture, VkFormat desiredImageFormat, VkImageUsageFlags desiredImageUsageFlags)
 {
-	//Temp
-	assert(textureLoadingAPI == TEXTURE_LOADING_API_GLI);
-
 	//Print message telling us what we are loading...
 	EngineAPI::Debug::DebugLog::PrintInfoMessage("VulkanSampler2D::InitVKSampler2DFromFile(): Loading texture: ");
 	EngineAPI::Debug::DebugLog::PrintMessage(filename);
@@ -57,9 +54,19 @@ bool VulkanSampler2D::InitVKSampler2DFromFile(EngineAPI::Graphics::RenderDevice*
 	if (textureLoadingAPI == TEXTURE_LOADING_API_LODE_PNG)
 	{
 		//lodePNG
-		std::vector<unsigned char>textureBuffer;
-		lodepng::load_file(textureBuffer, filename);
+		unsigned error = lodepng::decode(lodePNGtextureBuffer, imageWidth, imageHeight, filename);
+
+		if (error != 0)
+		{
+			EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanSampler2D::InitVKSampler2DFromFile() Error: Could not decode PNG (lodePNG)\n");
+			return false;
+		}
+
+		//Mip levels
+		mipmapLevelsCount = 1;
 	}
+
+	//TODO: Generate mips????
 
 	//Fillout image creation struct
 	VkImageCreateInfo imageCreateInfo = {};
@@ -111,6 +118,8 @@ bool VulkanSampler2D::AllocAndBindVKSampler2D(EngineAPI::Graphics::RenderDevice*
 		uint8_t* data = nullptr;
 		if (gliTexture2D)
 			data = (uint8_t*)gliTexture2D->data();
+		else if (lodePNGtextureBuffer.size() > 0)
+			data = (uint8_t*)lodePNGtextureBuffer.data();
 
 		if (!WriteParsedTextureDataToMemory(data))
 		{
@@ -291,5 +300,5 @@ void VulkanSampler2D::CleanupGLIData()
 
 void VulkanSampler2D::CleanupLodePNGData()
 {
-	//TODO
+	lodePNGtextureBuffer.clear();
 }

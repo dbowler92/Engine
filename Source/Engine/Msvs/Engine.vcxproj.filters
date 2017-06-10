@@ -268,6 +268,12 @@
     <Filter Include="Src\Rendering\Sampler2D\Vulkan">
       <UniqueIdentifier>{537595d3-b414-46f2-bec8-24400f4984d3}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Src\3rdParty">
+      <UniqueIdentifier>{b1910c79-cc8d-4fe2-8855-b491ab57ffff}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\3rdParty\LodePNG">
+      <UniqueIdentifier>{ad10e84a-92ab-4c93-bbd5-2c02fa67c1b7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Main\EngineMain.cpp">
@@ -389,6 +395,9 @@
     </ClCompile>
     <ClCompile Include="..\Rendering\Sampler2D\Vulkan\VulkanSampler2D.cpp">
       <Filter>Src\Rendering\Sampler2D\Vulkan</Filter>
+    </ClCompile>
+    <ClCompile Include="..\3rdParty\LodePNG\lodepng.cpp">
+      <Filter>Src\3rdParty\LodePNG</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -631,6 +640,9 @@
     </ClInclude>
     <ClInclude Include="..\Rendering\Sampler2D\Sampler2D.h">
       <Filter>Src\Rendering\Sampler2D</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\LodePNG\lodepng.h">
+      <Filter>Src\3rdParty\LodePNG</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

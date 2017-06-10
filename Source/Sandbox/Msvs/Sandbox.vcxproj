@@ -73,7 +73,7 @@
     <IntDir>$(SolutionDir)..\..\Temp\$(ProjectName)$(PlatformName)$(Configuration)\</IntDir>
     <TargetName>$(ProjectName)$(PlatformName)$(Configuration)</TargetName>
     <LibraryPath>$(SolutionDir)..\..\Lib\$(PlatformName)$(Configuration);C:\VulkanSDK\1.0.46.0\Lib32;$(SolutionDir)..\..\Lib;$(LibraryPath)</LibraryPath>
-    <IncludePath>C:\VulkanSDK\1.0.46.0\Include;..\..\Engine\3rdParty\glm\;..\..\Engine\3rdParty\gli;$(IncludePath)</IncludePath>
+    <IncludePath>C:\VulkanSDK\1.0.46.0\Include;..\..\Engine\3rdParty\glm\;..\..\Engine\3rdParty\gli;..\..\Engine\3rdParty\lodePNG\;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <TargetName>$(ProjectName)$(PlatformName)$(Configuration)</TargetName>
@@ -87,7 +87,7 @@
     <IntDir>$(SolutionDir)..\..\Temp\$(ProjectName)$(PlatformName)$(Configuration)\</IntDir>
     <TargetName>$(ProjectName)$(PlatformName)$(Configuration)</TargetName>
     <LibraryPath>$(SolutionDir)..\..\Lib\$(PlatformName)$(Configuration);C:\VulkanSDK\1.0.46.0\Lib32;$(SolutionDir)..\..\Lib;$(LibraryPath)</LibraryPath>
-    <IncludePath>C:\VulkanSDK\1.0.46.0\Include;..\..\Engine\3rdParty\glm\;..\..\Engine\3rdParty\gli;$(IncludePath)</IncludePath>
+    <IncludePath>C:\VulkanSDK\1.0.46.0\Include;..\..\Engine\3rdParty\glm\;..\..\Engine\3rdParty\gli;..\..\Engine\3rdParty\lodePNG\;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <TargetName>$(ProjectName)$(PlatformName)$(Configuration)</TargetName>
