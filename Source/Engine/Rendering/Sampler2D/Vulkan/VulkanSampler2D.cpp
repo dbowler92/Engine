@@ -56,10 +56,9 @@ bool VulkanSampler2D::InitVKSampler2DFromFile(EngineAPI::Graphics::RenderDevice*
 	}
 	if (textureLoadingAPI == TEXTURE_LOADING_API_LODE_PNG)
 	{
-		//
-		//TODO
-		//
 		//lodePNG
+		std::vector<unsigned char>textureBuffer;
+		lodepng::load_file(textureBuffer, filename);
 	}
 
 	//Fillout image creation struct
@@ -106,17 +105,25 @@ bool VulkanSampler2D::AllocAndBindVKSampler2D(EngineAPI::Graphics::RenderDevice*
 		return false;
 	}
 
-	//Write data
-	uint8_t* data = nullptr;
-	if (gliTexture2D)
-		data = (uint8_t*)gliTexture2D->data();
-
-	if (!WriteParsedTextureDataToMemory(data))
+	//Write data - If linear, just copy the data across to the resource
+	if (vkImageTilingMode == VK_IMAGE_TILING_LINEAR)
 	{
-		EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanSampler2D::AllocAndBindVKSampler2D() Error: Could not write texture data to memory\n");
-		return false;
-	}
+		uint8_t* data = nullptr;
+		if (gliTexture2D)
+			data = (uint8_t*)gliTexture2D->data();
 
+		if (!WriteParsedTextureDataToMemory(data))
+		{
+			EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanSampler2D::AllocAndBindVKSampler2D() Error: Could not write texture data to memory\n");
+			return false;
+		}
+	}
+	else if (vkImageTilingMode == VK_IMAGE_TILING_LINEAR)
+	{
+		//Use staging buffer to copy data to the GPU
+
+	}
+	
 	//Cleanup CPU copy of texture
 	CleanupGLIData();
 	CleanupLodePNGData();

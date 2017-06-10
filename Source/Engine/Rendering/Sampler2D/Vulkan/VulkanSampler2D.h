@@ -72,6 +72,8 @@ namespace EngineAPI
 				//when the constructor is called. 
 				gli::texture2D* gliTexture2D = nullptr;
 
+
+
 			private:
 				//Internal init
 				bool InitVKSampler2DLayout(EngineAPI::Graphics::RenderDevice* renderingDevice);
