@@ -10,7 +10,6 @@ void VulkanResource::Shutdown()
 	//Free memory block data
 	if (resourceMemoryBlock)
 		resourceMemoryBlock->FreeMemoryBlock();
-	
 }
 
 void* VulkanResource::MapResource()

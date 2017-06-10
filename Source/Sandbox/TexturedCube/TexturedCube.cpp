@@ -353,7 +353,7 @@ void TexturedCube::Init(EngineAPI::Graphics::GraphicsManager* graphicsSubsystem)
 		memoryTypeIndexSampler2D, false);
 
 	assert(sampler2DLinear.AllocAndBindVKSampler2D(device, sampler2DDeviceStore));
-
+	assert(sampler2DLinear.InitVKSampler2DLayoutAndViews(device));
 }
 
 

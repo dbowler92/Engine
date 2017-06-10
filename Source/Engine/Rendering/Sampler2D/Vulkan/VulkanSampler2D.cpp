@@ -8,14 +8,14 @@ void VulkanSampler2D::Shutdown()
 	CleanupGLIData();
 	CleanupLodePNGData();
 
+	//Destroy self...
 	if (vkSampler2DTextureImageLayoutCmdBuffer != VK_NULL_HANDLE)
 		EngineAPI::Statics::VulkanStatics::CommandBufferReset(&vkSampler2DTextureImageLayoutCmdBuffer, true);
 
-	//Destroy self...
 	if (vkShaderSamplerView != VK_NULL_HANDLE)
 		EngineAPI::Statics::VulkanStatics::DestoryVKTextureView(&cachedVkDevice, &vkShaderSamplerView);
 
-		//Destroy super
+	//Destroy super
 	__super::Shutdown();
 }
 
@@ -99,7 +99,7 @@ bool VulkanSampler2D::InitVKSampler2DFromFile(EngineAPI::Graphics::RenderDevice*
 bool VulkanSampler2D::AllocAndBindVKSampler2D(EngineAPI::Graphics::RenderDevice* renderingDevice,
 	EngineAPI::Graphics::DeviceMemoryStore* optionalDeviceStore)
 {
-	//Allocate the texture/image
+	//Allocate the texture/image block
 	if (!AllocAndBindVKTextureMemory(renderingDevice, optionalDeviceStore))
 	{
 		EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanSampler2D::AllocAndBindVKSampler2D Error - Could not Allocate texture\n");
@@ -154,8 +154,18 @@ bool VulkanSampler2D::InitVKSampler2DLayout(EngineAPI::Graphics::RenderDevice* r
 	//Begin reading commands to this buffer
 	if (EngineAPI::Statics::VulkanStatics::CommandBufferBeginRecordingDefault(&vkSampler2DTextureImageLayoutCmdBuffer))
 	{
-		//EngineAPI::Statics::VulkanCommands::CMD_SetImageLayout(vkSampler2DTextureImageLayoutCmdBuffer, 
-		//vkImageHandle, VK_IMAGE_ASPECT_COLOR_BIT, VK_IMAGE_LAYOUT_UNDEFINED, VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL);
+		VkImageSubresourceRange subresourceRange = {};
+		subresourceRange.aspectMask = VK_IMAGE_ASPECT_COLOR_BIT;
+		subresourceRange.baseMipLevel = 0;
+		subresourceRange.baseArrayLayer = 0;
+		subresourceRange.levelCount = mipLevelsCount;
+		subresourceRange.layerCount = 1;
+
+		VkImageLayout oldLayout = VK_IMAGE_LAYOUT_PREINITIALIZED;
+		VkImageLayout newLayout = VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
+
+		EngineAPI::Statics::VulkanCommands::CMD_SetImageLayout(vkSampler2DTextureImageLayoutCmdBuffer, 
+		vkImageHandle, subresourceRange.aspectMask, oldLayout, newLayout, subresourceRange);
 	}
 	else
 	{
@@ -171,12 +181,22 @@ bool VulkanSampler2D::InitVKSampler2DLayout(EngineAPI::Graphics::RenderDevice* r
 	//Submit the work -> Inits this images & its layout. 
 	EngineAPI::Graphics::CommandQueueFamily* graphicsQueueFamily = renderingDevice->GetGraphicsCommandQueueFamily();
 
-	if (!graphicsQueueFamily->SubmitVKCommandBuffersToQueueDefault(0, &vkSampler2DTextureImageLayoutCmdBuffer, 1, VK_NULL_HANDLE, true))
+	//Ensure that the GPU has finished the submitted work before the host 
+	//takes over again
+	VkFence textureImageLayoutFence;
+	VkDevice device = renderingDevice->GetVKLogicalDevice();
+	assert(EngineAPI::Statics::VulkanStatics::CreateVKFence(&device, false, &textureImageLayoutFence));
+
+	if (!graphicsQueueFamily->SubmitVKCommandBuffersToQueueDefault(0, &vkSampler2DTextureImageLayoutCmdBuffer, 1, textureImageLayoutFence, true))
 	{
 		//Error in submission
 		EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanSampler2D::InitVKSampler2DLayout() Error - Failed to submit layout command buffer to queue\n");
 		return false;
 	}
+
+	//Wait on fence
+	vkWaitForFences(device, 1, &textureImageLayoutFence, VK_TRUE, 10000000000);
+	vkDestroyFence(device, textureImageLayoutFence, nullptr);
 
 	//Done
 	return true;
@@ -184,6 +204,29 @@ bool VulkanSampler2D::InitVKSampler2DLayout(EngineAPI::Graphics::RenderDevice* r
 
 bool VulkanSampler2D::InitVKSampler2DViews(EngineAPI::Graphics::RenderDevice* renderingDevice)
 {
+	VkImageSubresourceRange subresourceRange;
+	subresourceRange.aspectMask = VK_IMAGE_ASPECT_COLOR_BIT;
+	subresourceRange.baseMipLevel = 0;
+	subresourceRange.baseArrayLayer = 0;
+	subresourceRange.levelCount = 1; 
+	subresourceRange.layerCount = 1;
+
+	//Image view to allow shader access to the texture info
+	VkImageViewCreateInfo viewCreateInfo = {};
+	viewCreateInfo.sType = VK_STRUCTURE_TYPE_IMAGE_VIEW_CREATE_INFO;
+	viewCreateInfo.pNext = nullptr;
+	viewCreateInfo.flags = 0;
+	viewCreateInfo.viewType = VK_IMAGE_VIEW_TYPE_2D;
+	viewCreateInfo.format = vkTextureFormat;
+	viewCreateInfo.image = vkImageHandle;
+	viewCreateInfo.components.r = VK_COMPONENT_SWIZZLE_R;
+	viewCreateInfo.components.g = VK_COMPONENT_SWIZZLE_G;
+	viewCreateInfo.components.b = VK_COMPONENT_SWIZZLE_B;
+	viewCreateInfo.components.a = VK_COMPONENT_SWIZZLE_A;
+	viewCreateInfo.subresourceRange = subresourceRange;
+
+	VkDevice device = renderingDevice->GetVKLogicalDevice();
+	assert(EngineAPI::Statics::VulkanStatics::CreateVKTextureView(&device, &viewCreateInfo, &vkShaderSamplerView));
 
 	//Done
 	return true;
@@ -217,6 +260,14 @@ bool VulkanSampler2D::WriteParsedTextureDataToMemory(uint8_t* data)
 
 	//Unmap
 	UnmapResource();
+
+	//Done
+	return true;
+}
+
+bool VulkanSampler2D::AutoGenerateMips(uint8_t* textureData)
+{
+	//TODO
 
 	//Done
 	return true;

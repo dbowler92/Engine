@@ -327,7 +327,8 @@ bool VulkanCommands::CMD_SetImageLayout(const VkImage& image,
 */
 
 bool VulkanCommands::CMD_SetImageLayout(const VkCommandBuffer& commandBuffer, const VkImage& image,
-	VkImageAspectFlags aspectMask, VkImageLayout oldImageLayout, VkImageLayout newImageLayout)
+	VkImageAspectFlags aspectMask, VkImageLayout oldImageLayout, VkImageLayout newImageLayout,
+	const VkImageSubresourceRange& subresourceRange)
 {
 	//
 	//See: https://harrylovescode.gitbooks.io/vulkan-api/content/chap07/chap07.html
@@ -356,10 +357,7 @@ bool VulkanCommands::CMD_SetImageLayout(const VkCommandBuffer& commandBuffer, co
 	imageMemoryBarrier.oldLayout = oldImageLayout;
 	imageMemoryBarrier.newLayout = newImageLayout;
 	imageMemoryBarrier.image = image;
-	imageMemoryBarrier.subresourceRange.aspectMask = aspectMask;
-	imageMemoryBarrier.subresourceRange.baseMipLevel = 0;
-	imageMemoryBarrier.subresourceRange.levelCount = 1;
-	imageMemoryBarrier.subresourceRange.layerCount = 1;
+	imageMemoryBarrier.subresourceRange = subresourceRange;
 
 	//srcAccessMask  && dstAccessMask depends on the values of the old and new image 
 	//layout. 
@@ -438,6 +436,19 @@ bool VulkanCommands::CMD_SetImageLayout(const VkCommandBuffer& commandBuffer, co
 
 	//Done
 	return true;
+}
+
+bool VulkanCommands::CMD_SetImageLayout(const VkCommandBuffer& commandBuffer, const VkImage& image,
+	VkImageAspectFlags aspectMask, VkImageLayout oldImageLayout, VkImageLayout newImageLayout)
+{
+	//Generates a defauly image subresource range struct. 
+	VkImageSubresourceRange defaultSubresourceRange = {};
+	defaultSubresourceRange.baseArrayLayer = 0;
+	defaultSubresourceRange.baseMipLevel = 0;
+	defaultSubresourceRange.layerCount = 1;
+	defaultSubresourceRange.levelCount = 1;
+	defaultSubresourceRange.aspectMask = aspectMask;
+	return CMD_SetImageLayout(commandBuffer, image, aspectMask, oldImageLayout, newImageLayout, defaultSubresourceRange);
 }
 
 void VulkanCommands::VKCMD_NextSubpass(const VkCommandBuffer& commandBuffer, VkSubpassContents contents)

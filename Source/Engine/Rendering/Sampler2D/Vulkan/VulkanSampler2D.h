@@ -80,6 +80,9 @@ namespace EngineAPI
 				//Writes the parsed data to memory
 				bool WriteParsedTextureDataToMemory(uint8_t* data);
 
+				//TODO: Auto generation of mip levels
+				bool AutoGenerateMips(uint8_t* textureData);
+
 			private:
 				//Clears the GLI && lodePNG data
 				void CleanupGLIData();

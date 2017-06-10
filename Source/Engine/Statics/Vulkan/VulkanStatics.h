@@ -109,6 +109,10 @@ namespace EngineAPI
 			*/
 			static bool CMD_SetImageLayout(const VkCommandBuffer& commandBuffer, const VkImage& image,
 				VkImageAspectFlags aspectMask, VkImageLayout oldImageLayout, VkImageLayout newImageLayout);
+			static bool CMD_SetImageLayout(const VkCommandBuffer& commandBuffer, const VkImage& image,
+				VkImageAspectFlags aspectMask, VkImageLayout oldImageLayout, VkImageLayout newImageLayout, 
+				const VkImageSubresourceRange& subresourceRange);
+
 
 			//Changes subpass
 			static void VKCMD_NextSubpass(const VkCommandBuffer& commandBuffer, VkSubpassContents contents);
