@@ -55,7 +55,6 @@ bool VulkanSampler2D::InitVKSampler2DFromFile(EngineAPI::Graphics::RenderDevice*
 	{
 		//lodePNG
 		unsigned error = lodepng::decode(lodePNGtextureBuffer, imageWidth, imageHeight, filename);
-
 		if (error != 0)
 		{
 			EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanSampler2D::InitVKSampler2DFromFile() Error: Could not decode PNG (lodePNG)\n");

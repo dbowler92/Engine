@@ -194,7 +194,7 @@ void TexturedCube::Init(EngineAPI::Graphics::GraphicsManager* graphicsSubsystem)
 	//
 	//Sampler2D - Colour texture loaded from file. 
 	//
-	sampler2DLinear.SetResourceDebugName("Textured Cube Sampler2D (LodePNG)");
+	sampler2DLinear.SetResourceDebugName("Textured Cube Sampler2D (Optimal)");
 	//assert(sampler2DLinear.InitVKSampler2DFromFile(device, TEXTURE_ASSETS_FOLDER"TestTextures/LearningVulkan.ktx", TEXTURE_LOADING_API_GLI,
 	//	TEXTURE_TILING_MODE_LINEAR, true,
 	//	VK_FORMAT_R8G8B8A8_UNORM, VK_IMAGE_USAGE_SAMPLED_BIT));
@@ -203,13 +203,13 @@ void TexturedCube::Init(EngineAPI::Graphics::GraphicsManager* graphicsSubsystem)
 	//	TEXTURE_TILING_MODE_LINEAR, true,
 	//	VK_FORMAT_R8G8B8A8_UNORM, VK_IMAGE_USAGE_SAMPLED_BIT));
 
-	assert(sampler2DLinear.InitVKSampler2DFromFile(device, TEXTURE_ASSETS_FOLDER"TestTextures/TestPNGFile_256_256.png", TEXTURE_LOADING_API_LODE_PNG,
-		TEXTURE_TILING_MODE_LINEAR, true,
-		VK_FORMAT_R8G8B8A8_UNORM, VK_IMAGE_USAGE_SAMPLED_BIT));
-
-	//assert(sampler2DLinear.InitVKSampler2DFromFile(device, TEXTURE_ASSETS_FOLDER"TestTextures/LearningVulkan.ktx", TEXTURE_LOADING_API_GLI,
-	//	TEXTURE_TILING_MODE_OPTIMAL, true,
+	//assert(sampler2DLinear.InitVKSampler2DFromFile(device, TEXTURE_ASSETS_FOLDER"TestTextures/TestPNGFile_256_256.png", TEXTURE_LOADING_API_LODE_PNG,
+	//	TEXTURE_TILING_MODE_LINEAR, true,
 	//	VK_FORMAT_R8G8B8A8_UNORM, VK_IMAGE_USAGE_SAMPLED_BIT));
+
+	assert(sampler2DLinear.InitVKSampler2DFromFile(device, TEXTURE_ASSETS_FOLDER"TestTextures/LearningVulkan.ktx", TEXTURE_LOADING_API_GLI,
+		TEXTURE_TILING_MODE_OPTIMAL, true,
+		VK_FORMAT_R8G8B8A8_UNORM, VK_IMAGE_USAGE_SAMPLED_BIT));
 
 	uint32_t memoryTypeIndexSampler2D = 0;
 	assert(EngineAPI::Statics::VulkanStatics::FindMemoryTypeForProperties(sampler2DLinear.GetResourceVKMemoryRequirments().memoryTypeBits,
