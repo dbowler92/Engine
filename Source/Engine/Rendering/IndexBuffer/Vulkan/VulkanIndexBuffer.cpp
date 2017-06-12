@@ -30,7 +30,7 @@ bool VulkanIndexBuffer::InitVKIndexBuffer(EngineAPI::Graphics::RenderDevice* ren
 	ibCreateInfo.sharingMode = VK_SHARING_MODE_EXCLUSIVE;
 
 	//Init buffer
-	if (!InitVKBuffer(renderingDevice, &ibCreateInfo, isDynamicIndexBuffer, resourceUsage))
+	if (!InitVKBuffer(renderingDevice, &ibCreateInfo, resourceUsage))
 	{
 		//Error
 		EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanIndexBuffer::InitVKIndexBuffer() Error - Could not init VkBuffer\n");

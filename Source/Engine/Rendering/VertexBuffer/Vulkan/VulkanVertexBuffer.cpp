@@ -26,7 +26,7 @@ bool VulkanVertexBuffer::InitVKVertexBuffer(EngineAPI::Graphics::RenderDevice* r
 	vbCreateInfo.sharingMode = VK_SHARING_MODE_EXCLUSIVE;
 
 	//Init buffer
-	if (!InitVKBuffer(renderingDevice, &vbCreateInfo, isDynamicVertexBuffer, resourceUsage))
+	if (!InitVKBuffer(renderingDevice, &vbCreateInfo, resourceUsage))
 	{
 		//Erorr
 		EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanVertexBuffer::InitVKVertexBuffer() Error - Could not init VkBuffer\n");

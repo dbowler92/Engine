@@ -93,7 +93,7 @@ bool VulkanSampler2D::InitVKSampler2DFromFile(EngineAPI::Graphics::RenderDevice*
 		imageCreateInfo.tiling = VK_IMAGE_TILING_OPTIMAL; //TODO
 
 	//Init VkImage
-	if (!InitVKTexture(renderingDevice, &imageCreateInfo, isDynamicTexture, resourceUsage))
+	if (!InitVKTexture(renderingDevice, &imageCreateInfo, resourceUsage))
 	{
 		EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanSampler2D::InitVKSampler2DFromFile() Error - Could not init VkImage object\n");
 		return false;

@@ -1,5 +1,69 @@
-﻿  VulkanDeviceMemoryAllocator.cpp
-c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\devicememoryallocator\vulkan\vulkandevicememoryallocator.cpp(48): warning C4018: '<': signed/unsigned mismatch
-c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\devicememoryallocator\vulkan\vulkandevicememoryallocator.cpp(496): warning C4018: '<': signed/unsigned mismatch
+﻿  VulkanVertexBuffer.cpp
+c:\users\b1032464\documents\programming\engine\engine\source\engine\rendering\vertexbuffer\vulkan\vulkanvertexbuffer.cpp(50): warning C4244: '=': conversion from 'VkDeviceSize' to 'uint32_t', possible loss of data
+c:\users\b1032464\documents\programming\engine\engine\source\engine\rendering\vertexbuffer\vulkan\vulkanvertexbuffer.cpp(56): warning C4244: '=': conversion from 'VkDeviceSize' to 'uint32_t', possible loss of data
+c:\users\b1032464\documents\programming\engine\engine\source\engine\rendering\vertexbuffer\vulkan\vulkanvertexbuffer.cpp(64): warning C4018: '<': signed/unsigned mismatch
+  VulkanUniformBuffer.cpp
+  VulkanTexture.cpp
+  VulkanSampler2D.cpp
+c:\users\b1032464\documents\programming\engine\engine\source\engine\3rdparty\gli\gli\core\image.inl(90): warning C4244: 'return': conversion from 'glm::uint64' to 'std::size_t', possible loss of data
+c:\users\b1032464\documents\programming\engine\engine\source\engine\3rdparty\gli\gli\core\image.inl(105): warning C4244: 'return': conversion from 'glm::uint64' to 'std::size_t', possible loss of data
+c:\users\b1032464\documents\programming\engine\engine\source\engine\rendering\sampler2d\vulkan\vulkansampler2d.cpp(269): warning C4018: '<': signed/unsigned mismatch
+  VulkanIndexBuffer.cpp
+c:\users\b1032464\documents\programming\engine\engine\source\engine\rendering\indexbuffer\vulkan\vulkanindexbuffer.cpp(56): warning C4244: '=': conversion from 'VkDeviceSize' to 'uint32_t', possible loss of data
+  VulkanDepthTexture.cpp
+  VulkanBuffer.cpp
+c:\users\b1032464\documents\programming\engine\engine\source\engine\rendering\buffer\vulkan\vulkanbuffer.cpp(96): warning C4244: 'argument': conversion from 'VkDeviceSize' to 'std::size_t', possible loss of data
+  VulkanStagingBuffer.cpp
+  Generating Code...
+  Compiling...
+  VulkanDrawableObject.cpp
+c:\users\b1032464\documents\programming\engine\engine\source\engine\3rdparty\gli\gli\core\image.inl(90): warning C4244: 'return': conversion from 'glm::uint64' to 'std::size_t', possible loss of data
+c:\users\b1032464\documents\programming\engine\engine\source\engine\3rdparty\gli\gli\core\image.inl(105): warning C4244: 'return': conversion from 'glm::uint64' to 'std::size_t', possible loss of data
+  EngineMain.cpp
+c:\users\b1032464\documents\programming\engine\engine\source\engine\3rdparty\gli\gli\core\image.inl(90): warning C4244: 'return': conversion from 'glm::uint64' to 'std::size_t', possible loss of data
+c:\users\b1032464\documents\programming\engine\engine\source\engine\3rdparty\gli\gli\core\image.inl(105): warning C4244: 'return': conversion from 'glm::uint64' to 'std::size_t', possible loss of data
+  VulkanSwapchain.cpp
+c:\users\b1032464\documents\programming\engine\engine\source\engine\3rdparty\gli\gli\core\image.inl(90): warning C4244: 'return': conversion from 'glm::uint64' to 'std::size_t', possible loss of data
+c:\users\b1032464\documents\programming\engine\engine\source\engine\3rdparty\gli\gli\core\image.inl(105): warning C4244: 'return': conversion from 'glm::uint64' to 'std::size_t', possible loss of data
+c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\swapchain\vulkan\vulkanswapchain.cpp(147): warning C4018: '<': signed/unsigned mismatch
+c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\swapchain\vulkan\vulkanswapchain.cpp(159): warning C4018: '<': signed/unsigned mismatch
+c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\swapchain\vulkan\vulkanswapchain.cpp(394): warning C4018: '<': signed/unsigned mismatch
+c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\swapchain\vulkan\vulkanswapchain.cpp(417): warning C4018: '<': signed/unsigned mismatch
+c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\swapchain\vulkan\vulkanswapchain.cpp(568): warning C4018: '<': signed/unsigned mismatch
+c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\swapchain\vulkan\vulkanswapchain.cpp(661): warning C4018: '<': signed/unsigned mismatch
+c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\swapchain\vulkan\vulkanswapchain.cpp(745): warning C4552: '!=': operator has no effect; expected operator with side-effect
+  VulkanGraphicsManager.cpp
+c:\users\b1032464\documents\programming\engine\engine\source\engine\3rdparty\gli\gli\core\image.inl(90): warning C4244: 'return': conversion from 'glm::uint64' to 'std::size_t', possible loss of data
+c:\users\b1032464\documents\programming\engine\engine\source\engine\3rdparty\gli\gli\core\image.inl(105): warning C4244: 'return': conversion from 'glm::uint64' to 'std::size_t', possible loss of data
+c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\manager\vulkan\vulkangraphicsmanager.cpp(29): warning C4018: '<': signed/unsigned mismatch
+c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\manager\vulkan\vulkangraphicsmanager.cpp(270): warning C4018: '<': signed/unsigned mismatch
+c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\manager\vulkan\vulkangraphicsmanager.cpp(285): warning C4018: '<': signed/unsigned mismatch
+  GraphicsManager.cpp
+c:\users\b1032464\documents\programming\engine\engine\source\engine\3rdparty\gli\gli\core\image.inl(90): warning C4244: 'return': conversion from 'glm::uint64' to 'std::size_t', possible loss of data
+c:\users\b1032464\documents\programming\engine\engine\source\engine\3rdparty\gli\gli\core\image.inl(105): warning C4244: 'return': conversion from 'glm::uint64' to 'std::size_t', possible loss of data
+  Win32Application.cpp
+c:\users\b1032464\documents\programming\engine\engine\source\engine\3rdparty\gli\gli\core\image.inl(90): warning C4244: 'return': conversion from 'glm::uint64' to 'std::size_t', possible loss of data
+c:\users\b1032464\documents\programming\engine\engine\source\engine\3rdparty\gli\gli\core\image.inl(105): warning C4244: 'return': conversion from 'glm::uint64' to 'std::size_t', possible loss of data
+  Generating Code...
+c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\manager\vulkan\vulkangraphicsmanager.cpp(163): warning C4715: 'EngineAPI::Graphics::Platform::VulkanGraphicsManager::OnResize': not all control paths return a value
+  Skipping... (no relevant changes detected)
+  VulkanStatics.cpp
+  VulkanResource.cpp
+  VulkanShader.cpp
+  VulkanSamplerState.cpp
+  VulkanRenderPass.cpp
+  VulkanRenderPassInstance.cpp
+  VulkanPushConstantBinding.cpp
+  VulkanProgram.cpp
+  VulkanGraphicsPipelineState.cpp
+  VulkanGraphicsPipelineLayout.cpp
+  VulkanGraphicsPipelineCache.cpp
+  VulkanFramebuffer.cpp
+  VulkanRenderDevice.cpp
+  VulkanDeviceMemoryStore.cpp
+  VulkanDeviceMemoryBlock.cpp
+  VulkanDeviceMemoryAllocator.cpp
+  VulkanDescriptorSet.cpp
+  VulkanDescriptorPool.cpp
 VulkanDrawableObject.obj : warning LNK4221: This object file does not define any previously undefined public symbols, so it will not be used by any link operation that consumes this library
   Engine.vcxproj -> C:\Users\B1032464\Documents\Programming\Engine\Engine\Source\Engine\Msvs\..\..\Lib\Win32Debug\Engine.lib
