@@ -19,9 +19,12 @@ void VulkanDeviceMemoryAllocator::Shutdown()
 		deviceMemoryStoresArray[i].Shutdown();
 }
 
-bool VulkanDeviceMemoryAllocator::VulkanDeviceMemoryAllocator::InitVKMemoryAllocator()
+bool VulkanDeviceMemoryAllocator::VulkanDeviceMemoryAllocator::InitVKMemoryAllocator(EngineAPI::Graphics::RenderDevice* renderingDevice)
 {
-	//Done....
+	//Cahce memory properties
+	cachedVKDeviceMemoryProperties = renderingDevice->GetVKPhysicalDeviceMemoryProperties();
+
+	//Done
 	return true;
 }
 
@@ -36,7 +39,34 @@ void VulkanDeviceMemoryAllocator::Debug_LongDump(std::string filename)
 	out.open(filename + ".DUMP");
 	if (out.is_open())
 	{
+		//Dump Device memory heaps
+		out << "**************************************************************" << "\n";
+		out << "***************Vulkan Memory Properties Dump******************" << "\n";
+		out << "**************************************************************" << "\n";
+		out << "\n";
+		for (int i = 0; i < cachedVKDeviceMemoryProperties.memoryHeapCount; i++)
+		{
+			out << "Memory Heap Index: " << i << "\n";
+			out << "Memory Heap Size: " << cachedVKDeviceMemoryProperties.memoryHeaps[i].size << "\n";
+			out << "Memory Heap Flags: " << cachedVKDeviceMemoryProperties.memoryHeaps[i].flags << "\n\n";
+		}
+		out << "**************************************************************" << "\n";
+		out << "\n";
+
+		//Dump Device memory types
+		for (int i = 0; i < cachedVKDeviceMemoryProperties.memoryTypeCount; i++)
+		{
+			out << "Memory Type Index: " << i << "\n";
+			out << "Memory Type Heap Index: " << cachedVKDeviceMemoryProperties.memoryTypes[i].heapIndex << "\n";
+			out << "Memory Type Properties Flag: " << cachedVKDeviceMemoryProperties.memoryTypes[i].propertyFlags << "\n\n";
+		}
+		out << "**************************************************************" << "\n";
+		out << "\n";
+
+		//Dump allocator state...
+		out << "**************************************************************" << "\n";
 		out << "**************VulkanDeviceMemoryAllocator Dump****************" << "\n";
+		out << "**************************************************************" << "\n";
 		out << "\n";
 		out << "Allocator address: " << (void*)this << "\n";
 		out << "Number of memory stores: " << deviceMemoryStoresCount << "\n";

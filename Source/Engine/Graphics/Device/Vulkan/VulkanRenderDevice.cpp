@@ -201,7 +201,7 @@ bool VulkanRenderDevice::InitVKMemoryAllocator(EngineAPI::OS::OSWindow* osWindow
 	VkDeviceSize maxVRAM = vkDeviceMemoryProperties.memoryHeaps[gpuHeapIdx].size;
 
 	//Allocate the memory allocator/manager
-	if (!deviceMemoryAllocator.InitVKMemoryAllocator())
+	if (!deviceMemoryAllocator.InitVKMemoryAllocator((EngineAPI::Graphics::RenderDevice*)this))
 		return false;
 
 	//Done

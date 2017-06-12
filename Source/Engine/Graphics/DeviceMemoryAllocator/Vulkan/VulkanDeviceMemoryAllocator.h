@@ -44,7 +44,7 @@ namespace EngineAPI
 				void Shutdown();
 
 				//Inits the Vk Allocator
-				bool InitVKMemoryAllocator();
+				bool InitVKMemoryAllocator(EngineAPI::Graphics::RenderDevice* renderingDevice);
 
 			public:
 				//Debug: 
@@ -67,7 +67,9 @@ namespace EngineAPI
 				EngineAPI::Graphics::DeviceMemoryStore* CreateNewMemoryStore(EngineAPI::Graphics::RenderDevice* renderDevice,
 					VkDeviceSize deviceMemorySizeInBytesToAlloc, uint32_t memoryTypeIndex, bool isPublicStore);
 
-				//Destroys a store
+				//
+				//TODO:Destroys a store
+				//
 
 			public:
 				//Pass a rendering resource to be allocated automatically
@@ -84,6 +86,9 @@ namespace EngineAPI
 				//Array of stores
 				EngineAPI::Graphics::DeviceMemoryStore deviceMemoryStoresArray[ENGINE_CONFIG_VULKAN_API_MAX_NUMBER_OF_MEMORY_STORES];
 				uint32_t deviceMemoryStoresCount = 0; //Number created
+
+				//Device memory properties - cached at init time
+				VkPhysicalDeviceMemoryProperties cachedVKDeviceMemoryProperties;
 
 			private:
 				//Allocs a resource -> Will automatically find/create the store to use

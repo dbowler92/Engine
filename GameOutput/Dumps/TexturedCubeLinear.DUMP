@@ -1,11 +1,73 @@
-**************VulkanDeviceMemoryAllocator Dump****************
+**************************************************************
+***************Vulkan Memory Properties Dump******************
+**************************************************************
 
-Allocator address: 00655188
+Memory Heap Index: 0
+Memory Heap Size: 3126636544
+Memory Heap Flags: 1
+
+Memory Heap Index: 1
+Memory Heap Size: 17121148928
+Memory Heap Flags: 0
+
+**************************************************************
+
+Memory Type Index: 0
+Memory Type Heap Index: 1
+Memory Type Properties Flag: 0
+
+Memory Type Index: 1
+Memory Type Heap Index: 1
+Memory Type Properties Flag: 0
+
+Memory Type Index: 2
+Memory Type Heap Index: 1
+Memory Type Properties Flag: 0
+
+Memory Type Index: 3
+Memory Type Heap Index: 1
+Memory Type Properties Flag: 0
+
+Memory Type Index: 4
+Memory Type Heap Index: 1
+Memory Type Properties Flag: 0
+
+Memory Type Index: 5
+Memory Type Heap Index: 1
+Memory Type Properties Flag: 0
+
+Memory Type Index: 6
+Memory Type Heap Index: 1
+Memory Type Properties Flag: 0
+
+Memory Type Index: 7
+Memory Type Heap Index: 0
+Memory Type Properties Flag: 1
+
+Memory Type Index: 8
+Memory Type Heap Index: 0
+Memory Type Properties Flag: 1
+
+Memory Type Index: 9
+Memory Type Heap Index: 1
+Memory Type Properties Flag: 6
+
+Memory Type Index: 10
+Memory Type Heap Index: 1
+Memory Type Properties Flag: 14
+
+**************************************************************
+
+**************************************************************
+**************VulkanDeviceMemoryAllocator Dump****************
+**************************************************************
+
+Allocator address: 00ED5188
 Number of memory stores: 4
 
 **************************************************************
 
-[Store: 0] 00655190
+[Store: 0] 00ED5190
 Is Active Store: 1
 Is Public Store: 1
 Is Auto Store: 1
@@ -18,13 +80,13 @@ Vulkan Memory Heap Flags: 1
 Is Memory Mappable: 0
 Number of blocks: 1
 
-	[Block: 0] 0382F200
+	[Block: 0] 03CE5388
 		Is Free: 0
 		Is Mappable: 0
 		Is Mapped: 0
 		Resource Size (Vulkan Defined): 2457600
 		Resource Alignment: 1024
-		Resource Address: 006A5268
+		Resource Address: 00F25470
 		Resource Type: 2
 		Resource Usage: 0
 		Resource Debug Name: Swapchain Depth Texture
@@ -34,7 +96,7 @@ Number of blocks: 1
 
 **************************************************************
 
-[Store: 1] 006551E0
+[Store: 1] 00ED51E0
 Is Active Store: 1
 Is Public Store: 0
 Is Auto Store: 0
@@ -47,14 +109,14 @@ Vulkan Memory Heap Flags: 0
 Is Memory Mappable: 1
 Number of blocks: 1
 
-	[Block: 0] 0382FA80
+	[Block: 0] 03CE6188
 		Is Free: 0
 		Is Mappable: 1
 		Is Mapped: 0
 		Resource Size (Vulkan Defined): 1024
 		Resource Alignment: 256
 		Buffer Contents Size: 864
-		Resource Address: 0120D598
+		Resource Address: 0119D580
 		Resource Type: 5
 		Resource Usage: 2
 		Resource Debug Name: Textured Cube Vertex Buffer
@@ -64,7 +126,7 @@ Number of blocks: 1
 
 **************************************************************
 
-[Store: 2] 00655230
+[Store: 2] 00ED5230
 Is Active Store: 1
 Is Public Store: 0
 Is Auto Store: 0
@@ -77,14 +139,14 @@ Vulkan Memory Heap Flags: 0
 Is Memory Mappable: 1
 Number of blocks: 1
 
-	[Block: 0] 0382FC80
+	[Block: 0] 03CE5C08
 		Is Free: 0
 		Is Mappable: 1
 		Is Mapped: 0
 		Resource Size (Vulkan Defined): 256
 		Resource Alignment: 256
 		Buffer Contents Size: 64
-		Resource Address: 0120D648
+		Resource Address: 0119D628
 		Resource Type: 7
 		Resource Usage: 2
 		Resource Debug Name: Textured Cube Uniform Buffer
@@ -94,7 +156,7 @@ Number of blocks: 1
 
 **************************************************************
 
-[Store: 3] 00655280
+[Store: 3] 00ED5280
 Is Active Store: 1
 Is Public Store: 0
 Is Auto Store: 0
@@ -107,13 +169,13 @@ Vulkan Memory Heap Flags: 0
 Is Memory Mappable: 1
 Number of blocks: 1
 
-	[Block: 0] 0382FB00
+	[Block: 0] 03CE5C88
 		Is Free: 0
 		Is Mappable: 1
 		Is Mapped: 0
 		Resource Size (Vulkan Defined): 1433600
 		Resource Alignment: 32
-		Resource Address: 0120D890
+		Resource Address: 0119D868
 		Resource Type: 1
 		Resource Usage: 2
 		Resource Debug Name: Textured Cube Sampler2D (Linear)
