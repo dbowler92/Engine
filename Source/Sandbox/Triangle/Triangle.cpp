@@ -60,11 +60,9 @@ void Triangle::Init(EngineAPI::Graphics::GraphicsManager* graphicsSubsystem)
 	vbLayout.VertexStreamsCount = 2;
 	vbLayout.VertexStreams = streams;
 
-	bool isDynamicVB = true; //TEMP: For VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT memory rather than GPU only. 
-
 	//Init the VB
 	vb.SetResourceDebugName("Triangle Vertex Buffer");
-	assert(vb.InitVKVertexBuffer(device, sizeof(triangleData), isDynamicVB, RENDERING_RESOURCE_USAGE_GPU_READ_CPU_WRITE));
+	assert(vb.InitVKVertexBuffer(device, sizeof(triangleData), RENDERING_RESOURCE_USAGE_GPU_READ_CPU_WRITE));
 
 	VkPhysicalDeviceMemoryProperties p = device->GetVKPhysicalDeviceMemoryProperties();
 

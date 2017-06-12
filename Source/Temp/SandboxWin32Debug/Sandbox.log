@@ -1,35 +1,26 @@
-﻿  SandboxApplication.cpp
+﻿  Triangle.cpp
 c:\users\b1032464\documents\programming\engine\engine\source\engine\3rdparty\gli\gli\core\image.inl(90): warning C4244: 'return': conversion from 'glm::uint64' to 'std::size_t', possible loss of data
 c:\users\b1032464\documents\programming\engine\engine\source\engine\3rdparty\gli\gli\core\image.inl(105): warning C4244: 'return': conversion from 'glm::uint64' to 'std::size_t', possible loss of data
-c:\users\b1032464\documents\programming\engine\engine\source\sandbox\application\sandboxapplication.cpp(46): warning C4067: unexpected tokens following preprocessor directive - expected a newline
-  Generating Code...
-  Compiling...
-  Triangle.cpp
-c:\users\b1032464\documents\programming\engine\engine\source\engine\3rdparty\gli\gli\core\image.inl(90): warning C4244: 'return': conversion from 'glm::uint64' to 'std::size_t', possible loss of data
-c:\users\b1032464\documents\programming\engine\engine\source\engine\3rdparty\gli\gli\core\image.inl(105): warning C4244: 'return': conversion from 'glm::uint64' to 'std::size_t', possible loss of data
-c:\users\b1032464\documents\programming\engine\engine\source\sandbox\triangle\triangle.cpp(134): warning C4244: '=': conversion from 'uint32_t' to 'float', possible loss of data
-c:\users\b1032464\documents\programming\engine\engine\source\sandbox\triangle\triangle.cpp(135): warning C4244: '=': conversion from 'uint32_t' to 'float', possible loss of data
+c:\users\b1032464\documents\programming\engine\engine\source\sandbox\triangle\triangle.cpp(132): warning C4244: '=': conversion from 'uint32_t' to 'float', possible loss of data
+c:\users\b1032464\documents\programming\engine\engine\source\sandbox\triangle\triangle.cpp(133): warning C4244: '=': conversion from 'uint32_t' to 'float', possible loss of data
   TexturedCube.cpp
 c:\users\b1032464\documents\programming\engine\engine\source\engine\3rdparty\gli\gli\core\image.inl(90): warning C4244: 'return': conversion from 'glm::uint64' to 'std::size_t', possible loss of data
 c:\users\b1032464\documents\programming\engine\engine\source\engine\3rdparty\gli\gli\core\image.inl(105): warning C4244: 'return': conversion from 'glm::uint64' to 'std::size_t', possible loss of data
-c:\users\b1032464\documents\programming\engine\engine\source\sandbox\texturedcube\texturedcube.cpp(199): warning C4067: unexpected tokens following preprocessor directive - expected a newline
-c:\users\b1032464\documents\programming\engine\engine\source\sandbox\texturedcube\texturedcube.cpp(346): warning C4244: '=': conversion from 'uint32_t' to 'float', possible loss of data
-c:\users\b1032464\documents\programming\engine\engine\source\sandbox\texturedcube\texturedcube.cpp(347): warning C4244: '=': conversion from 'uint32_t' to 'float', possible loss of data
-c:\users\b1032464\documents\programming\engine\engine\source\sandbox\texturedcube\texturedcube.cpp(401): warning C4244: 'initializing': conversion from 'uint32_t' to 'float', possible loss of data
+c:\users\b1032464\documents\programming\engine\engine\source\sandbox\texturedcube\texturedcube.cpp(196): warning C4067: unexpected tokens following preprocessor directive - expected a newline
+c:\users\b1032464\documents\programming\engine\engine\source\sandbox\texturedcube\texturedcube.cpp(343): warning C4244: '=': conversion from 'uint32_t' to 'float', possible loss of data
+c:\users\b1032464\documents\programming\engine\engine\source\sandbox\texturedcube\texturedcube.cpp(344): warning C4244: '=': conversion from 'uint32_t' to 'float', possible loss of data
+c:\users\b1032464\documents\programming\engine\engine\source\sandbox\texturedcube\texturedcube.cpp(398): warning C4244: 'initializing': conversion from 'uint32_t' to 'float', possible loss of data
   Quad.cpp
 c:\users\b1032464\documents\programming\engine\engine\source\engine\3rdparty\gli\gli\core\image.inl(90): warning C4244: 'return': conversion from 'glm::uint64' to 'std::size_t', possible loss of data
 c:\users\b1032464\documents\programming\engine\engine\source\engine\3rdparty\gli\gli\core\image.inl(105): warning C4244: 'return': conversion from 'glm::uint64' to 'std::size_t', possible loss of data
-c:\users\b1032464\documents\programming\engine\engine\source\sandbox\quad\quad.cpp(162): warning C4244: '=': conversion from 'uint32_t' to 'float', possible loss of data
-c:\users\b1032464\documents\programming\engine\engine\source\sandbox\quad\quad.cpp(163): warning C4244: '=': conversion from 'uint32_t' to 'float', possible loss of data
+c:\users\b1032464\documents\programming\engine\engine\source\sandbox\quad\quad.cpp(159): warning C4244: '=': conversion from 'uint32_t' to 'float', possible loss of data
+c:\users\b1032464\documents\programming\engine\engine\source\sandbox\quad\quad.cpp(160): warning C4244: '=': conversion from 'uint32_t' to 'float', possible loss of data
   PushConstantCube.cpp
 c:\users\b1032464\documents\programming\engine\engine\source\engine\3rdparty\gli\gli\core\image.inl(90): warning C4244: 'return': conversion from 'glm::uint64' to 'std::size_t', possible loss of data
 c:\users\b1032464\documents\programming\engine\engine\source\engine\3rdparty\gli\gli\core\image.inl(105): warning C4244: 'return': conversion from 'glm::uint64' to 'std::size_t', possible loss of data
 c:\users\b1032464\documents\programming\engine\engine\source\sandbox\pushconstantcube\pushconstantcube.cpp(171): warning C4244: 'initializing': conversion from 'uint32_t' to 'float', possible loss of data
+c:\users\b1032464\documents\programming\engine\engine\source\sandbox\pushconstantcube\pushconstantcube.cpp(273): warning C4244: '=': conversion from 'uint32_t' to 'float', possible loss of data
 c:\users\b1032464\documents\programming\engine\engine\source\sandbox\pushconstantcube\pushconstantcube.cpp(274): warning C4244: '=': conversion from 'uint32_t' to 'float', possible loss of data
-c:\users\b1032464\documents\programming\engine\engine\source\sandbox\pushconstantcube\pushconstantcube.cpp(275): warning C4244: '=': conversion from 'uint32_t' to 'float', possible loss of data
-  SandboxMain.cpp
-c:\users\b1032464\documents\programming\engine\engine\source\engine\3rdparty\gli\gli\core\image.inl(90): warning C4244: 'return': conversion from 'glm::uint64' to 'std::size_t', possible loss of data
-c:\users\b1032464\documents\programming\engine\engine\source\engine\3rdparty\gli\gli\core\image.inl(105): warning C4244: 'return': conversion from 'glm::uint64' to 'std::size_t', possible loss of data
   Generating Code...
   Sandbox.vcxproj -> C:\Users\B1032464\Documents\Programming\Engine\Engine\Source\Engine\Msvs\..\..\Lib\Win32Debug\SandboxWin32Debug.exe
   Sandbox.vcxproj -> C:\Users\B1032464\Documents\Programming\Engine\Engine\Source\Engine\Msvs\..\..\Lib\Win32Debug\SandboxWin32Debug.pdb (Full PDB)

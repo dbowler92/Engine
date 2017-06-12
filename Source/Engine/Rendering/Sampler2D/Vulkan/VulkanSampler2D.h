@@ -50,7 +50,7 @@ namespace EngineAPI
 
 				//1) Inits the VkImage which represents this sampler2D object
 				bool InitVKSampler2DFromFile(EngineAPI::Graphics::RenderDevice* renderingDevice, 
-					const char* filename, TextureLoadingAPI textureLoadingAPI, TextureTilingMode tilingMode, bool isDynamicTexture, RenderingResourceUsage resourceUsage,
+					const char* filename, TextureLoadingAPI textureLoadingAPI, TextureTilingMode tilingMode, RenderingResourceUsage resourceUsage,
 					VkFormat desiredImageFormat = VK_FORMAT_R8G8B8A8_UNORM, VkImageUsageFlags desiredImageUsageFlags = VK_IMAGE_USAGE_SAMPLED_BIT);
 
 				//2) Alloc memory for this texture

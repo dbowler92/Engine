@@ -114,7 +114,7 @@ void PushConstantCube::Init(EngineAPI::Graphics::GraphicsManager* graphicsSubsys
 
 							 //Init the VB
 	vb.SetResourceDebugName("Push Constant Cube Vertex Buffer");
-	assert(vb.InitVKVertexBuffer(device, sizeof(cubeData), isDynamicVB, RENDERING_RESOURCE_USAGE_GPU_READ_CPU_WRITE));
+	assert(vb.InitVKVertexBuffer(device, sizeof(cubeData), RENDERING_RESOURCE_USAGE_GPU_READ_CPU_WRITE));
 
 	VkPhysicalDeviceMemoryProperties p = device->GetVKPhysicalDeviceMemoryProperties();
 
@@ -178,9 +178,8 @@ void PushConstantCube::Init(EngineAPI::Graphics::GraphicsManager* graphicsSubsys
 	uniformBufferMatrixData = proj * view * world;
 
 	uniformBuffer.SetResourceDebugName("Push Constant Cube Uniform Buffer");
-	bool isDynamicUB = true;
 	VkDeviceSize ubSize = sizeof(uniformBufferMatrixData); //Matrix4x4
-	assert(uniformBuffer.InitVKUniformBuffer(device, ubSize, isDynamicUB, RENDERING_RESOURCE_USAGE_GPU_READ_CPU_WRITE));
+	assert(uniformBuffer.InitVKUniformBuffer(device, ubSize, RENDERING_RESOURCE_USAGE_GPU_READ_CPU_WRITE));
 
 	uint32_t memoryIndexUB = 0;
 	assert(EngineAPI::Statics::VulkanStatics::FindMemoryTypeForProperties(uniformBuffer.GetResourceVKMemoryRequirments().memoryTypeBits,

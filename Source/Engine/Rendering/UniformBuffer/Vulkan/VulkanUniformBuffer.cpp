@@ -11,7 +11,7 @@ void VulkanUniformBuffer::Shutdown()
 }
 
 bool VulkanUniformBuffer::InitVKUniformBuffer(EngineAPI::Graphics::RenderDevice* renderingDevice,
-	VkDeviceSize uniformBufferSizeBytes, bool isDynamicUniformBuffer, RenderingResourceUsage resourceUsage)
+	VkDeviceSize uniformBufferSizeBytes, RenderingResourceUsage resourceUsage)
 {
 	//Creation info
 	VkBufferCreateInfo ubCreateInfo = {};

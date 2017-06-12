@@ -63,7 +63,7 @@ namespace EngineAPI
 
 				//1) Inits the vertex buffer
 				bool InitVKVertexBuffer(EngineAPI::Graphics::RenderDevice* renderingDevice, 
-					VkDeviceSize vertexBufferSizeBytes, bool isDynamicVertexBuffer, RenderingResourceUsage resourceUsage);
+					VkDeviceSize vertexBufferSizeBytes, RenderingResourceUsage resourceUsage);
 
 				//2) Allocates the vertex buffer on the device -> This includes writing
 				//data to the buffer (staging) & binding the device memory

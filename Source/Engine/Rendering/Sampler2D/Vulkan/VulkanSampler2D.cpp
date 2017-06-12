@@ -23,7 +23,7 @@ void VulkanSampler2D::Shutdown()
 
 bool VulkanSampler2D::InitVKSampler2DFromFile(EngineAPI::Graphics::RenderDevice* renderingDevice, 
 	const char* filename, TextureLoadingAPI textureLoadingAPI, TextureTilingMode tilingMode,
-	bool isDynamicTexture, RenderingResourceUsage resourceUsage, VkFormat desiredImageFormat, VkImageUsageFlags desiredImageUsageFlags)
+	RenderingResourceUsage resourceUsage, VkFormat desiredImageFormat, VkImageUsageFlags desiredImageUsageFlags)
 {
 	//Print message telling us what we are loading...
 	EngineAPI::Debug::DebugLog::PrintInfoMessage("VulkanSampler2D::InitVKSampler2DFromFile(): Loading texture: ");

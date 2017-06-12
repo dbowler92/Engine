@@ -44,7 +44,7 @@ namespace EngineAPI
 
 				//1) Init the index buffer
 				bool InitVKIndexBuffer(EngineAPI::Graphics::RenderDevice* renderingDevice,
-					VkDeviceSize indexBufferSizeBytes, bool isDynamicIndexBuffer, RenderingResourceUsage resourceUsage);
+					VkDeviceSize indexBufferSizeBytes, RenderingResourceUsage resourceUsage);
 
 				//2) Allocates the index buffer on the device -> This includes writing
 				//data to the buffer (staging) & binding the device memory

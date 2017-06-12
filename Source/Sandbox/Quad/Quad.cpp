@@ -62,11 +62,9 @@ void Quad::Init(EngineAPI::Graphics::GraphicsManager* graphicsSubsystem)
 	vbLayout.VertexStreamsCount = 2;
 	vbLayout.VertexStreams = streams;
 
-	bool isDynamicVB = true; //TEMP: For VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT memory rather than GPU only. 
-
 	//Init the VB
 	vb.SetResourceDebugName("Quad Vertex Buffer");
-	assert(vb.InitVKVertexBuffer(device, sizeof(squareData), isDynamicVB, RENDERING_RESOURCE_USAGE_GPU_READ_CPU_WRITE));
+	assert(vb.InitVKVertexBuffer(device, sizeof(squareData), RENDERING_RESOURCE_USAGE_GPU_READ_CPU_WRITE));
 
 	VkPhysicalDeviceMemoryProperties p = device->GetVKPhysicalDeviceMemoryProperties();
 
@@ -90,10 +88,9 @@ void Quad::Init(EngineAPI::Graphics::GraphicsManager* graphicsSubsystem)
 	//Index buffer
 	//
 	uint16_t squareIndices[] = { 0, 1, 2, 0, 2, 3 }; //0, 3, 1, 3, 2, 1
-	bool isDynamicIB = true; //TEMP: For VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT memory rather than GPU only. 
 	
 	ib.SetResourceDebugName("Quad Index Buffer");
-	assert(ib.InitVKIndexBuffer(device, sizeof(squareIndices), isDynamicIB, RENDERING_RESOURCE_USAGE_GPU_READ_CPU_WRITE));
+	assert(ib.InitVKIndexBuffer(device, sizeof(squareIndices), RENDERING_RESOURCE_USAGE_GPU_READ_CPU_WRITE));
 
 	//Ib description
 	IndexBufferLayout ibDesc = {};

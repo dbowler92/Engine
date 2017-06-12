@@ -16,7 +16,7 @@ VkIndexType VulkanIndexBuffer::GetVKIndexType()
 }
 
 bool VulkanIndexBuffer::InitVKIndexBuffer(EngineAPI::Graphics::RenderDevice* renderingDevice,
-	VkDeviceSize indexBufferSizeBytes, bool isDynamicIndexBuffer, RenderingResourceUsage resourceUsage)
+	VkDeviceSize indexBufferSizeBytes, RenderingResourceUsage resourceUsage)
 {
 	//Creation info
 	VkBufferCreateInfo ibCreateInfo = {};

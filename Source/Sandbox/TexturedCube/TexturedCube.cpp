@@ -108,11 +108,9 @@ void TexturedCube::Init(EngineAPI::Graphics::GraphicsManager* graphicsSubsystem)
 	vbLayout.VertexStreamsCount = 2;
 	vbLayout.VertexStreams = streams;
 
-	bool isDynamicVB = true; //TEMP: For VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT memory rather than GPU only. 
-
 	//Init the VB
 	vb.SetResourceDebugName("Textured Cube Vertex Buffer");
-	assert(vb.InitVKVertexBuffer(device, sizeof(cubeData), isDynamicVB, RENDERING_RESOURCE_USAGE_GPU_READ_CPU_WRITE));
+	assert(vb.InitVKVertexBuffer(device, sizeof(cubeData), RENDERING_RESOURCE_USAGE_GPU_READ_CPU_WRITE));
 
 	VkPhysicalDeviceMemoryProperties p = device->GetVKPhysicalDeviceMemoryProperties();
 
@@ -176,9 +174,8 @@ void TexturedCube::Init(EngineAPI::Graphics::GraphicsManager* graphicsSubsystem)
 	uniformBufferMatrixData = proj * view * world;
 
 	uniformBuffer.SetResourceDebugName("Textured Cube Uniform Buffer");
-	bool isDynamicUB = true;
 	VkDeviceSize ubSize = sizeof(uniformBufferMatrixData); //Matrix4x4
-	assert(uniformBuffer.InitVKUniformBuffer(device, ubSize, isDynamicUB, RENDERING_RESOURCE_USAGE_GPU_READ_CPU_WRITE));
+	assert(uniformBuffer.InitVKUniformBuffer(device, ubSize, RENDERING_RESOURCE_USAGE_GPU_READ_CPU_WRITE));
 
 	uint32_t memoryIndexUB = 0;
 	assert(EngineAPI::Statics::VulkanStatics::FindMemoryTypeForProperties(uniformBuffer.GetResourceVKMemoryRequirments().memoryTypeBits,
@@ -208,7 +205,7 @@ void TexturedCube::Init(EngineAPI::Graphics::GraphicsManager* graphicsSubsystem)
 	sampler2D.SetResourceDebugName("Textured Cube Sampler2D (Linear)");
 
 	assert(sampler2D.InitVKSampler2DFromFile(device, TEXTURE_ASSETS_FOLDER"TestTextures/LearningVulkan.ktx", TEXTURE_LOADING_API_GLI,
-		TEXTURE_TILING_MODE_LINEAR, true, RENDERING_RESOURCE_USAGE_GPU_READ_CPU_WRITE,
+		TEXTURE_TILING_MODE_LINEAR, RENDERING_RESOURCE_USAGE_GPU_READ_CPU_WRITE,
 		VK_FORMAT_R8G8B8A8_UNORM, VK_IMAGE_USAGE_SAMPLED_BIT));
 
 	//Wont work!

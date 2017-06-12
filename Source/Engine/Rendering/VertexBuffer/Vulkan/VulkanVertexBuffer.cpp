@@ -12,7 +12,7 @@ void VulkanVertexBuffer::Shutdown()
 }
 
 bool VulkanVertexBuffer::InitVKVertexBuffer(EngineAPI::Graphics::RenderDevice* renderingDevice,
-	VkDeviceSize vertexBufferSizeBytes, bool isDynamicVertexBuffer, RenderingResourceUsage resourceUsage)
+	VkDeviceSize vertexBufferSizeBytes, RenderingResourceUsage resourceUsage)
 {
 	//Creation info
 	VkBufferCreateInfo vbCreateInfo = {};
