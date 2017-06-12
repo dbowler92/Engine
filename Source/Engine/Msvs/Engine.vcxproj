@@ -46,6 +46,7 @@
     <ClCompile Include="..\Graphics\RenderPass\Vulkan\VulkanRenderPass.cpp" />
     <ClCompile Include="..\Graphics\SamplerState\Vulkan\VulkanSamplerState.cpp" />
     <ClCompile Include="..\Graphics\Shader\Vulkan\VulkanShader.cpp" />
+    <ClCompile Include="..\Graphics\StagingBuffer\Vulkan\VulkanStagingBuffer.cpp" />
     <ClCompile Include="..\Graphics\Swapchain\Vulkan\VulkanSwapchain.cpp" />
     <ClCompile Include="..\Main\EngineMain.cpp" />
     <ClCompile Include="..\OSWindow\Win32\Win32OSWindow.cpp" />
@@ -116,6 +117,8 @@
     <ClInclude Include="..\Graphics\SamplerState\Vulkan\VulkanSamplerState.h" />
     <ClInclude Include="..\Graphics\Shader\Shader.h" />
     <ClInclude Include="..\Graphics\Shader\Vulkan\VulkanShader.h" />
+    <ClInclude Include="..\Graphics\StagingBuffer\StagingBuffer.h" />
+    <ClInclude Include="..\Graphics\StagingBuffer\Vulkan\VulkanStagingBuffer.h" />
     <ClInclude Include="..\Graphics\Swapchain\Swapchain.h" />
     <ClInclude Include="..\Graphics\Swapchain\Vulkan\VulkanSwapchain.h" />
     <ClInclude Include="..\Includes\GraphicsIncludes.h" />

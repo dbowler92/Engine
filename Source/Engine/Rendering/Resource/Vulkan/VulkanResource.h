@@ -32,6 +32,17 @@ enum RenderingResourceType
 	RENDERING_RESOURCE_TYPE_VERTEX_BUFFER,
 	RENDERING_RESOURCE_TYPE_INDEX_BUFFER,
 	RENDERING_RESOURCE_TYPE_UNIFORM_BUFFER,
+
+	RENDERING_RESOURCE_TYPE_STAGING_BUFFER
+};
+
+//Resource usage -> This is TODO!
+enum RenderingResourceUsage
+{
+	RENDERING_RESOURCE_USAGE_GPU_READ_WRITE_ONLY,	    //GPU read/write. No CPU access (Default)
+	RENDERING_RESOURCE_USAGE_GPU_READ_ONLY,				//GPU read ONLY. No CPU access (Immutable)
+	RENDERING_RESOURCE_USAGE_GPU_READ_CPU_WRITE,		//GPU read, CPU write (Via map()) (Dynamic)
+	RENDERING_RESOURCE_USAGE_GPU_READ_CPU_READ_WRITE	//Resource that supports data transfer (copy) from GPU to CPU (Staging)
 };
 
 namespace EngineAPI

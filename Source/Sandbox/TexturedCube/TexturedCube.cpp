@@ -26,7 +26,7 @@ void TexturedCube::Shutdown()
 	descriptorPool.Shutdown();
 
 	samplerState.Shutdown();
-	sampler2DLinear.Shutdown();
+	sampler2D.Shutdown();
 }
 
 void TexturedCube::Init(EngineAPI::Graphics::GraphicsManager* graphicsSubsystem)
@@ -194,35 +194,49 @@ void TexturedCube::Init(EngineAPI::Graphics::GraphicsManager* graphicsSubsystem)
 	//
 	//Sampler2D - Colour texture loaded from file. 
 	//
-	sampler2DLinear.SetResourceDebugName("Textured Cube Sampler2D (Optimal)");
-	//assert(sampler2DLinear.InitVKSampler2DFromFile(device, TEXTURE_ASSETS_FOLDER"TestTextures/LearningVulkan.ktx", TEXTURE_LOADING_API_GLI,
-	//	TEXTURE_TILING_MODE_LINEAR, true,
-	//	VK_FORMAT_R8G8B8A8_UNORM, VK_IMAGE_USAGE_SAMPLED_BIT));
+	VkMemoryPropertyFlags samplerMemoryPropsFlags = 0;
 
-	//assert(sampler2DLinear.InitVKSampler2DFromFile(device, TEXTURE_ASSETS_FOLDER"TestTextures/floor.dds", TEXTURE_LOADING_API_GLI,
-	//	TEXTURE_TILING_MODE_LINEAR, true,
-	//	VK_FORMAT_R8G8B8A8_UNORM, VK_IMAGE_USAGE_SAMPLED_BIT));
+#if TEXTURED_CUBE_DO_USE_OPTIMAL_TILING_FOR_SAMPLER
+	sampler2D.SetResourceDebugName("Textured Cube Sampler2D (Optimal)");
 
-	//assert(sampler2DLinear.InitVKSampler2DFromFile(device, TEXTURE_ASSETS_FOLDER"TestTextures/TestPNGFile_256_256.png", TEXTURE_LOADING_API_LODE_PNG,
-	//	TEXTURE_TILING_MODE_LINEAR, true,
-	//	VK_FORMAT_R8G8B8A8_UNORM, VK_IMAGE_USAGE_SAMPLED_BIT));
-
-	assert(sampler2DLinear.InitVKSampler2DFromFile(device, TEXTURE_ASSETS_FOLDER"TestTextures/LearningVulkan.ktx", TEXTURE_LOADING_API_GLI,
-		TEXTURE_TILING_MODE_OPTIMAL, true,
+	assert(sampler2D.InitVKSampler2DFromFile(device, TEXTURE_ASSETS_FOLDER"TestTextures/LearningVulkan.ktx", TEXTURE_LOADING_API_GLI,
+		TEXTURE_TILING_MODE_OPTIMAL, false,
 		VK_FORMAT_R8G8B8A8_UNORM, VK_IMAGE_USAGE_SAMPLED_BIT));
 
+	samplerMemoryPropsFlags = VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT;
+#else 
+	sampler2D.SetResourceDebugName("Textured Cube Sampler2D (Linear)");
+
+	assert(sampler2D.InitVKSampler2DFromFile(device, TEXTURE_ASSETS_FOLDER"TestTextures/LearningVulkan.ktx", TEXTURE_LOADING_API_GLI,
+		TEXTURE_TILING_MODE_LINEAR, true,
+		VK_FORMAT_R8G8B8A8_UNORM, VK_IMAGE_USAGE_SAMPLED_BIT));
+
+	//Wont work!
+	//assert(sampler2D.InitVKSampler2DFromFile(device, TEXTURE_ASSETS_FOLDER"TestTextures/floor.dds", TEXTURE_LOADING_API_GLI,
+	//	TEXTURE_TILING_MODE_LINEAR, true,
+	//	VK_FORMAT_R8G8B8A8_UNORM, VK_IMAGE_USAGE_SAMPLED_BIT));
+
+	//assert(sampler2D.InitVKSampler2DFromFile(device, TEXTURE_ASSETS_FOLDER"TestTextures/TestPNGFile_256_256.png", TEXTURE_LOADING_API_LODE_PNG,
+	//	TEXTURE_TILING_MODE_LINEAR, true,
+	//	VK_FORMAT_R8G8B8A8_UNORM, VK_IMAGE_USAGE_SAMPLED_BIT));
+
+	samplerMemoryPropsFlags = VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT;
+#endif
+
+	VkPhysicalDeviceMemoryProperties props = device->GetVKPhysicalDeviceMemoryProperties();
+
 	uint32_t memoryTypeIndexSampler2D = 0;
-	assert(EngineAPI::Statics::VulkanStatics::FindMemoryTypeForProperties(sampler2DLinear.GetResourceVKMemoryRequirments().memoryTypeBits,
-		VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT,
+	assert(EngineAPI::Statics::VulkanStatics::FindMemoryTypeForProperties(sampler2D.GetResourceVKMemoryRequirments().memoryTypeBits,
+		samplerMemoryPropsFlags,
 		&device->GetVKPhysicalDeviceMemoryProperties(), &memoryTypeIndexSampler2D));
 
 	EngineAPI::Graphics::DeviceMemoryStore* sampler2DDeviceStore = nullptr;
 	sampler2DDeviceStore = device->GetDeviceMemoryAllocator()->CreateNewMemoryStore(device,
-		sampler2DLinear.GetResourceVKMemoryRequirments().size,
+		sampler2D.GetResourceVKMemoryRequirments().size,
 		memoryTypeIndexSampler2D, false);
 
-	assert(sampler2DLinear.AllocAndBindVKSampler2D(device, sampler2DDeviceStore));
-	assert(sampler2DLinear.InitVKSampler2DLayoutAndViews(device));
+	assert(sampler2D.AllocAndBindVKSampler2D(device, sampler2DDeviceStore));
+	assert(sampler2D.InitVKSampler2DLayoutAndViews(device));
 
 	//
 	//Sampler state
@@ -270,7 +284,7 @@ void TexturedCube::Init(EngineAPI::Graphics::GraphicsManager* graphicsSubsystem)
 
 	VkDescriptorImageInfo samplerImageDescriptorInfo = {};
 	samplerImageDescriptorInfo.sampler = samplerState.GetVKSamplerStateHandle();
-	samplerImageDescriptorInfo.imageView = sampler2DLinear.GetVKShaderSamplerImageView();
+	samplerImageDescriptorInfo.imageView = sampler2D.GetVKShaderSamplerImageView();
 	samplerImageDescriptorInfo.imageLayout = VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
 
 	//Update descriptor set

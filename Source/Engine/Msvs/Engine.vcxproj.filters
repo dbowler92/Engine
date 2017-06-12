@@ -274,6 +274,9 @@
     <Filter Include="Src\3rdParty\LodePNG">
       <UniqueIdentifier>{ad10e84a-92ab-4c93-bbd5-2c02fa67c1b7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Src\Graphics\StagingBuffer\Vulkan">
+      <UniqueIdentifier>{1dc1bb2c-ab44-4119-8d39-891fed60e90f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Main\EngineMain.cpp">
@@ -398,6 +401,9 @@
     </ClCompile>
     <ClCompile Include="..\3rdParty\LodePNG\lodepng.cpp">
       <Filter>Src\3rdParty\LodePNG</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Graphics\StagingBuffer\Vulkan\VulkanStagingBuffer.cpp">
+      <Filter>Src\Graphics\StagingBuffer\Vulkan</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -643,6 +649,12 @@
     </ClInclude>
     <ClInclude Include="..\3rdParty\LodePNG\lodepng.h">
       <Filter>Src\3rdParty\LodePNG</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Graphics\StagingBuffer\Vulkan\VulkanStagingBuffer.h">
+      <Filter>Src\Graphics\StagingBuffer\Vulkan</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Graphics\StagingBuffer\StagingBuffer.h">
+      <Filter>Src\Graphics\StagingBuffer</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

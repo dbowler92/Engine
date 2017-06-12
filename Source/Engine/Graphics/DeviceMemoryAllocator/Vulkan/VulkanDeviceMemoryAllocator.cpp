@@ -349,9 +349,16 @@ SuballocationResult VulkanDeviceMemoryAllocator::AllocateResourceAuto(EngineAPI:
 				memoryRequirments, physicalDeviceMemoryProperties);
 			break;
 		}
+		case RENDERING_RESOURCE_TYPE_STAGING_BUFFER:
+		{
+			EngineAPI::Debug::DebugLog::PrintInfoMessage("VulkanDeviceMemoryAllocator::AllocateResourceAuto(): Allocating Staging Buffer\n");
+
+			success = ALLOCATION_RESULT_NOT_IMPLEMENTED;
+			break;
+		}
 
 		//
-		//Default
+		//Default - Error
 		//
 
 		default:

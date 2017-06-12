@@ -9,6 +9,8 @@ void VulkanSampler2D::Shutdown()
 	CleanupLodePNGData();
 
 	//Destroy self...
+	stagingBuffer.Shutdown();
+	
 	if (vkSampler2DTextureImageLayoutCmdBuffer != VK_NULL_HANDLE)
 		EngineAPI::Statics::VulkanStatics::CommandBufferReset(&vkSampler2DTextureImageLayoutCmdBuffer, true);
 
@@ -126,10 +128,10 @@ bool VulkanSampler2D::AllocAndBindVKSampler2D(EngineAPI::Graphics::RenderDevice*
 			return false;
 		}
 	}
-	else if (vkImageTilingMode == VK_IMAGE_TILING_LINEAR)
+	else if (vkImageTilingMode == VK_IMAGE_TILING_OPTIMAL)
 	{
 		//Use staging buffer to copy data to the GPU
-
+		int x = 100;
 	}
 	
 	//Cleanup CPU copy of texture

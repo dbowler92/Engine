@@ -9,6 +9,9 @@
 //Base
 #include "../../Engine/Rendering/DrawableObject/DrawableObject.h"
 
+//Optimal vs linear tiling for texture...
+#define TEXTURED_CUBE_DO_USE_OPTIMAL_TILING_FOR_SAMPLER true;
+
 class TexturedCube : public EngineAPI::Rendering::DrawableObject
 {
 public:
@@ -41,5 +44,5 @@ protected:
 	EngineAPI::Graphics::DescriptorSet descriptorSet;
 
 	EngineAPI::Graphics::SamplerState samplerState;
-	EngineAPI::Rendering::Sampler2D sampler2DLinear;
+	EngineAPI::Rendering::Sampler2D sampler2D;
 };

@@ -42,8 +42,12 @@ bool SandboxApplication::InitApplication()
 
 	//Init Push Constant cube
 	//pConstCube.Init(graphicsSubsystem);
-	
+
+#if TEXTURED_CUBE_DO_USE_OPTIMAL_TILING_FOR_SAMPLER
 	graphicsSubsystem->GetRenderingDevice()->GetDeviceMemoryAllocator()->Debug_LongDump(DEBUG_DUMPS_FOLDER"TexturedCubeOptimal");
+#else
+	graphicsSubsystem->GetRenderingDevice()->GetDeviceMemoryAllocator()->Debug_LongDump(DEBUG_DUMPS_FOLDER"TexturedCubeLinear");
+#endif
 
 	return true;
 }

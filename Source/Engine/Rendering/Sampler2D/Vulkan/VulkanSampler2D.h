@@ -12,6 +12,9 @@
 //Does need to know about the device to create it
 #include "../../../Graphics/Device/RenderDevice.h"
 
+//May use staging buffers to transfer data from CPU to GPU memory
+#include "../../../Graphics/StagingBuffer/StagingBuffer.h"
+
 //Texture loading
 #include <gli/gli.hpp> //NOTE: Preprocessor define required: _CRT_SECURE_NO_WARNINGS
 #include "../../../3rdParty/LodePNG/lodepng.h"
@@ -73,6 +76,10 @@ namespace EngineAPI
 				gli::texture2D* gliTexture2D = nullptr;
 				std::vector<unsigned char>lodePNGtextureBuffer;
 				
+				//Staging buffer -> Used to transfer data from host visible memory to 
+				//device local memory
+				EngineAPI::Graphics::StagingBuffer stagingBuffer;
+
 			private:
 				//Internal init
 				bool InitVKSampler2DLayout(EngineAPI::Graphics::RenderDevice* renderingDevice);
