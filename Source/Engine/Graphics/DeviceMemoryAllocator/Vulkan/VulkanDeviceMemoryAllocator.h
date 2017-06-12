@@ -68,7 +68,7 @@ namespace EngineAPI
 					VkDeviceSize deviceMemorySizeInBytesToAlloc, uint32_t memoryTypeIndex, bool isPublicStore);
 
 				//
-				//TODO:Destroys a store
+				//TODO: Destroys a store
 				//
 
 			public:
