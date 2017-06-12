@@ -64,7 +64,7 @@ void Triangle::Init(EngineAPI::Graphics::GraphicsManager* graphicsSubsystem)
 
 	//Init the VB
 	vb.SetResourceDebugName("Triangle Vertex Buffer");
-	assert(vb.InitVKVertexBuffer(device, sizeof(triangleData), isDynamicVB));
+	assert(vb.InitVKVertexBuffer(device, sizeof(triangleData), isDynamicVB, RENDERING_RESOURCE_USAGE_GPU_READ_CPU_WRITE));
 
 	VkPhysicalDeviceMemoryProperties p = device->GetVKPhysicalDeviceMemoryProperties();
 

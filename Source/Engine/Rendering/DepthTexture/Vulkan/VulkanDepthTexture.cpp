@@ -90,7 +90,7 @@ bool VulkanDepthTexture::InitVKDepthTexture(EngineAPI::Graphics::RenderDevice* r
 	//depthTextureCreateInfo.initialLayout = VK_IMAGE_LAYOUT_DEPTH_STENCIL_ATTACHMENT_OPTIMAL
 
 	//Init texture/image (parent)
-	if (!InitVKTexture(renderingDevice, &depthTextureCreateInfo, false))
+	if (!InitVKTexture(renderingDevice, &depthTextureCreateInfo, false, RENDERING_RESOURCE_USAGE_GPU_READ_WRITE_ONLY))
 	{
 		EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanDepthTexture::Init() InitVKDepthTexture - Could not init VkImage object\n");
 		return false;

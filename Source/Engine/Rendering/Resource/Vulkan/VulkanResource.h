@@ -39,10 +39,10 @@ enum RenderingResourceType
 //Resource usage -> This is TODO!
 enum RenderingResourceUsage
 {
-	RENDERING_RESOURCE_USAGE_GPU_READ_WRITE_ONLY,	    //GPU read/write. No CPU access (Default)
-	RENDERING_RESOURCE_USAGE_GPU_READ_ONLY,				//GPU read ONLY. No CPU access (Immutable)
-	RENDERING_RESOURCE_USAGE_GPU_READ_CPU_WRITE,		//GPU read, CPU write (Via map()) (Dynamic)
-	RENDERING_RESOURCE_USAGE_GPU_READ_CPU_READ_WRITE	//Resource that supports data transfer (copy) from GPU to CPU (Staging)
+	RENDERING_RESOURCE_USAGE_GPU_READ_WRITE_ONLY,	    //(Default)
+	RENDERING_RESOURCE_USAGE_GPU_READ_ONLY,				//(Immutable)
+	RENDERING_RESOURCE_USAGE_GPU_READ_CPU_WRITE,		//(Dynamic)
+	RENDERING_RESOURCE_USAGE_GPU_READ_CPU_READ_WRITE	//(Staging)
 };
 
 namespace EngineAPI
@@ -91,6 +91,7 @@ namespace EngineAPI
 				//Resource info getters
 				VkMemoryRequirements GetResourceVKMemoryRequirments() { return vkResourceMemoryRequirments; };
 				bool IsDynamicResource() { return isDynamicResourceFlag; };
+				RenderingResourceUsage GetResourceUsage() { return resourceUsage; };
 
 			public:
 				//Debug name -> Used when dumping info (Eg: State of the allocator)
@@ -113,7 +114,10 @@ namespace EngineAPI
 				//Is this resource dynamic?
 				bool isDynamicResourceFlag = false;
 
-				//Vulkan memory requirments for the resource
+				//Resource usage. 
+				RenderingResourceUsage resourceUsage;
+
+				//Vulkan memory requirements for the resource
 				VkMemoryRequirements vkResourceMemoryRequirments;
 
 			private:

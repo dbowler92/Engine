@@ -1,6 +1,5 @@
-﻿  VulkanSampler2D.cpp
-c:\users\b1032464\documents\programming\engine\engine\source\engine\3rdparty\gli\gli\core\image.inl(90): warning C4244: 'return': conversion from 'glm::uint64' to 'std::size_t', possible loss of data
-c:\users\b1032464\documents\programming\engine\engine\source\engine\3rdparty\gli\gli\core\image.inl(105): warning C4244: 'return': conversion from 'glm::uint64' to 'std::size_t', possible loss of data
-c:\users\b1032464\documents\programming\engine\engine\source\engine\rendering\sampler2d\vulkan\vulkansampler2d.cpp(269): warning C4018: '<': signed/unsigned mismatch
+﻿  VulkanDeviceMemoryAllocator.cpp
+c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\devicememoryallocator\vulkan\vulkandevicememoryallocator.cpp(48): warning C4018: '<': signed/unsigned mismatch
+c:\users\b1032464\documents\programming\engine\engine\source\engine\graphics\devicememoryallocator\vulkan\vulkandevicememoryallocator.cpp(496): warning C4018: '<': signed/unsigned mismatch
 VulkanDrawableObject.obj : warning LNK4221: This object file does not define any previously undefined public symbols, so it will not be used by any link operation that consumes this library
   Engine.vcxproj -> C:\Users\B1032464\Documents\Programming\Engine\Engine\Source\Engine\Msvs\..\..\Lib\Win32Debug\Engine.lib

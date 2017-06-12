@@ -27,7 +27,7 @@ bool VulkanStagingBuffer::InitVKStagingBuffer(EngineAPI::Graphics::RenderDevice*
 	stagingBufferCreateInfo.sharingMode = VK_SHARING_MODE_EXCLUSIVE;
 
 	//Init the buffer
-	if (!InitVKBuffer(renderingDevice, &stagingBufferCreateInfo, true))
+	if (!InitVKBuffer(renderingDevice, &stagingBufferCreateInfo, true, RENDERING_RESOURCE_USAGE_GPU_READ_CPU_READ_WRITE))
 	{
 		EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanStagingBuffer::InitVKStagingBuffer() Error - Could not init VkBuffer\n");
 		return false;

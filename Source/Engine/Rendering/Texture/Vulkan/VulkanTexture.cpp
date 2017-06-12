@@ -6,7 +6,7 @@
 using namespace EngineAPI::Rendering::Platform;
 
 bool VulkanTexture::InitVKTexture(EngineAPI::Graphics::RenderDevice* renderingDevice, 
-	VkImageCreateInfo* imageCreateInfo, bool isTextureDynamic)
+	VkImageCreateInfo* imageCreateInfo, bool isTextureDynamic, RenderingResourceUsage resourceUsage)
 {
 	//Cache texture info for future use
 	vkImageTilingMode   = imageCreateInfo->tiling;
@@ -20,6 +20,7 @@ bool VulkanTexture::InitVKTexture(EngineAPI::Graphics::RenderDevice* renderingDe
 
 	//Do we want a dynamic texture
 	isDynamicResourceFlag = isTextureDynamic;
+	this->resourceUsage = resourceUsage;
 
 	//Get the logical device used to create this texture. 
 	cachedVkDevice = renderingDevice->GetVKLogicalDevice();

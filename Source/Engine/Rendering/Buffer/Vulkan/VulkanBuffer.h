@@ -49,7 +49,7 @@ namespace EngineAPI
 			protected:
 				//Inits the buffer
 				bool InitVKBuffer(EngineAPI::Graphics::RenderDevice* renderingDevice,
-					VkBufferCreateInfo* bufferCreateInfo, bool isDynamicBuffer);
+					VkBufferCreateInfo* bufferCreateInfo, bool isDynamicBuffer, RenderingResourceUsage resourceUsage);
 
 				//Allocates a DeviceMemoryBlock for this resource
 				bool AllocVKBufferMemoryBlock(EngineAPI::Graphics::RenderDevice* renderingDevice,

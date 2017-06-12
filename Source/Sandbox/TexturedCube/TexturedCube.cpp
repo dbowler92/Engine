@@ -112,7 +112,7 @@ void TexturedCube::Init(EngineAPI::Graphics::GraphicsManager* graphicsSubsystem)
 
 	//Init the VB
 	vb.SetResourceDebugName("Textured Cube Vertex Buffer");
-	assert(vb.InitVKVertexBuffer(device, sizeof(cubeData), isDynamicVB));
+	assert(vb.InitVKVertexBuffer(device, sizeof(cubeData), isDynamicVB, RENDERING_RESOURCE_USAGE_GPU_READ_CPU_WRITE));
 
 	VkPhysicalDeviceMemoryProperties p = device->GetVKPhysicalDeviceMemoryProperties();
 
@@ -178,7 +178,7 @@ void TexturedCube::Init(EngineAPI::Graphics::GraphicsManager* graphicsSubsystem)
 	uniformBuffer.SetResourceDebugName("Textured Cube Uniform Buffer");
 	bool isDynamicUB = true;
 	VkDeviceSize ubSize = sizeof(uniformBufferMatrixData); //Matrix4x4
-	assert(uniformBuffer.InitVKUniformBuffer(device, ubSize, isDynamicUB));
+	assert(uniformBuffer.InitVKUniformBuffer(device, ubSize, isDynamicUB, RENDERING_RESOURCE_USAGE_GPU_READ_CPU_WRITE));
 
 	uint32_t memoryIndexUB = 0;
 	assert(EngineAPI::Statics::VulkanStatics::FindMemoryTypeForProperties(uniformBuffer.GetResourceVKMemoryRequirments().memoryTypeBits,
@@ -200,7 +200,7 @@ void TexturedCube::Init(EngineAPI::Graphics::GraphicsManager* graphicsSubsystem)
 	sampler2D.SetResourceDebugName("Textured Cube Sampler2D (Optimal)");
 
 	assert(sampler2D.InitVKSampler2DFromFile(device, TEXTURE_ASSETS_FOLDER"TestTextures/LearningVulkan.ktx", TEXTURE_LOADING_API_GLI,
-		TEXTURE_TILING_MODE_OPTIMAL, false,
+		TEXTURE_TILING_MODE_OPTIMAL, false, RENDERING_RESOURCE_USAGE_GPU_READ_ONLY,
 		VK_FORMAT_R8G8B8A8_UNORM, VK_IMAGE_USAGE_SAMPLED_BIT));
 
 	samplerMemoryPropsFlags = VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT;
@@ -208,16 +208,16 @@ void TexturedCube::Init(EngineAPI::Graphics::GraphicsManager* graphicsSubsystem)
 	sampler2D.SetResourceDebugName("Textured Cube Sampler2D (Linear)");
 
 	assert(sampler2D.InitVKSampler2DFromFile(device, TEXTURE_ASSETS_FOLDER"TestTextures/LearningVulkan.ktx", TEXTURE_LOADING_API_GLI,
-		TEXTURE_TILING_MODE_LINEAR, true,
+		TEXTURE_TILING_MODE_LINEAR, true, RENDERING_RESOURCE_USAGE_GPU_READ_CPU_WRITE,
 		VK_FORMAT_R8G8B8A8_UNORM, VK_IMAGE_USAGE_SAMPLED_BIT));
 
 	//Wont work!
 	//assert(sampler2D.InitVKSampler2DFromFile(device, TEXTURE_ASSETS_FOLDER"TestTextures/floor.dds", TEXTURE_LOADING_API_GLI,
-	//	TEXTURE_TILING_MODE_LINEAR, true,
+	//	TEXTURE_TILING_MODE_LINEAR, true, RENDERING_RESOURCE_USAGE_GPU_READ_CPU_WRITE,
 	//	VK_FORMAT_R8G8B8A8_UNORM, VK_IMAGE_USAGE_SAMPLED_BIT));
 
 	//assert(sampler2D.InitVKSampler2DFromFile(device, TEXTURE_ASSETS_FOLDER"TestTextures/TestPNGFile_256_256.png", TEXTURE_LOADING_API_LODE_PNG,
-	//	TEXTURE_TILING_MODE_LINEAR, true,
+	//	TEXTURE_TILING_MODE_LINEAR, true, RENDERING_RESOURCE_USAGE_GPU_READ_CPU_WRITE,
 	//	VK_FORMAT_R8G8B8A8_UNORM, VK_IMAGE_USAGE_SAMPLED_BIT));
 
 	samplerMemoryPropsFlags = VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT;

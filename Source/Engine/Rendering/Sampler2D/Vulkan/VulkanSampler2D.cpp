@@ -23,7 +23,7 @@ void VulkanSampler2D::Shutdown()
 
 bool VulkanSampler2D::InitVKSampler2DFromFile(EngineAPI::Graphics::RenderDevice* renderingDevice, 
 	const char* filename, TextureLoadingAPI textureLoadingAPI, TextureTilingMode tilingMode,
-	bool isDynamicTexture, VkFormat desiredImageFormat, VkImageUsageFlags desiredImageUsageFlags)
+	bool isDynamicTexture, RenderingResourceUsage resourceUsage, VkFormat desiredImageFormat, VkImageUsageFlags desiredImageUsageFlags)
 {
 	//Print message telling us what we are loading...
 	EngineAPI::Debug::DebugLog::PrintInfoMessage("VulkanSampler2D::InitVKSampler2DFromFile(): Loading texture: ");
@@ -93,7 +93,7 @@ bool VulkanSampler2D::InitVKSampler2DFromFile(EngineAPI::Graphics::RenderDevice*
 		imageCreateInfo.tiling = VK_IMAGE_TILING_OPTIMAL; //TODO
 
 	//Init VkImage
-	if (!InitVKTexture(renderingDevice, &imageCreateInfo, isDynamicTexture))
+	if (!InitVKTexture(renderingDevice, &imageCreateInfo, isDynamicTexture, resourceUsage))
 	{
 		EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanSampler2D::InitVKSampler2DFromFile() Error - Could not init VkImage object\n");
 		return false;

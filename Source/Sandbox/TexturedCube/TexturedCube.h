@@ -10,7 +10,7 @@
 #include "../../Engine/Rendering/DrawableObject/DrawableObject.h"
 
 //Optimal vs linear tiling for texture...
-#define TEXTURED_CUBE_DO_USE_OPTIMAL_TILING_FOR_SAMPLER true;
+#define TEXTURED_CUBE_DO_USE_OPTIMAL_TILING_FOR_SAMPLER false;
 
 class TexturedCube : public EngineAPI::Rendering::DrawableObject
 {

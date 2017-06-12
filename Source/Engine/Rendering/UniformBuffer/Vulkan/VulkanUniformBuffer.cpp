@@ -11,7 +11,7 @@ void VulkanUniformBuffer::Shutdown()
 }
 
 bool VulkanUniformBuffer::InitVKUniformBuffer(EngineAPI::Graphics::RenderDevice* renderingDevice,
-	VkDeviceSize uniformBufferSizeBytes, bool isDynamicUniformBuffer)
+	VkDeviceSize uniformBufferSizeBytes, bool isDynamicUniformBuffer, RenderingResourceUsage resourceUsage)
 {
 	//Creation info
 	VkBufferCreateInfo ubCreateInfo = {};
@@ -25,7 +25,7 @@ bool VulkanUniformBuffer::InitVKUniformBuffer(EngineAPI::Graphics::RenderDevice*
 	ubCreateInfo.sharingMode = VK_SHARING_MODE_EXCLUSIVE;
 
 	//Init buffer
-	if (!InitVKBuffer(renderingDevice, &ubCreateInfo, isDynamicUniformBuffer))
+	if (!InitVKBuffer(renderingDevice, &ubCreateInfo, isDynamicUniformBuffer, resourceUsage))
 	{
 		//Error
 		EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanVertexBuffer::InitVKUniformBuffer() Error - Could not init VkBuffer\n");

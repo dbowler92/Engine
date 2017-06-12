@@ -16,7 +16,7 @@ VkIndexType VulkanIndexBuffer::GetVKIndexType()
 }
 
 bool VulkanIndexBuffer::InitVKIndexBuffer(EngineAPI::Graphics::RenderDevice* renderingDevice,
-	VkDeviceSize indexBufferSizeBytes, bool isDynamicIndexBuffer)
+	VkDeviceSize indexBufferSizeBytes, bool isDynamicIndexBuffer, RenderingResourceUsage resourceUsage)
 {
 	//Creation info
 	VkBufferCreateInfo ibCreateInfo = {};
@@ -30,7 +30,7 @@ bool VulkanIndexBuffer::InitVKIndexBuffer(EngineAPI::Graphics::RenderDevice* ren
 	ibCreateInfo.sharingMode = VK_SHARING_MODE_EXCLUSIVE;
 
 	//Init buffer
-	if (!InitVKBuffer(renderingDevice, &ibCreateInfo, isDynamicIndexBuffer))
+	if (!InitVKBuffer(renderingDevice, &ibCreateInfo, isDynamicIndexBuffer, resourceUsage))
 	{
 		//Error
 		EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanIndexBuffer::InitVKIndexBuffer() Error - Could not init VkBuffer\n");

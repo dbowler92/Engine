@@ -12,7 +12,7 @@ void VulkanVertexBuffer::Shutdown()
 }
 
 bool VulkanVertexBuffer::InitVKVertexBuffer(EngineAPI::Graphics::RenderDevice* renderingDevice,
-	VkDeviceSize vertexBufferSizeBytes, bool isDynamicVertexBuffer)
+	VkDeviceSize vertexBufferSizeBytes, bool isDynamicVertexBuffer, RenderingResourceUsage resourceUsage)
 {
 	//Creation info
 	VkBufferCreateInfo vbCreateInfo = {};
@@ -26,7 +26,7 @@ bool VulkanVertexBuffer::InitVKVertexBuffer(EngineAPI::Graphics::RenderDevice* r
 	vbCreateInfo.sharingMode = VK_SHARING_MODE_EXCLUSIVE;
 
 	//Init buffer
-	if (!InitVKBuffer(renderingDevice, &vbCreateInfo, isDynamicVertexBuffer))
+	if (!InitVKBuffer(renderingDevice, &vbCreateInfo, isDynamicVertexBuffer, resourceUsage))
 	{
 		//Erorr
 		EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanVertexBuffer::InitVKVertexBuffer() Error - Could not init VkBuffer\n");

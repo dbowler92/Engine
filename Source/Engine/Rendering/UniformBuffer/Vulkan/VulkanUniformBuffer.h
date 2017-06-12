@@ -35,7 +35,7 @@ namespace EngineAPI
 
 				//1) Inits the uniform buffer
 				bool InitVKUniformBuffer(EngineAPI::Graphics::RenderDevice* renderingDevice,
-					VkDeviceSize uniformBufferSizeBytes, bool isDynamicUniformBuffer);
+					VkDeviceSize uniformBufferSizeBytes, bool isDynamicUniformBuffer, RenderingResourceUsage resourceUsage);
 
 				//2) Allocs the uniform buffer on the device -> This includes writing the
 				//data to the buffer & binding device memory

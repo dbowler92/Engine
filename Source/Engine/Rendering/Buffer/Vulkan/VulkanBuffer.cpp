@@ -18,11 +18,12 @@ void VulkanBuffer::Shutdown()
 }
 
 bool VulkanBuffer::InitVKBuffer(EngineAPI::Graphics::RenderDevice* renderingDevice,
-	VkBufferCreateInfo* bufferCreateInfo, bool isDynamicBuffer)
+	VkBufferCreateInfo* bufferCreateInfo, bool isDynamicBuffer, RenderingResourceUsage resourceUsage)
 {
 	//Cache info
 	this->cachedVKLogicalDevice = renderingDevice->GetVKLogicalDevice();
 	this->isDynamicResourceFlag = isDynamicBuffer;
+	this->resourceUsage = resourceUsage;
 
 	//Contents size, not the actual size of the buffer (which maybe larger for alignment purposes)! 
 	//
