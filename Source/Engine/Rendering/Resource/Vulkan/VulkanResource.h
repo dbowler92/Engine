@@ -90,7 +90,6 @@ namespace EngineAPI
 			public:
 				//Resource info getters
 				VkMemoryRequirements GetResourceVKMemoryRequirments() { return vkResourceMemoryRequirments; };
-				bool IsDynamicResource() { return isDynamicResourceFlag; };
 				RenderingResourceUsage GetResourceUsage() { return resourceUsage; };
 
 			public:
@@ -111,9 +110,6 @@ namespace EngineAPI
 				EngineAPI::Graphics::DeviceMemoryBlock* resourceMemoryBlock = nullptr;
 
 			protected:
-				//Is this resource dynamic?
-				bool isDynamicResourceFlag = false;
-
 				//Resource usage. 
 				RenderingResourceUsage resourceUsage;
 

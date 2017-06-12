@@ -224,14 +224,13 @@ SuballocationResult VulkanDeviceMemoryAllocator::AllocateResourceAuto(EngineAPI:
 			//Memory properties for this resource type
 			VkMemoryPropertyFlags optimalFlags = VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT;
 			VkMemoryPropertyFlags fallbackFlags = 0;
-			if (depthResource->IsDynamicResource())
+			bool gpuOnlyStore = true;
+			if (depthResource->GetResourceUsage() == RENDERING_RESOURCE_USAGE_GPU_READ_CPU_WRITE)
 			{
 				optimalFlags = VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT | VK_MEMORY_PROPERTY_HOST_CACHED_BIT;
 				fallbackFlags = VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT;
+				gpuOnlyStore = false;
 			}
-
-			//Is dynamic resource or can we store it in GPU?
-			bool gpuOnlyStore = !(depthResource->IsDynamicResource());
 
 			//Allocate on the device
 			success = AllocResourceAuto(renderingDevice, resource, resourceType, 
@@ -269,14 +268,13 @@ SuballocationResult VulkanDeviceMemoryAllocator::AllocateResourceAuto(EngineAPI:
 			//Memory properties for this resource type
 			VkMemoryPropertyFlags optimalFlags = VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT;
 			VkMemoryPropertyFlags fallbackFlags = 0;
-			if (vb->IsDynamicResource())
+			bool gpuOnlyStore = true;
+			if (vb->GetResourceUsage() == RENDERING_RESOURCE_USAGE_GPU_READ_CPU_WRITE)
 			{
 				optimalFlags = VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT | VK_MEMORY_PROPERTY_HOST_CACHED_BIT;
 				fallbackFlags = VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT;
+				gpuOnlyStore = false;
 			}
-
-			//Is dynamic resource or can we store it in GPU?
-			bool gpuOnlyStore = !(vb->IsDynamicResource());
 
 			//Allocate on the device
 			success = AllocResourceAuto(renderingDevice, resource, resourceType,
@@ -302,14 +300,13 @@ SuballocationResult VulkanDeviceMemoryAllocator::AllocateResourceAuto(EngineAPI:
 			//Memory properties for this resource type
 			VkMemoryPropertyFlags optimalFlags = VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT;
 			VkMemoryPropertyFlags fallbackFlags = 0;
-			if (ib->IsDynamicResource())
+			bool gpuOnlyStore = true;
+			if (ib->GetResourceUsage() == RENDERING_RESOURCE_USAGE_GPU_READ_CPU_WRITE)
 			{
 				optimalFlags = VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT | VK_MEMORY_PROPERTY_HOST_CACHED_BIT;
 				fallbackFlags = VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT;
+				gpuOnlyStore = false;
 			}
-
-			//Is dynamic resource or can we store it in GPU?
-			bool gpuOnlyStore = !(ib->IsDynamicResource());
 
 			//Allocate on the device
 			success = AllocResourceAuto(renderingDevice, resource, resourceType,
@@ -335,14 +332,13 @@ SuballocationResult VulkanDeviceMemoryAllocator::AllocateResourceAuto(EngineAPI:
 			//Memory properties for this resource type
 			VkMemoryPropertyFlags optimalFlags = VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT;
 			VkMemoryPropertyFlags fallbackFlags = 0;
-			if (ub->IsDynamicResource())
+			bool gpuOnlyStore = true;
+			if (ub->GetResourceUsage() == RENDERING_RESOURCE_USAGE_GPU_READ_CPU_WRITE)
 			{
 				optimalFlags = VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT | VK_MEMORY_PROPERTY_HOST_CACHED_BIT;
 				fallbackFlags = VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT;
+				gpuOnlyStore = false;
 			}
-
-			//Is dynamic resource or can we store it in GPU?
-			bool gpuOnlyStore = !(ub->IsDynamicResource());
 
 			//Allocate on the device
 			success = AllocResourceAuto(renderingDevice, resource, resourceType,
