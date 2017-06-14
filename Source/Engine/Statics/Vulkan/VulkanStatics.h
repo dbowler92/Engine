@@ -79,7 +79,6 @@ namespace EngineAPI
 			static bool CreateVKFence(VkDevice* device, bool isInitedInSignaledState, VkFence* fenceOut);
 			static bool CreateVKSemaphore(VkDevice* device, VkSemaphore* semaphoreOut);
 			static bool CreateVKEvent(VkDevice* device, VkEvent* eventOut);
-
 		};
 	};
 };

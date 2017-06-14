@@ -10,6 +10,8 @@
 #include "../../../Rendering/IndexBuffer/IndexBuffer.h"
 #include "../../../Rendering/UniformBuffer/UniformBuffer.h"
 
+#include "../../../Graphics/StagingBuffer/StagingBuffer.h"
+
 using namespace EngineAPI::Graphics::Platform;
 
 void VulkanDeviceMemoryAllocator::Shutdown()
@@ -380,7 +382,27 @@ SuballocationResult VulkanDeviceMemoryAllocator::AllocateResourceAuto(EngineAPI:
 		{
 			EngineAPI::Debug::DebugLog::PrintInfoMessage("VulkanDeviceMemoryAllocator::AllocateResourceAuto(): Allocating Staging Buffer\n");
 
-			success = ALLOCATION_RESULT_NOT_IMPLEMENTED;
+			//Cast to Staging buffer
+			EngineAPI::Graphics::StagingBuffer* sb = static_cast<EngineAPI::Graphics::StagingBuffer*>(resource);
+
+			//Vulkan memory requirements for this buffer -> Helps us find the correct store
+			//for this resource. 
+			VkMemoryRequirements memoryRequirments = sb->GetResourceVKMemoryRequirments();
+
+			//Device memory properties. Used with VkMemoryRequirments to work out what memory type
+			//we want to use when allocing this depth texture
+			VkPhysicalDeviceMemoryProperties physicalDeviceMemoryProperties = renderingDevice->GetVKPhysicalDeviceMemoryProperties();
+
+			//Memory properties for this resource type -> it is a staging buffer, so this
+			//will be host visible
+			VkMemoryPropertyFlags optimalFlags = VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT;
+			VkMemoryPropertyFlags fallbackFlags = VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT;
+			bool gpuOnlyStore = false;
+
+			//Allocate on the device
+			success = AllocResourceAuto(renderingDevice, resource, resourceType,
+				optimalFlags, fallbackFlags, gpuOnlyStore,
+				memoryRequirments, physicalDeviceMemoryProperties);
 			break;
 		}
 

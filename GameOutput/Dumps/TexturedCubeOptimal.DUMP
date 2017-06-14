@@ -1,11 +1,73 @@
-**************VulkanDeviceMemoryAllocator Dump****************
+**************************************************************
+***************Vulkan Memory Properties Dump******************
+**************************************************************
 
-Allocator address: 00C75188
-Number of memory stores: 4
+Memory Heap Index: 0
+Memory Heap Size: 3126636544
+Memory Heap Flags: 1
+
+Memory Heap Index: 1
+Memory Heap Size: 17121148928
+Memory Heap Flags: 0
 
 **************************************************************
 
-[Store: 0] 00C75190
+Memory Type Index: 0
+Memory Type Heap Index: 1
+Memory Type Properties Flag: 0
+
+Memory Type Index: 1
+Memory Type Heap Index: 1
+Memory Type Properties Flag: 0
+
+Memory Type Index: 2
+Memory Type Heap Index: 1
+Memory Type Properties Flag: 0
+
+Memory Type Index: 3
+Memory Type Heap Index: 1
+Memory Type Properties Flag: 0
+
+Memory Type Index: 4
+Memory Type Heap Index: 1
+Memory Type Properties Flag: 0
+
+Memory Type Index: 5
+Memory Type Heap Index: 1
+Memory Type Properties Flag: 0
+
+Memory Type Index: 6
+Memory Type Heap Index: 1
+Memory Type Properties Flag: 0
+
+Memory Type Index: 7
+Memory Type Heap Index: 0
+Memory Type Properties Flag: 1
+
+Memory Type Index: 8
+Memory Type Heap Index: 0
+Memory Type Properties Flag: 1
+
+Memory Type Index: 9
+Memory Type Heap Index: 1
+Memory Type Properties Flag: 6
+
+Memory Type Index: 10
+Memory Type Heap Index: 1
+Memory Type Properties Flag: 14
+
+**************************************************************
+
+**************************************************************
+**************VulkanDeviceMemoryAllocator Dump****************
+**************************************************************
+
+Allocator address: 00CB5188
+Number of memory stores: 5
+
+**************************************************************
+
+[Store: 0] 00CB5190
 Is Active Store: 1
 Is Public Store: 1
 Is Auto Store: 1
@@ -18,14 +80,15 @@ Vulkan Memory Heap Flags: 1
 Is Memory Mappable: 0
 Number of blocks: 1
 
-	[Block: 0] 041C1E30
+	[Block: 0] 03C6BA18
 		Is Free: 0
 		Is Mappable: 0
 		Is Mapped: 0
 		Resource Size (Vulkan Defined): 2457600
 		Resource Alignment: 1024
-		Resource Address: 00CC5268
+		Resource Address: 00D05470
 		Resource Type: 2
+		Resource Usage: 0
 		Resource Debug Name: Swapchain Depth Texture
 		Block Size: 2457600
 		Block Offset: 0
@@ -33,7 +96,7 @@ Number of blocks: 1
 
 **************************************************************
 
-[Store: 1] 00C751E0
+[Store: 1] 00CB51E0
 Is Active Store: 1
 Is Public Store: 0
 Is Auto Store: 0
@@ -46,15 +109,16 @@ Vulkan Memory Heap Flags: 0
 Is Memory Mappable: 1
 Number of blocks: 1
 
-	[Block: 0] 041C1AB0
+	[Block: 0] 03C6B898
 		Is Free: 0
 		Is Mappable: 1
 		Is Mapped: 0
 		Resource Size (Vulkan Defined): 1024
 		Resource Alignment: 256
 		Buffer Contents Size: 864
-		Resource Address: 0020C500
+		Resource Address: 00B9D580
 		Resource Type: 5
+		Resource Usage: 2
 		Resource Debug Name: Textured Cube Vertex Buffer
 		Block Size: 1024
 		Block Offset: 0
@@ -62,7 +126,7 @@ Number of blocks: 1
 
 **************************************************************
 
-[Store: 2] 00C75230
+[Store: 2] 00CB5230
 Is Active Store: 1
 Is Public Store: 0
 Is Auto Store: 0
@@ -75,15 +139,16 @@ Vulkan Memory Heap Flags: 0
 Is Memory Mappable: 1
 Number of blocks: 1
 
-	[Block: 0] 041C17B0
+	[Block: 0] 03C6AD98
 		Is Free: 0
 		Is Mappable: 1
 		Is Mapped: 0
 		Resource Size (Vulkan Defined): 256
 		Resource Alignment: 256
 		Buffer Contents Size: 64
-		Resource Address: 0020C5A8
+		Resource Address: 00B9D628
 		Resource Type: 7
+		Resource Usage: 2
 		Resource Debug Name: Textured Cube Uniform Buffer
 		Block Size: 256
 		Block Offset: 0
@@ -91,12 +156,41 @@ Number of blocks: 1
 
 **************************************************************
 
-[Store: 3] 00C75280
+[Store: 3] 00CB5280
 Is Active Store: 1
 Is Public Store: 0
 Is Auto Store: 0
 Store Size: 1433600
-Vulkan Device Memory Handle: 25
+Vulkan Device Memory Handle: 26
+Vulkan Memory Type Index: 8
+Vulkan Memory Property Flags: 1
+Vulkan Memory Heap Index: 0
+Vulkan Memory Heap Flags: 1
+Is Memory Mappable: 0
+Number of blocks: 1
+
+	[Block: 0] 03C6B098
+		Is Free: 0
+		Is Mappable: 0
+		Is Mapped: 0
+		Resource Size (Vulkan Defined): 1433600
+		Resource Alignment: 1024
+		Resource Address: 00B9D868
+		Resource Type: 1
+		Resource Usage: 1
+		Resource Debug Name: Textured Cube Sampler2D (Optimal)
+		Block Size: 1433600
+		Block Offset: 0
+		Block Aligned Offset: 0
+
+**************************************************************
+
+[Store: 4] 00CB52D0
+Is Active Store: 1
+Is Public Store: 1
+Is Auto Store: 1
+Store Size: 67108864
+Vulkan Device Memory Handle: 27
 Vulkan Memory Type Index: 9
 Vulkan Memory Property Flags: 6
 Vulkan Memory Heap Index: 1
@@ -104,16 +198,18 @@ Vulkan Memory Heap Flags: 0
 Is Memory Mappable: 1
 Number of blocks: 1
 
-	[Block: 0] 041C1B30
+	[Block: 0] 03C6AF18
 		Is Free: 0
 		Is Mappable: 1
 		Is Mapped: 0
-		Resource Size (Vulkan Defined): 1433600
-		Resource Alignment: 32
-		Resource Address: 0020C7E8
-		Resource Type: 1
-		Resource Debug Name: Textured Cube Sampler2D (Optimal)
-		Block Size: 1433600
+		Resource Size (Vulkan Defined): 1254400
+		Resource Alignment: 256
+		Buffer Contents Size: 1254400
+		Resource Address: 00B9D908
+		Resource Type: 8
+		Resource Usage: 3
+		Resource Debug Name: Textured Cube Sampler2D (Optimal) Staging Buffer
+		Block Size: 1254400
 		Block Offset: 0
 		Block Aligned Offset: 0
 

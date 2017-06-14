@@ -30,11 +30,17 @@ bool VulkanSampler2D::InitVKSampler2DFromFile(EngineAPI::Graphics::RenderDevice*
 	EngineAPI::Debug::DebugLog::PrintMessage(filename);
 	EngineAPI::Debug::DebugLog::PrintMessage("\n");
 
+	//Error check! 
+	if (tilingMode == TEXTURE_TILING_MODE_OPTIMAL)
+		assert(resourceUsage != RENDERING_RESOURCE_USAGE_GPU_READ_CPU_WRITE);
+
 	//Load texture data
 	void* rawData = nullptr;
 	uint32_t imageWidth = 0;
 	uint32_t imageHeight = 0;
 	uint32_t mipmapLevelsCount = 0;
+	uint32_t textureSizeBytes = 0; //Actual size of the texture loaded by API
+
 	if (textureLoadingAPI == TEXTURE_LOADING_API_GLI)
 	{
 		//GLI
@@ -49,9 +55,12 @@ bool VulkanSampler2D::InitVKSampler2DFromFile(EngineAPI::Graphics::RenderDevice*
 
 		//Mip levels in the parsed image
 		mipmapLevelsCount = gliTexture2D->levels();
+		
+		//Raw image size
+		textureSizeBytes = gliTexture2D->size();
 
 		//Raw image data
-		rawData = gliTexture2D->data();
+		rawData = gliTexture2D->data();		
 	}
 	if (textureLoadingAPI == TEXTURE_LOADING_API_LODE_PNG)
 	{
@@ -65,6 +74,9 @@ bool VulkanSampler2D::InitVKSampler2DFromFile(EngineAPI::Graphics::RenderDevice*
 
 		//Mip levels
 		mipmapLevelsCount = 1;
+
+		//Texture size
+		textureSizeBytes = lodePNGtextureBuffer.size(); //Verify
 	}
 
 	//TODO: Generate mips????
@@ -86,17 +98,41 @@ bool VulkanSampler2D::InitVKSampler2DFromFile(EngineAPI::Graphics::RenderDevice*
 	imageCreateInfo.pQueueFamilyIndices = nullptr;
 	imageCreateInfo.sharingMode = VK_SHARING_MODE_EXCLUSIVE;
 	imageCreateInfo.usage = desiredImageUsageFlags;
-	imageCreateInfo.initialLayout = VK_IMAGE_LAYOUT_PREINITIALIZED;
+	
 	if (tilingMode == TEXTURE_TILING_MODE_LINEAR)
+	{
 		imageCreateInfo.tiling = VK_IMAGE_TILING_LINEAR;
+		imageCreateInfo.initialLayout = VK_IMAGE_LAYOUT_PREINITIALIZED;
+	}
 	else
-		imageCreateInfo.tiling = VK_IMAGE_TILING_OPTIMAL; //TODO
+	{
+		imageCreateInfo.tiling = VK_IMAGE_TILING_OPTIMAL;
+		imageCreateInfo.initialLayout = VK_IMAGE_LAYOUT_UNDEFINED;
+
+		//Will be written in to by staging buffer
+		if ((desiredImageUsageFlags & VK_IMAGE_USAGE_TRANSFER_DST_BIT) == 0)
+			imageCreateInfo.usage |= VK_IMAGE_USAGE_TRANSFER_DST_BIT;
+	}	
 
 	//Init VkImage
 	if (!InitVKTexture(renderingDevice, &imageCreateInfo, resourceUsage))
 	{
 		EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanSampler2D::InitVKSampler2DFromFile() Error - Could not init VkImage object\n");
 		return false;
+	}
+
+	//Init the staging buffer if required. 
+	if (tilingMode == TEXTURE_TILING_MODE_OPTIMAL)  //TODO: Or usage == ...
+		doesUseStagingBuffer = true;
+
+	if (doesUseStagingBuffer)
+	{
+		if (this->GetResourceDebugName().empty() == true)
+			stagingBuffer.SetResourceDebugName("Resource Staging Buffer");
+		else
+			stagingBuffer.SetResourceDebugName(this->GetResourceDebugName() + " Staging Buffer");
+
+		assert(stagingBuffer.InitVKStagingBuffer(renderingDevice, textureSizeBytes));
 	}
 
 	//Done
@@ -114,13 +150,14 @@ bool VulkanSampler2D::AllocAndBindVKSampler2D(EngineAPI::Graphics::RenderDevice*
 	}
 
 	//Write data - If linear, just copy the data across to the resource
-	if (vkImageTilingMode == VK_IMAGE_TILING_LINEAR)
+	if (!doesUseStagingBuffer)
 	{
 		uint8_t* data = nullptr;
 		if (gliTexture2D)
 			data = (uint8_t*)gliTexture2D->data();
 		else if (lodePNGtextureBuffer.size() > 0)
 			data = (uint8_t*)lodePNGtextureBuffer.data();
+		assert(data != nullptr);
 
 		if (!WriteParsedTextureDataToMemory(data))
 		{
@@ -128,16 +165,18 @@ bool VulkanSampler2D::AllocAndBindVKSampler2D(EngineAPI::Graphics::RenderDevice*
 			return false;
 		}
 	}
-	else if (vkImageTilingMode == VK_IMAGE_TILING_OPTIMAL)
+	else //doesUseStagingBuffer == true
 	{
-		//Use staging buffer to copy data to the GPU
-		int x = 100;
+		uint8_t* data = nullptr;
+		if (gliTexture2D)
+			data = (uint8_t*)gliTexture2D->data();
+		else if (lodePNGtextureBuffer.size() > 0)
+			data = (uint8_t*)lodePNGtextureBuffer.data();
+		assert(data != nullptr);
+
+		assert(stagingBuffer.AllocAndBindHostVisibleVKStagingBuffer(renderingDevice, data, nullptr));
 	}
 	
-	//Cleanup CPU copy of texture
-	CleanupGLIData();
-	CleanupLodePNGData();
-
 	//Done
 	return true;
 }
@@ -151,6 +190,10 @@ bool VulkanSampler2D::InitVKSampler2DLayoutAndViews(EngineAPI::Graphics::RenderD
 	//Views
 	if (!InitVKSampler2DViews(renderingDevice))
 		return false;
+
+	//Can now cleanup image data
+	CleanupGLIData();
+	CleanupLodePNGData();
 
 	//Done
 	return true;
@@ -178,11 +221,23 @@ bool VulkanSampler2D::InitVKSampler2DLayout(EngineAPI::Graphics::RenderDevice* r
 		subresourceRange.levelCount = mipLevelsCount;
 		subresourceRange.layerCount = 1;
 
-		VkImageLayout oldLayout = VK_IMAGE_LAYOUT_PREINITIALIZED;
-		VkImageLayout newLayout = VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
+		VkImageLayout oldLayout;
+		VkImageLayout newLayout;
 
-		EngineAPI::Statics::VulkanCommands::CMD_SetImageLayout(vkSampler2DTextureImageLayoutCmdBuffer, 
-		vkImageHandle, subresourceRange.aspectMask, oldLayout, newLayout, subresourceRange);
+		if (!doesUseStagingBuffer)
+		{
+			oldLayout = VK_IMAGE_LAYOUT_PREINITIALIZED;
+			newLayout = VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
+
+		}
+		else
+		{
+			oldLayout = VK_IMAGE_LAYOUT_UNDEFINED;
+			newLayout = VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL;
+		}
+
+		EngineAPI::Statics::VulkanCommands::CMD_SetImageLayout(vkSampler2DTextureImageLayoutCmdBuffer,
+			vkImageHandle, subresourceRange.aspectMask, oldLayout, newLayout, subresourceRange);
 	}
 	else
 	{

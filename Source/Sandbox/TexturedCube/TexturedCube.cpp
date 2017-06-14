@@ -197,7 +197,7 @@ void TexturedCube::Init(EngineAPI::Graphics::GraphicsManager* graphicsSubsystem)
 	sampler2D.SetResourceDebugName("Textured Cube Sampler2D (Optimal)");
 
 	assert(sampler2D.InitVKSampler2DFromFile(device, TEXTURE_ASSETS_FOLDER"TestTextures/LearningVulkan.ktx", TEXTURE_LOADING_API_GLI,
-		TEXTURE_TILING_MODE_OPTIMAL, false, RENDERING_RESOURCE_USAGE_GPU_READ_ONLY,
+		TEXTURE_TILING_MODE_OPTIMAL, RENDERING_RESOURCE_USAGE_GPU_READ_ONLY,
 		VK_FORMAT_R8G8B8A8_UNORM, VK_IMAGE_USAGE_SAMPLED_BIT));
 
 	samplerMemoryPropsFlags = VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT;

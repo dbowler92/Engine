@@ -78,6 +78,7 @@ namespace EngineAPI
 				
 				//Staging buffer -> Used to transfer data from host visible memory to 
 				//device local memory
+				bool doesUseStagingBuffer = false; //Calculated at init time
 				EngineAPI::Graphics::StagingBuffer stagingBuffer;
 
 			private:

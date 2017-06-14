@@ -18,7 +18,7 @@ bool VulkanStagingBuffer::InitVKStagingBuffer(EngineAPI::Graphics::RenderDevice*
 	stagingBufferCreateInfo.pNext = nullptr;
 	stagingBufferCreateInfo.flags = 0; //TODO
 	stagingBufferCreateInfo.size = stagingBufferSizeBytes;
-	stagingBufferCreateInfo.usage = VK_BUFFER_USAGE_TRANSFER_SRC_BIT;
+	stagingBufferCreateInfo.usage = VK_BUFFER_USAGE_TRANSFER_SRC_BIT; //Transfers data in to another buffer or texture...
 	
 	//TODO: If we want to use a queue family to transfer data that is *not* the main
 	//graphics/compute family, we need to modify the sharing mode. 
@@ -51,8 +51,15 @@ bool VulkanStagingBuffer::AllocAndBindHostVisibleVKStagingBuffer(EngineAPI::Grap
 		return false;
 	}
 
-	//Write data to the block...
-	
+	//Write data to the staging block...
+	if (stagingData)
+	{
+		if (!WriteDataToVKBuffer(renderingDevice, stagingData))
+		{
+			EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanStagingBuffer::AllocAndBindHostVisibleVKStagingBuffer() Error: Could not write data to staging buffer\n");
+			return false;
+		}
+	}
 
 	//Bind device memory
 	if (!BindVKBufferMemory(renderingDevice))
