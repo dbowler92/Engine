@@ -21,65 +21,22 @@ void VulkanSampler2D::Shutdown()
 	__super::Shutdown();
 }
 
-bool VulkanSampler2D::InitVKSampler2DFromFile(EngineAPI::Graphics::RenderDevice* renderingDevice, 
-	const char* filename, TextureLoadingAPI textureLoadingAPI, TextureTilingMode tilingMode,
-	RenderingResourceUsage resourceUsage, VkFormat desiredImageFormat, VkImageUsageFlags desiredImageUsageFlags)
+bool VulkanSampler2D::InitVKSampler2DFromTexture(EngineAPI::Graphics::RenderDevice* renderingDevice,
+	EngineAPI::Rendering::TextureData* textureData, TextureTilingMode tilingMode, RenderingResourceUsage resourceUsage,
+	VkFormat desiredImageFormat, VkImageUsageFlags desiredImageUsageFlags)
 {
-	//Print message telling us what we are loading...
-	EngineAPI::Debug::DebugLog::PrintInfoMessage("VulkanSampler2D::InitVKSampler2DFromFile(): Loading texture: ");
-	EngineAPI::Debug::DebugLog::PrintMessage(filename);
-	EngineAPI::Debug::DebugLog::PrintMessage("\n");
-
-	//Error check! 
+	//Error checks
+	assert(textureData != nullptr);
 	if (tilingMode == TEXTURE_TILING_MODE_OPTIMAL)
-		assert(resourceUsage != RENDERING_RESOURCE_USAGE_GPU_READ_CPU_WRITE);
-
-	//Load texture data
-	void* rawData = nullptr;
-	uint32_t imageWidth = 0;
-	uint32_t imageHeight = 0;
-	uint32_t mipmapLevelsCount = 0;
-	uint32_t textureSizeBytes = 0; //Actual size of the texture loaded by API
-
-	if (textureLoadingAPI == TEXTURE_LOADING_API_GLI)
 	{
-		//GLI
-		//
-		//Load the file
-		gliTexture2D = GE_NEW gli::texture2D(gli::load(filename));
-		assert(!gliTexture2D->empty());
-
-		//Get image dimensions at the top sub-resource level
-		imageWidth = (uint32_t)(*gliTexture2D)[0].dimensions().x;
-		imageHeight = (uint32_t)(*gliTexture2D)[0].dimensions().y;
-
-		//Mip levels in the parsed image
-		mipmapLevelsCount = gliTexture2D->levels();
-		
-		//Raw image size
-		textureSizeBytes = gliTexture2D->size();
-
-		//Raw image data
-		rawData = gliTexture2D->data();		
-	}
-	if (textureLoadingAPI == TEXTURE_LOADING_API_LODE_PNG)
-	{
-		//lodePNG
-		unsigned error = lodepng::decode(lodePNGtextureBuffer, imageWidth, imageHeight, filename);
-		if (error != 0)
+		if (resourceUsage == RENDERING_RESOURCE_USAGE_GPU_READ_CPU_WRITE)
 		{
-			EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanSampler2D::InitVKSampler2DFromFile() Error: Could not decode PNG (lodePNG)\n");
+			EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanSampler2D::InitVKSampler2DFromTexture() Error: Texture can not have a Dynamic usage if using optimal tiling mode\n");
 			return false;
 		}
-
-		//Mip levels
-		mipmapLevelsCount = 1;
-
-		//Texture size
-		textureSizeBytes = lodePNGtextureBuffer.size(); //Verify
 	}
 
-	//TODO: Generate mips????
+	//TODO: Auto Generate mips????
 
 	//Fillout image creation struct
 	VkImageCreateInfo imageCreateInfo = {};
@@ -88,17 +45,17 @@ bool VulkanSampler2D::InitVKSampler2DFromFile(EngineAPI::Graphics::RenderDevice*
 	imageCreateInfo.flags = 0;
 	imageCreateInfo.imageType = VK_IMAGE_TYPE_2D;
 	imageCreateInfo.format = desiredImageFormat;
-	imageCreateInfo.extent.width = imageWidth;
-	imageCreateInfo.extent.height = imageHeight;
+	imageCreateInfo.extent.width = textureData->GetTextureWidth();
+	imageCreateInfo.extent.height = textureData->GetTextureHeight();
 	imageCreateInfo.extent.depth = 1;
-	imageCreateInfo.mipLevels = mipmapLevelsCount;
+	imageCreateInfo.mipLevels = textureData->GetMipmapLevelsCount();
 	imageCreateInfo.arrayLayers = 1;
 	imageCreateInfo.samples = VK_SAMPLE_COUNT_1_BIT;
 	imageCreateInfo.queueFamilyIndexCount = 0;
 	imageCreateInfo.pQueueFamilyIndices = nullptr;
 	imageCreateInfo.sharingMode = VK_SHARING_MODE_EXCLUSIVE;
 	imageCreateInfo.usage = desiredImageUsageFlags;
-	
+
 	if (tilingMode == TEXTURE_TILING_MODE_LINEAR)
 	{
 		imageCreateInfo.tiling = VK_IMAGE_TILING_LINEAR;
@@ -112,12 +69,12 @@ bool VulkanSampler2D::InitVKSampler2DFromFile(EngineAPI::Graphics::RenderDevice*
 		//Will be written in to by staging buffer
 		if ((desiredImageUsageFlags & VK_IMAGE_USAGE_TRANSFER_DST_BIT) == 0)
 			imageCreateInfo.usage |= VK_IMAGE_USAGE_TRANSFER_DST_BIT;
-	}	
+	}
 
 	//Init VkImage
 	if (!InitVKTexture(renderingDevice, &imageCreateInfo, resourceUsage))
 	{
-		EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanSampler2D::InitVKSampler2DFromFile() Error - Could not init VkImage object\n");
+		EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanSampler2D::InitVKSampler2DFromTexture() Error - Could not init VkImage object\n");
 		return false;
 	}
 
@@ -132,7 +89,7 @@ bool VulkanSampler2D::InitVKSampler2DFromFile(EngineAPI::Graphics::RenderDevice*
 		else
 			stagingBuffer.SetResourceDebugName(this->GetResourceDebugName() + " Staging Buffer");
 
-		assert(stagingBuffer.InitVKStagingBuffer(renderingDevice, textureSizeBytes));
+		assert(stagingBuffer.InitVKStagingBuffer(renderingDevice, textureData->GetTextureDataSize()));
 	}
 
 	//Done
@@ -174,6 +131,7 @@ bool VulkanSampler2D::AllocAndBindVKSampler2D(EngineAPI::Graphics::RenderDevice*
 			data = (uint8_t*)lodePNGtextureBuffer.data();
 		assert(data != nullptr);
 
+		//Write texture data to the staging buffer. 
 		assert(stagingBuffer.AllocAndBindHostVisibleVKStagingBuffer(renderingDevice, data, nullptr));
 	}
 	

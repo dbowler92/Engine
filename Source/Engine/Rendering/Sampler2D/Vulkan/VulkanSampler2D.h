@@ -16,15 +16,16 @@
 #include "../../../Graphics/StagingBuffer/StagingBuffer.h"
 
 //Texture loading
-#include <gli/gli.hpp> //NOTE: Preprocessor define required: _CRT_SECURE_NO_WARNINGS
-#include "../../../3rdParty/LodePNG/lodepng.h"
+#include "../../TextureData/TextureData.h"
+//#include <gli/gli.hpp> //NOTE: Preprocessor define required: _CRT_SECURE_NO_WARNINGS
+//#include "../../../3rdParty/LodePNG/lodepng.h"
 
 //Which texture loading API do we wish to use
-enum TextureLoadingAPI
-{
-	TEXTURE_LOADING_API_LODE_PNG,
-	TEXTURE_LOADING_API_GLI
-};
+//enum TextureLoadingAPI
+//{
+//	TEXTURE_LOADING_API_LODE_PNG,
+//	TEXTURE_LOADING_API_GLI
+//};
 
 //Tiling mode
 enum TextureTilingMode
@@ -49,9 +50,11 @@ namespace EngineAPI
 				void Shutdown();
 
 				//1) Inits the VkImage which represents this sampler2D object
-				bool InitVKSampler2DFromFile(EngineAPI::Graphics::RenderDevice* renderingDevice, 
-					const char* filename, TextureLoadingAPI textureLoadingAPI, TextureTilingMode tilingMode, RenderingResourceUsage resourceUsage,
+				bool InitVKSampler2DFromTexture(EngineAPI::Graphics::RenderDevice* renderingDevice,
+					EngineAPI::Rendering::TextureData* textureData, TextureTilingMode tilingMode, RenderingResourceUsage resourceUsage,
 					VkFormat desiredImageFormat = VK_FORMAT_R8G8B8A8_UNORM, VkImageUsageFlags desiredImageUsageFlags = VK_IMAGE_USAGE_SAMPLED_BIT);
+
+
 
 				//2) Alloc memory for this texture
 				bool AllocAndBindVKSampler2D(EngineAPI::Graphics::RenderDevice* renderingDevice,

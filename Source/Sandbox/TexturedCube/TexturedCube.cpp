@@ -25,6 +25,7 @@ void TexturedCube::Shutdown()
 	descriptorSet.Shutdown();
 	descriptorPool.Shutdown();
 
+	textureFromFile.Shutdown();
 	samplerState.Shutdown();
 	sampler2D.Shutdown();
 }
@@ -194,26 +195,31 @@ void TexturedCube::Init(EngineAPI::Graphics::GraphicsManager* graphicsSubsystem)
 	VkMemoryPropertyFlags samplerMemoryPropsFlags = 0;
 
 #if TEXTURED_CUBE_DO_USE_OPTIMAL_TILING_FOR_SAMPLER
-	sampler2D.SetResourceDebugName("Textured Cube Sampler2D (Optimal)");
+	assert(textureFromFile.LoadTextureFromFile(TEXTURE_ASSETS_FOLDER"TestTextures/LearningVulkan.ktx", TEXTURE_LOADING_API_GLI));
 
-	assert(sampler2D.InitVKSampler2DFromFile(device, TEXTURE_ASSETS_FOLDER"TestTextures/LearningVulkan.ktx", TEXTURE_LOADING_API_GLI,
+	sampler2D.SetResourceDebugName("Textured Cube Sampler2D (Optimal)");
+	assert(sampler2D.InitVKSampler2DFromTexture(device, &textureFromFile,
 		TEXTURE_TILING_MODE_OPTIMAL, RENDERING_RESOURCE_USAGE_GPU_READ_ONLY,
 		VK_FORMAT_R8G8B8A8_UNORM, VK_IMAGE_USAGE_SAMPLED_BIT));
 
 	samplerMemoryPropsFlags = VK_MEMORY_PROPERTY_DEVICE_LOCAL_BIT;
 #else 
-	sampler2D.SetResourceDebugName("Textured Cube Sampler2D (Linear)");
+	assert(textureFromFile.LoadTextureFromFile(TEXTURE_ASSETS_FOLDER"TestTextures/LearningVulkan.ktx", TEXTURE_LOADING_API_GLI));
+	//assert(textureFromFile.LoadTextureFromFile(TEXTURE_ASSETS_FOLDER"TestTextures/floor.dds", TEXTURE_LOADING_API_GLI));
+	//assert(textureFromFile.LoadTextureFromFile(TEXTURE_ASSETS_FOLDER"TestTextures/TestPNGFile_256_256.png", TEXTURE_LOADING_API_GLI));
 
-	assert(sampler2D.InitVKSampler2DFromFile(device, TEXTURE_ASSETS_FOLDER"TestTextures/LearningVulkan.ktx", TEXTURE_LOADING_API_GLI,
+
+	sampler2D.SetResourceDebugName("Textured Cube Sampler2D (Linear)");
+	assert(sampler2D.InitVKSampler2DFromTexture(device, &textureFromFile,
 		TEXTURE_TILING_MODE_LINEAR, RENDERING_RESOURCE_USAGE_GPU_READ_CPU_WRITE,
 		VK_FORMAT_R8G8B8A8_UNORM, VK_IMAGE_USAGE_SAMPLED_BIT));
 
 	//Wont work!
-	//assert(sampler2D.InitVKSampler2DFromFile(device, TEXTURE_ASSETS_FOLDER"TestTextures/floor.dds", TEXTURE_LOADING_API_GLI,
+	//assert(sampler2D.InitVKSampler2DFromTexture(device, &textureFromFile,
 	//	TEXTURE_TILING_MODE_LINEAR, true, RENDERING_RESOURCE_USAGE_GPU_READ_CPU_WRITE,
 	//	VK_FORMAT_R8G8B8A8_UNORM, VK_IMAGE_USAGE_SAMPLED_BIT));
 
-	//assert(sampler2D.InitVKSampler2DFromFile(device, TEXTURE_ASSETS_FOLDER"TestTextures/TestPNGFile_256_256.png", TEXTURE_LOADING_API_LODE_PNG,
+	//assert(sampler2D.InitVKSampler2DFromTexture(device, &textureFromFile,
 	//	TEXTURE_TILING_MODE_LINEAR, true, RENDERING_RESOURCE_USAGE_GPU_READ_CPU_WRITE,
 	//	VK_FORMAT_R8G8B8A8_UNORM, VK_IMAGE_USAGE_SAMPLED_BIT));
 

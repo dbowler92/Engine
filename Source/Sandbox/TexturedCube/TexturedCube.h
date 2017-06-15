@@ -43,6 +43,7 @@ protected:
 	EngineAPI::Graphics::DescriptorPool descriptorPool;
 	EngineAPI::Graphics::DescriptorSet descriptorSet;
 
+	EngineAPI::Rendering::TextureData textureFromFile;
 	EngineAPI::Graphics::SamplerState samplerState;
 	EngineAPI::Rendering::Sampler2D sampler2D;
 };

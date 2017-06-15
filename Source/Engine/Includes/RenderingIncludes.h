@@ -12,6 +12,9 @@
 #include "glm/glm.hpp"
 #include <glm/gtc/matrix_transform.hpp>
 
+//Texture loading
+#include "../Rendering/TextureData/TextureData.h"
+
 //Texture objects:
 #include "../Rendering/DepthTexture/DepthTexture.h"
 #include "../Rendering/Sampler2D/Sampler2D.h"

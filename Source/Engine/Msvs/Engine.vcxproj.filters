@@ -277,6 +277,9 @@
     <Filter Include="Src\Graphics\StagingBuffer\Vulkan">
       <UniqueIdentifier>{1dc1bb2c-ab44-4119-8d39-891fed60e90f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Src\Rendering\TextureData">
+      <UniqueIdentifier>{2e76198e-6603-46b8-a944-181e831a49c4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Main\EngineMain.cpp">
@@ -404,6 +407,9 @@
     </ClCompile>
     <ClCompile Include="..\Graphics\StagingBuffer\Vulkan\VulkanStagingBuffer.cpp">
       <Filter>Src\Graphics\StagingBuffer\Vulkan</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Rendering\TextureData\TextureData.cpp">
+      <Filter>Src\Rendering\TextureData</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -655,6 +661,9 @@
     </ClInclude>
     <ClInclude Include="..\Graphics\StagingBuffer\StagingBuffer.h">
       <Filter>Src\Graphics\StagingBuffer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Rendering\TextureData\TextureData.h">
+      <Filter>Src\Rendering\TextureData</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
