@@ -44,6 +44,12 @@ protected:
 	EngineAPI::Graphics::DescriptorSet descriptorSet;
 
 	EngineAPI::Rendering::TextureData textureFromFile;
+	EngineAPI::Graphics::StagingBuffer textureStagingBuffer;
+
 	EngineAPI::Graphics::SamplerState samplerState;
 	EngineAPI::Rendering::Sampler2D sampler2D;
+
+private:
+	void InitSamplerOptimal(EngineAPI::Graphics::GraphicsManager* graphicsSubsystem);
+	void InitSamplerLinear(EngineAPI::Graphics::GraphicsManager* graphicsSubsystem);
 };

@@ -50,17 +50,33 @@ namespace EngineAPI
 				void Shutdown();
 
 				//1) Inits the VkImage which represents this sampler2D object
-				bool InitVKSampler2DFromTexture(EngineAPI::Graphics::RenderDevice* renderingDevice,
-					EngineAPI::Rendering::TextureData* textureData, TextureTilingMode tilingMode, RenderingResourceUsage resourceUsage,
+				bool InitVKSampler2D(EngineAPI::Graphics::RenderDevice* renderingDevice,
+					uint32_t imageWidth, uint32_t imageHeight, uint32_t mipsCount,
+					TextureTilingMode tilingMode, RenderingResourceUsage resourceUsage,
 					VkFormat desiredImageFormat = VK_FORMAT_R8G8B8A8_UNORM, VkImageUsageFlags desiredImageUsageFlags = VK_IMAGE_USAGE_SAMPLED_BIT);
 
+				//bool InitVKSampler2DFromTexture(EngineAPI::Graphics::RenderDevice* renderingDevice,
+				//	EngineAPI::Rendering::TextureData* textureData, TextureTilingMode tilingMode, RenderingResourceUsage resourceUsage,
+				//	VkFormat desiredImageFormat = VK_FORMAT_R8G8B8A8_UNORM, VkImageUsageFlags desiredImageUsageFlags = VK_IMAGE_USAGE_SAMPLED_BIT);
 
+				//bool InitVKSampler2DFromStagingBuffer(EngineAPI::Graphics::RenderDevice* renderingDevice,
+				//	EngineAPI::Graphics::StagingBuffer* stagingBuffer, uint32_t imageWidth, uint32_t imageHeight, uint32_t mipsCount,
+				//	TextureTilingMode tilingMode, RenderingResourceUsage resourceUsage,
+				//	VkFormat desiredImageFormat = VK_FORMAT_R8G8B8A8_UNORM, VkImageUsageFlags desiredImageUsageFlags = VK_IMAGE_USAGE_SAMPLED_BIT);
 
-				//2) Alloc memory for this texture
+				//2) Alloc memory for this texture		
 				bool AllocAndBindVKSampler2D(EngineAPI::Graphics::RenderDevice* renderingDevice,
 					EngineAPI::Graphics::DeviceMemoryStore* optionalDeviceStore = nullptr);
 
-				//3) Inits the sampler2D image views && layout. 
+				//3) Writes data to the memory block. Either by writing raw texture data
+				//or by copying from a staging buffer
+				bool WriteTextureDataFromTexture(EngineAPI::Graphics::RenderDevice* renderingDevice,
+					EngineAPI::Rendering::TextureData* textureData);
+				bool WriteTextureDataFromStagingBuffer(EngineAPI::Graphics::RenderDevice* renderingDevice, 
+					EngineAPI::Graphics::StagingBuffer* stagingBuffer);
+
+
+				//4) Post init - Inits the sampler2D image views && layout. 
 				bool InitVKSampler2DLayoutAndViews(EngineAPI::Graphics::RenderDevice* renderingDevice);
 			
 			public:
@@ -73,16 +89,9 @@ namespace EngineAPI
 
 				//Command buffers
 				VkCommandBuffer vkSampler2DTextureImageLayoutCmdBuffer = VK_NULL_HANDLE;
-
-				//Image loading - Dynamically created since we can only load a gli::texture2D
-				//when the constructor is called. 
-				gli::texture2D* gliTexture2D = nullptr;
-				std::vector<unsigned char>lodePNGtextureBuffer;
 				
-				//Staging buffer -> Used to transfer data from host visible memory to 
-				//device local memory
+				//TODO: Does this resource require the use of staging buffers?
 				bool doesUseStagingBuffer = false; //Calculated at init time
-				EngineAPI::Graphics::StagingBuffer stagingBuffer;
 
 			private:
 				//Internal init
@@ -94,11 +103,6 @@ namespace EngineAPI
 
 				//TODO: Auto generation of mip levels
 				bool AutoGenerateMips(uint8_t* textureData);
-
-			private:
-				//Clears the GLI && lodePNG data
-				void CleanupGLIData();
-				void CleanupLodePNGData();
 			};
 		};
 	};

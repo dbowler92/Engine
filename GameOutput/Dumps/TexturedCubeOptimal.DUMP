@@ -62,12 +62,12 @@ Memory Type Properties Flag: 14
 **************VulkanDeviceMemoryAllocator Dump****************
 **************************************************************
 
-Allocator address: 01495188
+Allocator address: 00B95188
 Number of memory stores: 5
 
 **************************************************************
 
-[Store: 0] 01495190
+[Store: 0] 00B95190
 Is Active Store: 1
 Is Public Store: 1
 Is Auto Store: 1
@@ -80,13 +80,13 @@ Vulkan Memory Heap Flags: 1
 Is Memory Mappable: 0
 Number of blocks: 1
 
-	[Block: 0] 0457EE58
+	[Block: 0] 03D37C10
 		Is Free: 0
 		Is Mappable: 0
 		Is Mapped: 0
 		Resource Size (Vulkan Defined): 2457600
 		Resource Alignment: 1024
-		Resource Address: 014E5470
+		Resource Address: 00BE5470
 		Resource Type: 2
 		Resource Usage: 0
 		Resource Debug Name: Swapchain Depth Texture
@@ -96,7 +96,7 @@ Number of blocks: 1
 
 **************************************************************
 
-[Store: 1] 014951E0
+[Store: 1] 00B951E0
 Is Active Store: 1
 Is Public Store: 0
 Is Auto Store: 0
@@ -109,14 +109,14 @@ Vulkan Memory Heap Flags: 0
 Is Memory Mappable: 1
 Number of blocks: 1
 
-	[Block: 0] 0457E058
+	[Block: 0] 03D37E10
 		Is Free: 0
 		Is Mappable: 1
 		Is Mapped: 0
 		Resource Size (Vulkan Defined): 1024
 		Resource Alignment: 256
 		Buffer Contents Size: 864
-		Resource Address: 0023F590
+		Resource Address: 011CF590
 		Resource Type: 5
 		Resource Usage: 2
 		Resource Debug Name: Textured Cube Vertex Buffer
@@ -126,7 +126,7 @@ Number of blocks: 1
 
 **************************************************************
 
-[Store: 2] 01495230
+[Store: 2] 00B95230
 Is Active Store: 1
 Is Public Store: 0
 Is Auto Store: 0
@@ -139,14 +139,14 @@ Vulkan Memory Heap Flags: 0
 Is Memory Mappable: 1
 Number of blocks: 1
 
-	[Block: 0] 0457E1D8
+	[Block: 0] 03D37190
 		Is Free: 0
 		Is Mappable: 1
 		Is Mapped: 0
 		Resource Size (Vulkan Defined): 256
 		Resource Alignment: 256
 		Buffer Contents Size: 64
-		Resource Address: 0023F638
+		Resource Address: 011CF638
 		Resource Type: 7
 		Resource Usage: 2
 		Resource Debug Name: Textured Cube Uniform Buffer
@@ -156,41 +156,12 @@ Number of blocks: 1
 
 **************************************************************
 
-[Store: 3] 01495280
+[Store: 3] 00B95280
 Is Active Store: 1
 Is Public Store: 0
 Is Auto Store: 0
-Store Size: 1433600
-Vulkan Device Memory Handle: 26
-Vulkan Memory Type Index: 8
-Vulkan Memory Property Flags: 1
-Vulkan Memory Heap Index: 0
-Vulkan Memory Heap Flags: 1
-Is Memory Mappable: 0
-Number of blocks: 1
-
-	[Block: 0] 0457ED58
-		Is Free: 0
-		Is Mappable: 0
-		Is Mapped: 0
-		Resource Size (Vulkan Defined): 1433600
-		Resource Alignment: 1024
-		Resource Address: 0023F8B8
-		Resource Type: 1
-		Resource Usage: 1
-		Resource Debug Name: Textured Cube Sampler2D (Optimal)
-		Block Size: 1433600
-		Block Offset: 0
-		Block Aligned Offset: 0
-
-**************************************************************
-
-[Store: 4] 014952D0
-Is Active Store: 1
-Is Public Store: 1
-Is Auto Store: 1
-Store Size: 67108864
-Vulkan Device Memory Handle: 27
+Store Size: 1254400
+Vulkan Device Memory Handle: 25
 Vulkan Memory Type Index: 9
 Vulkan Memory Property Flags: 6
 Vulkan Memory Heap Index: 1
@@ -198,18 +169,47 @@ Vulkan Memory Heap Flags: 0
 Is Memory Mappable: 1
 Number of blocks: 1
 
-	[Block: 0] 0457E0D8
+	[Block: 0] 03D37C90
 		Is Free: 0
 		Is Mappable: 1
 		Is Mapped: 0
 		Resource Size (Vulkan Defined): 1254400
 		Resource Alignment: 256
 		Buffer Contents Size: 1254400
-		Resource Address: 0023F958
+		Resource Address: 011CF8A0
 		Resource Type: 8
 		Resource Usage: 3
-		Resource Debug Name: Textured Cube Sampler2D (Optimal) Staging Buffer
+		Resource Debug Name: Staging buffer
 		Block Size: 1254400
+		Block Offset: 0
+		Block Aligned Offset: 0
+
+**************************************************************
+
+[Store: 4] 00B952D0
+Is Active Store: 1
+Is Public Store: 0
+Is Auto Store: 0
+Store Size: 1433600
+Vulkan Device Memory Handle: 27
+Vulkan Memory Type Index: 8
+Vulkan Memory Property Flags: 1
+Vulkan Memory Heap Index: 0
+Vulkan Memory Heap Flags: 1
+Is Memory Mappable: 0
+Number of blocks: 1
+
+	[Block: 0] 03D37010
+		Is Free: 0
+		Is Mappable: 0
+		Is Mapped: 0
+		Resource Size (Vulkan Defined): 1433600
+		Resource Alignment: 1024
+		Resource Address: 011CF930
+		Resource Type: 1
+		Resource Usage: 1
+		Resource Debug Name: Textured Cube Sampler2D (Optimal)
+		Block Size: 1433600
 		Block Offset: 0
 		Block Aligned Offset: 0
 

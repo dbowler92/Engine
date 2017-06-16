@@ -4,13 +4,7 @@ using namespace EngineAPI::Rendering::Platform;
 
 void VulkanSampler2D::Shutdown()
 {
-	//...Shouldn't be still handing around...
-	CleanupGLIData();
-	CleanupLodePNGData();
-
-	//Destroy self...
-	stagingBuffer.Shutdown();
-	
+	//Destroy self...	
 	if (vkSampler2DTextureImageLayoutCmdBuffer != VK_NULL_HANDLE)
 		EngineAPI::Statics::VulkanStatics::CommandBufferReset(&vkSampler2DTextureImageLayoutCmdBuffer, true);
 
@@ -21,10 +15,72 @@ void VulkanSampler2D::Shutdown()
 	__super::Shutdown();
 }
 
+bool VulkanSampler2D::InitVKSampler2D(EngineAPI::Graphics::RenderDevice* renderingDevice,
+	uint32_t imageWidth, uint32_t imageHeight, uint32_t mipsCount,
+	TextureTilingMode tilingMode, RenderingResourceUsage resourceUsage,
+	VkFormat desiredImageFormat, VkImageUsageFlags desiredImageUsageFlags)
+{
+	//Fillout image creation struct
+	VkImageCreateInfo imageCreateInfo = {};
+	imageCreateInfo.sType = VK_STRUCTURE_TYPE_IMAGE_CREATE_INFO;
+	imageCreateInfo.pNext = NULL;
+	imageCreateInfo.flags = 0;
+	imageCreateInfo.imageType = VK_IMAGE_TYPE_2D;
+	imageCreateInfo.format = desiredImageFormat;
+	imageCreateInfo.extent.width = imageWidth;
+	imageCreateInfo.extent.height = imageHeight;
+	imageCreateInfo.extent.depth = 1;
+	imageCreateInfo.mipLevels = mipsCount;
+	imageCreateInfo.arrayLayers = 1;
+	imageCreateInfo.samples = VK_SAMPLE_COUNT_1_BIT;
+	imageCreateInfo.queueFamilyIndexCount = 0;
+	imageCreateInfo.pQueueFamilyIndices = nullptr;
+	imageCreateInfo.sharingMode = VK_SHARING_MODE_EXCLUSIVE;
+	imageCreateInfo.usage = desiredImageUsageFlags;
+
+	if (tilingMode == TEXTURE_TILING_MODE_LINEAR)
+	{
+		imageCreateInfo.tiling = VK_IMAGE_TILING_LINEAR;
+		imageCreateInfo.initialLayout = VK_IMAGE_LAYOUT_PREINITIALIZED;
+	}
+	else
+	{
+		imageCreateInfo.tiling = VK_IMAGE_TILING_OPTIMAL;
+		imageCreateInfo.initialLayout = VK_IMAGE_LAYOUT_UNDEFINED;
+
+		//Will be written in to by staging buffer
+		if ((desiredImageUsageFlags & VK_IMAGE_USAGE_TRANSFER_DST_BIT) == 0)
+			imageCreateInfo.usage |= VK_IMAGE_USAGE_TRANSFER_DST_BIT;
+	}
+
+	//Init VkImage
+	if (!InitVKTexture(renderingDevice, &imageCreateInfo, resourceUsage))
+	{
+		EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanSampler2D::InitVKSampler2DFromTexture() Error - Could not init VkImage object\n");
+		return false;
+	}
+
+	//Will we need the use of staging buffer?
+	doesUseStagingBuffer = false;
+	if (tilingMode == TEXTURE_TILING_MODE_OPTIMAL)
+		doesUseStagingBuffer = true;
+	if (resourceUsage != RENDERING_RESOURCE_USAGE_GPU_READ_CPU_WRITE)
+		doesUseStagingBuffer = true;
+
+	//Done
+	return true;
+}
+
+/*
 bool VulkanSampler2D::InitVKSampler2DFromTexture(EngineAPI::Graphics::RenderDevice* renderingDevice,
 	EngineAPI::Rendering::TextureData* textureData, TextureTilingMode tilingMode, RenderingResourceUsage resourceUsage,
 	VkFormat desiredImageFormat, VkImageUsageFlags desiredImageUsageFlags)
 {
+	//TEMP - Linear + dynamic texture only for now... For texture data stored in 
+	//device local memory, use InitVKSampler2DFromStagingBuffer() instead!
+	assert(tilingMode == TEXTURE_TILING_MODE_LINEAR);
+	assert(resourceUsage == RENDERING_RESOURCE_USAGE_GPU_READ_CPU_WRITE);
+
 	//Error checks
 	assert(textureData != nullptr);
 	if (tilingMode == TEXTURE_TILING_MODE_OPTIMAL)
@@ -78,7 +134,8 @@ bool VulkanSampler2D::InitVKSampler2DFromTexture(EngineAPI::Graphics::RenderDevi
 		return false;
 	}
 
-	//Init the staging buffer if required. 
+	//Init the staging buffer if required.
+	doesUseStagingBuffer = false;
 	if (tilingMode == TEXTURE_TILING_MODE_OPTIMAL)  //TODO: Or usage == ...
 		doesUseStagingBuffer = true;
 
@@ -96,6 +153,67 @@ bool VulkanSampler2D::InitVKSampler2DFromTexture(EngineAPI::Graphics::RenderDevi
 	return true;
 }
 
+bool VulkanSampler2D::InitVKSampler2DFromStagingBuffer(EngineAPI::Graphics::RenderDevice* renderingDevice,
+	EngineAPI::Graphics::StagingBuffer* stagingBuffer, uint32_t imageWidth, uint32_t imageHeight, uint32_t mipsCount,
+	TextureTilingMode tilingMode, RenderingResourceUsage resourceUsage,
+	VkFormat desiredImageFormat, VkImageUsageFlags desiredImageUsageFlags)
+{
+	//TEMP: Can't be dynamic texture
+	assert(resourceUsage != RENDERING_RESOURCE_USAGE_GPU_READ_CPU_WRITE);
+
+	//Error check
+	assert(stagingBuffer != nullptr);
+
+	//TODO: Auto Generate mips????
+
+	//Fillout image creation struct
+	VkImageCreateInfo imageCreateInfo = {};
+	imageCreateInfo.sType = VK_STRUCTURE_TYPE_IMAGE_CREATE_INFO;
+	imageCreateInfo.pNext = NULL;
+	imageCreateInfo.flags = 0;
+	imageCreateInfo.imageType = VK_IMAGE_TYPE_2D;
+	imageCreateInfo.format = desiredImageFormat;
+	imageCreateInfo.extent.width = imageWidth;
+	imageCreateInfo.extent.height = imageHeight;
+	imageCreateInfo.extent.depth = 1;
+	imageCreateInfo.mipLevels = mipsCount;
+	imageCreateInfo.arrayLayers = 1;
+	imageCreateInfo.samples = VK_SAMPLE_COUNT_1_BIT;
+	imageCreateInfo.queueFamilyIndexCount = 0;
+	imageCreateInfo.pQueueFamilyIndices = nullptr;
+	imageCreateInfo.sharingMode = VK_SHARING_MODE_EXCLUSIVE;
+	imageCreateInfo.usage = desiredImageUsageFlags;
+
+	if (tilingMode == TEXTURE_TILING_MODE_LINEAR)
+	{
+		imageCreateInfo.tiling = VK_IMAGE_TILING_LINEAR;
+		imageCreateInfo.initialLayout = VK_IMAGE_LAYOUT_PREINITIALIZED;
+	}
+	else
+	{
+		imageCreateInfo.tiling = VK_IMAGE_TILING_OPTIMAL;
+		imageCreateInfo.initialLayout = VK_IMAGE_LAYOUT_UNDEFINED;
+
+		//Will be written in to by staging buffer
+		if ((desiredImageUsageFlags & VK_IMAGE_USAGE_TRANSFER_DST_BIT) == 0)
+			imageCreateInfo.usage |= VK_IMAGE_USAGE_TRANSFER_DST_BIT;
+	}
+
+	//Init VkImage
+	if (!InitVKTexture(renderingDevice, &imageCreateInfo, resourceUsage))
+	{
+		EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanSampler2D::InitVKSampler2DFromTexture() Error - Could not init VkImage object\n");
+		return false;
+	}
+
+	//Does use staging buffer
+	doesUseStagingBuffer = true;
+
+	//Done
+	return true;
+}
+*/
+
 bool VulkanSampler2D::AllocAndBindVKSampler2D(EngineAPI::Graphics::RenderDevice* renderingDevice,
 	EngineAPI::Graphics::DeviceMemoryStore* optionalDeviceStore)
 {
@@ -105,40 +223,40 @@ bool VulkanSampler2D::AllocAndBindVKSampler2D(EngineAPI::Graphics::RenderDevice*
 		EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanSampler2D::AllocAndBindVKSampler2D Error - Could not Allocate texture\n");
 		return false;
 	}
-
-	//Write data - If linear, just copy the data across to the resource
-	if (!doesUseStagingBuffer)
-	{
-		uint8_t* data = nullptr;
-		if (gliTexture2D)
-			data = (uint8_t*)gliTexture2D->data();
-		else if (lodePNGtextureBuffer.size() > 0)
-			data = (uint8_t*)lodePNGtextureBuffer.data();
-		assert(data != nullptr);
-
-		if (!WriteParsedTextureDataToMemory(data))
-		{
-			EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanSampler2D::AllocAndBindVKSampler2D() Error: Could not write texture data to memory\n");
-			return false;
-		}
-	}
-	else //doesUseStagingBuffer == true
-	{
-		uint8_t* data = nullptr;
-		if (gliTexture2D)
-			data = (uint8_t*)gliTexture2D->data();
-		else if (lodePNGtextureBuffer.size() > 0)
-			data = (uint8_t*)lodePNGtextureBuffer.data();
-		assert(data != nullptr);
-
-		//Write texture data to the staging buffer. 
-		assert(stagingBuffer.AllocAndBindHostVisibleVKStagingBuffer(renderingDevice, data, nullptr));
-	}
 	
 	//Done
 	return true;
 }
  
+bool VulkanSampler2D::WriteTextureDataFromTexture(EngineAPI::Graphics::RenderDevice* renderingDevice,
+	EngineAPI::Rendering::TextureData* textureData)
+{
+	assert(textureData != nullptr);
+
+	//Ensure valid call
+	assert(!doesUseStagingBuffer);
+
+	//Write data to the resource block
+	assert(WriteParsedTextureDataToMemory(textureData->GetRawTextureData()));
+
+	//Done
+	return true;
+}
+
+bool VulkanSampler2D::WriteTextureDataFromStagingBuffer(EngineAPI::Graphics::RenderDevice* renderingDevice,
+	EngineAPI::Graphics::StagingBuffer* stagingBuffer)
+{
+	assert(stagingBuffer != nullptr);
+
+	//Ensure valid call
+	assert(doesUseStagingBuffer);
+
+	//Copy staging buffer data in to the resource block. 
+
+	//Done
+	return true;
+}
+
 bool VulkanSampler2D::InitVKSampler2DLayoutAndViews(EngineAPI::Graphics::RenderDevice* renderingDevice)
 {
 	//Layout
@@ -148,10 +266,6 @@ bool VulkanSampler2D::InitVKSampler2DLayoutAndViews(EngineAPI::Graphics::RenderD
 	//Views
 	if (!InitVKSampler2DViews(renderingDevice))
 		return false;
-
-	//Can now cleanup image data
-	CleanupGLIData();
-	CleanupLodePNGData();
 
 	//Done
 	return true;
@@ -301,18 +415,4 @@ bool VulkanSampler2D::AutoGenerateMips(uint8_t* textureData)
 
 	//Done
 	return true;
-}
-
-void VulkanSampler2D::CleanupGLIData()
-{
-	if (gliTexture2D)
-	{
-		delete gliTexture2D;
-		gliTexture2D = nullptr;
-	}
-}
-
-void VulkanSampler2D::CleanupLodePNGData()
-{
-	lodePNGtextureBuffer.clear();
 }
