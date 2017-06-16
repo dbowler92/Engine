@@ -60,6 +60,10 @@ bool VulkanSampler2D::InitVKSampler2D(EngineAPI::Graphics::RenderDevice* renderi
 		return false;
 	}
 
+	//Cache the current image layout -> Which, right now, is the initial layout. This is updated
+	//within the function: SetSampler2DImageLayout() to the new current layout. 
+	currentImageLayout = imageCreateInfo.initialLayout;
+
 	//Will we need the use of staging buffer?
 	doesUseStagingBuffer = false;
 	if (tilingMode == TEXTURE_TILING_MODE_OPTIMAL)
@@ -67,152 +71,19 @@ bool VulkanSampler2D::InitVKSampler2D(EngineAPI::Graphics::RenderDevice* renderi
 	if (resourceUsage != RENDERING_RESOURCE_USAGE_GPU_READ_CPU_WRITE)
 		doesUseStagingBuffer = true;
 
-	//Done
-	return true;
-}
-
-/*
-bool VulkanSampler2D::InitVKSampler2DFromTexture(EngineAPI::Graphics::RenderDevice* renderingDevice,
-	EngineAPI::Rendering::TextureData* textureData, TextureTilingMode tilingMode, RenderingResourceUsage resourceUsage,
-	VkFormat desiredImageFormat, VkImageUsageFlags desiredImageUsageFlags)
-{
-	//TEMP - Linear + dynamic texture only for now... For texture data stored in 
-	//device local memory, use InitVKSampler2DFromStagingBuffer() instead!
-	assert(tilingMode == TEXTURE_TILING_MODE_LINEAR);
-	assert(resourceUsage == RENDERING_RESOURCE_USAGE_GPU_READ_CPU_WRITE);
-
-	//Error checks
-	assert(textureData != nullptr);
-	if (tilingMode == TEXTURE_TILING_MODE_OPTIMAL)
+	//Get a command buffer from the graphics command buffer pool (we will submit the command buffer
+	//to the graphics queue later)
+	EngineAPI::Graphics::CommandBufferPool& cmdPool = renderingDevice->GetGraphicsCommandQueueFamily()->GetCommandBufferPool(0);
+	if (!cmdPool.GetVKCommandBufferFromPool(true, &vkSampler2DTextureImageLayoutCmdBuffer))
 	{
-		if (resourceUsage == RENDERING_RESOURCE_USAGE_GPU_READ_CPU_WRITE)
-		{
-			EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanSampler2D::InitVKSampler2DFromTexture() Error: Texture can not have a Dynamic usage if using optimal tiling mode\n");
-			return false;
-		}
-	}
-
-	//TODO: Auto Generate mips????
-
-	//Fillout image creation struct
-	VkImageCreateInfo imageCreateInfo = {};
-	imageCreateInfo.sType = VK_STRUCTURE_TYPE_IMAGE_CREATE_INFO;
-	imageCreateInfo.pNext = NULL;
-	imageCreateInfo.flags = 0;
-	imageCreateInfo.imageType = VK_IMAGE_TYPE_2D;
-	imageCreateInfo.format = desiredImageFormat;
-	imageCreateInfo.extent.width = textureData->GetTextureWidth();
-	imageCreateInfo.extent.height = textureData->GetTextureHeight();
-	imageCreateInfo.extent.depth = 1;
-	imageCreateInfo.mipLevels = textureData->GetMipmapLevelsCount();
-	imageCreateInfo.arrayLayers = 1;
-	imageCreateInfo.samples = VK_SAMPLE_COUNT_1_BIT;
-	imageCreateInfo.queueFamilyIndexCount = 0;
-	imageCreateInfo.pQueueFamilyIndices = nullptr;
-	imageCreateInfo.sharingMode = VK_SHARING_MODE_EXCLUSIVE;
-	imageCreateInfo.usage = desiredImageUsageFlags;
-
-	if (tilingMode == TEXTURE_TILING_MODE_LINEAR)
-	{
-		imageCreateInfo.tiling = VK_IMAGE_TILING_LINEAR;
-		imageCreateInfo.initialLayout = VK_IMAGE_LAYOUT_PREINITIALIZED;
-	}
-	else
-	{
-		imageCreateInfo.tiling = VK_IMAGE_TILING_OPTIMAL;
-		imageCreateInfo.initialLayout = VK_IMAGE_LAYOUT_UNDEFINED;
-
-		//Will be written in to by staging buffer
-		if ((desiredImageUsageFlags & VK_IMAGE_USAGE_TRANSFER_DST_BIT) == 0)
-			imageCreateInfo.usage |= VK_IMAGE_USAGE_TRANSFER_DST_BIT;
-	}
-
-	//Init VkImage
-	if (!InitVKTexture(renderingDevice, &imageCreateInfo, resourceUsage))
-	{
-		EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanSampler2D::InitVKSampler2DFromTexture() Error - Could not init VkImage object\n");
+		//Error
+		EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanSampler2D::InitVKSampler2D() - Could not get command buffer from pool\n");
 		return false;
 	}
 
-	//Init the staging buffer if required.
-	doesUseStagingBuffer = false;
-	if (tilingMode == TEXTURE_TILING_MODE_OPTIMAL)  //TODO: Or usage == ...
-		doesUseStagingBuffer = true;
-
-	if (doesUseStagingBuffer)
-	{
-		if (this->GetResourceDebugName().empty() == true)
-			stagingBuffer.SetResourceDebugName("Resource Staging Buffer");
-		else
-			stagingBuffer.SetResourceDebugName(this->GetResourceDebugName() + " Staging Buffer");
-
-		assert(stagingBuffer.InitVKStagingBuffer(renderingDevice, textureData->GetTextureDataSize()));
-	}
-
 	//Done
 	return true;
 }
-
-bool VulkanSampler2D::InitVKSampler2DFromStagingBuffer(EngineAPI::Graphics::RenderDevice* renderingDevice,
-	EngineAPI::Graphics::StagingBuffer* stagingBuffer, uint32_t imageWidth, uint32_t imageHeight, uint32_t mipsCount,
-	TextureTilingMode tilingMode, RenderingResourceUsage resourceUsage,
-	VkFormat desiredImageFormat, VkImageUsageFlags desiredImageUsageFlags)
-{
-	//TEMP: Can't be dynamic texture
-	assert(resourceUsage != RENDERING_RESOURCE_USAGE_GPU_READ_CPU_WRITE);
-
-	//Error check
-	assert(stagingBuffer != nullptr);
-
-	//TODO: Auto Generate mips????
-
-	//Fillout image creation struct
-	VkImageCreateInfo imageCreateInfo = {};
-	imageCreateInfo.sType = VK_STRUCTURE_TYPE_IMAGE_CREATE_INFO;
-	imageCreateInfo.pNext = NULL;
-	imageCreateInfo.flags = 0;
-	imageCreateInfo.imageType = VK_IMAGE_TYPE_2D;
-	imageCreateInfo.format = desiredImageFormat;
-	imageCreateInfo.extent.width = imageWidth;
-	imageCreateInfo.extent.height = imageHeight;
-	imageCreateInfo.extent.depth = 1;
-	imageCreateInfo.mipLevels = mipsCount;
-	imageCreateInfo.arrayLayers = 1;
-	imageCreateInfo.samples = VK_SAMPLE_COUNT_1_BIT;
-	imageCreateInfo.queueFamilyIndexCount = 0;
-	imageCreateInfo.pQueueFamilyIndices = nullptr;
-	imageCreateInfo.sharingMode = VK_SHARING_MODE_EXCLUSIVE;
-	imageCreateInfo.usage = desiredImageUsageFlags;
-
-	if (tilingMode == TEXTURE_TILING_MODE_LINEAR)
-	{
-		imageCreateInfo.tiling = VK_IMAGE_TILING_LINEAR;
-		imageCreateInfo.initialLayout = VK_IMAGE_LAYOUT_PREINITIALIZED;
-	}
-	else
-	{
-		imageCreateInfo.tiling = VK_IMAGE_TILING_OPTIMAL;
-		imageCreateInfo.initialLayout = VK_IMAGE_LAYOUT_UNDEFINED;
-
-		//Will be written in to by staging buffer
-		if ((desiredImageUsageFlags & VK_IMAGE_USAGE_TRANSFER_DST_BIT) == 0)
-			imageCreateInfo.usage |= VK_IMAGE_USAGE_TRANSFER_DST_BIT;
-	}
-
-	//Init VkImage
-	if (!InitVKTexture(renderingDevice, &imageCreateInfo, resourceUsage))
-	{
-		EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanSampler2D::InitVKSampler2DFromTexture() Error - Could not init VkImage object\n");
-		return false;
-	}
-
-	//Does use staging buffer
-	doesUseStagingBuffer = true;
-
-	//Done
-	return true;
-}
-*/
 
 bool VulkanSampler2D::AllocAndBindVKSampler2D(EngineAPI::Graphics::RenderDevice* renderingDevice,
 	EngineAPI::Graphics::DeviceMemoryStore* optionalDeviceStore)
@@ -235,9 +106,15 @@ bool VulkanSampler2D::WriteTextureDataFromTexture(EngineAPI::Graphics::RenderDev
 
 	//Ensure valid call
 	assert(!doesUseStagingBuffer);
+	assert(currentImageLayout == VK_IMAGE_LAYOUT_PREINITIALIZED);
 
 	//Write data to the resource block
-	assert(WriteParsedTextureDataToMemory(textureData->GetRawTextureData()));
+	assert(WriteParsedTextureDataToMemoryBlock(textureData->GetRawTextureData()));
+
+	//Manage layout now that we have written data to the block
+	VkImageLayout oldLayout = currentImageLayout;
+	VkImageLayout newLayout = VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
+	assert(SetSampler2DImageLayout(renderingDevice, oldLayout, newLayout));
 
 	//Done
 	return true;
@@ -250,97 +127,20 @@ bool VulkanSampler2D::WriteTextureDataFromStagingBuffer(EngineAPI::Graphics::Ren
 
 	//Ensure valid call
 	assert(doesUseStagingBuffer);
+	assert(currentImageLayout == VK_IMAGE_LAYOUT_UNDEFINED);
+
+	//Set resource layout to one that can receive staging buffer data
+	VkImageLayout oldLayout = currentImageLayout;
+	VkImageLayout newLayout = VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL;
+	assert(SetSampler2DImageLayout(renderingDevice, oldLayout, newLayout));
 
 	//Copy staging buffer data in to the resource block. 
 
-	//Done
-	return true;
-}
 
-bool VulkanSampler2D::InitVKSampler2DLayoutAndViews(EngineAPI::Graphics::RenderDevice* renderingDevice)
-{
-	//Layout
-	if (!InitVKSampler2DLayout(renderingDevice))
-		return false;
-
-	//Views
-	if (!InitVKSampler2DViews(renderingDevice))
-		return false;
-
-	//Done
-	return true;
-}
-
-bool VulkanSampler2D::InitVKSampler2DLayout(EngineAPI::Graphics::RenderDevice* renderingDevice)
-{
-	//Get a command buffer from the graphics command buffer pool (we will submit the command buffer
-	//to the graphics queue later)
-	EngineAPI::Graphics::CommandBufferPool& cmdPool = renderingDevice->GetGraphicsCommandQueueFamily()->GetCommandBufferPool(0);
-	if (!cmdPool.GetVKCommandBufferFromPool(true, &vkSampler2DTextureImageLayoutCmdBuffer))
-	{
-		//Error
-		EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanSampler2D::InitVKSampler2DLayout() - Could not get command buffer from pool\n");
-		return false;
-	}
-
-	//Begin reading commands to this buffer
-	if (EngineAPI::Statics::VulkanStatics::CommandBufferBeginRecordingDefault(&vkSampler2DTextureImageLayoutCmdBuffer))
-	{
-		VkImageSubresourceRange subresourceRange = {};
-		subresourceRange.aspectMask = VK_IMAGE_ASPECT_COLOR_BIT;
-		subresourceRange.baseMipLevel = 0;
-		subresourceRange.baseArrayLayer = 0;
-		subresourceRange.levelCount = mipLevelsCount;
-		subresourceRange.layerCount = 1;
-
-		VkImageLayout oldLayout;
-		VkImageLayout newLayout;
-
-		if (!doesUseStagingBuffer)
-		{
-			oldLayout = VK_IMAGE_LAYOUT_PREINITIALIZED;
-			newLayout = VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
-
-		}
-		else
-		{
-			oldLayout = VK_IMAGE_LAYOUT_UNDEFINED;
-			newLayout = VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL;
-		}
-
-		EngineAPI::Statics::VulkanCommands::CMD_SetImageLayout(vkSampler2DTextureImageLayoutCmdBuffer,
-			vkImageHandle, subresourceRange.aspectMask, oldLayout, newLayout, subresourceRange);
-	}
-	else
-	{
-		//Error
-		EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanSampler2D::InitVKSampler2DLayout() - Failed to begin reading to command buffer\n");
-		EngineAPI::Statics::VulkanStatics::CommandBufferEndRecording(&vkSampler2DTextureImageLayoutCmdBuffer);
-		return false;
-	}
-
-	//Stop reading commands in to the command buffer
-	EngineAPI::Statics::VulkanStatics::CommandBufferEndRecording(&vkSampler2DTextureImageLayoutCmdBuffer);
-
-	//Submit the work -> Inits this images & its layout. 
-	EngineAPI::Graphics::CommandQueueFamily* graphicsQueueFamily = renderingDevice->GetGraphicsCommandQueueFamily();
-
-	//Ensure that the GPU has finished the submitted work before the host 
-	//takes over again
-	VkFence textureImageLayoutFence;
-	VkDevice device = renderingDevice->GetVKLogicalDevice();
-	assert(EngineAPI::Statics::VulkanStatics::CreateVKFence(&device, false, &textureImageLayoutFence));
-
-	if (!graphicsQueueFamily->SubmitVKCommandBuffersToQueueDefault(0, &vkSampler2DTextureImageLayoutCmdBuffer, 1, textureImageLayoutFence, true))
-	{
-		//Error in submission
-		EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanSampler2D::InitVKSampler2DLayout() Error - Failed to submit layout command buffer to queue\n");
-		return false;
-	}
-
-	//Wait on fence
-	vkWaitForFences(device, 1, &textureImageLayoutFence, VK_TRUE, 10000000000);
-	vkDestroyFence(device, textureImageLayoutFence, nullptr);
+	//Manage layout transition ready for use. 
+	oldLayout = currentImageLayout;
+	newLayout = VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
+	assert(SetSampler2DImageLayout(renderingDevice, oldLayout, newLayout));
 
 	//Done
 	return true;
@@ -352,7 +152,7 @@ bool VulkanSampler2D::InitVKSampler2DViews(EngineAPI::Graphics::RenderDevice* re
 	subresourceRange.aspectMask = VK_IMAGE_ASPECT_COLOR_BIT;
 	subresourceRange.baseMipLevel = 0;
 	subresourceRange.baseArrayLayer = 0;
-	subresourceRange.levelCount = 1; 
+	subresourceRange.levelCount = 1;
 	subresourceRange.layerCount = 1;
 
 	//Image view to allow shader access to the texture info
@@ -376,7 +176,7 @@ bool VulkanSampler2D::InitVKSampler2DViews(EngineAPI::Graphics::RenderDevice* re
 	return true;
 }
 
-bool VulkanSampler2D::WriteParsedTextureDataToMemory(uint8_t* data)
+bool VulkanSampler2D::WriteParsedTextureDataToMemoryBlock(uint8_t* data)
 {
 	assert(data != nullptr);
 
@@ -404,6 +204,63 @@ bool VulkanSampler2D::WriteParsedTextureDataToMemory(uint8_t* data)
 
 	//Unmap
 	UnmapResource();
+
+	//Done
+	return true;
+}
+
+bool VulkanSampler2D::SetSampler2DImageLayout(EngineAPI::Graphics::RenderDevice* renderingDevice,
+	VkImageLayout oldLayout, VkImageLayout newLayout)
+{
+	//Reset command buffer
+	assert(EngineAPI::Statics::VulkanStatics::CommandBufferReset(&vkSampler2DTextureImageLayoutCmdBuffer, false));
+
+	//Begin reading commands to this buffer
+	if (EngineAPI::Statics::VulkanStatics::CommandBufferBeginRecordingDefault(&vkSampler2DTextureImageLayoutCmdBuffer))
+	{
+		VkImageSubresourceRange subresourceRange = {};
+		subresourceRange.aspectMask = VK_IMAGE_ASPECT_COLOR_BIT;
+		subresourceRange.baseMipLevel = 0;
+		subresourceRange.baseArrayLayer = 0;
+		subresourceRange.levelCount = mipLevelsCount;
+		subresourceRange.layerCount = 1;
+
+		EngineAPI::Statics::VulkanCommands::CMD_SetImageLayout(vkSampler2DTextureImageLayoutCmdBuffer,
+			vkImageHandle, subresourceRange.aspectMask, oldLayout, newLayout, subresourceRange);
+	}
+	else
+	{
+		//Error
+		EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanSampler2D::SetSampler2DImageLayout() - Failed to begin reading to command buffer\n");
+		EngineAPI::Statics::VulkanStatics::CommandBufferEndRecording(&vkSampler2DTextureImageLayoutCmdBuffer);
+		return false;
+	}
+
+	//Stop reading commands in to the command buffer
+	EngineAPI::Statics::VulkanStatics::CommandBufferEndRecording(&vkSampler2DTextureImageLayoutCmdBuffer);
+
+	//Submit the work -> Inits this images & its layout. 
+	EngineAPI::Graphics::CommandQueueFamily* graphicsQueueFamily = renderingDevice->GetGraphicsCommandQueueFamily();
+
+	//Ensure that the GPU has finished the submitted work before the host 
+	//takes over again
+	VkFence textureImageLayoutFence;
+	VkDevice device = renderingDevice->GetVKLogicalDevice();
+	assert(EngineAPI::Statics::VulkanStatics::CreateVKFence(&device, false, &textureImageLayoutFence));
+
+	if (!graphicsQueueFamily->SubmitVKCommandBuffersToQueueDefault(0, &vkSampler2DTextureImageLayoutCmdBuffer, 1, textureImageLayoutFence, true))
+	{
+		//Error in submission
+		EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanSampler2D::InitVKSampler2DLayout() Error - Failed to submit layout command buffer to queue\n");
+		return false;
+	}
+
+	//Wait on fence
+	vkWaitForFences(device, 1, &textureImageLayoutFence, VK_TRUE, 10000000000);
+	vkDestroyFence(device, textureImageLayoutFence, nullptr);
+
+	//Cache the new image layout info
+	currentImageLayout = newLayout;
 
 	//Done
 	return true;

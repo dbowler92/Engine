@@ -397,10 +397,10 @@ void TexturedCube::InitSamplerOptimal(EngineAPI::Graphics::GraphicsManager* grap
 	//Write texture data from staging buffer to the GPU texture memory block
 	assert(sampler2D.AllocAndBindVKSampler2D(device, sampler2DDeviceStore));
 	assert(sampler2D.WriteTextureDataFromStagingBuffer(device, &textureStagingBuffer));
-	assert(sampler2D.InitVKSampler2DLayoutAndViews(device));
+	assert(sampler2D.InitVKSampler2DViews(device));
 
 }
-
+ 
 void TexturedCube::InitSamplerLinear(EngineAPI::Graphics::GraphicsManager* graphicsSubsystem)
 {
 	EngineAPI::Graphics::RenderDevice* device = graphicsSubsystem->GetRenderingDevice();
@@ -430,7 +430,7 @@ void TexturedCube::InitSamplerLinear(EngineAPI::Graphics::GraphicsManager* graph
 	//Write texture data from staging buffer to the GPU texture memory block
 	assert(sampler2D.AllocAndBindVKSampler2D(device, sampler2DDeviceStore));
 	assert(sampler2D.WriteTextureDataFromTexture(device, &textureFromFile));
-	assert(sampler2D.InitVKSampler2DLayoutAndViews(device));
+	assert(sampler2D.InitVKSampler2DViews(device));
 }
 
 void TexturedCube::Update(float dt)
