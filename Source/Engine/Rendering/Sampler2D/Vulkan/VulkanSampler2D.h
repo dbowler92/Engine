@@ -81,7 +81,8 @@ namespace EngineAPI
 
 				//Command buffers
 				VkCommandBuffer vkSampler2DTextureImageLayoutCmdBuffer = VK_NULL_HANDLE;
-				
+				VkCommandBuffer vkStagingBufferCopyCmdBuffer = VK_NULL_HANDLE;
+
 				//TODO: Does this resource require the use of staging buffers?
 				bool doesUseStagingBuffer = false; //Calculated at init time
 
@@ -89,8 +90,14 @@ namespace EngineAPI
 				VkImageLayout currentImageLayout;
 
 			private:
-				//Writes the parsed data to the resources memory block. 
-				bool WriteParsedTextureDataToMemoryBlock(uint8_t* data);
+				//Called during InitVKSampler2D() - works out if this texture
+				//will require the use of staging buffer -> Based on usage, tiling and the like
+				bool DoesSamplerRequireStagingBuffer(TextureTilingMode tilingMode, RenderingResourceUsage resourceUsage);
+
+				//Fills resource data block with texture data
+				bool WriteParsedTextureDataToMemoryBlock(uint8_t* data); //Direct from texture write
+				bool WriteTextureDataFromStagingBufferToMemoryBlock(EngineAPI::Graphics::RenderDevice* renderingDevice, 
+					EngineAPI::Graphics::StagingBuffer* stagingBuffer); //Copied from staging buffer
 
 				//Set image layout
 				bool SetSampler2DImageLayout(EngineAPI::Graphics::RenderDevice* renderingDevice, 

@@ -70,6 +70,9 @@ bool TextureData::LoadTextureFromFile(const char* filename, TextureLoadingAPI ap
 		textureSizeBytes = rawTextureData.size(); //Verify
 	}
 
+	//TEMP: 
+	assert(mipmapLevelsCount == 1);
+
 	//Done
 	return true;
 }

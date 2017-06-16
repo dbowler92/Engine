@@ -416,7 +416,7 @@ bool VulkanCommands::CMD_SetImageLayout(const VkCommandBuffer& commandBuffer, co
 		}
 		case VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL:
 		{
-			imageMemoryBarrier.srcAccessMask = VK_ACCESS_HOST_WRITE_BIT | VK_ACCESS_TRANSFER_WRITE_BIT;
+			imageMemoryBarrier.srcAccessMask = VK_ACCESS_TRANSFER_WRITE_BIT; //VK_ACCESS_HOST_WRITE_BIT | VK_ACCESS_TRANSFER_WRITE_BIT;
 			imageMemoryBarrier.dstAccessMask = VK_ACCESS_SHADER_READ_BIT;
 			break;
 		}

@@ -79,7 +79,8 @@ namespace EngineAPI
 
 				//Command queue families
 				EngineAPI::Graphics::CommandQueueFamily* GetGraphicsCommandQueueFamily() { return &graphicsQueueFamily; };
-				EngineAPI::Graphics::CommandQueueFamily* GetPresentCommandQueueFamily() { return &graphicsQueueFamily; }; //Currently queue handles graphics *AND* present work
+				EngineAPI::Graphics::CommandQueueFamily* GetPresentCommandQueueFamily() { return &graphicsQueueFamily; };  //Currently queue handles graphics *AND* present work
+				EngineAPI::Graphics::CommandQueueFamily* GetDMATransferCommandQueueFamily() { return &graphicsQueueFamily; }; //Graphics queue can handle transfers. In future, this could be a separate queue family!
 
 			private:
 				//Vulkan data / handles

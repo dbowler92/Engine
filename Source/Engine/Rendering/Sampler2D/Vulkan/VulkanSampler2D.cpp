@@ -6,10 +6,22 @@ void VulkanSampler2D::Shutdown()
 {
 	//Destroy self...	
 	if (vkSampler2DTextureImageLayoutCmdBuffer != VK_NULL_HANDLE)
+	{
 		EngineAPI::Statics::VulkanStatics::CommandBufferReset(&vkSampler2DTextureImageLayoutCmdBuffer, true);
+		vkSampler2DTextureImageLayoutCmdBuffer = VK_NULL_HANDLE;
+	}
+
+	if (vkStagingBufferCopyCmdBuffer != VK_NULL_HANDLE)
+	{
+		EngineAPI::Statics::VulkanStatics::CommandBufferReset(&vkStagingBufferCopyCmdBuffer, true);
+		vkSampler2DTextureImageLayoutCmdBuffer = VK_NULL_HANDLE;
+	}
 
 	if (vkShaderSamplerView != VK_NULL_HANDLE)
+	{
 		EngineAPI::Statics::VulkanStatics::DestoryVKTextureView(&cachedVkDevice, &vkShaderSamplerView);
+		vkShaderSamplerView = VK_NULL_HANDLE;
+	}
 
 	//Destroy super
 	__super::Shutdown();
@@ -65,20 +77,27 @@ bool VulkanSampler2D::InitVKSampler2D(EngineAPI::Graphics::RenderDevice* renderi
 	currentImageLayout = imageCreateInfo.initialLayout;
 
 	//Will we need the use of staging buffer?
-	doesUseStagingBuffer = false;
-	if (tilingMode == TEXTURE_TILING_MODE_OPTIMAL)
-		doesUseStagingBuffer = true;
-	if (resourceUsage != RENDERING_RESOURCE_USAGE_GPU_READ_CPU_WRITE)
-		doesUseStagingBuffer = true;
+	doesUseStagingBuffer = DoesSamplerRequireStagingBuffer(tilingMode, resourceUsage);
 
-	//Get a command buffer from the graphics command buffer pool (we will submit the command buffer
-	//to the graphics queue later)
+	//Get a command buffer from the graphics command buffer pool -> Used to transition layouts.
 	EngineAPI::Graphics::CommandBufferPool& cmdPool = renderingDevice->GetGraphicsCommandQueueFamily()->GetCommandBufferPool(0);
 	if (!cmdPool.GetVKCommandBufferFromPool(true, &vkSampler2DTextureImageLayoutCmdBuffer))
 	{
 		//Error
-		EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanSampler2D::InitVKSampler2D() - Could not get command buffer from pool\n");
+		EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanSampler2D::InitVKSampler2D() - Could not get layout transition command buffer from pool\n");
 		return false;
+	}
+
+	//Gets a command buffer that is used when transferring data from staging buffer
+	if (doesUseStagingBuffer)
+	{
+		EngineAPI::Graphics::CommandBufferPool& cmdPool = renderingDevice->GetDMATransferCommandQueueFamily()->GetCommandBufferPool(0);
+		if (!cmdPool.GetVKCommandBufferFromPool(true, &vkStagingBufferCopyCmdBuffer))
+		{
+			//Error
+			EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanSampler2D::InitVKSampler2D - Could not get DMA transfer command buffer from pool\n");
+			return false;
+		}
 	}
 
 	//Done
@@ -135,11 +154,11 @@ bool VulkanSampler2D::WriteTextureDataFromStagingBuffer(EngineAPI::Graphics::Ren
 	assert(SetSampler2DImageLayout(renderingDevice, oldLayout, newLayout));
 
 	//Copy staging buffer data in to the resource block. 
-
+	assert(WriteTextureDataFromStagingBufferToMemoryBlock(renderingDevice, stagingBuffer));
 
 	//Manage layout transition ready for use. 
 	oldLayout = currentImageLayout;
-	newLayout = VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
+	newLayout = VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL; //TODO: New layout should be depenedant on usage at init time
 	assert(SetSampler2DImageLayout(renderingDevice, oldLayout, newLayout));
 
 	//Done
@@ -176,6 +195,20 @@ bool VulkanSampler2D::InitVKSampler2DViews(EngineAPI::Graphics::RenderDevice* re
 	return true;
 }
 
+bool VulkanSampler2D::DoesSamplerRequireStagingBuffer(TextureTilingMode tilingMode, RenderingResourceUsage resourceUsage)
+{
+	//
+	//TODO: Verify
+	//
+	bool ret = false;
+	if (tilingMode == TEXTURE_TILING_MODE_OPTIMAL)
+		ret = true;
+	if (resourceUsage != RENDERING_RESOURCE_USAGE_GPU_READ_CPU_WRITE)
+		ret = true;
+
+	return ret;
+}
+
 bool VulkanSampler2D::WriteParsedTextureDataToMemoryBlock(uint8_t* data)
 {
 	assert(data != nullptr);
@@ -209,9 +242,89 @@ bool VulkanSampler2D::WriteParsedTextureDataToMemoryBlock(uint8_t* data)
 	return true;
 }
 
+bool VulkanSampler2D::WriteTextureDataFromStagingBufferToMemoryBlock(EngineAPI::Graphics::RenderDevice* renderingDevice, 
+	EngineAPI::Graphics::StagingBuffer* stagingBuffer)
+{
+	assert(vkStagingBufferCopyCmdBuffer != VK_NULL_HANDLE);
+
+	//TEMP:
+	assert(mipLevelsCount == 1);
+
+	//Image should be ready to receive transfer data
+	assert(currentImageLayout == VK_IMAGE_LAYOUT_TRANSFER_DST_OPTIMAL);
+
+	//Buffer image copy struct per mip level
+	std::vector<VkBufferImageCopy> bufferRegions(mipLevelsCount);
+	for (int i = 0; i < mipLevelsCount; ++i)
+	{
+		bufferRegions[i] = {};
+		bufferRegions[i].imageSubresource.aspectMask = VK_IMAGE_ASPECT_COLOR_BIT;
+		bufferRegions[i].imageSubresource.mipLevel = i;
+		bufferRegions[i].imageSubresource.layerCount = 1;
+		bufferRegions[i].imageSubresource.baseArrayLayer = 0;
+
+		//TODO: When implementing mip levels, this will need changing! Currently, each
+		//texture loaded will have one mip level only and we do not auto generate mips. 
+		bufferRegions[i].imageExtent.width = GetVKImageDimentions().width;
+		bufferRegions[i].imageExtent.height = GetVKImageDimentions().height;
+		bufferRegions[i].imageExtent.depth = 1;
+
+		//TODO: Will also need looking at when implementing mips
+		bufferRegions[i].bufferOffset = 0;
+
+		//TODO: Increment offset in the buffer object. The offset should tell vulkan where
+		//to read the next mip level data from within the whole buffer. 
+	}
+
+	//Reset command buffer
+	assert(EngineAPI::Statics::VulkanStatics::CommandBufferReset(&vkStagingBufferCopyCmdBuffer, false));
+
+	//Begin reading in to the command buffer
+	if (EngineAPI::Statics::VulkanStatics::CommandBufferBeginRecordingDefault(&vkStagingBufferCopyCmdBuffer))
+	{
+		EngineAPI::Statics::VulkanCommands::VKCMD_CopyBufferToImage(vkStagingBufferCopyCmdBuffer,
+			stagingBuffer->GetVKBufferHandle(), GetVKImageHandle(), currentImageLayout, bufferRegions.data(), bufferRegions.size());
+	}
+	else
+	{
+		//Error
+		EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanSampler2D::WriteTextureDataFromStagingBufferToMemoryBlock() - Failed to begin reading to command buffer\n");
+		EngineAPI::Statics::VulkanStatics::CommandBufferEndRecording(&vkStagingBufferCopyCmdBuffer);
+		return false;
+	}
+
+	//Stop reading
+	EngineAPI::Statics::VulkanStatics::CommandBufferEndRecording(&vkStagingBufferCopyCmdBuffer);
+
+	//Submit the work -> Copies data from buffer to image 
+	EngineAPI::Graphics::CommandQueueFamily* graphicsQueueFamily = renderingDevice->GetDMATransferCommandQueueFamily();
+
+	//Ensure that the GPU has finished the submitted work before the host 
+	//takes over again
+	VkFence stagingBufferCmdFence;
+	VkDevice device = renderingDevice->GetVKLogicalDevice();
+	assert(EngineAPI::Statics::VulkanStatics::CreateVKFence(&device, false, &stagingBufferCmdFence));
+
+	if (!graphicsQueueFamily->SubmitVKCommandBuffersToQueueDefault(0, &vkStagingBufferCopyCmdBuffer, 1, stagingBufferCmdFence, true))
+	{
+		//Error in submission
+		EngineAPI::Debug::DebugLog::PrintErrorMessage("VulkanSampler2D::WriteTextureDataFromStagingBufferToMemoryBlock() Error - Failed to submit staging buffer transfer command buffer to queue\n");
+		return false;
+	}
+
+	//Wait on fence
+	vkWaitForFences(device, 1, &stagingBufferCmdFence, VK_TRUE, 10000000000);
+	vkDestroyFence(device, stagingBufferCmdFence, nullptr);
+
+	//Done
+	return true;
+}
+
 bool VulkanSampler2D::SetSampler2DImageLayout(EngineAPI::Graphics::RenderDevice* renderingDevice,
 	VkImageLayout oldLayout, VkImageLayout newLayout)
 {
+	assert(vkSampler2DTextureImageLayoutCmdBuffer != VK_NULL_HANDLE);
+
 	//Reset command buffer
 	assert(EngineAPI::Statics::VulkanStatics::CommandBufferReset(&vkSampler2DTextureImageLayoutCmdBuffer, false));
 

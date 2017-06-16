@@ -4,8 +4,6 @@ using namespace EngineAPI::Graphics::Platform;
 
 void VulkanStagingBuffer::Shutdown()
 {
-	//Cleanup staging buffer data
-
 	//Shutdown super class - the buffer object
 	__super::Shutdown();
 }

@@ -57,7 +57,7 @@ namespace EngineAPI
 			//Texture data
 			uint32_t imageWidth = 0;
 			uint32_t imageHeight = 0;
-			uint32_t mipmapLevelsCount = 0;
+			uint32_t mipmapLevelsCount = 0; //Should be 1 for now -> Will need a way of handling this better!
 			uint32_t textureSizeBytes = 0; //Actual size of the texture loaded by API
 		};
 	};
