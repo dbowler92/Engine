@@ -1,2 +1,5 @@
-﻿  Sandbox.vcxproj -> C:\Users\B1032464\Documents\Programming\Engine\Engine\Source\Engine\Msvs\..\..\Lib\Win32Debug\SandboxWin32Debug.exe
-  Sandbox.vcxproj -> C:\Users\B1032464\Documents\Programming\Engine\Engine\Source\Engine\Msvs\..\..\Lib\Win32Debug\SandboxWin32Debug.pdb (Full PDB)
+﻿  TestScene.cpp
+c:\users\dan\documents\programming\3dgameengine\game_engine\engine\source\engine\3rdparty\gli\gli\core\image.inl(90): warning C4244: 'return': conversion from 'glm::uint64' to 'size_t', possible loss of data
+c:\users\dan\documents\programming\3dgameengine\game_engine\engine\source\engine\3rdparty\gli\gli\core\image.inl(105): warning C4244: 'return': conversion from 'glm::uint64' to 'size_t', possible loss of data
+c:\users\dan\documents\programming\3dgameengine\game_engine\engine\source\sandbox\testscene\testscene.cpp(22): warning C4067: unexpected tokens following preprocessor directive - expected a newline
+  Sandbox.vcxproj -> C:\Users\Dan\Documents\Programming\3DGameEngine\Game_Engine\Engine\Source\Engine\Msvs\..\..\Lib\Win32Debug\SandboxWin32Debug.exe

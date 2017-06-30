@@ -176,6 +176,7 @@
     <ClCompile Include="..\Main\SandboxMain.cpp" />
     <ClCompile Include="..\PushConstantCube\PushConstantCube.cpp" />
     <ClCompile Include="..\Quad\Quad.cpp" />
+    <ClCompile Include="..\TestScene\TestScene.cpp" />
     <ClCompile Include="..\TexturedCube\TexturedCube.cpp" />
     <ClCompile Include="..\Triangle\Triangle.cpp" />
   </ItemGroup>
@@ -184,6 +185,7 @@
     <ClInclude Include="..\Application\SandboxApplication.h" />
     <ClInclude Include="..\PushConstantCube\PushConstantCube.h" />
     <ClInclude Include="..\Quad\Quad.h" />
+    <ClInclude Include="..\TestScene\TestScene.h" />
     <ClInclude Include="..\TexturedCube\TexturedCube.h" />
     <ClInclude Include="..\Triangle\Triangle.h" />
   </ItemGroup>

@@ -25,6 +25,9 @@
     <Filter Include="Src\PushConstantCube">
       <UniqueIdentifier>{de6f56b1-b46c-48b2-a46a-8dde98173b21}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Src\TestScene">
+      <UniqueIdentifier>{b618c303-741a-4035-b03c-1515cbeac507}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Main\SandboxMain.cpp">
@@ -45,6 +48,9 @@
     <ClCompile Include="..\PushConstantCube\PushConstantCube.cpp">
       <Filter>Src\PushConstantCube</Filter>
     </ClCompile>
+    <ClCompile Include="..\TestScene\TestScene.cpp">
+      <Filter>Src\TestScene</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Application\SandboxApplication.h">
@@ -64,6 +70,9 @@
     </ClInclude>
     <ClInclude Include="..\PushConstantCube\PushConstantCube.h">
       <Filter>Src\PushConstantCube</Filter>
+    </ClInclude>
+    <ClInclude Include="..\TestScene\TestScene.h">
+      <Filter>Src\TestScene</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

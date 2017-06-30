@@ -180,6 +180,12 @@ bool Win32Application::ShutdownEngine()
 {
 	EngineAPI::Debug::DebugLog::PrintInfoMessage("Win32Application::ShutdownEngine()\n");
 
+	if (sceneManagerSubsystem)
+	{
+		sceneManagerSubsystem->ShutdownSubsystem();
+		sceneManagerSubsystem = nullptr;
+	}
+
 	//Shutdown subsystems - reverse order to creation
 	if (graphicsSubsystem)
 	{
@@ -262,6 +268,11 @@ bool Win32Application::InitEngineSubsystems()
 		osWindow.GetWindowWidth(), osWindow.GetWindowHeight()))
 		return false;
 
+	//Scene manager (last)
+	sceneManagerSubsystem = EngineAPI::Gameplay::SceneManager::GetInstance();
+	if (!sceneManagerSubsystem->InitSubsystem())
+		return false;
+
 	//Done
 	return true;
 }
@@ -324,12 +335,22 @@ void Win32Application::EnterGameLoop()
 			{
 				CalculateFrameRateStats();
 
+				/*
 				//Update
 				UpdateScene(mainGameLoopTimer.DeltaTime());
 
 				//Rendering
 				graphicsSubsystem->OnFrameBegin();
 				RenderScene(); //Fill render pass instance command buffers 
+				graphicsSubsystem->OnFrameEnd();
+				*/
+
+				//Update
+				assert(sceneManagerSubsystem->OnUpdate(mainGameLoopTimer.DeltaTime()));
+
+				//Rendering
+				graphicsSubsystem->OnFrameBegin();
+				assert(sceneManagerSubsystem->OnRender());
 				graphicsSubsystem->OnFrameEnd();
 			}
 			else

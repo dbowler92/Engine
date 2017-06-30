@@ -17,6 +17,7 @@
 
 //Subsystems
 #include "../../Graphics/Manager/GraphicsManager.h"
+#include "../../Gameplay/SceneManager/SceneManager.h"
 
 namespace EngineAPI
 {
@@ -43,10 +44,6 @@ namespace EngineAPI
 
 				//Called when the engine is shutdown before closing the actual engine. 
 				virtual bool ShutdownApplication() = 0;
-
-				//Updates and renders the scene
-				virtual void UpdateScene(float dt) = 0;
-				virtual void RenderScene() = 0;
 
 			public:
 				//Engine
@@ -87,6 +84,7 @@ namespace EngineAPI
 			protected:
 				//Subsystems / managers
 				EngineAPI::Graphics::GraphicsManager* graphicsSubsystem;
+				EngineAPI::Gameplay::SceneManager* sceneManagerSubsystem;
 
 			protected:
 				//Shared data

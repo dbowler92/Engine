@@ -280,6 +280,33 @@
     <Filter Include="Src\Rendering\TextureData">
       <UniqueIdentifier>{2e76198e-6603-46b8-a944-181e831a49c4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Src\Gameplay">
+      <UniqueIdentifier>{3a14c2c6-802c-4b21-811c-e503f7293b2f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Rendering\Camera">
+      <UniqueIdentifier>{2e9b84d2-a1a7-498f-a577-7f0b73a2ea03}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Rendering\Transform">
+      <UniqueIdentifier>{d559a951-3514-49d2-ab2b-d8a4ae7917bd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Gameplay\Scene">
+      <UniqueIdentifier>{1720890d-73e0-4bc0-949b-4e86917f4ae1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Gameplay\SceneManager">
+      <UniqueIdentifier>{63e5ce7f-1110-4ae0-87ce-1e043b767119}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Gameplay\GameObject">
+      <UniqueIdentifier>{aa13118b-4549-415d-946b-c7093de9ef64}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Components">
+      <UniqueIdentifier>{1adca17c-610d-45d6-b49c-1fbc66585c15}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Gameplay\Component">
+      <UniqueIdentifier>{811a605e-c20d-4f04-9be8-ca2da77f8263}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Components\StaticMeshRenderComponent">
+      <UniqueIdentifier>{68a08352-282d-41c6-bb61-efff8876d698}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Main\EngineMain.cpp">
@@ -410,6 +437,18 @@
     </ClCompile>
     <ClCompile Include="..\Rendering\TextureData\TextureData.cpp">
       <Filter>Src\Rendering\TextureData</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Rendering\Camera\Camera.cpp">
+      <Filter>Src\Rendering\Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Rendering\Transform\Transform.cpp">
+      <Filter>Src\Rendering\Transform</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Gameplay\SceneManager\SceneManager.cpp">
+      <Filter>Src\Gameplay\SceneManager</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Gameplay\Scene\Scene.cpp">
+      <Filter>Src\Gameplay\Scene</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -664,6 +703,18 @@
     </ClInclude>
     <ClInclude Include="..\Rendering\TextureData\TextureData.h">
       <Filter>Src\Rendering\TextureData</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Rendering\Camera\Camera.h">
+      <Filter>Src\Rendering\Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Rendering\Transform\Transform.h">
+      <Filter>Src\Rendering\Transform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Gameplay\SceneManager\SceneManager.h">
+      <Filter>Src\Gameplay\SceneManager</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Gameplay\Scene\Scene.h">
+      <Filter>Src\Gameplay\Scene</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -1,6 +1,17 @@
-﻿  VulkanStatics.cpp
-c:\users\b1032464\documents\programming\engine\engine\source\engine\statics\vulkan\vulkanstatics.cpp(92): warning C4018: '<': signed/unsigned mismatch
-c:\users\b1032464\documents\programming\engine\engine\source\engine\statics\vulkan\vulkanstatics.cpp(140): warning C4018: '<': signed/unsigned mismatch
-c:\users\b1032464\documents\programming\engine\engine\source\engine\statics\vulkan\vulkanstatics.cpp(158): warning C4018: '<': signed/unsigned mismatch
+﻿  SceneManager.cpp
+c:\users\dan\documents\programming\3dgameengine\game_engine\engine\source\engine\3rdparty\gli\gli\core\image.inl(90): warning C4244: 'return': conversion from 'glm::uint64' to 'size_t', possible loss of data
+c:\users\dan\documents\programming\3dgameengine\game_engine\engine\source\engine\3rdparty\gli\gli\core\image.inl(105): warning C4244: 'return': conversion from 'glm::uint64' to 'size_t', possible loss of data
+  Generating Code...
+  Compiling...
+  EngineMain.cpp
+c:\users\dan\documents\programming\3dgameengine\game_engine\engine\source\engine\3rdparty\gli\gli\core\image.inl(90): warning C4244: 'return': conversion from 'glm::uint64' to 'size_t', possible loss of data
+c:\users\dan\documents\programming\3dgameengine\game_engine\engine\source\engine\3rdparty\gli\gli\core\image.inl(105): warning C4244: 'return': conversion from 'glm::uint64' to 'size_t', possible loss of data
+  Scene.cpp
+c:\users\dan\documents\programming\3dgameengine\game_engine\engine\source\engine\3rdparty\gli\gli\core\image.inl(90): warning C4244: 'return': conversion from 'glm::uint64' to 'size_t', possible loss of data
+c:\users\dan\documents\programming\3dgameengine\game_engine\engine\source\engine\3rdparty\gli\gli\core\image.inl(105): warning C4244: 'return': conversion from 'glm::uint64' to 'size_t', possible loss of data
+  Win32Application.cpp
+c:\users\dan\documents\programming\3dgameengine\game_engine\engine\source\engine\3rdparty\gli\gli\core\image.inl(90): warning C4244: 'return': conversion from 'glm::uint64' to 'size_t', possible loss of data
+c:\users\dan\documents\programming\3dgameengine\game_engine\engine\source\engine\3rdparty\gli\gli\core\image.inl(105): warning C4244: 'return': conversion from 'glm::uint64' to 'size_t', possible loss of data
+  Generating Code...
 VulkanDrawableObject.obj : warning LNK4221: This object file does not define any previously undefined public symbols, so it will not be used by any link operation that consumes this library
-  Engine.vcxproj -> C:\Users\B1032464\Documents\Programming\Engine\Engine\Source\Engine\Msvs\..\..\Lib\Win32Debug\Engine.lib
+  Engine.vcxproj -> C:\Users\Dan\Documents\Programming\3DGameEngine\Game_Engine\Engine\Source\Engine\Msvs\..\..\Lib\Win32Debug\Engine.lib

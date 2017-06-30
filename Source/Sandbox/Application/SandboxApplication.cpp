@@ -2,6 +2,9 @@
 
 #include "../App Config/AppConfig.h"
 
+//Scenes
+#include "../TestScene/TestScene.h"
+
 //Memory allocator
 #include "../../Engine/Graphics/DeviceMemoryAllocator/DeviceMemoryAllocator.h"
 
@@ -23,31 +26,15 @@ ECHAR* SandboxApplication::GetGameTitle()
 
 bool SandboxApplication::InitApplication()
 {
+	//Debug
 	EngineAPI::Debug::DebugLog::PrintInfoMessage("SandboxApplication::InitApplication()\n");
+
+	//Inform scene manager of scenes && set first scene
+	EngineAPI::Gameplay::SceneManager::GetInstance()->AddNewSceneToManager<TestScene>("Test Scene");
+	assert(EngineAPI::Gameplay::SceneManager::GetInstance()->SetCurrentActiveSceneByTitle("Test Scene"));
 
 	//Set clear info
 	graphicsSubsystem->SetSwapchainClearValues(UNorm32Colour(0.0f, 0.0f, 0.0f, 1.0f), 1.0f, 0);
-
-	//Device -> Used when creating rendering resources
-	EngineAPI::Graphics::RenderDevice* device = EngineAPI::Graphics::GraphicsManager::GetInstance()->GetRenderingDevice();
-
-	//Init triangle
-	//tri.Init(graphicsSubsystem);
-
-	//Init quad
-	//quad.Init(graphicsSubsystem);
-
-	//Init textured quad
-	tCube.Init(graphicsSubsystem);
-
-	//Init Push Constant cube
-	//pConstCube.Init(graphicsSubsystem);
-
-#if TEXTURED_CUBE_DO_USE_OPTIMAL_TILING_FOR_SAMPLER
-	graphicsSubsystem->GetRenderingDevice()->GetDeviceMemoryAllocator()->Debug_LongDump(DEBUG_DUMPS_FOLDER"TexturedCubeOptimal");
-#else
-	graphicsSubsystem->GetRenderingDevice()->GetDeviceMemoryAllocator()->Debug_LongDump(DEBUG_DUMPS_FOLDER"TexturedCubeLinear");
-#endif
 
 	return true;
 }
@@ -55,54 +42,5 @@ bool SandboxApplication::InitApplication()
 bool SandboxApplication::ShutdownApplication()
 {
 	EngineAPI::Debug::DebugLog::PrintInfoMessage("SandboxApplication::ShutdownApplication()\n");
-	
-	//
-	//Triangle
-	//
-	//tri.Shutdown();
-
-	//
-	//Quad
-	//
-	//quad.Shutdown();
-
-	//
-	//Textured Quad
-	//
-	tCube.Shutdown();
-
-	//
-	//Push constant cube
-	//
-	//pConstCube.Shutdown();
-
 	return true;
-}
-
-void SandboxApplication::UpdateScene(float dt)
-{
-	static float timer = 0.0f;
-	timer += dt;
-	
-	if (timer >= 1.0f)
-	{
-		//Switch rendering
-		doRenderTriangle = !doRenderTriangle;
-		timer -= 1.0f;
-
-		//TODO: Mark rendering as dirty -> Render pass instance
-		//command buffers need to be reset and reinited! 
-	}
-
-	tCube.Update(dt);
-	//pConstCube.Update(dt);
-}
-
-void SandboxApplication::RenderScene()
-{
-	//Render something...
-	//tri.GenerateRenderingCommands(graphicsSubsystem);
-	//quad.GenerateRenderingCommands(graphicsSubsystem);
-	tCube.GenerateRenderingCommands(graphicsSubsystem);
-	//pConstCube.GenerateRenderingCommands(graphicsSubsystem);
 }

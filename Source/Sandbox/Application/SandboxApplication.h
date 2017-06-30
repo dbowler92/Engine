@@ -9,15 +9,6 @@
 
 #include "../../Engine/Application/Application.h" //Base class
 
-//Rendering includes
-#include "../../Engine/Includes/RenderingIncludes.h"
-
-//Test rendering objects
-#include "../Triangle/Triangle.h"
-#include "../Quad/Quad.h" //IB && VB
-#include "../TexturedCube/TexturedCube.h"
-#include "../PushConstantCube/PushConstantCube.h"
-
 class SandboxApplication : public EngineAPI::Core::Application
 { 
 	HIDE_COPY_ASSIGNMENT(SandboxApplication)
@@ -36,17 +27,6 @@ public:
 	//Closes the sandbox game
 	virtual bool ShutdownApplication();
 
-	//Updates and renders the scene
-	virtual void UpdateScene(float dt);
-	virtual void RenderScene();
-
 protected:
-	//Rendering object
-	Triangle tri;
-	Quad quad;
-	TexturedCube tCube;
-	PushConstantCube pConstCube;
 
-
-	bool doRenderTriangle = true;
 }; 

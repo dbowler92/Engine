@@ -22,6 +22,8 @@
     <ClCompile Include="..\3rdParty\LodePNG\lodepng.cpp" />
     <ClCompile Include="..\Application\Win32\Win32Application.cpp" />
     <ClCompile Include="..\Debug\Log\DebugLog.cpp" />
+    <ClCompile Include="..\Gameplay\SceneManager\SceneManager.cpp" />
+    <ClCompile Include="..\Gameplay\Scene\Scene.cpp" />
     <ClCompile Include="..\Graphics\CommandBufferPool\Vulkan\VulkanCommandBufferPool.cpp" />
     <ClCompile Include="..\Graphics\CommandQueueFamily\Vulkan\VulkanCommandQueueFamily.cpp" />
     <ClCompile Include="..\Graphics\CommandQueue\Vulkan\VulkanCommandQueue.cpp" />
@@ -51,6 +53,7 @@
     <ClCompile Include="..\Main\EngineMain.cpp" />
     <ClCompile Include="..\OSWindow\Win32\Win32OSWindow.cpp" />
     <ClCompile Include="..\Rendering\Buffer\Vulkan\VulkanBuffer.cpp" />
+    <ClCompile Include="..\Rendering\Camera\Camera.cpp" />
     <ClCompile Include="..\Rendering\DepthTexture\Vulkan\VulkanDepthTexture.cpp" />
     <ClCompile Include="..\Rendering\DrawableObject\Vulkan\VulkanDrawableObject.cpp" />
     <ClCompile Include="..\Rendering\IndexBuffer\Vulkan\VulkanIndexBuffer.cpp" />
@@ -58,6 +61,7 @@
     <ClCompile Include="..\Rendering\Sampler2D\Vulkan\VulkanSampler2D.cpp" />
     <ClCompile Include="..\Rendering\TextureData\TextureData.cpp" />
     <ClCompile Include="..\Rendering\Texture\Vulkan\VulkanTexture.cpp" />
+    <ClCompile Include="..\Rendering\Transform\Transform.cpp" />
     <ClCompile Include="..\Rendering\UniformBuffer\Vulkan\VulkanUniformBuffer.cpp" />
     <ClCompile Include="..\Rendering\VertexBuffer\Vulkan\VulkanVertexBuffer.cpp" />
     <ClCompile Include="..\Statics\Vulkan\VulkanStatics.cpp" />
@@ -72,6 +76,8 @@
     <ClInclude Include="..\Config\VulkanConfig.h" />
     <ClInclude Include="..\Config\Win32Config.h" />
     <ClInclude Include="..\Debug\Log\DebugLog.h" />
+    <ClInclude Include="..\Gameplay\SceneManager\SceneManager.h" />
+    <ClInclude Include="..\Gameplay\Scene\Scene.h" />
     <ClInclude Include="..\Graphics\CommandBufferPool\CommandBufferPool.h" />
     <ClInclude Include="..\Graphics\CommandBufferPool\Vulkan\VulkanCommandBufferPool.h" />
     <ClInclude Include="..\Graphics\CommandQueueFamily\CommandQueueFamily.h" />
@@ -129,6 +135,7 @@
     <ClInclude Include="..\OSWindow\Win32\Win32OSWindow.h" />
     <ClInclude Include="..\Rendering\Buffer\Buffer.h" />
     <ClInclude Include="..\Rendering\Buffer\Vulkan\VulkanBuffer.h" />
+    <ClInclude Include="..\Rendering\Camera\Camera.h" />
     <ClInclude Include="..\Rendering\DepthTexture\DepthTexture.h" />
     <ClInclude Include="..\Rendering\DepthTexture\Vulkan\VulkanDepthTexture.h" />
     <ClInclude Include="..\Rendering\DrawableObject\DrawableObject.h" />
@@ -142,6 +149,7 @@
     <ClInclude Include="..\Rendering\TextureData\TextureData.h" />
     <ClInclude Include="..\Rendering\Texture\Texture.h" />
     <ClInclude Include="..\Rendering\Texture\Vulkan\VulkanTexture.h" />
+    <ClInclude Include="..\Rendering\Transform\Transform.h" />
     <ClInclude Include="..\Rendering\UniformBuffer\UniformBuffer.h" />
     <ClInclude Include="..\Rendering\UniformBuffer\Vulkan\VulkanUniformBuffer.h" />
     <ClInclude Include="..\Rendering\VertexBuffer\VertexBuffer.h" />
